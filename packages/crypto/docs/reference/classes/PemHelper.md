@@ -14,6 +14,28 @@ Helper class for working with PEM (Privacy-Enhanced Mail) formatted data.
 
 ## Methods
 
+### stripPemMarkers()
+
+> `static` **stripPemMarkers**(`pemContent`): `string`
+
+Strip the PEM content of its headers, footers, and newlines.
+
+#### Parameters
+
+##### pemContent
+
+`string`
+
+The PEM content to strip.
+
+#### Returns
+
+`string`
+
+The stripped PEM content in bas64 format.
+
+***
+
 ### formatPem()
 
 > `static` **formatPem**(`marker`, `base64Content`, `lineLength`): `string`
