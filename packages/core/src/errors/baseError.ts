@@ -226,6 +226,20 @@ export class BaseError extends Error implements IError {
 	}
 
 	/**
+	 * Is the error empty.
+	 * @param err The error to check for being empty.
+	 * @returns True if the error is empty.
+	 */
+	public static isEmpty(err: IError): boolean {
+		return (
+			!Is.stringValue(err.message) &&
+			!Is.stringValue(err.source) &&
+			!Is.objectValue(err.properties) &&
+			Is.empty(err.inner)
+		);
+	}
+
+	/**
 	 * Serialize the error to the error model.
 	 * @param includeStackTrace Whether to include the error stack in the model, defaults to false.
 	 * @returns The error model.

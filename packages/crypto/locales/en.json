@@ -63,6 +63,10 @@
 		},
 		"slip0010": {
 			"invalidSeed": "The seed is invalid \"{seed}\""
+		},
+		"rsa": {
+			"noPrivateKey": "Private key is required for decryption",
+			"invalidKeySize": "Invalid RSA key size"
 		}
 	}
 }

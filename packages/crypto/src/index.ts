@@ -3,6 +3,7 @@
 export * from "./address/bech32";
 export * from "./address/bip44";
 export * from "./ciphers/chaCha20Poly1305";
+export * from "./ciphers/rsa";
 export * from "./curves/ed25519";
 export * from "./curves/secp256k1";
 export * from "./curves/x25519";
@@ -17,6 +18,7 @@ export * from "./hashes/sha1";
 export * from "./hashes/sha256";
 export * from "./hashes/sha3";
 export * from "./hashes/sha512";
+export * from "./helpers/pemHelper";
 export * from "./keys/bip32Path";
 export * from "./keys/bip39";
 export * from "./keys/slip0010";

@@ -1,6 +1,14 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { AsyncCache, Guards, Is, ObjectHelper, StringHelper, type IError } from "@twin.org/core";
+import {
+	AsyncCache,
+	BaseError,
+	Guards,
+	Is,
+	ObjectHelper,
+	StringHelper,
+	type IError
+} from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 import { FetchError } from "../errors/fetchError";
 import { HeaderTypes } from "../models/headerTypes";
@@ -266,6 +274,8 @@ export class FetchHelper {
 		}
 
 		const errorResponseData = await response.json();
+		const errorResponse = BaseError.fromError(errorResponseData);
+		const isErrorEmpty = BaseError.isEmpty(errorResponse);
 
 		// False positive as FetchError is derived from Error
 		// eslint-disable-next-line @typescript-eslint/only-throw-error
@@ -275,9 +285,10 @@ export class FetchHelper {
 			response.status as HttpStatusCode,
 			{
 				statusText: response.statusText,
-				url
+				url,
+				data: isErrorEmpty ? errorResponseData : undefined
 			},
-			errorResponseData
+			isErrorEmpty ? undefined : errorResponse
 		);
 	}
 
@@ -352,6 +363,8 @@ export class FetchHelper {
 		}
 
 		const errorResponseData = await response.json();
+		const errorResponse = BaseError.fromError(errorResponseData);
+		const isErrorEmpty = BaseError.isEmpty(errorResponse);
 
 		// False positive as FetchError is derived from Error
 		// eslint-disable-next-line @typescript-eslint/only-throw-error
@@ -361,9 +374,10 @@ export class FetchHelper {
 			response.status as HttpStatusCode,
 			{
 				statusText: response.statusText,
-				url
+				url,
+				data: isErrorEmpty ? errorResponseData : undefined
 			},
-			errorResponseData
+			isErrorEmpty ? undefined : errorResponse
 		);
 	}
 
