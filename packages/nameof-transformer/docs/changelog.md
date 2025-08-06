@@ -1,5 +1,19 @@
 # @twin.org/nameof-transformer - Changelog
 
+## [0.0.2-next.3](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.2...nameof-transformer-v0.0.2-next.3) (2025-08-06)
+
+
+### Features
+
+* add RSA support for public key components ([7126259](https://github.com/twinfoundation/framework/commit/7126259103b758c291e52a8a03818eb822d1aad1))
+* relocate core packages from tools ([bcab8f3](https://github.com/twinfoundation/framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* update dependencies ([f3bd015](https://github.com/twinfoundation/framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+
+
+### Bug Fixes
+
+* repo urls in package.json for moved packages ([31ae463](https://github.com/twinfoundation/framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
+
 ## [0.0.2-next.2](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.1...nameof-transformer-v0.0.2-next.2) (2025-08-06)
 
 
