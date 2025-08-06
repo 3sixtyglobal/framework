@@ -19,7 +19,7 @@ export class PemHelper {
 	 * @returns The stripped PEM content in bas64 format.
 	 */
 	public static stripPemMarkers(pemContent: string): string {
-		Guards.stringValue(PemHelper._CLASS_NAME, nameof(pemContent), pemContent);
+		Guards.string(PemHelper._CLASS_NAME, nameof(pemContent), pemContent);
 		return pemContent
 			.replace(/-----BEGIN.*-----/, "")
 			.replace(/-----END.*-----/, "")

@@ -82,11 +82,11 @@ The PKCS8 key as Uint8Array.
 
 ***
 
-### getKeyComponents()
+### getPrivateKeyComponents()
 
-> `static` **getKeyComponents**(`pkcs8Key`): `object`
+> `static` **getPrivateKeyComponents**(`pkcs8Key`): `object`
 
-Break the key down in to its components.
+Break the private key down in to its components.
 
 #### Parameters
 
@@ -133,6 +133,36 @@ The key components.
 ##### qi
 
 > **qi**: `bigint`
+
+***
+
+### getPublicKeyComponents()
+
+> `static` **getPublicKeyComponents**(`spkiKey`): `object`
+
+Break the public key down in to its components.
+
+#### Parameters
+
+##### spkiKey
+
+`Uint8Array`
+
+The SPKI key as Uint8Array.
+
+#### Returns
+
+`object`
+
+The key components.
+
+##### n
+
+> **n**: `bigint`
+
+##### e
+
+> **e**: `bigint`
 
 ***
 

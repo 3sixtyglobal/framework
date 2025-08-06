@@ -134,11 +134,11 @@ export class RSA {
 	}
 
 	/**
-	 * Break the key down in to its components.
+	 * Break the private key down in to its components.
 	 * @param pkcs8Key The PKCS8 key as Uint8Array.
 	 * @returns The key components.
 	 */
-	public static getKeyComponents(pkcs8Key: Uint8Array): {
+	public static getPrivateKeyComponents(pkcs8Key: Uint8Array): {
 		n: bigint;
 		e: bigint;
 		d: bigint;
@@ -166,6 +166,30 @@ export class RSA {
 			dp: this.base64UrlToBigInt(jwk.dp),
 			dq: this.base64UrlToBigInt(jwk.dq),
 			qi: this.base64UrlToBigInt(jwk.qi)
+		};
+	}
+
+	/**
+	 * Break the public key down in to its components.
+	 * @param spkiKey The SPKI key as Uint8Array.
+	 * @returns The key components.
+	 */
+	public static getPublicKeyComponents(spkiKey: Uint8Array): {
+		n: bigint;
+		e: bigint;
+	} {
+		Guards.uint8Array(RSA._CLASS_NAME, nameof(spkiKey), spkiKey);
+
+		const publicKey = createPublicKey({
+			key: Buffer.from(spkiKey),
+			format: "der",
+			type: "spki"
+		});
+
+		const jwk = publicKey.export({ format: "jwk" });
+		return {
+			n: this.base64UrlToBigInt(jwk.n),
+			e: this.base64UrlToBigInt(jwk.e)
 		};
 	}
 
