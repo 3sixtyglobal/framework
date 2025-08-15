@@ -3,6 +3,7 @@
 /* eslint-disable no-bitwise */
 import { nameof } from "@twin.org/nameof";
 import { GeneralError } from "../errors/generalError";
+import { Guards } from "../utils/guards";
 
 /**
  * Class to help with base58 Encoding/Decoding.
@@ -42,6 +43,8 @@ export class Base58 {
 	 * @throws If the input string contains a character not in the Base58 alphabet.
 	 */
 	public static decode(base58: string): Uint8Array {
+		Guards.string(Base58._CLASS_NAME, nameof(base58), base58);
+
 		let zeroes = 0;
 		for (let i = 0; i < base58.length; i++) {
 			if (base58[i] !== "1") {
@@ -105,6 +108,8 @@ export class Base58 {
 	 * @returns The data as base58 string.
 	 */
 	public static encode(bytes: Uint8Array): string {
+		Guards.uint8Array(Base58._CLASS_NAME, nameof(bytes), bytes);
+
 		let zeroes = 0;
 
 		for (let i = 0; i < bytes.length; i++) {

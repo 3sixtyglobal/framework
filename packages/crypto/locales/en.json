@@ -65,7 +65,7 @@
 			"invalidSeed": "The seed is invalid \"{seed}\""
 		},
 		"rsa": {
-			"noPrivateKey": "Private key is required for decryption",
+			"noPrivateKey": "Private key is required for this operation",
 			"invalidKeySize": "Invalid RSA key size"
 		}
 	}

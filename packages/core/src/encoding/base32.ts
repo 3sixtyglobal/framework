@@ -4,6 +4,7 @@
 
 import { nameof } from "@twin.org/nameof";
 import { GeneralError } from "../errors/generalError";
+import { Guards } from "../utils/guards";
 
 /**
  * Class to help with base63 Encoding/Decoding.
@@ -28,6 +29,8 @@ export class Base32 {
 	 * @throws If the input string contains a character not in the Base32 alphabet.
 	 */
 	public static decode(base32: string): Uint8Array {
+		Guards.string(Base32._CLASS_NAME, nameof(base32), base32);
+
 		let bits = 0;
 		let value = 0;
 
@@ -62,6 +65,8 @@ export class Base32 {
 	 * @returns The data as base32 string.
 	 */
 	public static encode(bytes: Uint8Array): string {
+		Guards.uint8Array(Base32._CLASS_NAME, nameof(bytes), bytes);
+
 		let bits = 0;
 		let value = 0;
 		let output = "";

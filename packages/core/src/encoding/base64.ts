@@ -5,6 +5,7 @@
 
 import { nameof } from "@twin.org/nameof";
 import { GeneralError } from "../errors/generalError";
+import { Guards } from "../utils/guards";
 
 /**
  * Class to help with base64 Encoding/Decoding.
@@ -113,6 +114,8 @@ export class Base64 {
 	 * @returns The byte array.
 	 */
 	public static decode(base64: string): Uint8Array {
+		Guards.string(Base64._CLASS_NAME, nameof(base64), base64);
+
 		let tmp;
 		const lens = Base64.getLengths(base64);
 		const validLen = lens[0];
@@ -162,6 +165,8 @@ export class Base64 {
 	 * @returns The data as base64 string.
 	 */
 	public static encode(bytes: Uint8Array): string {
+		Guards.uint8Array(Base64._CLASS_NAME, nameof(bytes), bytes);
+
 		let tmp;
 		const len = bytes.length;
 		const extraBytes = len % 3; // if we have 1 byte left, pad 2 bytes

@@ -32,7 +32,7 @@ The private key for decryption (DER format as Uint8Array).
 
 ### generateKeyPair()
 
-> `static` **generateKeyPair**(`modulusLength`): `object`
+> `static` **generateKeyPair**(`modulusLength`): `Promise`\<\{ `publicKey`: `Uint8Array`; `privateKey`: `Uint8Array`; \}\>
 
 Generate a new RSA key pair in PKCS8 format.
 
@@ -46,23 +46,15 @@ The key size in bits (default: 2048).
 
 #### Returns
 
-`object`
+`Promise`\<\{ `publicKey`: `Uint8Array`; `privateKey`: `Uint8Array`; \}\>
 
 The public and private keys as Uint8Array.
-
-##### publicKey
-
-> **publicKey**: `Uint8Array`
-
-##### privateKey
-
-> **privateKey**: `Uint8Array`
 
 ***
 
 ### convertPkcs1ToPkcs8()
 
-> `static` **convertPkcs1ToPkcs8**(`pkcs1Key`): `Uint8Array`
+> `static` **convertPkcs1ToPkcs8**(`pkcs1Key`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
 Convert a PKCS1 key to a PKCS8 key.
 
@@ -76,7 +68,7 @@ The PKCS1 key as Uint8Array.
 
 #### Returns
 
-`Uint8Array`
+`Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
 The PKCS8 key as Uint8Array.
 
@@ -84,7 +76,7 @@ The PKCS8 key as Uint8Array.
 
 ### getPrivateKeyComponents()
 
-> `static` **getPrivateKeyComponents**(`pkcs8Key`): `object`
+> `static` **getPrivateKeyComponents**(`pkcs8Key`): `Promise`\<\{ `n`: `bigint`; `e`: `bigint`; `d`: `bigint`; `p`: `bigint`; `q`: `bigint`; `dp`: `bigint`; `dq`: `bigint`; `qi`: `bigint`; \}\>
 
 Break the private key down in to its components.
 
@@ -98,47 +90,15 @@ The PKCS8 key as Uint8Array.
 
 #### Returns
 
-`object`
+`Promise`\<\{ `n`: `bigint`; `e`: `bigint`; `d`: `bigint`; `p`: `bigint`; `q`: `bigint`; `dp`: `bigint`; `dq`: `bigint`; `qi`: `bigint`; \}\>
 
 The key components.
-
-##### n
-
-> **n**: `bigint`
-
-##### e
-
-> **e**: `bigint`
-
-##### d
-
-> **d**: `bigint`
-
-##### p
-
-> **p**: `bigint`
-
-##### q
-
-> **q**: `bigint`
-
-##### dp
-
-> **dp**: `bigint`
-
-##### dq
-
-> **dq**: `bigint`
-
-##### qi
-
-> **qi**: `bigint`
 
 ***
 
 ### getPublicKeyComponents()
 
-> `static` **getPublicKeyComponents**(`spkiKey`): `object`
+> `static` **getPublicKeyComponents**(`spkiKey`): `Promise`\<\{ `n`: `bigint`; `e`: `bigint`; \}\>
 
 Break the public key down in to its components.
 
@@ -152,25 +112,17 @@ The SPKI key as Uint8Array.
 
 #### Returns
 
-`object`
+`Promise`\<\{ `n`: `bigint`; `e`: `bigint`; \}\>
 
 The key components.
 
-##### n
-
-> **n**: `bigint`
-
-##### e
-
-> **e**: `bigint`
-
 ***
 
-### encrypt()
+### publicEncrypt()
 
-> **encrypt**(`data`): `Uint8Array`
+> **publicEncrypt**(`data`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
-Encrypt the data.
+Encrypt the data using the public key.
 
 #### Parameters
 
@@ -182,17 +134,39 @@ The data to encrypt.
 
 #### Returns
 
-`Uint8Array`
+`Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
 The data encrypted.
 
 ***
 
-### decrypt()
+### privateEncrypt()
 
-> **decrypt**(`data`): `Uint8Array`
+> **privateEncrypt**(`data`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
-Decrypt the data.
+Encrypt the data using the private key.
+
+#### Parameters
+
+##### data
+
+`Uint8Array`
+
+The data to encrypt.
+
+#### Returns
+
+`Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
+
+The data encrypted.
+
+***
+
+### privateDecrypt()
+
+> **privateDecrypt**(`data`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
+
+Decrypt the data using the private key.
 
 #### Parameters
 
@@ -204,10 +178,32 @@ The data to decrypt.
 
 #### Returns
 
-`Uint8Array`
+`Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
 The data decrypted.
 
 #### Throws
 
 GeneralError If no private key is provided.
+
+***
+
+### publicDecrypt()
+
+> **publicDecrypt**(`data`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
+
+Decrypt the data using the public key.
+
+#### Parameters
+
+##### data
+
+`Uint8Array`
+
+The data to decrypt.
+
+#### Returns
+
+`Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
+
+The data decrypted.
