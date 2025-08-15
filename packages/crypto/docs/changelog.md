@@ -1,5 +1,23 @@
 # @twin.org/crypto - Changelog
 
+## [0.0.2-next.4](https://github.com/twinfoundation/framework/compare/crypto-v0.0.2-next.3...crypto-v0.0.2-next.4) (2025-08-15)
+
+
+### Features
+
+* additional RSA methods and async ([1fceee2](https://github.com/twinfoundation/framework/commit/1fceee2d1248a24a7620846025fcf906495c07f4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.2-next.3 to 0.0.2-next.4
+    * @twin.org/nameof bumped from 0.0.2-next.3 to 0.0.2-next.4
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.3 to 0.0.2-next.4
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.3 to 0.0.2-next.4
+
 ## [0.0.2-next.3](https://github.com/twinfoundation/framework/compare/crypto-v0.0.2-next.2...crypto-v0.0.2-next.3) (2025-08-06)
 
 

@@ -1,5 +1,24 @@
 # @twin.org/web - Changelog
 
+## [0.0.2-next.4](https://github.com/twinfoundation/framework/compare/web-v0.0.2-next.3...web-v0.0.2-next.4) (2025-08-15)
+
+
+### Miscellaneous Chores
+
+* **web:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.2-next.3 to 0.0.2-next.4
+    * @twin.org/crypto bumped from 0.0.2-next.3 to 0.0.2-next.4
+    * @twin.org/nameof bumped from 0.0.2-next.3 to 0.0.2-next.4
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.3 to 0.0.2-next.4
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.3 to 0.0.2-next.4
+
 ## [0.0.2-next.3](https://github.com/twinfoundation/framework/compare/web-v0.0.2-next.2...web-v0.0.2-next.3) (2025-08-06)
 
 

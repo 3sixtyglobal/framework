@@ -1,5 +1,12 @@
 # @twin.org/nameof-transformer - Changelog
 
+## [0.0.2-next.4](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.3...nameof-transformer-v0.0.2-next.4) (2025-08-15)
+
+
+### Features
+
+* additional RSA methods and async ([1fceee2](https://github.com/twinfoundation/framework/commit/1fceee2d1248a24a7620846025fcf906495c07f4))
+
 ## [0.0.2-next.3](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.2...nameof-transformer-v0.0.2-next.3) (2025-08-06)
 
 
