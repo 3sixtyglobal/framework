@@ -182,6 +182,7 @@ export class Factory<T> {
 	 * @throws GeneralError if no item exists to get.
 	 */
 	public get<U extends T>(name: string): U {
+		Guards.stringValue(Factory._CLASS_NAME, nameof(name), name);
 		const instance = this.getIfExists(name);
 		if (!instance) {
 			throw new GeneralError(Factory._CLASS_NAME, "noGet", {
@@ -197,7 +198,10 @@ export class Factory<T> {
 	 * @param name The name of the instance to generate.
 	 * @returns An instance of the item or undefined if it does not exist.
 	 */
-	public getIfExists<U extends T>(name: string): U | undefined {
+	public getIfExists<U extends T>(name?: string): U | undefined {
+		if (Is.empty(name)) {
+			return;
+		}
 		Guards.stringValue(Factory._CLASS_NAME, nameof(name), name);
 
 		const matchName = this._matcher(Object.keys(this._generators), name);

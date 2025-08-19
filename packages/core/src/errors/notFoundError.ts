@@ -17,9 +17,9 @@ export class NotFoundError extends BaseError {
 	 * @param source The source of the error.
 	 * @param message The message as a code.
 	 * @param notFoundId The id for the item.
-	 * @param inner The inner error if we have wrapped another error.
+	 * @param cause The cause of the error if we have wrapped another error.
 	 */
-	constructor(source: string, message: string, notFoundId?: string, inner?: unknown) {
-		super(NotFoundError.CLASS_NAME, source, message, { notFoundId }, inner);
+	constructor(source: string, message: string, notFoundId?: string, cause?: unknown) {
+		super(NotFoundError.CLASS_NAME, source, message, { notFoundId }, cause);
 	}
 }

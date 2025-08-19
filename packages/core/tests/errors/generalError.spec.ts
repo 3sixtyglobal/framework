@@ -12,9 +12,9 @@ describe("GeneralError", () => {
 		expect(error.name).toEqual("GeneralError");
 		expect(error.message).toEqual("foo.extended");
 		expect(error.properties?.bar).toEqual(1);
-		expect(error.inner).toBeDefined();
-		if (Is.object<IError>(error.inner)) {
-			expect(error.inner.message).toEqual("bar");
+		expect(error.cause).toBeDefined();
+		if (Is.object<IError>(error.cause)) {
+			expect(error.cause.message).toEqual("bar");
 		}
 	});
 });

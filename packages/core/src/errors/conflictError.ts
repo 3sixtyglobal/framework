@@ -18,15 +18,15 @@ export class ConflictError extends BaseError {
 	 * @param message The message as a code.
 	 * @param conflictId The id that has conflicts.
 	 * @param conflicts The conflicts that occurred.
-	 * @param inner The inner error if we have wrapped another error.
+	 * @param cause The cause or the error if we have wrapped another error.
 	 */
 	constructor(
 		source: string,
 		message: string,
 		conflictId?: string,
 		conflicts?: string[],
-		inner?: unknown
+		cause?: unknown
 	) {
-		super(ConflictError.CLASS_NAME, source, message, { conflictId, conflicts }, inner);
+		super(ConflictError.CLASS_NAME, source, message, { conflictId, conflicts }, cause);
 	}
 }

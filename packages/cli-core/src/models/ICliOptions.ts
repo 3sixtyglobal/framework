@@ -38,4 +38,9 @@ export interface ICliOptions {
 	 * Override the default output width.
 	 */
 	overrideOutputWidth?: number;
+
+	/**
+	 * Show a warning that this is a dev tool and not for production use.
+	 */
+	showDevToolWarning?: boolean;
 }

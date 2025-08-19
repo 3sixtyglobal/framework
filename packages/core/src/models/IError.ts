@@ -31,7 +31,7 @@ export interface IError {
 	stack?: string;
 
 	/**
-	 * The inner error if there was one.
+	 * The cause of the error if there was one.
 	 */
-	inner?: IError;
+	cause?: IError;
 }

@@ -12,6 +12,11 @@
 			}
 		}
 	},
+	"warn": {
+		"common": {
+			"devOnlyTool": "This tool is intended to be used for development purposes, it is not recommended for use in production scenarios."
+		}
+	},
 	"cli": {
 		"progress": {
 			"done": "Done.",

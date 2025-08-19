@@ -203,7 +203,7 @@ export class PngEncoder {
 	 * @internal
 	 */
 	private compress(
-		inBuffers: ArrayBuffer[],
+		inBuffers: ArrayBufferLike[],
 		w: number,
 		h: number,
 		inPs: number,
@@ -709,10 +709,10 @@ export class PngEncoder {
 	 * @internal
 	 */
 	private quantize(
-		buffers: ArrayBuffer[],
+		buffers: ArrayBufferLike[],
 		ps: number,
 		roundAlpha: number
-	): { buffers: ArrayBuffer[]; plte: Leaf[] } {
+	): { buffers: ArrayBufferLike[]; plte: Leaf[] } {
 		const imgs: Uint8Array[] = [];
 		let total = 0;
 		for (let i = 0; i < buffers.length; i++) {
@@ -809,7 +809,7 @@ export class PngEncoder {
 		}
 		leafs.sort((a, b) => (b.bst?.N ?? 0) - (a.bst?.N ?? 0));
 
-		const outBuffers: ArrayBuffer[] = [];
+		const outBuffers: ArrayBufferLike[] = [];
 		for (let ii = 0; ii < imgs.length; ii++) {
 			const sb = new Uint8Array(imgs[ii]);
 			const tb: Uint32Array = new Uint32Array(imgs[ii]);

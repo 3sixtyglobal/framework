@@ -112,7 +112,7 @@ export class Ed25519 {
 		// The ASN.1 sequence is 48 46 02 01 00 30 05 06 03 2b 65 70 04 20 04 20 (0x302e020100300506032b657004220420)
 		const pkcs8Prefix = new Uint8Array([48, 46, 2, 1, 0, 48, 5, 6, 3, 43, 101, 112, 4, 34, 4, 32]);
 		const fullKey = Uint8ArrayHelper.concat([pkcs8Prefix, privateKey]);
-		return crypto.subtle.importKey("pkcs8", fullKey, "Ed25519", true, ["sign"]);
+		return crypto.subtle.importKey("pkcs8", new Uint8Array(fullKey), "Ed25519", true, ["sign"]);
 	}
 
 	/**

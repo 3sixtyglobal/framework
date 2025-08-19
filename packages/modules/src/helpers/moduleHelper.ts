@@ -129,8 +129,8 @@ export class ModuleHelper {
 	try {
 		const { workerData, parentPort } = await import('node:worker_threads');
 
-		function rejectError(type, innerError) {
-			parentPort.postMessage({ errorType: type, innerError });
+		function rejectError(errorType, cause) {
+			parentPort.postMessage({ errorType, cause });
 		}
 
 		async function executeMethod(method) {
@@ -178,7 +178,7 @@ export class ModuleHelper {
 							ModuleHelper.CLASS_NAME,
 							msg.errorType,
 							{ module, entry: method },
-							msg.innerError
+							msg.cause
 						)
 					);
 				} else {

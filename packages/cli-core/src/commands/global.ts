@@ -61,7 +61,7 @@ export function handleGlobalOptions(command: Command): void {
 		const resolvedEnv = loadEnv.map(e => path.resolve(e));
 		CLIDisplay.task(I18n.formatMessage("cli.progress.loadingEnvFiles"), resolvedEnv.join(", "));
 		CLIDisplay.break();
-		dotenv.config({ path: resolvedEnv });
+		dotenv.config({ path: resolvedEnv, quiet: true });
 	}
 }
 

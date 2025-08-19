@@ -24,7 +24,7 @@ export class Compression {
 		Guards.uint8Array(Compression._CLASS_NAME, nameof(bytes), bytes);
 		Guards.arrayOneOf(Compression._CLASS_NAME, nameof(type), type, Object.values(CompressionType));
 
-		const blob = new Blob([bytes]);
+		const blob = new Blob([new Uint8Array(bytes)]);
 		const compressionStream = new CompressionStream(type);
 		const compressionPipe = blob.stream().pipeThrough(compressionStream);
 		const compressedBlob = await new Response(compressionPipe).blob();
@@ -54,7 +54,7 @@ export class Compression {
 		Guards.uint8Array(Compression._CLASS_NAME, nameof(compressedBytes), compressedBytes);
 		Guards.arrayOneOf(Compression._CLASS_NAME, nameof(type), type, Object.values(CompressionType));
 
-		const blob = new Blob([compressedBytes]);
+		const blob = new Blob([new Uint8Array(compressedBytes)]);
 		const decompressionStream = new DecompressionStream(type);
 		const decompressionPipe = blob.stream().pipeThrough(decompressionStream);
 		const decompressedBlob = await new Response(decompressionPipe).blob();

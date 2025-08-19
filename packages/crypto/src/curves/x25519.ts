@@ -1,8 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { edwardsToMontgomeryPriv, edwardsToMontgomeryPub } from "@noble/curves/ed25519";
+import { ed25519 } from "@noble/curves/ed25519";
 import { Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { Ed25519 } from "./ed25519";
 
 /**
  * Implementation of X25519.
@@ -21,7 +22,7 @@ export class X25519 {
 	 */
 	public static convertPrivateKeyToX25519(ed25519PrivateKey: Uint8Array): Uint8Array {
 		Guards.uint8Array(X25519._CLASS_NAME, nameof(ed25519PrivateKey), ed25519PrivateKey);
-		return edwardsToMontgomeryPriv(ed25519PrivateKey);
+		return ed25519.utils.toMontgomerySecret(ed25519PrivateKey.slice(0, Ed25519.PRIVATE_KEY_SIZE));
 	}
 
 	/**
@@ -32,6 +33,6 @@ export class X25519 {
 	 */
 	public static convertPublicKeyToX25519(ed25519PublicKey: Uint8Array): Uint8Array {
 		Guards.uint8Array(X25519._CLASS_NAME, nameof(ed25519PublicKey), ed25519PublicKey);
-		return edwardsToMontgomeryPub(ed25519PublicKey);
+		return ed25519.utils.toMontgomery(ed25519PublicKey);
 	}
 }

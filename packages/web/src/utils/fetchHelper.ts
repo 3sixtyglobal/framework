@@ -117,11 +117,20 @@ export class FetchHelper {
 				}, options?.timeoutMs);
 			}
 
+			let finalBody;
+			if (method === HttpMethod.POST || method === HttpMethod.PUT) {
+				if (Is.string(body)) {
+					finalBody = body;
+				} else if (Is.uint8Array(body)) {
+					finalBody = new Uint8Array(body);
+				}
+			}
+
 			try {
 				const requestOptions: RequestInit = {
 					method,
 					headers: options?.headers as HeadersInit,
-					body: method === HttpMethod.POST || method === HttpMethod.PUT ? body : undefined,
+					body: finalBody,
 					signal: controller ? controller.signal : undefined
 				};
 				if (Is.boolean(options?.includeCredentials)) {

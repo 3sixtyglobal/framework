@@ -356,7 +356,7 @@ describe("FetchHelper", () => {
 				httpStatus: HttpStatusCode.internalServerError,
 				url: "url"
 			},
-			inner: {
+			cause: {
 				name: "FetchError",
 				source: "source",
 				message: "fetchHelper.general",
@@ -397,7 +397,7 @@ describe("FetchHelper", () => {
 				httpStatus: HttpStatusCode.internalServerError,
 				url: "url"
 			},
-			inner: {
+			cause: {
 				name: "FetchError",
 				source: "source",
 				message: "fetchHelper.general",

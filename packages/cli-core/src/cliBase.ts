@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Coerce, Is } from "@twin.org/core";
+import { Coerce, I18n, Is } from "@twin.org/core";
 import { Command } from "commander";
 import { CLIDisplay } from "./cliDisplay";
 import {
@@ -68,6 +68,12 @@ export abstract class CLIBase {
 					// eslint-disable-next-line no-restricted-syntax
 					throw new Error(err.code === "commander.help" ? "0" : err.exitCode.toString());
 				});
+
+			if (options.showDevToolWarning ?? false) {
+				program.hook("preAction", () =>
+					CLIDisplay.warning(I18n.formatMessage("warn.common.devOnlyTool"))
+				);
+			}
 
 			this.configureRoot(program);
 

@@ -3,7 +3,6 @@
 export * from "./address/bech32";
 export * from "./address/bip44";
 export * from "./ciphers/chaCha20Poly1305";
-export * from "./ciphers/rsa";
 export * from "./curves/ed25519";
 export * from "./curves/secp256k1";
 export * from "./curves/x25519";

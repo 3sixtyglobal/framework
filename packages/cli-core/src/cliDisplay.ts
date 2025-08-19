@@ -125,6 +125,16 @@ export class CLIDisplay {
 	}
 
 	/**
+	 * Display a warning.
+	 * @param label The label for the warning.
+	 */
+	public static warning(label: string): void {
+		CLIDisplay.write("⚠️  ");
+		CLIDisplay.write(chalk.hex("#FFA500").bold(label));
+		CLIDisplay.write("\n\n");
+	}
+
+	/**
 	 * Display the processing is done.
 	 */
 	public static done(): void {

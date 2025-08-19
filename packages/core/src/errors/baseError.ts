@@ -19,9 +19,9 @@ export class BaseError extends Error implements IError {
 	public properties?: { [id: string]: unknown };
 
 	/**
-	 * The inner error if there was one.
+	 * The cause of the error.
 	 */
-	public inner?: IError;
+	public cause?: IError;
 
 	/**
 	 * Create a new instance of BaseError.
@@ -29,32 +29,33 @@ export class BaseError extends Error implements IError {
 	 * @param source The source of the error.
 	 * @param message The message as a code.
 	 * @param properties Any additional information for the error.
-	 * @param inner The inner error if we have wrapped another error.
+	 * @param cause The cause of error if we have wrapped another error.
 	 */
 	constructor(
 		name: string,
 		source: string,
 		message: string,
 		properties?: { [id: string]: unknown },
-		inner?: unknown
+		cause?: unknown
 	) {
 		super(message);
 		this.name = name;
 		this.source = source;
+		this.cause = Is.notEmpty(cause) ? BaseError.fromError(cause).toJsonObject(true) : undefined;
+		this.properties = properties;
 
 		// If the message is camel case but has no namespace then prefix it
-		// with the source name in camel case
+		// with the source name in camel case.
 		if (
 			Is.stringValue(source) &&
 			Is.stringValue(message) &&
 			!message.includes(".") &&
+			// This comparison checks that it is most likely a camel case name
+			// and not a free text error with a dot in it
 			StringHelper.camelCase(message) === message
 		) {
 			this.message = `${StringHelper.camelCase(source)}.${message}`;
 		}
-
-		this.properties = properties;
-		this.inner = inner ? BaseError.fromError(inner).toJsonObject() : undefined;
 	}
 
 	/**
@@ -67,7 +68,7 @@ export class BaseError extends Error implements IError {
 		let message;
 		let source;
 		let properties;
-		let inner;
+		let cause;
 		let stack;
 
 		if (Is.object<{ error: string }>(err) && Is.stringValue(err.error)) {
@@ -85,8 +86,12 @@ export class BaseError extends Error implements IError {
 			if (Is.notEmpty(err.properties)) {
 				properties = err.properties;
 			}
-			if (Is.notEmpty(err.inner)) {
-				inner = err.inner;
+			if (BaseError.isAggregateError(err)) {
+				properties ??= {};
+				properties.errors = err.errors;
+			}
+			if (Is.notEmpty(err.cause)) {
+				cause = err.cause;
 			}
 			if (Is.notEmpty(err.stack)) {
 				stack = err.stack;
@@ -97,7 +102,7 @@ export class BaseError extends Error implements IError {
 			message = JSON.stringify(err);
 		}
 
-		const baseError = new BaseError(name, source ?? "", message ?? "", properties, inner);
+		const baseError = new BaseError(name, source ?? "", message ?? "", properties, cause);
 
 		baseError.stack = stack;
 
@@ -115,10 +120,10 @@ export class BaseError extends Error implements IError {
 		let e: IError | undefined = BaseError.fromError(err).toJsonObject(true);
 
 		while (e) {
-			const inner: IError | undefined = e.inner;
-			e.inner = undefined;
+			const cause: IError | undefined = e.cause;
+			e.cause = undefined;
 			flattened.push(e);
-			e = inner;
+			e = cause;
 		}
 
 		return flattened;
@@ -136,8 +141,8 @@ export class BaseError extends Error implements IError {
 			first = errors[0];
 			let current = first;
 			for (let i = 1; i < errors.length; i++) {
-				current.inner = errors[i];
-				current = current.inner;
+				current.cause = errors[i];
+				current = current.cause;
 			}
 		}
 
@@ -226,7 +231,7 @@ export class BaseError extends Error implements IError {
 	}
 
 	/**
-	 * Is the error empty.
+	 * Is the error empty, i.e. does it have no message, source, properties, or cause?
 	 * @param err The error to check for being empty.
 	 * @returns True if the error is empty.
 	 */
@@ -235,8 +240,30 @@ export class BaseError extends Error implements IError {
 			!Is.stringValue(err.message) &&
 			!Is.stringValue(err.source) &&
 			!Is.objectValue(err.properties) &&
-			Is.empty(err.inner)
+			Is.empty(err.cause)
 		);
+	}
+
+	/**
+	 * Is the error an aggregate error.
+	 * @param err The error to check for being an aggregate error.
+	 * @returns True if the error is an aggregate error.
+	 */
+	public static isAggregateError(err: unknown): err is AggregateError {
+		return err instanceof AggregateError;
+	}
+
+	/**
+	 * Convert the aggregate error to an array of errors.
+	 * @param err The error to convert.
+	 * @param includeStackTrace Whether to include the error stack in the model, defaults to false.
+	 * @returns The array of errors.
+	 */
+	public static fromAggregate(err: unknown, includeStackTrace?: boolean): IError[] {
+		if (BaseError.isAggregateError(err)) {
+			return err.errors.map(e => BaseError.fromError(e).toJsonObject(includeStackTrace));
+		}
+		return [BaseError.fromError(err).toJsonObject(includeStackTrace)];
 	}
 
 	/**
@@ -261,8 +288,8 @@ export class BaseError extends Error implements IError {
 		if ((includeStackTrace ?? false) && Is.stringValue(this.stack)) {
 			err.stack = this.stack;
 		}
-		if (Is.notEmpty(this.inner)) {
-			err.inner = BaseError.fromError(this.inner).toJsonObject(includeStackTrace);
+		if (Is.notEmpty(this.cause)) {
+			err.cause = BaseError.fromError(this.cause).toJsonObject(includeStackTrace);
 		}
 		return err as IError;
 	}

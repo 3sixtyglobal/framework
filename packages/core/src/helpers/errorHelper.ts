@@ -15,7 +15,7 @@ export class ErrorHelper {
 	 * Format Errors and returns just their messages.
 	 * @param error The error to format.
 	 * @param includeDetails Whether to include error details, defaults to false.
-	 * @returns The error formatted including any inner errors.
+	 * @returns The error formatted including any causes errors.
 	 */
 	public static formatErrors(error: unknown, includeDetails?: boolean): string[] {
 		const localizedErrors = ErrorHelper.localizeErrors(error);
@@ -34,7 +34,7 @@ export class ErrorHelper {
 	}
 
 	/**
-	 * Localize the content of an error and any inner errors.
+	 * Localize the content of an error and any causes.
 	 * @param error The error to format.
 	 * @returns The localized version of the errors flattened.
 	 */
@@ -84,7 +84,7 @@ export class ErrorHelper {
 	}
 
 	/**
-	 * Localize the content of an error and any inner errors.
+	 * Localize the content of an error and any causes.
 	 * @param error The error to format.
 	 * @returns The localized version of the errors flattened.
 	 */

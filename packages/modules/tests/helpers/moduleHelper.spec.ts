@@ -143,7 +143,7 @@ describe("ModuleHelper", () => {
 				module: TEST_MODULE,
 				entry: "testMethodWithError"
 			},
-			inner: { name: "Error", message: "This is a test error" }
+			cause: { name: "Error", message: "This is a test error" }
 		});
 	});
 
@@ -158,7 +158,7 @@ describe("ModuleHelper", () => {
 				module: TEST_MODULE,
 				entry: "testMethodWithErrorAsync"
 			},
-			inner: { name: "Error", message: "This is a test error async" }
+			cause: { name: "Error", message: "This is a test error async" }
 		});
 	});
 });
