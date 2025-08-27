@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable promise/prefer-await-to-then */
 import { Worker } from "node:worker_threads";
-import { BaseError, GeneralError, Is } from "@twin.org/core";
+import { BaseError, GeneralError, Is, SharedStore } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 
 /**
@@ -15,6 +15,16 @@ export class ModuleHelper {
 	public static readonly CLASS_NAME: string = nameof<ModuleHelper>();
 
 	/**
+	 * Override the import function for modules.
+	 * @param overrideImport The override import function.
+	 */
+	public static overrideImport(
+		overrideImport: (moduleName: string) => Promise<{ module?: unknown; useDefault: boolean }>
+	): void {
+		SharedStore.set("overrideImport", overrideImport);
+	}
+
+	/**
 	 * Get the module entry.
 	 * @param module The module.
 	 * @param entry The entry to get from the module.
@@ -25,7 +35,23 @@ export class ModuleHelper {
 		let moduleInstance;
 
 		try {
-			moduleInstance = await import(module);
+			let useDefault = true;
+
+			const overrideImport =
+				SharedStore.get<(moduleName: string) => Promise<{ module?: unknown; useDefault: boolean }>>(
+					"overrideImport"
+				);
+
+			if (!Is.empty(overrideImport)) {
+				const overrideResult = await overrideImport(module);
+
+				moduleInstance = overrideResult.module;
+				useDefault = overrideResult.useDefault;
+			}
+
+			if (useDefault) {
+				moduleInstance = await import(module);
+			}
 		} catch (err) {
 			throw new GeneralError(
 				ModuleHelper.CLASS_NAME,
@@ -38,7 +64,7 @@ export class ModuleHelper {
 			);
 		}
 
-		const moduleEntry = moduleInstance[entry];
+		const moduleEntry = moduleInstance?.[entry];
 
 		if (Is.empty(moduleEntry)) {
 			throw new GeneralError(ModuleHelper.CLASS_NAME, "entryNotFound", {
@@ -212,5 +238,23 @@ export class ModuleHelper {
 				}
 			});
 		});
+	}
+
+	/**
+	 * Check if a module is a local module.
+	 * @param name The name of the module.
+	 * @returns True if the module is local, false otherwise.
+	 */
+	public static isLocalModule(name: string): boolean {
+		return name.startsWith(".") || name.startsWith("/");
+	}
+
+	/**
+	 * Check if a module is a relative module.
+	 * @param name The name of the module.
+	 * @returns True if the module is relative, false otherwise.
+	 */
+	public static isRelativeModule(name: string): boolean {
+		return name.startsWith(".");
 	}
 }
