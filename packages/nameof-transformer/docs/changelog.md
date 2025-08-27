@@ -1,5 +1,12 @@
 # @twin.org/nameof-transformer - Changelog
 
+## [0.0.2-next.6](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.5...nameof-transformer-v0.0.2-next.6) (2025-08-27)
+
+
+### Features
+
+* provide module helper override ([e998a64](https://github.com/twinfoundation/framework/commit/e998a64842cfd18693a14444be33b084fef2bb90))
+
 ## [0.0.2-next.5](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.4...nameof-transformer-v0.0.2-next.5) (2025-08-19)
 
 

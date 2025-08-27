@@ -1,5 +1,23 @@
 # @twin.org/entity - Changelog
 
+## [0.0.2-next.6](https://github.com/twinfoundation/framework/compare/entity-v0.0.2-next.5...entity-v0.0.2-next.6) (2025-08-27)
+
+
+### Miscellaneous Chores
+
+* **entity:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.2-next.5 to 0.0.2-next.6
+    * @twin.org/core bumped from 0.0.2-next.5 to 0.0.2-next.6
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.5 to 0.0.2-next.6
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.5 to 0.0.2-next.6
+
 ## [0.0.2-next.5](https://github.com/twinfoundation/framework/compare/entity-v0.0.2-next.4...entity-v0.0.2-next.5) (2025-08-19)
 
 
