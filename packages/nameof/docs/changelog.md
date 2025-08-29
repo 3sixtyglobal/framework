@@ -1,5 +1,19 @@
 # @twin.org/nameof - Changelog
 
+## [0.0.2-next.7](https://github.com/twinfoundation/framework/compare/nameof-v0.0.2-next.6...nameof-v0.0.2-next.7) (2025-08-29)
+
+
+### Features
+
+* eslint migration to flat config ([74427d7](https://github.com/twinfoundation/framework/commit/74427d78d342167f7850e49ab87269326355befe))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.6 to 0.0.2-next.7
+
 ## [0.0.2-next.6](https://github.com/twinfoundation/framework/compare/nameof-v0.0.2-next.5...nameof-v0.0.2-next.6) (2025-08-27)
 
 
