@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { blake2b } from "@noble/hashes/blake2b";
-import type { Hash } from "@noble/hashes/utils";
+import { blake2b } from "@noble/hashes/blake2.js";
+import type { Hash } from "@noble/hashes/utils.js";
 import { Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 

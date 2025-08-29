@@ -190,9 +190,7 @@ async function mergePackageLocales(
 				);
 
 				const localeDictionary = await CLIUtils.readJsonFile<ILocaleDictionary>(localeFile);
-				if (!localeDictionaries[locale.code]) {
-					localeDictionaries[locale.code] = {};
-				}
+				localeDictionaries[locale.code] ??= {};
 				localeDictionaries[locale.code] = ObjectHelper.merge(
 					localeDictionaries[locale.code],
 					localeDictionary

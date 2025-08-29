@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { secp256k1 } from "@noble/curves/secp256k1";
+import { secp256k1 } from "@noble/curves/secp256k1.js";
 import { GeneralError, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 
@@ -57,12 +57,12 @@ export class Secp256k1 {
 		if (privateKey.length !== Secp256k1.PRIVATE_KEY_SIZE) {
 			throw new GeneralError(Secp256k1._CLASS_NAME, "privateKeyLength", {
 				requiredSize: Secp256k1.PRIVATE_KEY_SIZE,
-				actualSize: privateKey ? privateKey.length : 0
+				actualSize: privateKey.length
 			});
 		}
 
-		const res = secp256k1.sign(block, privateKey);
-		return res.toCompactRawBytes();
+		const res = secp256k1.sign(block, privateKey, { prehash: false });
+		return res;
 	}
 
 	/**
@@ -86,7 +86,7 @@ export class Secp256k1 {
 		}
 
 		try {
-			return secp256k1.verify(signature, block, publicKey);
+			return secp256k1.verify(signature, block, publicKey, { prehash: false });
 		} catch {
 			return false;
 		}

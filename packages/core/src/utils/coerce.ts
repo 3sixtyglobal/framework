@@ -266,6 +266,7 @@ export class Coerce {
 	 * @returns The coerced value.
 	 */
 	public static byType(value: unknown, type?: CoerceType): unknown {
+		// eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
 		switch (type) {
 			case CoerceType.String:
 				return Coerce.string(value);

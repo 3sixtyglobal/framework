@@ -14,7 +14,7 @@
 		"vitest.config.*",
 		"tsconfig.json",
 		"typedoc.json",
-		".eslintrc.cjs",
+		"eslint.config.js",
 		"**/wordlists/**",
 		"changelog.md"
 	],
@@ -35,6 +35,7 @@
 		"otpauth",
 		"paeth",
 		"Plte",
+		"prehash",
 		"Priv",
 		"Quant",
 		"RGBYUV",

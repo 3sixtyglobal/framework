@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable no-bitwise */
 /* eslint-disable no-mixed-operators */
-/* eslint-disable array-bracket-newline */
-
 import { GeneralError } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 
