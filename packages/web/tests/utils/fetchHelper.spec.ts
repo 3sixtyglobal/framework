@@ -164,7 +164,6 @@ describe("FetchHelper", () => {
 				while (!options.signal.aborted) {
 					await new Promise(resolve => globalThis.setTimeout(resolve, 100));
 				}
-				// eslint-disable-next-line no-restricted-syntax
 				const abortError = new Error("abort");
 				abortError.name = "AbortError";
 				throw abortError;
@@ -238,7 +237,6 @@ describe("FetchHelper", () => {
 	});
 
 	test("can fail to get a response from a fetchwith failed connectivity", async () => {
-		// eslint-disable-next-line no-restricted-syntax
 		fetchMock.mockRejectedValue(new Error("Failed to fetch"));
 		await expect(FetchHelper.fetch("source", "url", "GET")).rejects.toMatchObject({
 			name: "FetchError",
