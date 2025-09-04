@@ -73,7 +73,6 @@ describe("AsyncCache", () => {
 
 	test("can not cache if the promise throws", async () => {
 		const res = AsyncCache.exec("key", 1, async () => {
-			// eslint-disable-next-line no-restricted-syntax
 			throw new Error("Test error");
 		});
 		expect(Is.promise(res)).toEqual(true);
@@ -98,7 +97,6 @@ describe("AsyncCache", () => {
 			"key",
 			1,
 			async () => {
-				// eslint-disable-next-line no-restricted-syntax
 				throw new Error("Test error");
 			},
 			true
@@ -126,14 +124,12 @@ describe("AsyncCache", () => {
 
 	test("can not cache if the promise throws and secondary promise also throws", async () => {
 		const res = AsyncCache.exec("key", 1, async () => {
-			// eslint-disable-next-line no-restricted-syntax
 			throw new Error("Test error");
 		});
 		expect(Is.promise(res)).toEqual(true);
 		expect(counter).toEqual(0);
 
 		const res2 = AsyncCache.exec("key", 1, async () => {
-			// eslint-disable-next-line no-restricted-syntax
 			throw new Error("Test error 2");
 		});
 		expect(Is.promise(res2)).toEqual(true);
