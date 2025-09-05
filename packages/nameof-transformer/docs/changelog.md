@@ -1,5 +1,12 @@
 # @twin.org/nameof-transformer - Changelog
 
+## [0.0.2-next.8](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.7...nameof-transformer-v0.0.2-next.8) (2025-09-05)
+
+
+### Features
+
+* add Is.class method ([4988205](https://github.com/twinfoundation/framework/commit/498820543e256a130b4888c958fe1d87ca865d7f))
+
 ## [0.0.2-next.7](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.6...nameof-transformer-v0.0.2-next.7) (2025-08-29)
 
 

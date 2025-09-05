@@ -1,5 +1,23 @@
 # @twin.org/modules - Changelog
 
+## [0.0.2-next.8](https://github.com/twinfoundation/framework/compare/modules-v0.0.2-next.7...modules-v0.0.2-next.8) (2025-09-05)
+
+
+### Miscellaneous Chores
+
+* **modules:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.2-next.7 to 0.0.2-next.8
+    * @twin.org/nameof bumped from 0.0.2-next.7 to 0.0.2-next.8
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.7 to 0.0.2-next.8
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.7 to 0.0.2-next.8
+
 ## [0.0.2-next.7](https://github.com/twinfoundation/framework/compare/modules-v0.0.2-next.6...modules-v0.0.2-next.7) (2025-08-29)
 
 
