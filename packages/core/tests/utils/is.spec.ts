@@ -1,5 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+/* eslint-disable max-classes-per-file */
 import { Is } from "../../src/utils/is";
 
 describe("Is", () => {
@@ -422,5 +423,55 @@ describe("Is", () => {
 	test("regexp can succeed if value is a valid regexp", () => {
 		// eslint-disable-next-line prefer-regex-literals
 		expect(Is.regexp(new RegExp(""))).toEqual(true);
+	});
+
+	test("should return true for ES6 classes", () => {
+		/**
+		 * MyClass is a simple ES6 class.
+		 */
+		class MyClass {}
+		expect(Is.class(MyClass)).toBe(true);
+	});
+
+	test("should return false for regular functions", () => {
+		/**
+		 * MyFunc is a regular function.
+		 */
+		// eslint-disable-next-line unicorn/consistent-function-scoping
+		function MyFunc(): void {}
+		expect(Is.class(MyFunc)).toBe(false);
+	});
+
+	test("should return false for arrow functions", () => {
+		// eslint-disable-next-line unicorn/consistent-function-scoping
+		const arrow = (): void => {};
+		expect(Is.class(arrow)).toBe(false);
+	});
+
+	test("should return false for objects", () => {
+		expect(Is.class({})).toBe(false);
+	});
+
+	test("should return false for primitives", () => {
+		expect(Is.class(123)).toBe(false);
+		expect(Is.class("string")).toBe(false);
+		expect(Is.class(null)).toBe(false);
+		expect(Is.class(undefined)).toBe(false);
+	});
+
+	test("should allow instantiation with new when true", () => {
+		/**
+		 * TestClass is a test class for instantiation.
+		 */
+		class TestClass {
+			// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility, no-restricted-syntax
+			value = 42;
+		}
+		if (Is.class(TestClass)) {
+			const instance = new TestClass();
+			expect(instance.value).toBe(42);
+		} else {
+			throw new Error("Is.class failed to detect class");
+		}
 	});
 });

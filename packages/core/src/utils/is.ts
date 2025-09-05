@@ -394,4 +394,18 @@ export class Is {
 	public static regexp(value: unknown): value is RegExp {
 		return value instanceof RegExp;
 	}
+
+	/**
+	 * Is the provided object a class constructor.
+	 * @param obj The object to check.
+	 * @returns True if the object is a class, false otherwise.
+	 */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public static class<T = unknown>(obj: unknown): obj is new (...args: any[]) => T {
+		if (typeof obj !== "function") {
+			return false;
+		}
+		const str = Function.prototype.toString.call(obj);
+		return /^class\s/.test(str);
+	}
 }
