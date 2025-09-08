@@ -1,5 +1,12 @@
 # @twin.org/nameof-transformer - Changelog
 
+## [0.0.2-next.9](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.8...nameof-transformer-v0.0.2-next.9) (2025-09-08)
+
+
+### Features
+
+* add mnemonic validation ([4b43491](https://github.com/twinfoundation/framework/commit/4b43491cf04bb626c27faea66e5c74b3971b111d))
+
 ## [0.0.2-next.8](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.7...nameof-transformer-v0.0.2-next.8) (2025-09-05)
 
 

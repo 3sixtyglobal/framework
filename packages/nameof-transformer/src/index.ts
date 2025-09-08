@@ -13,7 +13,7 @@ export const factory = (): ts.TransformerFactory<ts.Node> => transformerFactory;
  * Exports the factory version.
  * @returns The factory.
  */
-export const version = "0.0.2-next.8"; // x-release-please-version
+export const version = "0.0.2-next.9"; // x-release-please-version
 
 /**
  * Exports the factory name.
