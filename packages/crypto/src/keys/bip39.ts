@@ -80,4 +80,27 @@ export class Bip39 {
 
 		return bip39.mnemonicToEntropy(mnemonic, words);
 	}
+
+	/**
+	 * Validate the mnemonic.
+	 * @param mnemonic The mnemonic to validate.
+	 * @param wordCount The expected number of words in the mnemonic, defaults to 24.
+	 * @param words The wordlist to use, defaults to the English wordlist.
+	 * @returns True if the mnemonic is valid.
+	 */
+	public static validateMnemonic(
+		mnemonic: string,
+		wordCount: number = 24,
+		words: string[] = wordlist
+	): boolean {
+		Guards.string(Bip39._CLASS_NAME, nameof(mnemonic), mnemonic);
+		Guards.integer(Bip39._CLASS_NAME, nameof(wordCount), wordCount);
+
+		const mnemonicSplit = mnemonic.split(/\s+/);
+		if (mnemonicSplit.length !== wordCount) {
+			return false;
+		}
+
+		return bip39.validateMnemonic(mnemonic, words);
+	}
 }
