@@ -1,5 +1,24 @@
 # @twin.org/cli-core - Changelog
 
+## [0.0.2-next.10](https://github.com/twinfoundation/framework/compare/cli-core-v0.0.2-next.9...cli-core-v0.0.2-next.10) (2025-09-11)
+
+
+### Features
+
+* add CLIParam.arrayOneOf ([18f0815](https://github.com/twinfoundation/framework/commit/18f08157e5305cddf65d09b36a51a91a0873e396))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.2-next.9 to 0.0.2-next.10
+    * @twin.org/crypto bumped from 0.0.2-next.9 to 0.0.2-next.10
+    * @twin.org/nameof bumped from 0.0.2-next.9 to 0.0.2-next.10
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.9 to 0.0.2-next.10
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.9 to 0.0.2-next.10
+
 ## [0.0.2-next.9](https://github.com/twinfoundation/framework/compare/cli-core-v0.0.2-next.8...cli-core-v0.0.2-next.9) (2025-09-08)
 
 
