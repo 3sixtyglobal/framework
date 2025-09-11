@@ -54,6 +54,26 @@ export class CLIParam {
 	}
 
 	/**
+	 * Check the option to see if the value exists in the specific array.
+	 * @param optionName The name of the option.
+	 * @param optionValue The option value.
+	 * @param validValues The valid values.
+	 * @param allowEnvVar Allow the option to be read from an env var.
+	 * @returns The final option value.
+	 * @throws An error if the option is invalid.
+	 */
+	public static arrayOneOf<T = string>(
+		optionName: string,
+		optionValue: string | undefined,
+		validValues: T[],
+		allowEnvVar: boolean = true
+	): T {
+		optionValue = CLIParam.env(optionName, optionValue, allowEnvVar);
+		Guards.arrayOneOf<T>("commands", optionName, optionValue as T, validValues);
+		return optionValue as T;
+	}
+
+	/**
 	 * Check the option to see if it is a url.
 	 * @param optionName The name of the option.
 	 * @param optionValue The option value.
