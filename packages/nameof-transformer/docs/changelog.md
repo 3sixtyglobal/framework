@@ -1,5 +1,12 @@
 # @twin.org/nameof-transformer - Changelog
 
+## [0.0.2-next.12](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.11...nameof-transformer-v0.0.2-next.12) (2025-09-15)
+
+
+### Features
+
+* add jwk enc property overrides ([18b6309](https://github.com/twinfoundation/framework/commit/18b63092a386b56ea7fcd7e12865ac6e1b47cc1e))
+
 ## [0.0.2-next.11](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.10...nameof-transformer-v0.0.2-next.11) (2025-09-15)
 
 

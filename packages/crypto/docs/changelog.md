@@ -1,5 +1,23 @@
 # @twin.org/crypto - Changelog
 
+## [0.0.2-next.12](https://github.com/twinfoundation/framework/compare/crypto-v0.0.2-next.11...crypto-v0.0.2-next.12) (2025-09-15)
+
+
+### Miscellaneous Chores
+
+* **crypto:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.2-next.11 to 0.0.2-next.12
+    * @twin.org/nameof bumped from 0.0.2-next.11 to 0.0.2-next.12
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.11 to 0.0.2-next.12
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.11 to 0.0.2-next.12
+
 ## [0.0.2-next.11](https://github.com/twinfoundation/framework/compare/crypto-v0.0.2-next.10...crypto-v0.0.2-next.11) (2025-09-15)
 
 
