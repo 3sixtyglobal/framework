@@ -68,7 +68,7 @@ describe("Jwk", () => {
 			alg: "EdDSA",
 			crv: "Ed25519",
 			kty: "OKP",
-			use: "enc",
+			use: "sig",
 			d: "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqo",
 			x: "5zTqbCtiV95yNV5HKqBaTEh-a0Y8Ap7TBt8vAbVja1g"
 		});
@@ -79,7 +79,7 @@ describe("Jwk", () => {
 			alg: "EdDSA",
 			crv: "Ed25519",
 			kty: "OKP",
-			use: "enc",
+			use: "sig",
 			d: "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqo",
 			x: "5zTqbCtiV95yNV5HKqBaTEh-a0Y8Ap7TBt8vAbVja1g"
 		});
@@ -94,7 +94,7 @@ describe("Jwk", () => {
 			alg: "EdDSA",
 			crv: "Ed25519",
 			kty: "OKP",
-			use: "enc",
+			use: "sig",
 			d: "nWGxne_9WmC6hEr0kuwsxERJxWl7MmkZcDusAxyuf2A",
 			x: "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo"
 		};

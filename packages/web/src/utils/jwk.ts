@@ -35,16 +35,20 @@ export class Jwk {
 	/**
 	 * Convert the Ed25519 private key to a crypto key.
 	 * @param privateKey The private key to use.
+	 * @param overrideUse Optional override for the use property, defaults to "sig".
 	 * @returns The crypto key.
 	 */
-	public static async fromEd25519Private(privateKey: Uint8Array): Promise<IJwk> {
+	public static async fromEd25519Private(
+		privateKey: Uint8Array,
+		overrideUse?: "enc" | "sig" | string
+	): Promise<IJwk> {
 		Guards.uint8Array(Jwk._CLASS_NAME, nameof(privateKey), privateKey);
 
 		const publicKey = Ed25519.publicKeyFromPrivateKey(privateKey);
 
 		const jwk: IJwk = {
 			kty: "OKP",
-			use: "enc",
+			use: overrideUse ?? "sig",
 			alg: "EdDSA",
 			crv: "Ed25519",
 			x: Converter.bytesToBase64Url(publicKey),
@@ -57,14 +61,18 @@ export class Jwk {
 	/**
 	 * Convert the Ed25519 public key to a crypto key.
 	 * @param publicKey The private key to use.
+	 * @param overrideUse Optional override for the use property, defaults to "sig".
 	 * @returns The crypto key.
 	 */
-	public static async fromEd25519Public(publicKey: Uint8Array): Promise<IJwk> {
+	public static async fromEd25519Public(
+		publicKey: Uint8Array,
+		overrideUse?: "enc" | "sig" | string
+	): Promise<IJwk> {
 		Guards.uint8Array(Jwk._CLASS_NAME, nameof(publicKey), publicKey);
 
 		const jwk: IJwk = {
 			kty: "OKP",
-			use: "sig",
+			use: overrideUse ?? "sig",
 			alg: "EdDSA",
 			crv: "Ed25519",
 			x: Converter.bytesToBase64Url(publicKey)
