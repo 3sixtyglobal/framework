@@ -12,7 +12,7 @@ export class HeaderHelper {
 	 * @param token The token to create the header for.
 	 * @returns The bearer token header.
 	 */
-	public static createBearer(token: string): string {
+	public static createBearer(token: unknown): string {
 		if (Is.stringValue(token)) {
 			if (token.startsWith("Bearer ")) {
 				return token;

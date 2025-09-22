@@ -18,8 +18,13 @@ describe("HeaderHelper", () => {
 		expect(header).toBe("Bearer my-token");
 	});
 
-		test("can create an empty bearer header from an empty token", async () => {
+	test("can create an empty bearer header from an empty token", async () => {
 		const header = HeaderHelper.createBearer("");
+		expect(header).toBe("");
+	});
+
+	test("can create an empty bearer header from an undefined token", async () => {
+		const header = HeaderHelper.createBearer(undefined);
 		expect(header).toBe("");
 	});
 

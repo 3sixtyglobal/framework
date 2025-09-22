@@ -24,7 +24,7 @@ Create a bearer token header.
 
 ##### token
 
-`string`
+`unknown`
 
 The token to create the header for.
 
