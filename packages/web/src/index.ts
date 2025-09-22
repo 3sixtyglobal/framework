@@ -12,6 +12,7 @@ export * from "./models/IJwtPayload";
 export * from "./models/jwkCryptoKey";
 export * from "./models/mimeTypes";
 export * from "./utils/fetchHelper";
+export * from "./utils/headerHelper";
 export * from "./utils/jwk";
 export * from "./utils/jws";
 export * from "./utils/jwt";
