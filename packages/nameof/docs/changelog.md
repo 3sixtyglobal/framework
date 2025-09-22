@@ -1,5 +1,19 @@
 # @twin.org/nameof - Changelog
 
+## [0.0.2-next.14](https://github.com/twinfoundation/framework/compare/nameof-v0.0.2-next.13...nameof-v0.0.2-next.14) (2025-09-22)
+
+
+### Miscellaneous Chores
+
+* **nameof:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.13 to 0.0.2-next.14
+
 ## [0.0.2-next.13](https://github.com/twinfoundation/framework/compare/nameof-v0.0.2-next.12...nameof-v0.0.2-next.13) (2025-09-22)
 
 

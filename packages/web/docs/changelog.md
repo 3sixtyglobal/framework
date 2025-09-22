@@ -1,5 +1,24 @@
 # @twin.org/web - Changelog
 
+## [0.0.2-next.14](https://github.com/twinfoundation/framework/compare/web-v0.0.2-next.13...web-v0.0.2-next.14) (2025-09-22)
+
+
+### Features
+
+* add header helper for common bearer support ([0c940b2](https://github.com/twinfoundation/framework/commit/0c940b29cccf0c3bb5b4aa8a01f1998010e44d51))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.2-next.13 to 0.0.2-next.14
+    * @twin.org/crypto bumped from 0.0.2-next.13 to 0.0.2-next.14
+    * @twin.org/nameof bumped from 0.0.2-next.13 to 0.0.2-next.14
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.13 to 0.0.2-next.14
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.13 to 0.0.2-next.14
+
 ## [0.0.2-next.13](https://github.com/twinfoundation/framework/compare/web-v0.0.2-next.12...web-v0.0.2-next.13) (2025-09-22)
 
 

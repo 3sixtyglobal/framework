@@ -1,5 +1,12 @@
 # @twin.org/nameof-transformer - Changelog
 
+## [0.0.2-next.14](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.13...nameof-transformer-v0.0.2-next.14) (2025-09-22)
+
+
+### Features
+
+* add header helper for common bearer support ([0c940b2](https://github.com/twinfoundation/framework/commit/0c940b29cccf0c3bb5b4aa8a01f1998010e44d51))
+
 ## [0.0.2-next.13](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.12...nameof-transformer-v0.0.2-next.13) (2025-09-22)
 
 
