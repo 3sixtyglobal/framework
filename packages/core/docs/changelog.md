@@ -1,5 +1,22 @@
 # @twin.org/core - Changelog
 
+## [0.0.2-next.13](https://github.com/twinfoundation/framework/compare/core-v0.0.2-next.12...core-v0.0.2-next.13) (2025-09-22)
+
+
+### Features
+
+* expand error params to accept properties ([032e9fd](https://github.com/twinfoundation/framework/commit/032e9fd1388e457cde32ca1005dfe014a5a9c077))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.2-next.12 to 0.0.2-next.13
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.12 to 0.0.2-next.13
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.12 to 0.0.2-next.13
+
 ## [0.0.2-next.12](https://github.com/twinfoundation/framework/compare/core-v0.0.2-next.11...core-v0.0.2-next.12) (2025-09-15)
 
 
