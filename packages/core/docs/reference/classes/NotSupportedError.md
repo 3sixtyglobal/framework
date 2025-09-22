@@ -10,7 +10,7 @@ Class to handle errors when a feature is unsupported.
 
 ### Constructor
 
-> **new NotSupportedError**(`source`, `message`, `cause?`): `NotSupportedError`
+> **new NotSupportedError**(`source`, `message`, `properties?`, `cause?`): `NotSupportedError`
 
 Create a new instance of NotSupportedError.
 
@@ -27,6 +27,10 @@ The source of the error.
 `string`
 
 The message as a code.
+
+##### properties?
+
+Any additional information for the error.
 
 ##### cause?
 

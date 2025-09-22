@@ -10,7 +10,7 @@ Class to handle errors.
 
 ### Constructor
 
-> **new NotImplementedError**(`source`, `method`): `NotImplementedError`
+> **new NotImplementedError**(`source`, `method`, `properties?`, `cause?`): `NotImplementedError`
 
 Create a new instance of NotImplementedError.
 
@@ -27,6 +27,16 @@ The source of the error.
 `string`
 
 The method for the error.
+
+##### properties?
+
+Any additional information for the error.
+
+##### cause?
+
+`unknown`
+
+The cause of the error if we have wrapped another error.
 
 #### Returns
 

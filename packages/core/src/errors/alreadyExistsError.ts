@@ -17,9 +17,16 @@ export class AlreadyExistsError extends BaseError {
 	 * @param source The source of the error.
 	 * @param message The message as a code.
 	 * @param existingId The id for the item.
+	 * @param properties Any additional information for the error.
 	 * @param cause The cause of the error if we have wrapped another error.
 	 */
-	constructor(source: string, message: string, existingId?: string, cause?: unknown) {
-		super(AlreadyExistsError.CLASS_NAME, source, message, { existingId });
+	constructor(
+		source: string,
+		message: string,
+		existingId?: string,
+		properties?: { [id: string]: unknown },
+		cause?: unknown
+	) {
+		super(AlreadyExistsError.CLASS_NAME, source, message, { existingId, ...properties }, cause);
 	}
 }

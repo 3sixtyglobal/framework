@@ -10,7 +10,7 @@ Class to handle errors which are triggered by access not being unauthorized.
 
 ### Constructor
 
-> **new UnauthorizedError**(`source`, `message`, `cause?`): `UnauthorizedError`
+> **new UnauthorizedError**(`source`, `message`, `properties?`, `cause?`): `UnauthorizedError`
 
 Create a new instance of UnauthorizedError.
 
@@ -27,6 +27,10 @@ The source of the error.
 `string`
 
 The message as a code.
+
+##### properties?
+
+Any additional information for the error.
 
 ##### cause?
 

@@ -10,7 +10,7 @@ Class to handle errors which are triggered by conflicting data.
 
 ### Constructor
 
-> **new ConflictError**(`source`, `message`, `conflictId?`, `conflicts?`, `cause?`): `ConflictError`
+> **new ConflictError**(`source`, `message`, `conflictId?`, `conflicts?`, `properties?`, `cause?`): `ConflictError`
 
 Create a new instance of ConflictError.
 
@@ -39,6 +39,10 @@ The id that has conflicts.
 `string`[]
 
 The conflicts that occurred.
+
+##### properties?
+
+Any additional information for the error.
 
 ##### cause?
 

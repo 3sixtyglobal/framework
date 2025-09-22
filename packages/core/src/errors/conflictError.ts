@@ -18,6 +18,7 @@ export class ConflictError extends BaseError {
 	 * @param message The message as a code.
 	 * @param conflictId The id that has conflicts.
 	 * @param conflicts The conflicts that occurred.
+	 * @param properties Any additional information for the error.
 	 * @param cause The cause or the error if we have wrapped another error.
 	 */
 	constructor(
@@ -25,8 +26,15 @@ export class ConflictError extends BaseError {
 		message: string,
 		conflictId?: string,
 		conflicts?: string[],
+		properties?: { [id: string]: unknown },
 		cause?: unknown
 	) {
-		super(ConflictError.CLASS_NAME, source, message, { conflictId, conflicts }, cause);
+		super(
+			ConflictError.CLASS_NAME,
+			source,
+			message,
+			{ conflictId, conflicts, ...properties },
+			cause
+		);
 	}
 }

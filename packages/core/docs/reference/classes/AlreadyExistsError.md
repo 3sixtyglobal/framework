@@ -10,7 +10,7 @@ Class to handle errors which are triggered by data already existing.
 
 ### Constructor
 
-> **new AlreadyExistsError**(`source`, `message`, `existingId?`, `cause?`): `AlreadyExistsError`
+> **new AlreadyExistsError**(`source`, `message`, `existingId?`, `properties?`, `cause?`): `AlreadyExistsError`
 
 Create a new instance of AlreadyExistsError.
 
@@ -33,6 +33,10 @@ The message as a code.
 `string`
 
 The id for the item.
+
+##### properties?
+
+Any additional information for the error.
 
 ##### cause?
 

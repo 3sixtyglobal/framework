@@ -16,10 +16,24 @@ export class NotImplementedError extends BaseError {
 	 * Create a new instance of NotImplementedError.
 	 * @param source The source of the error.
 	 * @param method The method for the error.
+	 * @param properties Any additional information for the error.
+	 * @param cause The cause of the error if we have wrapped another error.
 	 */
-	constructor(source: string, method: string) {
-		super(NotImplementedError.CLASS_NAME, source, "common.notImplementedMethod", {
-			method
-		});
+	constructor(
+		source: string,
+		method: string,
+		properties?: { [id: string]: unknown },
+		cause?: unknown
+	) {
+		super(
+			NotImplementedError.CLASS_NAME,
+			source,
+			"common.notImplementedMethod",
+			{
+				method,
+				...properties
+			},
+			cause
+		);
 	}
 }

@@ -10,7 +10,7 @@ Class to handle errors which are triggered by data not being found.
 
 ### Constructor
 
-> **new NotFoundError**(`source`, `message`, `notFoundId?`, `cause?`): `NotFoundError`
+> **new NotFoundError**(`source`, `message`, `notFoundId?`, `properties?`, `cause?`): `NotFoundError`
 
 Create a new instance of NotFoundError.
 
@@ -33,6 +33,10 @@ The message as a code.
 `string`
 
 The id for the item.
+
+##### properties?
+
+Any additional information for the error.
 
 ##### cause?
 

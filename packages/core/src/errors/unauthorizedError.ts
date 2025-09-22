@@ -16,9 +16,15 @@ export class UnauthorizedError extends BaseError {
 	 * Create a new instance of UnauthorizedError.
 	 * @param source The source of the error.
 	 * @param message The message as a code.
+	 * @param properties Any additional information for the error.
 	 * @param cause The cause of the error if we have wrapped another error.
 	 */
-	constructor(source: string, message: string, cause?: unknown) {
-		super(UnauthorizedError.CLASS_NAME, source, message, undefined, cause);
+	constructor(
+		source: string,
+		message: string,
+		properties?: { [id: string]: unknown },
+		cause?: unknown
+	) {
+		super(UnauthorizedError.CLASS_NAME, source, message, properties, cause);
 	}
 }
