@@ -16,7 +16,7 @@ Class to helper with header operations.
 
 ### createBearer()
 
-> `static` **createBearer**(`token`): `undefined` \| `string`
+> `static` **createBearer**(`token`): `string`
 
 Create a bearer token header.
 
@@ -30,15 +30,15 @@ The token to create the header for.
 
 #### Returns
 
-`undefined` \| `string`
+`string`
 
 The bearer token header.
 
 ***
 
-### extractBearerToken()
+### extractBearer()
 
-> `static` **extractBearerToken**(`header`): `undefined` \| `string`
+> `static` **extractBearer**(`header`): `string`
 
 Extract the bearer token from a header.
 
@@ -52,6 +52,6 @@ The header value to extract the token from.
 
 #### Returns
 
-`undefined` \| `string`
+`string`
 
 The extracted token if it exists.

@@ -18,23 +18,28 @@ describe("HeaderHelper", () => {
 		expect(header).toBe("Bearer my-token");
 	});
 
+		test("can create an empty bearer header from an empty token", async () => {
+		const header = HeaderHelper.createBearer("");
+		expect(header).toBe("");
+	});
+
 	test("can extract the bearer from a valid header", async () => {
-		const token = HeaderHelper.extractBearerToken("Bearer my-token");
+		const token = HeaderHelper.extractBearer("Bearer my-token");
 		expect(token).toBe("my-token");
 	});
 
 	test("can fail to extract the bearer from an undefined header", async () => {
-		const token = HeaderHelper.extractBearerToken(undefined);
-		expect(token).toBeUndefined();
+		const token = HeaderHelper.extractBearer(undefined);
+		expect(token).toBe("");
 	});
 
 	test("can fail to extract the bearer from an empty header", async () => {
-		const token = HeaderHelper.extractBearerToken("");
-		expect(token).toBeUndefined();
+		const token = HeaderHelper.extractBearer("");
+		expect(token).toBe("");
 	});
 
 	test("can fail to extract the bearer from an invalid header", async () => {
-		const token = HeaderHelper.extractBearerToken("bearer my-token");
-		expect(token).toBeUndefined();
+		const token = HeaderHelper.extractBearer("bearer my-token");
+		expect(token).toBe("");
 	});
 });
