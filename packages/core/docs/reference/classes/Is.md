@@ -730,9 +730,15 @@ True if the value is a TypedArray.
 
 ### function()
 
-> `static` **function**(`value`): `value is (args: unknown[]) => unknown`
+> `static` **function**\<`FN`\>(`value`): `value is FN`
 
 Is the property a function.
+
+#### Type Parameters
+
+##### FN
+
+`FN` *extends* (`args?`) => `unknown` = (`args?`) => `unknown`
 
 #### Parameters
 
@@ -744,7 +750,7 @@ The value to test.
 
 #### Returns
 
-`value is (args: unknown[]) => unknown`
+`value is FN`
 
 True if the value is a function.
 

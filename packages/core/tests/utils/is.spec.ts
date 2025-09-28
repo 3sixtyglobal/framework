@@ -392,6 +392,25 @@ describe("Is", () => {
 		expect(Is.function(() => {})).toEqual(true);
 	});
 
+	test("function can succeed when the signature matches", () => {
+		// eslint-disable-next-line unicorn/consistent-function-scoping
+		const fn: (a: number, b: string) => number = (a: number, b: string) => a;
+		expect(Is.function(fn)).toEqual(true);
+		if (Is.function(fn)) {
+			fn(1, "test");
+		}
+	});
+
+	test("function can fail when the signature does not match", () => {
+		// eslint-disable-next-line unicorn/consistent-function-scoping
+		const fn: (a: number, b: string) => number = (a: number, b: string) => a;
+		expect(Is.function(fn)).toEqual(true);
+		if (Is.function(fn)) {
+			// @ts-expect-error The following call is expected to fail because the signature does not match.
+			fn(1, 2);
+		}
+	});
+
 	test("email can fail if value if the value is empty", () => {
 		expect(Is.email("")).toEqual(false);
 	});

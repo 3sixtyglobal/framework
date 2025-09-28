@@ -359,7 +359,9 @@ export class Is {
 	 * @param value The value to test.
 	 * @returns True if the value is a function.
 	 */
-	public static function(value: unknown): value is (...args: unknown[]) => unknown {
+	public static function<FN extends (args?: unknown[]) => unknown = (args?: unknown[]) => unknown>(
+		value: unknown
+	): value is FN {
 		return typeof value === "function";
 	}
 
