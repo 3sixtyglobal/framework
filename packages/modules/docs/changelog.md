@@ -1,5 +1,23 @@
 # @twin.org/modules - Changelog
 
+## [0.0.2-next.16](https://github.com/twinfoundation/framework/compare/modules-v0.0.2-next.15...modules-v0.0.2-next.16) (2025-09-28)
+
+
+### Features
+
+* nodeIdentity optional in IComponent methods ([c78dc17](https://github.com/twinfoundation/framework/commit/c78dc17f4357d3e1ae40e415f468d3eae13e81f4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.2-next.15 to 0.0.2-next.16
+    * @twin.org/nameof bumped from 0.0.2-next.15 to 0.0.2-next.16
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.15 to 0.0.2-next.16
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.15 to 0.0.2-next.16
+
 ## [0.0.2-next.15](https://github.com/twinfoundation/framework/compare/modules-v0.0.2-next.14...modules-v0.0.2-next.15) (2025-09-22)
 
 

@@ -1,5 +1,12 @@
 # @twin.org/nameof-transformer - Changelog
 
+## [0.0.2-next.16](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.15...nameof-transformer-v0.0.2-next.16) (2025-09-28)
+
+
+### Features
+
+* nodeIdentity optional in IComponent methods ([c78dc17](https://github.com/twinfoundation/framework/commit/c78dc17f4357d3e1ae40e415f468d3eae13e81f4))
+
 ## [0.0.2-next.15](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.14...nameof-transformer-v0.0.2-next.15) (2025-09-22)
 
 
