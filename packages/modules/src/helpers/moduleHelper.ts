@@ -41,7 +41,7 @@ export class ModuleHelper {
 					"overrideImport"
 				);
 
-			if (!Is.empty(overrideImport)) {
+			if (Is.function(overrideImport)) {
 				const overrideResult = await overrideImport(module);
 
 				moduleInstance = overrideResult.module;

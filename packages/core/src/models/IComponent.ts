@@ -15,7 +15,7 @@ export interface IComponent {
 	 * @param nodeLoggingComponentType The node logging component type.
 	 * @returns True if the bootstrapping process was successful.
 	 */
-	bootstrap?(nodeLoggingComponentType: string | undefined): Promise<boolean>;
+	bootstrap?(nodeLoggingComponentType?: string): Promise<boolean>;
 
 	/**
 	 * The component needs to be started when the node is initialized.
@@ -23,7 +23,7 @@ export interface IComponent {
 	 * @param nodeLoggingComponentType The node logging component type.
 	 * @returns Nothing.
 	 */
-	start?(nodeIdentity: string, nodeLoggingComponentType: string | undefined): Promise<void>;
+	start?(nodeIdentity?: string, nodeLoggingComponentType?: string): Promise<void>;
 
 	/**
 	 * The component needs to be stopped when the node is closed.
@@ -31,5 +31,5 @@ export interface IComponent {
 	 * @param nodeLoggingComponentType The node logging component type.
 	 * @returns Nothing.
 	 */
-	stop?(nodeIdentity: string, nodeLoggingComponentType: string | undefined): Promise<void>;
+	stop?(nodeIdentity?: string, nodeLoggingComponentType?: string): Promise<void>;
 }
