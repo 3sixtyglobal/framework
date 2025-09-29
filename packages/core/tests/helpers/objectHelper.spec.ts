@@ -9,7 +9,7 @@ describe("ObjectHelper", () => {
 	});
 
 	test("toBytes can return empty array with undefined object", () => {
-		expect(ObjectHelper.toBytes(undefined as never).length).toEqual(0);
+		expect(ObjectHelper.toBytes(undefined).length).toEqual(0);
 	});
 
 	test("toBytes can return array with null object", () => {

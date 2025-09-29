@@ -23,7 +23,7 @@ export class ObjectHelper {
 	 * @returns The object as bytes.
 	 */
 	public static toBytes<T>(obj: T | undefined, format: boolean = false): Uint8Array {
-		if (obj === undefined) {
+		if (Is.undefined(obj)) {
 			return new Uint8Array();
 		}
 		const json = format ? JSON.stringify(obj, undefined, "\t") : JSON.stringify(obj);

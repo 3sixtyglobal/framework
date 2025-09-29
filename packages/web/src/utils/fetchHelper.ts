@@ -1,15 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import {
-	AsyncCache,
-	BaseError,
-	Guards,
-	Is,
-	ObjectHelper,
-	StringHelper,
-	type IError
-} from "@twin.org/core";
-import { nameof } from "@twin.org/nameof";
+import { AsyncCache, BaseError, Guards, Is, ObjectHelper, type IError } from "@twin.org/core";
+import { nameof, nameofCamelCase } from "@twin.org/nameof";
 import { FetchError } from "../errors/fetchError";
 import { HeaderTypes } from "../models/headerTypes";
 import { HttpMethod } from "../models/httpMethod";
@@ -33,13 +25,6 @@ export class FetchHelper {
 	 * @internal
 	 */
 	private static readonly _CACHE_PREFIX: string = "fetch_";
-
-	/**
-	 * Runtime name for the class.
-	 * @internal
-	 */
-	private static readonly _CLASS_NAME_CAMEL_CASE: string =
-		StringHelper.camelCase(nameof<FetchHelper>());
 
 	/**
 	 * Perform a fetch request.
@@ -142,7 +127,7 @@ export class FetchHelper {
 				if (!response.ok && retryCount > 1) {
 					lastError = new FetchError(
 						source,
-						`${FetchHelper._CLASS_NAME_CAMEL_CASE}.general`,
+						`${nameofCamelCase<FetchHelper>()}.general`,
 						(response.status as HttpStatusCode) ?? HttpStatusCode.internalServerError,
 						{
 							url,
@@ -157,7 +142,7 @@ export class FetchHelper {
 				if (isErr && Is.stringValue(err.message) && err.message.includes("Failed to fetch")) {
 					lastError = new FetchError(
 						source,
-						`${FetchHelper._CLASS_NAME_CAMEL_CASE}.connectivity`,
+						`${nameofCamelCase<FetchHelper>()}.connectivity`,
 						HttpStatusCode.serviceUnavailable,
 						{
 							url
@@ -178,7 +163,7 @@ export class FetchHelper {
 					}
 					lastError = new FetchError(
 						source,
-						`${FetchHelper._CLASS_NAME_CAMEL_CASE}.${isAbort ? "timeout" : "general"}`,
+						`${nameofCamelCase<FetchHelper>()}.${isAbort ? "timeout" : "general"}`,
 						httpStatus,
 						props,
 						err
@@ -196,7 +181,7 @@ export class FetchHelper {
 			// eslint-disable-next-line @typescript-eslint/only-throw-error
 			throw new FetchError(
 				source,
-				`${FetchHelper._CLASS_NAME_CAMEL_CASE}.retryLimitExceeded`,
+				`${nameofCamelCase<FetchHelper>()}.retryLimitExceeded`,
 				HttpStatusCode.internalServerError,
 				{ url },
 				lastError
@@ -274,7 +259,7 @@ export class FetchHelper {
 				// eslint-disable-next-line @typescript-eslint/only-throw-error
 				throw new FetchError(
 					source,
-					`${FetchHelper._CLASS_NAME_CAMEL_CASE}.decodingJSON`,
+					`${nameofCamelCase<FetchHelper>()}.decodingJSON`,
 					HttpStatusCode.badRequest,
 					{ url },
 					err
@@ -290,7 +275,7 @@ export class FetchHelper {
 		// eslint-disable-next-line @typescript-eslint/only-throw-error
 		throw new FetchError(
 			source,
-			`${FetchHelper._CLASS_NAME_CAMEL_CASE}.failureStatusText`,
+			`${nameofCamelCase<FetchHelper>()}.failureStatusText`,
 			response.status as HttpStatusCode,
 			{
 				statusText: response.statusText,
@@ -363,7 +348,7 @@ export class FetchHelper {
 				// eslint-disable-next-line @typescript-eslint/only-throw-error
 				throw new FetchError(
 					source,
-					`${FetchHelper._CLASS_NAME_CAMEL_CASE}.decodingJSON`,
+					`${nameofCamelCase<FetchHelper>()}.decodingJSON`,
 					HttpStatusCode.badRequest,
 					{ url },
 					err
@@ -379,7 +364,7 @@ export class FetchHelper {
 		// eslint-disable-next-line @typescript-eslint/only-throw-error
 		throw new FetchError(
 			source,
-			`${FetchHelper._CLASS_NAME_CAMEL_CASE}.failureStatusText`,
+			`${nameofCamelCase<FetchHelper>()}.failureStatusText`,
 			response.status as HttpStatusCode,
 			{
 				statusText: response.statusText,

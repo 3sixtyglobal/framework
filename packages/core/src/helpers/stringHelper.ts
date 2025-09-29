@@ -10,26 +10,50 @@ import { Is } from "../utils/is";
 export class StringHelper {
 	/**
 	 * Trim trailing slashes from a string.
+	 * Overloads preserve null/undefined instead of coercing to empty string.
 	 * @param value The value to trim.
-	 * @returns The trimmed value.
+	 * @returns The trimmed value (same null/undefined passed in).
 	 */
-	public static trimTrailingSlashes(value: string | undefined): string {
-		if (Is.stringValue(value)) {
+	public static trimTrailingSlashes(value: string): string;
+	/**
+	 *
+	 * @param value
+	 */
+	public static trimTrailingSlashes<T extends null | undefined>(value: T): T;
+	/**
+	 * Implementation signature for trimTrailingSlashes.
+	 * @param value The value to trim.
+	 * @returns The trimmed string or the original null/undefined.
+	 */
+	public static trimTrailingSlashes(value: string | null | undefined): string | null | undefined {
+		if (Is.string(value)) {
 			return value.replace(/\/+$/, "");
 		}
-		return "";
+		return value;
 	}
 
 	/**
 	 * Trim leading slashes from a string.
+	 * Overloads preserve null/undefined instead of coercing to empty string.
 	 * @param value The value to trim.
-	 * @returns The trimmed value.
+	 * @returns The trimmed value (same null/undefined passed in).
 	 */
-	public static trimLeadingSlashes(value: string | undefined): string {
-		if (Is.stringValue(value)) {
+	public static trimLeadingSlashes(value: string): string;
+	/**
+	 * Overload for null/undefined passthrough.
+	 * @param value The null or undefined value.
+	 */
+	public static trimLeadingSlashes<T extends null | undefined>(value: T): T;
+	/**
+	 * Implementation signature for trimLeadingSlashes.
+	 * @param value The value to trim.
+	 * @returns The trimmed string or the original null/undefined.
+	 */
+	public static trimLeadingSlashes(value: string | null | undefined): string | null | undefined {
+		if (Is.string(value)) {
 			return value.replace(/^\/+/, "");
 		}
-		return "";
+		return value;
 	}
 
 	/**

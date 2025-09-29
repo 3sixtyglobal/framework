@@ -16,45 +16,107 @@ Class to help with string.
 
 ### trimTrailingSlashes()
 
-> `static` **trimTrailingSlashes**(`value`): `string`
+Implementation signature for trimTrailingSlashes.
 
-Trim trailing slashes from a string.
-
-#### Parameters
-
-##### value
+#### Param
 
 The value to trim.
 
-`undefined` | `string`
+#### Call Signature
 
-#### Returns
+> `static` **trimTrailingSlashes**(`value`): `string`
+
+Trim trailing slashes from a string.
+Overloads preserve null/undefined instead of coercing to empty string.
+
+##### Parameters
+
+###### value
 
 `string`
 
-The trimmed value.
+The value to trim.
+
+##### Returns
+
+`string`
+
+The trimmed value (same null/undefined passed in).
+
+#### Call Signature
+
+> `static` **trimTrailingSlashes**\<`T`\>(`value`): `T`
+
+##### Type Parameters
+
+###### T
+
+`T` *extends* `undefined` \| `null`
+
+##### Parameters
+
+###### value
+
+`T`
+
+##### Returns
+
+`T`
 
 ***
 
 ### trimLeadingSlashes()
 
-> `static` **trimLeadingSlashes**(`value`): `string`
+Implementation signature for trimLeadingSlashes.
 
-Trim leading slashes from a string.
-
-#### Parameters
-
-##### value
+#### Param
 
 The value to trim.
 
-`undefined` | `string`
+#### Call Signature
 
-#### Returns
+> `static` **trimLeadingSlashes**(`value`): `string`
+
+Trim leading slashes from a string.
+Overloads preserve null/undefined instead of coercing to empty string.
+
+##### Parameters
+
+###### value
 
 `string`
 
-The trimmed value.
+The value to trim.
+
+##### Returns
+
+`string`
+
+The trimmed value (same null/undefined passed in).
+
+#### Call Signature
+
+> `static` **trimLeadingSlashes**\<`T`\>(`value`): `T`
+
+Overload for null/undefined passthrough.
+
+##### Type Parameters
+
+###### T
+
+`T` *extends* `undefined` \| `null`
+
+##### Parameters
+
+###### value
+
+`T`
+
+The null or undefined value.
+
+##### Returns
+
+`T`
 
 ***
 

@@ -1,6 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import * as ts from "typescript";
+import { camelCase, kebabCase } from "./stringHelper";
 
 /**
  * The transformer factory entry point.
@@ -54,7 +55,13 @@ function visitNode(node: ts.Node): ts.Node {
 		} catch {}
 
 		// Is this a call to nameof<Type>(), if so just replace with a string e.g. "Type"
-		if (expressionText === "nameof" && node.typeArguments && node.typeArguments.length === 1) {
+		if (
+			(expressionText === "nameof" ||
+				expressionText === "nameofKebabCase" ||
+				expressionText === "nameofCamelCase") &&
+			node.typeArguments &&
+			node.typeArguments.length === 1
+		) {
 			let typeName;
 			if (ts.isTypeReferenceNode(node.typeArguments[0])) {
 				typeName = node.typeArguments[0].typeName.getText();
@@ -63,9 +70,20 @@ function visitNode(node: ts.Node): ts.Node {
 			}
 
 			if (typeName) {
+				if (expressionText.endsWith("KebabCase")) {
+					return ts.factory.createStringLiteral(kebabCase(typeName));
+				} else if (expressionText.endsWith("CamelCase")) {
+					return ts.factory.createStringLiteral(camelCase(typeName));
+				}
 				return ts.factory.createStringLiteral(typeName);
 			}
-		} else if (expressionText === "nameof" && node.arguments && node.arguments.length >= 1) {
+		} else if (
+			(expressionText === "nameof" ||
+				expressionText === "nameofKebabCase" ||
+				expressionText === "nameofCamelCase") &&
+			node.arguments &&
+			node.arguments.length >= 1
+		) {
 			// This is an nameof(propName, ?optionalParent) call.
 			// Return the whole property path as the string, but remove any chaining operators
 			// The second parameter is an optional string, if set change the top level owner
@@ -81,6 +99,11 @@ function visitNode(node: ts.Node): ts.Node {
 						ts.factory.createStringLiteral(parts.join("."))
 					);
 				}
+			}
+			if (expressionText.endsWith("KebabCase")) {
+				return ts.factory.createStringLiteral(kebabCase(propertyPath));
+			} else if (expressionText.endsWith("CamelCase")) {
+				return ts.factory.createStringLiteral(camelCase(propertyPath));
 			}
 			return ts.factory.createStringLiteral(propertyPath);
 		}
