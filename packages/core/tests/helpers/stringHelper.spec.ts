@@ -4,7 +4,7 @@ import { StringHelper } from "../../src/helpers/stringHelper";
 
 describe("StringHelper", () => {
 	test("can trim trailing slashes for undefined string", () => {
-		expect(StringHelper.trimTrailingSlashes(undefined)).toEqual(undefined);
+		expect(StringHelper.trimTrailingSlashes(undefined as never)).toEqual(undefined);
 	});
 
 	test("can trim trailing slashes for empty string", () => {
