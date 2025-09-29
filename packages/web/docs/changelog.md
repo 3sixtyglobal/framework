@@ -1,5 +1,24 @@
 # @twin.org/web - Changelog
 
+## [0.0.2-next.17](https://github.com/twinfoundation/framework/compare/web-v0.0.2-next.16...web-v0.0.2-next.17) (2025-09-29)
+
+
+### Features
+
+* additional nameof operators ([a5aab60](https://github.com/twinfoundation/framework/commit/a5aab60bf66a86f1b7ff8af7c4f044cb03706d50))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.2-next.16 to 0.0.2-next.17
+    * @twin.org/crypto bumped from 0.0.2-next.16 to 0.0.2-next.17
+    * @twin.org/nameof bumped from 0.0.2-next.16 to 0.0.2-next.17
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.16 to 0.0.2-next.17
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.16 to 0.0.2-next.17
+
 ## [0.0.2-next.16](https://github.com/twinfoundation/framework/compare/web-v0.0.2-next.15...web-v0.0.2-next.16) (2025-09-28)
 
 

@@ -1,5 +1,19 @@
 # @twin.org/nameof - Changelog
 
+## [0.0.2-next.17](https://github.com/twinfoundation/framework/compare/nameof-v0.0.2-next.16...nameof-v0.0.2-next.17) (2025-09-29)
+
+
+### Features
+
+* additional nameof operators ([a5aab60](https://github.com/twinfoundation/framework/commit/a5aab60bf66a86f1b7ff8af7c4f044cb03706d50))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.16 to 0.0.2-next.17
+
 ## [0.0.2-next.16](https://github.com/twinfoundation/framework/compare/nameof-v0.0.2-next.15...nameof-v0.0.2-next.16) (2025-09-28)
 
 
