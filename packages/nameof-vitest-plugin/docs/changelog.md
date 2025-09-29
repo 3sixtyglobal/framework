@@ -1,5 +1,19 @@
 # @twin.org/nameof-vitest-plugin - Changelog
 
+## [0.0.2-next.18](https://github.com/twinfoundation/framework/compare/nameof-vitest-plugin-v0.0.2-next.17...nameof-vitest-plugin-v0.0.2-next.18) (2025-09-29)
+
+
+### Miscellaneous Chores
+
+* **nameof-vitest-plugin:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.17 to 0.0.2-next.18
+
 ## [0.0.2-next.17](https://github.com/twinfoundation/framework/compare/nameof-vitest-plugin-v0.0.2-next.16...nameof-vitest-plugin-v0.0.2-next.17) (2025-09-29)
 
 

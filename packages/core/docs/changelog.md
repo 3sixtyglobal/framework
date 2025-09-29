@@ -1,5 +1,22 @@
 # @twin.org/core - Changelog
 
+## [0.0.2-next.18](https://github.com/twinfoundation/framework/compare/core-v0.0.2-next.17...core-v0.0.2-next.18) (2025-09-29)
+
+
+### Features
+
+* simplify StringHelper signature ([0390403](https://github.com/twinfoundation/framework/commit/039040344952f91ee3c671249bc0e1c8f3b38e17))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.2-next.17 to 0.0.2-next.18
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.17 to 0.0.2-next.18
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.17 to 0.0.2-next.18
+
 ## [0.0.2-next.17](https://github.com/twinfoundation/framework/compare/core-v0.0.2-next.16...core-v0.0.2-next.17) (2025-09-29)
 
 
