@@ -1,5 +1,22 @@
 # @twin.org/core - Changelog
 
+## [0.0.2-next.19](https://github.com/twinfoundation/framework/compare/core-v0.0.2-next.18...core-v0.0.2-next.19) (2025-09-30)
+
+
+### Features
+
+* add objectHelper.split ([386830a](https://github.com/twinfoundation/framework/commit/386830a77f8e842a5b119be0983708e042c3b14b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.2-next.18 to 0.0.2-next.19
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.18 to 0.0.2-next.19
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.18 to 0.0.2-next.19
+
 ## [0.0.2-next.18](https://github.com/twinfoundation/framework/compare/core-v0.0.2-next.17...core-v0.0.2-next.18) (2025-09-29)
 
 
