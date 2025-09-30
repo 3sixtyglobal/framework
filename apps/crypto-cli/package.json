@@ -75,5 +75,16 @@
 	],
 	"bin": {
 		"twin-crypto": "bin/index.js"
-	}
+	},
+	"keywords": [
+		"twin",
+		"trade",
+		"iota",
+		"framework",
+		"blockchain",
+		"cryptography",
+		"encryption",
+		"hashing",
+		"security"
+	]
 }

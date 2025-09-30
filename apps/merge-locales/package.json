@@ -82,5 +82,12 @@
 	"bugs": {
 		"url": "git+https://github.com/twinfoundation/tools/issues"
 	},
-	"homepage": "https://github.com/twinfoundation/tools#readme"
+	"homepage": "https://github.com/twinfoundation/tools#readme",
+	"keywords": [
+		"twin",
+		"trade",
+		"iota",
+		"framework",
+		"blockchain"
+	]
 }
