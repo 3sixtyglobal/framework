@@ -408,4 +408,85 @@ describe("ObjectHelper", () => {
 			subArray: [{ bar: 123 }, { bar: 123 }]
 		});
 	});
+
+	test("can split an object with no keys specified", () => {
+		expect(
+			ObjectHelper.split(
+				{
+					prop1: "foo",
+					prop2: 123,
+					prop3: true
+				},
+				undefined
+			)
+		).toEqual({
+			picked: {
+				prop1: "foo",
+				prop2: 123,
+				prop3: true
+			},
+			omitted: undefined
+		});
+	});
+
+	test("can split an object with all keys in first object", () => {
+		expect(
+			ObjectHelper.split(
+				{
+					prop1: "foo",
+					prop2: 123,
+					prop3: true
+				},
+				["prop1", "prop2", "prop3"]
+			)
+		).toEqual({
+			picked: {
+				prop1: "foo",
+				prop2: 123,
+				prop3: true
+			},
+			omitted: undefined
+		});
+	});
+
+	test("can split an object with all keys in second object", () => {
+		expect(
+			ObjectHelper.split(
+				{
+					prop1: "foo",
+					prop2: 123,
+					prop3: true
+				},
+				[]
+			)
+		).toEqual({
+			picked: undefined,
+			omitted: {
+				prop1: "foo",
+				prop2: 123,
+				prop3: true
+			}
+		});
+	});
+
+	test("can split an object with some keys in each object", () => {
+		expect(
+			ObjectHelper.split(
+				{
+					prop1: "foo",
+					prop2: 123,
+					prop3: true
+				},
+				["prop1", "prop2"]
+			)
+		).toEqual({
+			picked: {
+				prop1: "foo",
+				prop2: 123
+			},
+			omitted: {
+				prop3: true
+			}
+		});
+	});
 });

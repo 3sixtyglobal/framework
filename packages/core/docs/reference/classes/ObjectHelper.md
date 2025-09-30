@@ -390,6 +390,48 @@ The partial object.
 
 ***
 
+### split()
+
+> `static` **split**\<`T`\>(`obj`, `keys?`): `object`
+
+Split an object into two with the specified keys.
+
+#### Type Parameters
+
+##### T
+
+`T`
+
+#### Parameters
+
+##### obj
+
+The object to split.
+
+`undefined` | `T`
+
+##### keys?
+
+keyof `T`[]
+
+The property keys to split.
+
+#### Returns
+
+`object`
+
+The two partial objects.
+
+##### picked
+
+> **picked**: `undefined` \| `Partial`\<`T`\>
+
+##### omitted
+
+> **omitted**: `undefined` \| `Partial`\<`T`\>
+
+***
+
 ### toExtended()
 
 > `static` **toExtended**(`obj`): `any`

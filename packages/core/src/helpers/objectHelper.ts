@@ -281,6 +281,38 @@ export class ObjectHelper {
 	}
 
 	/**
+	 * Split an object into two with the specified keys.
+	 * @param obj The object to split.
+	 * @param keys The property keys to split.
+	 * @returns The two partial objects.
+	 */
+	public static split<T>(
+		obj: T | undefined,
+		keys?: (keyof T)[]
+	): { picked: Partial<T> | undefined; omitted: Partial<T> | undefined } {
+		if (Is.object(obj) && Is.array(keys)) {
+			const picked: Partial<T> = {};
+			const omitted: Partial<T> = {};
+
+			const allKeys = Object.keys(obj) as (keyof T)[];
+			for (const key of allKeys) {
+				if (keys.includes(key)) {
+					picked[key] = obj[key];
+				} else {
+					omitted[key] = obj[key];
+				}
+			}
+
+			return {
+				picked: Object.keys(picked).length > 0 ? picked : undefined,
+				omitted: Object.keys(omitted).length > 0 ? omitted : undefined
+			};
+		}
+
+		return { picked: obj as Partial<T>, omitted: undefined };
+	}
+
+	/**
 	 * Converter the non JSON primitives to extended types.
 	 * @param obj The object to convert.
 	 * @returns The object with extended properties.
