@@ -22,6 +22,8 @@ export class CLIParam {
 	): string | undefined {
 		if (allowEnvVar && optionValue?.startsWith("!")) {
 			const envValueName = optionValue.slice(1);
+			// This is reading from an env var so it really has no choice
+			// eslint-disable-next-line no-restricted-syntax
 			const envValue = process.env[envValueName];
 			if (Is.empty(envValue)) {
 				throw new GeneralError("commands", "commands.common.missingEnv", {
