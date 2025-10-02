@@ -1,5 +1,12 @@
 # @twin.org/nameof-transformer - Changelog
 
+## [0.0.2-next.20](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.19...nameof-transformer-v0.0.2-next.20) (2025-10-02)
+
+
+### Features
+
+* improve Is.function and ModuleHelper.getModuleMethod signatures ([ecf968b](https://github.com/twinfoundation/framework/commit/ecf968b02934b3676be4bf7cd2d1e7f8e7af6ce2))
+
 ## [0.0.2-next.19](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.2-next.18...nameof-transformer-v0.0.2-next.19) (2025-09-30)
 
 

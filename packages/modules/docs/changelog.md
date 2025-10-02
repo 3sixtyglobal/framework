@@ -1,5 +1,23 @@
 # @twin.org/modules - Changelog
 
+## [0.0.2-next.20](https://github.com/twinfoundation/framework/compare/modules-v0.0.2-next.19...modules-v0.0.2-next.20) (2025-10-02)
+
+
+### Features
+
+* improve Is.function and ModuleHelper.getModuleMethod signatures ([ecf968b](https://github.com/twinfoundation/framework/commit/ecf968b02934b3676be4bf7cd2d1e7f8e7af6ce2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.2-next.19 to 0.0.2-next.20
+    * @twin.org/nameof bumped from 0.0.2-next.19 to 0.0.2-next.20
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.2-next.19 to 0.0.2-next.20
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.19 to 0.0.2-next.20
+
 ## [0.0.2-next.19](https://github.com/twinfoundation/framework/compare/modules-v0.0.2-next.18...modules-v0.0.2-next.19) (2025-09-30)
 
 
