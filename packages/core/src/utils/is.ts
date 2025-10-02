@@ -359,9 +359,10 @@ export class Is {
 	 * @param value The value to test.
 	 * @returns True if the value is a function.
 	 */
-	public static function<FN extends (args?: unknown[]) => unknown = (args?: unknown[]) => unknown>(
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public static function<T extends (...args: any[]) => any = (...args: any[]) => any>(
 		value: unknown
-	): value is FN {
+	): value is T {
 		return typeof value === "function";
 	}
 

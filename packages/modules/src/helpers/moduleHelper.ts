@@ -82,18 +82,19 @@ export class ModuleHelper {
 	 * @returns The result of the method execution.
 	 * @throws GeneralError if executing the module entry failed.
 	 */
-	public static async getModuleMethod<T>(
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public static async getModuleMethod<T extends (...args: any[]) => any = (...args: any[]) => any>(
 		module: string,
 		method: string
-	): Promise<(...args: unknown[]) => T> {
+	): Promise<T> {
 		const methodParts = method.split(".");
 
 		if (methodParts.length === 2) {
 			const moduleEntry = await ModuleHelper.getModuleEntry<{
-				[id: string]: (...args: unknown[]) => T;
+				[id: string]: T;
 			}>(module, methodParts[0]);
 
-			if (Is.function(moduleEntry[methodParts[1]])) {
+			if (Is.function<T>(moduleEntry[methodParts[1]])) {
 				return moduleEntry[methodParts[1]];
 			}
 			throw new GeneralError(ModuleHelper.CLASS_NAME, "notFunction", {
@@ -102,12 +103,9 @@ export class ModuleHelper {
 			});
 		}
 
-		const moduleEntry = await ModuleHelper.getModuleEntry<(...args: unknown[]) => T>(
-			module,
-			methodParts[0]
-		);
+		const moduleEntry = await ModuleHelper.getModuleEntry<T>(module, methodParts[0]);
 
-		if (Is.function(moduleEntry)) {
+		if (Is.function<T>(moduleEntry)) {
 			return moduleEntry;
 		}
 
@@ -130,7 +128,10 @@ export class ModuleHelper {
 		method: string,
 		args?: unknown[]
 	): Promise<T> {
-		const moduleMethod = await ModuleHelper.getModuleMethod<T>(module, method);
+		const moduleMethod = await ModuleHelper.getModuleMethod<(...args: unknown[]) => T>(
+			module,
+			method
+		);
 
 		return moduleMethod(...(args ?? []));
 	}

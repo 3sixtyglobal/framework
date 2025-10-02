@@ -404,8 +404,8 @@ describe("Is", () => {
 	test("function can fail when the signature does not match", () => {
 		// eslint-disable-next-line unicorn/consistent-function-scoping
 		const fn: (a: number, b: string) => number = (a: number, b: string) => a;
-		expect(Is.function(fn)).toEqual(true);
-		if (Is.function(fn)) {
+		expect(Is.function<(a: number, b: string) => number>(fn)).toEqual(true);
+		if (Is.function<(a: number, b: string) => number>(fn)) {
 			// @ts-expect-error The following call is expected to fail because the signature does not match.
 			fn(1, 2);
 		}

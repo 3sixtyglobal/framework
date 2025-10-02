@@ -730,15 +730,15 @@ True if the value is a TypedArray.
 
 ### function()
 
-> `static` **function**\<`FN`\>(`value`): `value is FN`
+> `static` **function**\<`T`\>(`value`): `value is T`
 
 Is the property a function.
 
 #### Type Parameters
 
-##### FN
+##### T
 
-`FN` *extends* (`args?`) => `unknown` = (`args?`) => `unknown`
+`T` *extends* (...`args`) => `any` = (...`args`) => `any`
 
 #### Parameters
 
@@ -750,7 +750,7 @@ The value to test.
 
 #### Returns
 
-`value is FN`
+`value is T`
 
 True if the value is a function.
 
