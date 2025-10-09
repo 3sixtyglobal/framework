@@ -3,8 +3,8 @@
 /* eslint-disable no-mixed-operators */
 import { GeneralError } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { QRDataBase } from "./qrDataBase";
 import type { BitBuffer } from "../helpers/bitBuffer";
-import { QRDataBase } from "../models/qrDataBase";
 import { QRDataMode } from "../models/qrDataMode";
 
 /**
@@ -14,16 +14,15 @@ import { QRDataMode } from "../models/qrDataMode";
 export class QRNumber extends QRDataBase {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<QRNumber>();
+	public static readonly CLASS_NAME: string = nameof<QRNumber>();
 
 	/**
 	 * Create a new instance of QRNumber.
 	 * @param data The data for the qr number.
 	 */
 	constructor(data: string) {
-		super(QRNumber._CLASS_NAME, QRDataMode.Number, data);
+		super(QRDataMode.Number, data);
 	}
 
 	/**
@@ -78,6 +77,6 @@ export class QRNumber extends QRDataBase {
 		if (c >= "0" && c <= "9") {
 			return c.charCodeAt(0) - "0".charCodeAt(0);
 		}
-		throw new GeneralError(QRNumber._CLASS_NAME, "illegalCharacter", { value: c });
+		throw new GeneralError(QRNumber.CLASS_NAME, "illegalCharacter", { value: c });
 	}
 }

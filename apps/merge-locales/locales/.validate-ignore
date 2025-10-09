@@ -1,0 +1,5 @@
+# These are included as they are normally merged from other locales, but in the case of the merge-locales tool this is not possible
+^cli.progress.done$
+^cli.progress.error$
+^cli.options.lang.param$
+^cli.options.lang.description$

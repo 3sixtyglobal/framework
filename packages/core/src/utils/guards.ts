@@ -82,7 +82,7 @@ export class Guards {
 		value: unknown
 	): asserts value is string {
 		if (!Is.stringBase64(value)) {
-			throw new GuardError(source, "guard.base64", property, value);
+			throw new GuardError(source, "guard.stringBase64", property, value);
 		}
 	}
 
@@ -99,7 +99,7 @@ export class Guards {
 		value: unknown
 	): asserts value is string {
 		if (!Is.stringBase64Url(value)) {
-			throw new GuardError(source, "guard.base64Url", property, value);
+			throw new GuardError(source, "guard.stringBase64Url", property, value);
 		}
 	}
 
@@ -116,7 +116,7 @@ export class Guards {
 		value: unknown
 	): asserts value is string {
 		if (!Is.stringBase58(value)) {
-			throw new GuardError(source, "guard.base58", property, value);
+			throw new GuardError(source, "guard.stringBase58", property, value);
 		}
 	}
 

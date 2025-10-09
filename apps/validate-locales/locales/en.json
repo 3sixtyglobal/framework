@@ -1,0 +1,44 @@
+{
+	"error": {
+		"validateLocales": {
+			"validationFailed": "Validation failed.",
+			"unusedLocaleEntry": "Locale entry \"{key}\" is not used in the source files.",
+			"usesSingleQuotes": "Locale entry \"{key}\" uses single quotes around a parameter. Use double quotes otherwise the value will not be substituted correctly.",
+			"missingLocaleEntry": "Locale entry \"{key}\" is missing from the locale file it is referenced in source file \"{source}:{line}:{column}\".",
+			"unableToProcessContent": "Unable to process content \"{content}\".",
+			"missingPropertyInLocale": "Missing property \"{property}\" when referencing key \"{key}\" in source file \"{source}:{line}:{column}\"."
+		}
+	},
+	"commands": {
+		"validate-locales": {
+			"options": {
+				"source": {
+					"param": "--source '<'glob'>'",
+					"description": "Glob for the source files to check."
+				},
+				"locales": {
+					"param": "--locales '<'glob'>'",
+					"description": "Glob for the locale files to check."
+				},
+				"ignoreFile": {
+					"param": "--ignoreFile <'path'>",
+					"description": "File containing keys to ignore."
+				}
+			},
+			"progress": {
+				"validatingLocale": "Validating locale: {localeFile}"
+			},
+			"labels": {
+				"source": "Source",
+				"locales": "Locales",
+				"ignoreFile": "Ignore file",
+				"noMissingLocaleEntries": "✅  No missing locale entries found",
+				"noUnusedLocaleEntries": "✅  No unused locale entries found"
+			},
+			"warnings": {
+				"noSourceFiles": "No source files found to validate.",
+				"noLocaleFiles": "No locale files found to validate."
+			}
+		}
+	}
+}

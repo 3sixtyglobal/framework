@@ -12,6 +12,14 @@ Class to help with objects.
 
 `ObjectHelper`
 
+## Properties
+
+### CLASS\_NAME
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
 ### toBytes()

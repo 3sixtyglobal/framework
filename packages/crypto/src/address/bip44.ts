@@ -16,9 +16,8 @@ import { KeyType } from "../models/keyType";
 export class Bip44 {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Bip44>();
+	public static readonly CLASS_NAME: string = nameof<Bip44>();
 
 	/**
 	 * Generate a bip44 key pair from the seed and parts.
@@ -59,7 +58,7 @@ export class Bip44 {
 			};
 		}
 
-		throw new GeneralError(Bip44._CLASS_NAME, "unsupportedKeyType", { keyType });
+		throw new GeneralError(Bip44.CLASS_NAME, "unsupportedKeyType", { keyType });
 	}
 
 	/**

@@ -14,9 +14,8 @@ import { Is } from "../utils/is";
 export class Urn {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Urn>();
+	public static readonly CLASS_NAME: string = nameof<Urn>();
 
 	/**
 	 * The specific part of the namespace.
@@ -30,16 +29,16 @@ export class Urn {
 	 * @param namespaceSpecific The specific part of the namespace.
 	 */
 	constructor(namespaceIdentifier: string, namespaceSpecific: string | string[]) {
-		Guards.stringValue(Urn._CLASS_NAME, nameof(namespaceIdentifier), namespaceIdentifier);
+		Guards.stringValue(Urn.CLASS_NAME, nameof(namespaceIdentifier), namespaceIdentifier);
 
 		// Strip leading and trailing colons
 		this._urnParts = [this.stripColons(namespaceIdentifier)];
 
 		if (Is.array(namespaceSpecific)) {
-			Guards.arrayValue(Urn._CLASS_NAME, nameof(namespaceSpecific), namespaceSpecific);
+			Guards.arrayValue(Urn.CLASS_NAME, nameof(namespaceSpecific), namespaceSpecific);
 			this._urnParts.push(...namespaceSpecific);
 		} else {
-			Guards.stringValue(Urn._CLASS_NAME, nameof(namespaceSpecific), namespaceSpecific);
+			Guards.stringValue(Urn.CLASS_NAME, nameof(namespaceSpecific), namespaceSpecific);
 			this._urnParts.push(...this.stripColons(namespaceSpecific).split(":"));
 		}
 	}
@@ -158,17 +157,20 @@ export class Urn {
 	 * @param property Throw an exception if the urn property is invalid.
 	 * @param value The urn to parse.
 	 * @param failures The list of failures to add to.
+	 * @param fieldNameResource The optional human readable name for the field as an i18 resource.
 	 * @returns The formatted urn.
 	 */
 	public static validate(
 		property: string,
 		value: unknown,
-		failures: IValidationFailure[]
+		failures: IValidationFailure[],
+		fieldNameResource?: string
 	): value is string {
 		if (!Is.stringValue(value)) {
 			failures.push({
 				property,
-				reason: "validation.notEmpty"
+				reason: "validation.beNotEmpty",
+				properties: { fieldName: fieldNameResource ?? "validation.defaultFieldName", value }
 			});
 
 			return false;
@@ -179,7 +181,8 @@ export class Urn {
 		if (Is.undefined(result)) {
 			failures.push({
 				property,
-				reason: "validation.beUrn"
+				reason: "validation.beUrn",
+				properties: { fieldName: fieldNameResource ?? "validation.defaultFieldName", value }
 			});
 
 			return false;

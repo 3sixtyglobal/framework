@@ -16,9 +16,8 @@ import { KeyType } from "../models/keyType";
 export class Slip0010 {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Slip0010>();
+	public static readonly CLASS_NAME: string = nameof<Slip0010>();
 
 	/**
 	 * Get the master key from the seed.
@@ -46,7 +45,7 @@ export class Slip0010 {
 			};
 		} catch (error) {
 			throw new GeneralError(
-				Slip0010._CLASS_NAME,
+				Slip0010.CLASS_NAME,
 				"invalidSeed",
 				{ seed: Converter.bytesToUtf8(seed) },
 				error

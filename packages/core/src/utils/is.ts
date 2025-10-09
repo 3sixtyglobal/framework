@@ -332,6 +332,8 @@ export class Is {
 	 * @returns True if the value is a Uint8Array.
 	 */
 	public static uint8Array(value: unknown): value is Uint8Array {
+		// This is the only way we can reliably check for Uint8Array
+		// eslint-disable-next-line no-restricted-syntax
 		return value instanceof Uint8Array;
 	}
 
@@ -351,6 +353,8 @@ export class Is {
 		| Int32Array
 		| Float32Array
 		| Float64Array {
+		// This is the only way we can reliably check for TypedArray
+		// eslint-disable-next-line no-restricted-syntax
 		return value instanceof Object.getPrototypeOf(Uint8Array);
 	}
 
@@ -386,6 +390,8 @@ export class Is {
 	 * @returns True if the value is a promise.
 	 */
 	public static promise<T = unknown>(value: unknown): value is Promise<T> {
+		// This is the only way we can reliably check for Promise
+		// eslint-disable-next-line no-restricted-syntax
 		return value instanceof Promise;
 	}
 
@@ -395,6 +401,8 @@ export class Is {
 	 * @returns True if the value is a regexp.
 	 */
 	public static regexp(value: unknown): value is RegExp {
+		// This is the only way we can reliably check for RegExp
+		// eslint-disable-next-line no-restricted-syntax
 		return value instanceof RegExp;
 	}
 

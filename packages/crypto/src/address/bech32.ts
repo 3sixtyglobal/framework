@@ -10,9 +10,8 @@ import { nameof } from "@twin.org/nameof";
 export class Bech32 {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Bech32>();
+	public static readonly CLASS_NAME: string = nameof<Bech32>();
 
 	/**
 	 * Encode the buffer.
@@ -21,8 +20,8 @@ export class Bech32 {
 	 * @returns The encoded data.
 	 */
 	public static encode(humanReadablePart: string, data: Uint8Array): string {
-		Guards.stringValue(Bech32._CLASS_NAME, "humanReadablePart", humanReadablePart);
-		Guards.uint8Array(Bech32._CLASS_NAME, "data", data);
+		Guards.stringValue(Bech32.CLASS_NAME, "humanReadablePart", humanReadablePart);
+		Guards.uint8Array(Bech32.CLASS_NAME, "data", data);
 		return bech32.encode(humanReadablePart, bech32.toWords(data));
 	}
 
@@ -36,7 +35,7 @@ export class Bech32 {
 		humanReadablePart: string;
 		data: Uint8Array;
 	} {
-		Guards.stringValue(Bech32._CLASS_NAME, "bech", bech);
+		Guards.stringValue(Bech32.CLASS_NAME, "bech", bech);
 
 		try {
 			const result = bech32.decodeToBytes(bech);
@@ -46,19 +45,19 @@ export class Bech32 {
 			};
 		} catch (err) {
 			if (BaseError.isErrorMessage(err, /checksum/)) {
-				throw new GeneralError(Bech32._CLASS_NAME, "invalidChecksum", { bech: bech32 });
+				throw new GeneralError(Bech32.CLASS_NAME, "invalidChecksum", { bech32 });
 			} else if (BaseError.isErrorMessage(err, /between prefix and data only/i)) {
-				throw new GeneralError(Bech32._CLASS_NAME, "separatorMisused", { bech: bech32 });
+				throw new GeneralError(Bech32.CLASS_NAME, "separatorMisused", { bech32 });
 			} else if (BaseError.isErrorMessage(err, /lowercase or uppercase/i)) {
-				throw new GeneralError(Bech32._CLASS_NAME, "lowerUpper", { bech: bech32 });
+				throw new GeneralError(Bech32.CLASS_NAME, "lowerUpper", { bech32 });
 			} else if (
 				BaseError.isErrorMessage(err, /must be at least/i) ||
 				BaseError.isErrorMessage(err, /wrong string length/i)
 			) {
-				throw new GeneralError(Bech32._CLASS_NAME, "dataTooShort", { bech: bech32 });
+				throw new GeneralError(Bech32.CLASS_NAME, "dataTooShort", { bech32 });
 			}
 
-			throw new GeneralError(Bech32._CLASS_NAME, "decodeFailed", { bech: bech32 }, err);
+			throw new GeneralError(Bech32.CLASS_NAME, "decodeFailed", { bech32 }, err);
 		}
 	}
 

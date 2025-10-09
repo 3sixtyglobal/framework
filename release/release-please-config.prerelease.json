@@ -38,6 +38,31 @@
 				"src/index.ts"
 			]
 		},
+		"packages/cli-core": {
+			"package-name": "cli-core",
+			"changelog-path": "docs/changelog.md",
+			"extra-files": [
+				"src/index.ts"
+			]
+		},
+		"apps/merge-locales": {
+			"package-name": "merge-locales",
+			"changelog-path": "docs/changelog.md",
+			"extra-files": [
+				"src/cli.ts",
+				"tests/cli.spec.ts",
+				"src/index.ts"
+			]
+		},
+		"apps/validate-locales": {
+			"package-name": "validate-locales",
+			"changelog-path": "docs/changelog.md",
+			"extra-files": [
+				"src/cli.ts",
+				"tests/cli.spec.ts",
+				"src/index.ts"
+			]
+		},
 		"packages/entity": {
 			"package-name": "entity",
 			"changelog-path": "docs/changelog.md",
@@ -80,22 +105,6 @@
 				"src/index.ts"
 			]
 		},
-		"packages/cli-core": {
-			"package-name": "cli-core",
-			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
-		},
-		"apps/merge-locales": {
-			"package-name": "merge-locales",
-			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/cli.ts",
-				"tests/cli.spec.ts",
-				"src/index.ts"
-			]
-		},
 		"apps/crypto-cli": {
 			"package-name": "crypto-cli",
 			"changelog-path": "docs/changelog.md",
@@ -116,14 +125,15 @@
 				"nameof-vitest-plugin",
 				"nameof",
 				"core",
+				"cli-core",
+				"merge-locales",
+				"validate-locales",
 				"entity",
 				"crypto",
 				"image",
 				"qr",
 				"web",
 				"modules",
-				"cli-core",
-				"merge-locales",
 				"crypto-cli"
 			]
 		}

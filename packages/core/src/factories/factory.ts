@@ -12,9 +12,8 @@ import { SharedStore } from "../utils/sharedStore";
 export class Factory<T> {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Factory<unknown>>();
+	public static readonly CLASS_NAME: string = nameof<Factory<unknown>>();
 
 	/**
 	 * Type name for the instances.
@@ -142,8 +141,8 @@ export class Factory<T> {
 	 * @param generator The function to create an instance.
 	 */
 	public register<U extends T>(name: string, generator: () => U): void {
-		Guards.stringValue(Factory._CLASS_NAME, nameof(name), name);
-		Guards.function(Factory._CLASS_NAME, nameof(generator), generator);
+		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
+		Guards.function(Factory.CLASS_NAME, nameof(generator), generator);
 		this._generators[name] = {
 			generator,
 			order: this._orderCounter++
@@ -162,9 +161,9 @@ export class Factory<T> {
 	 * @throws GeneralError if no generator exists.
 	 */
 	public unregister(name: string): void {
-		Guards.stringValue(Factory._CLASS_NAME, nameof(name), name);
+		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
 		if (!this._generators[name]) {
-			throw new GeneralError(Factory._CLASS_NAME, "noUnregister", {
+			throw new GeneralError(Factory.CLASS_NAME, "noUnregister", {
 				typeName: this._typeName,
 				name
 			});
@@ -182,10 +181,10 @@ export class Factory<T> {
 	 * @throws GeneralError if no item exists to get.
 	 */
 	public get<U extends T>(name: string): U {
-		Guards.stringValue(Factory._CLASS_NAME, nameof(name), name);
+		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
 		const instance = this.getIfExists(name);
 		if (!instance) {
-			throw new GeneralError(Factory._CLASS_NAME, "noGet", {
+			throw new GeneralError(Factory.CLASS_NAME, "noGet", {
 				typeName: this._typeName,
 				name
 			});
@@ -202,7 +201,7 @@ export class Factory<T> {
 		if (Is.empty(name)) {
 			return;
 		}
-		Guards.stringValue(Factory._CLASS_NAME, nameof(name), name);
+		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
 
 		const matchName = this._matcher(Object.keys(this._generators), name);
 
@@ -279,7 +278,7 @@ export class Factory<T> {
 	 * @returns True if the factory has a matching name.
 	 */
 	public hasName(name: string): boolean {
-		Guards.stringValue(Factory._CLASS_NAME, nameof(name), name);
+		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
 		return Is.stringValue(this._matcher(Object.keys(this._generators), name));
 	}
 

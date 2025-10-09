@@ -11,9 +11,8 @@ import { Guards } from "../utils/guards";
 export class Base64Url {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Base64>();
+	public static readonly CLASS_NAME: string = nameof<Base64>();
 
 	/**
 	 * Convert the base 64 string to a byte array.
@@ -21,7 +20,7 @@ export class Base64Url {
 	 * @returns The byte array.
 	 */
 	public static decode(base64Url: string): Uint8Array {
-		Guards.string(Base64Url._CLASS_NAME, nameof(base64Url), base64Url);
+		Guards.string(Base64Url.CLASS_NAME, nameof(base64Url), base64Url);
 
 		let base64 = base64Url;
 
@@ -43,7 +42,7 @@ export class Base64Url {
 	 * @returns The data as base64 url string.
 	 */
 	public static encode(bytes: Uint8Array): string {
-		Guards.uint8Array(Base64Url._CLASS_NAME, nameof(bytes), bytes);
+		Guards.uint8Array(Base64Url.CLASS_NAME, nameof(bytes), bytes);
 
 		const base64 = Base64.encode(bytes);
 		// Base 64 url can have padding removed, so remove it.

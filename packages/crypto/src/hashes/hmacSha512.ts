@@ -34,9 +34,8 @@ export class HmacSha512 {
 
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<HmacSha512>();
+	public static readonly CLASS_NAME: string = nameof<HmacSha512>();
 
 	/**
 	 * The instance of the hash.
@@ -57,7 +56,7 @@ export class HmacSha512 {
 			bits !== HmacSha512.SIZE_384 &&
 			bits !== HmacSha512.SIZE_512
 		) {
-			throw new GeneralError(HmacSha512._CLASS_NAME, "bitSize", { bitSize: bits });
+			throw new GeneralError(HmacSha512.CLASS_NAME, "bitSize", { bitSize: bits });
 		}
 
 		if (bits === HmacSha512.SIZE_224) {
@@ -78,8 +77,8 @@ export class HmacSha512 {
 	 * @returns The sum 512 of the block.
 	 */
 	public static sum512(key: Uint8Array, block: Uint8Array): Uint8Array {
-		Guards.uint8Array(HmacSha512._CLASS_NAME, nameof(key), key);
-		Guards.uint8Array(HmacSha512._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(HmacSha512.CLASS_NAME, nameof(key), key);
+		Guards.uint8Array(HmacSha512.CLASS_NAME, nameof(block), block);
 		const instance = new HmacSha512(key, HmacSha512.SIZE_512);
 		instance.update(block);
 		return instance.digest();
@@ -92,8 +91,8 @@ export class HmacSha512 {
 	 * @returns The sum 384 of the block.
 	 */
 	public static sum384(key: Uint8Array, block: Uint8Array): Uint8Array {
-		Guards.uint8Array(HmacSha512._CLASS_NAME, nameof(key), key);
-		Guards.uint8Array(HmacSha512._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(HmacSha512.CLASS_NAME, nameof(key), key);
+		Guards.uint8Array(HmacSha512.CLASS_NAME, nameof(block), block);
 		const instance = new HmacSha512(key, HmacSha512.SIZE_384);
 		instance.update(block);
 		return instance.digest();
@@ -106,8 +105,8 @@ export class HmacSha512 {
 	 * @returns The sum 256 of the block.
 	 */
 	public static sum256(key: Uint8Array, block: Uint8Array): Uint8Array {
-		Guards.uint8Array(HmacSha512._CLASS_NAME, nameof(key), key);
-		Guards.uint8Array(HmacSha512._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(HmacSha512.CLASS_NAME, nameof(key), key);
+		Guards.uint8Array(HmacSha512.CLASS_NAME, nameof(block), block);
 		const instance = new HmacSha512(key, HmacSha512.SIZE_256);
 		instance.update(block);
 		return instance.digest();
@@ -120,8 +119,8 @@ export class HmacSha512 {
 	 * @returns The sum 224 of the block.
 	 */
 	public static sum224(key: Uint8Array, block: Uint8Array): Uint8Array {
-		Guards.uint8Array(HmacSha512._CLASS_NAME, nameof(key), key);
-		Guards.uint8Array(HmacSha512._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(HmacSha512.CLASS_NAME, nameof(key), key);
+		Guards.uint8Array(HmacSha512.CLASS_NAME, nameof(block), block);
 		const instance = new HmacSha512(key, HmacSha512.SIZE_224);
 		instance.update(block);
 		return instance.digest();
@@ -133,7 +132,7 @@ export class HmacSha512 {
 	 * @returns The instance for chaining.
 	 */
 	public update(block: Uint8Array): HmacSha512 {
-		Guards.uint8Array(HmacSha512._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(HmacSha512.CLASS_NAME, nameof(block), block);
 		this._instance.update(block);
 		return this;
 	}

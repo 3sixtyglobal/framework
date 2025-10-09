@@ -20,9 +20,8 @@ export class Ed25519 {
 
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Ed25519>();
+	public static readonly CLASS_NAME: string = nameof<Ed25519>();
 
 	/**
 	 * Public returns the PublicKey corresponding to private.
@@ -31,10 +30,10 @@ export class Ed25519 {
 	 * @throws Error if the private key is not the correct length.
 	 */
 	public static publicKeyFromPrivateKey(privateKey: Uint8Array): Uint8Array {
-		Guards.uint8Array(Ed25519._CLASS_NAME, nameof(privateKey), privateKey);
+		Guards.uint8Array(Ed25519.CLASS_NAME, nameof(privateKey), privateKey);
 
 		if (privateKey.length !== Ed25519.PRIVATE_KEY_SIZE) {
-			throw new GeneralError(Ed25519._CLASS_NAME, "privateKeyLength", {
+			throw new GeneralError(Ed25519.CLASS_NAME, "privateKeyLength", {
 				requiredSize: Ed25519.PRIVATE_KEY_SIZE,
 				actualSize: privateKey.length
 			});
@@ -51,11 +50,11 @@ export class Ed25519 {
 	 * @throws Error if the private key is not the correct length.
 	 */
 	public static sign(privateKey: Uint8Array, block: Uint8Array): Uint8Array {
-		Guards.uint8Array(Ed25519._CLASS_NAME, nameof(privateKey), privateKey);
-		Guards.uint8Array(Ed25519._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(Ed25519.CLASS_NAME, nameof(privateKey), privateKey);
+		Guards.uint8Array(Ed25519.CLASS_NAME, nameof(block), block);
 
 		if (privateKey.length !== Ed25519.PRIVATE_KEY_SIZE) {
-			throw new GeneralError(Ed25519._CLASS_NAME, "privateKeyLength", {
+			throw new GeneralError(Ed25519.CLASS_NAME, "privateKeyLength", {
 				requiredSize: Ed25519.PRIVATE_KEY_SIZE,
 				actualSize: privateKey ? privateKey.length : 0
 			});
@@ -73,12 +72,12 @@ export class Ed25519 {
 	 * @throws Error if the public key is not the correct length.
 	 */
 	public static verify(publicKey: Uint8Array, block: Uint8Array, signature: Uint8Array): boolean {
-		Guards.uint8Array(Ed25519._CLASS_NAME, nameof(publicKey), publicKey);
-		Guards.uint8Array(Ed25519._CLASS_NAME, nameof(block), block);
-		Guards.uint8Array(Ed25519._CLASS_NAME, nameof(signature), signature);
+		Guards.uint8Array(Ed25519.CLASS_NAME, nameof(publicKey), publicKey);
+		Guards.uint8Array(Ed25519.CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(Ed25519.CLASS_NAME, nameof(signature), signature);
 
 		if (publicKey.length !== Ed25519.PUBLIC_KEY_SIZE) {
-			throw new GeneralError(Ed25519._CLASS_NAME, "publicKeyLength", {
+			throw new GeneralError(Ed25519.CLASS_NAME, "publicKeyLength", {
 				requiredSize: Ed25519.PUBLIC_KEY_SIZE,
 				actualSize: publicKey ? publicKey.length : 0
 			});
@@ -97,10 +96,10 @@ export class Ed25519 {
 	 * @returns The private key in PKCS8 format.
 	 */
 	public static async privateKeyToPkcs8(privateKey: Uint8Array): Promise<CryptoKey> {
-		Guards.uint8Array(Ed25519._CLASS_NAME, nameof(privateKey), privateKey);
+		Guards.uint8Array(Ed25519.CLASS_NAME, nameof(privateKey), privateKey);
 
 		if (privateKey.length !== Ed25519.PRIVATE_KEY_SIZE) {
-			throw new GeneralError(Ed25519._CLASS_NAME, "privateKeyLength", {
+			throw new GeneralError(Ed25519.CLASS_NAME, "privateKeyLength", {
 				requiredSize: Ed25519.PRIVATE_KEY_SIZE,
 				actualSize: privateKey.length
 			});
@@ -121,7 +120,7 @@ export class Ed25519 {
 	 * @returns The raw private key.
 	 */
 	public static async pkcs8ToPrivateKey(cryptoKey: CryptoKey): Promise<Uint8Array> {
-		Guards.defined(Ed25519._CLASS_NAME, nameof(cryptoKey), cryptoKey);
+		Guards.defined(Ed25519.CLASS_NAME, nameof(cryptoKey), cryptoKey);
 
 		// crypto.subtle.exportKey does not support Ed25519 keys in raw format.
 		// so we export as PKCS8 and remove the ASN.1 sequence prefix.

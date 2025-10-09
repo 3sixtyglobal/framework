@@ -11,5 +11,6 @@
 	"packages/qr": "0.0.2-next.20",
 	"packages/web": "0.0.2-next.20",
 	"apps/merge-locales": "0.0.2-next.20",
+	"apps/validate-locales": "0.0.2-next.20",
 	"apps/crypto-cli": "0.0.2-next.20"
 }

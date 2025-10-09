@@ -28,6 +28,14 @@ The specific part of the namespace.
 
 `Urn`
 
+## Properties
+
+### CLASS\_NAME
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
 ### generateRandom()
@@ -184,7 +192,7 @@ GuardError If the value does not match the assertion.
 
 ### validate()
 
-> `static` **validate**(`property`, `value`, `failures`): `value is string`
+> `static` **validate**(`property`, `value`, `failures`, `fieldNameResource?`): `value is string`
 
 Validate a string as a Urn.
 
@@ -207,6 +215,12 @@ The urn to parse.
 [`IValidationFailure`](../interfaces/IValidationFailure.md)[]
 
 The list of failures to add to.
+
+##### fieldNameResource?
+
+`string`
+
+The optional human readable name for the field as an i18 resource.
 
 #### Returns
 

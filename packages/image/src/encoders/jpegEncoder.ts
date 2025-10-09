@@ -12,9 +12,8 @@ import { nameof } from "@twin.org/nameof";
 export class JpegEncoder {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<JpegEncoder>();
+	public static readonly CLASS_NAME: string = nameof<JpegEncoder>();
 
 	/**
 	 * @internal
@@ -363,7 +362,7 @@ export class JpegEncoder {
 	 */
 	private setQuality(quality: number): void {
 		if (quality <= 0 || quality > 100) {
-			throw new GeneralError(JpegEncoder._CLASS_NAME, "invalidQuality", { value: quality });
+			throw new GeneralError(JpegEncoder.CLASS_NAME, "invalidQuality", { value: quality });
 		}
 
 		let sf = 0;

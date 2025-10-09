@@ -109,7 +109,7 @@ function visitNode(node: ts.Node): ts.Node {
 		}
 	} else if (
 		ts.isImportDeclaration(node) &&
-		node.moduleSpecifier.getText().includes("@twin.org/nameof")
+		node.moduleSpecifier.getText().includes('"@twin.org/nameof"')
 	) {
 		// Is this an import of @twin.org/nameof
 		// e.g. import { nameof } from "@twin.org/nameof";

@@ -12,9 +12,8 @@ import { ErrorCorrectLevel } from "../models/errorCorrectLevel";
 export class RSBlock {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<RSBlock>();
+	public static readonly CLASS_NAME: string = nameof<RSBlock>();
 
 	/**
 	 * @internal
@@ -329,7 +328,7 @@ export class RSBlock {
 			default:
 		}
 
-		throw new GeneralError(RSBlock._CLASS_NAME, "correctionLevelRange", { errorCorrectLevel });
+		throw new GeneralError(RSBlock.CLASS_NAME, "correctionLevelRange", { errorCorrectLevel });
 	}
 
 	/**

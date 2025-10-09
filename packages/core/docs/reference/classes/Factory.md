@@ -8,6 +8,14 @@ Factory for creating implementation of generic types.
 
 `T`
 
+## Properties
+
+### CLASS\_NAME
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
 ### createFactory()

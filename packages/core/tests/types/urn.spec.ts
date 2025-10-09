@@ -234,7 +234,7 @@ describe("Urn", () => {
 		const res = Urn.validate("foo", undefined as never, failures);
 		expect(res).toEqual(false);
 		expect(failures.length).toEqual(1);
-		expect(failures[0].reason).toEqual("validation.notEmpty");
+		expect(failures[0].reason).toEqual("validation.beNotEmpty");
 	});
 
 	test("can fail to validate if the item is not a urn", () => {

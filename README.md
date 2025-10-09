@@ -19,6 +19,7 @@ This mono-repository contains some of the fundamental packages that the rest of 
 ## Apps
 
 - [merge-locales](packages/merge-locales/README.md) - Tool to merge locales from the dependencies of a package.
+- [validate-locales](packages/validate-locales/README.md) - Tool to validate locales for a package against their usage in the source.
 - [crypto-cli](apps/crypto-cli/README.md) - A command line interface for interacting with the crypto packages.
 
 ## Contributing

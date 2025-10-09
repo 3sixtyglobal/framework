@@ -15,11 +15,6 @@ export interface IValidationFailure {
 	reason: string;
 
 	/**
-	 * The optional human readable name for the field as an i18 resource.
-	 */
-	fieldName?: string;
-
-	/**
 	 * Additional properties for the validation failure.
 	 */
 	properties?: { [id: string]: unknown };

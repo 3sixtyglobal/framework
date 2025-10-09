@@ -12,6 +12,14 @@ Class to helper with fetch operations.
 
 `FetchHelper`
 
+## Properties
+
+### CLASS\_NAME
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
 ### fetch()

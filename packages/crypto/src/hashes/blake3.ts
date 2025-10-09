@@ -21,9 +21,8 @@ export class Blake3 {
 
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Blake3>();
+	public static readonly CLASS_NAME: string = nameof<Blake3>();
 
 	/**
 	 * The instance of the hash.
@@ -51,7 +50,7 @@ export class Blake3 {
 	 * @returns The sum 256 of the block.
 	 */
 	public static sum256(block: Uint8Array, key?: Uint8Array): Uint8Array {
-		Guards.uint8Array(Blake3._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(Blake3.CLASS_NAME, nameof(block), block);
 		return new Blake3(Blake3.SIZE_256, key).update(block).digest();
 	}
 
@@ -62,7 +61,7 @@ export class Blake3 {
 	 * @returns The sum 512 of the block.
 	 */
 	public static sum512(block: Uint8Array, key?: Uint8Array): Uint8Array {
-		Guards.uint8Array(Blake3._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(Blake3.CLASS_NAME, nameof(block), block);
 		return new Blake3(Blake3.SIZE_512, key).update(block).digest();
 	}
 
@@ -72,7 +71,7 @@ export class Blake3 {
 	 * @returns The instance for chaining.
 	 */
 	public update(block: Uint8Array): Blake3 {
-		Guards.uint8Array(Blake3._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(Blake3.CLASS_NAME, nameof(block), block);
 		this._instance.update(block);
 		return this;
 	}

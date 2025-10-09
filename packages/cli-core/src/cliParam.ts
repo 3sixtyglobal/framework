@@ -1,7 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Coerce, Converter, GeneralError, Guards, Is, Url } from "@twin.org/core";
-import { Bech32 } from "@twin.org/crypto";
 
 /**
  * Parameter utilities for the CLI.
@@ -301,30 +300,6 @@ export class CLIParam {
 			return Converter.base64ToBytes(optionValue);
 		}
 		throw new GeneralError("commands", "commands.common.optionInvalidHexBase64", {
-			option: optionName,
-			value: optionValue
-		});
-	}
-
-	/**
-	 * Check the option to see if it exists and is bech32.
-	 * @param optionName The name of the option.
-	 * @param optionValue The option value.
-	 * @param allowEnvVar Allow the option to be read from an env var.
-	 * @returns The final option value.
-	 * @throws An error if the option is invalid.
-	 */
-	public static bech32(
-		optionName: string,
-		optionValue: string | undefined,
-		allowEnvVar: boolean = true
-	): string {
-		optionValue = CLIParam.env(optionName, optionValue, allowEnvVar);
-
-		if (Bech32.isBech32(optionValue)) {
-			return optionValue;
-		}
-		throw new GeneralError("commands", "commands.common.optionInvalidBech32", {
 			option: optionName,
 			value: optionValue
 		});

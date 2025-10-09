@@ -170,9 +170,8 @@ export class I18n {
 	 * @param translation The translation to merge.
 	 * @param propertyPath The current root path.
 	 * @param mergedKeys The merged keys dictionary to populate.
-	 * @internal
 	 */
-	private static flattenTranslationKeys(
+	public static flattenTranslationKeys(
 		translation: ILocaleDictionary,
 		propertyPath: string,
 		mergedKeys: { [key: string]: string }
@@ -186,6 +185,36 @@ export class I18n {
 				I18n.flattenTranslationKeys(val, mergedPath, mergedKeys);
 			}
 		}
+	}
+
+	/**
+	 * Get a list of the property names from the message.
+	 * @param message The message to extract the property names from.
+	 * @returns The list of property names.
+	 */
+	public static getPropertyNames(message: string): string[] {
+		const properties = new Set<string>();
+
+		// Handle basic placeholders: {property}
+		const basicRegex = /{([$A-Z_a-z][\w$]*)}/g;
+		let match;
+		while ((match = basicRegex.exec(message)) !== null) {
+			properties.add(match[1]);
+		}
+
+		// Handle ICU format with types: {property, number}, {property, date}, etc.
+		const icuRegex = /{([$A-Z_a-z][\w$]*)\s*,\s*\w+/g;
+		while ((match = icuRegex.exec(message)) !== null) {
+			properties.add(match[1]);
+		}
+
+		// Handle plural/select: {count, plural, one {1 item} other {# items}}
+		const pluralSelectRegex = /{([$A-Z_a-z][\w$]*)\s*,\s*(plural|select|selectordinal)/g;
+		while ((match = pluralSelectRegex.exec(message)) !== null) {
+			properties.add(match[1]);
+		}
+
+		return Array.from(properties);
 	}
 
 	/**

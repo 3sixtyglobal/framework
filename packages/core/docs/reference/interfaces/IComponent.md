@@ -2,13 +2,13 @@
 
 Interface describing a component which can be bootstrapped, started and stopped.
 
-## Properties
+## Indexable
 
-### CLASS\_NAME
+\[`key`: `string`\]: `any`
 
-> `readonly` **CLASS\_NAME**: `string`
-
-The name of the component.
+All methods are optional, so we introduce an index signature to allow
+any additional properties or methods, which removes the TypeScript error where
+the class has no properties in common with the type.
 
 ## Methods
 

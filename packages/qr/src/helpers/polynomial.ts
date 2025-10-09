@@ -36,7 +36,7 @@ export class Polynomial {
 	}
 
 	/**
-	 * The the value of the polynomial at given index.
+	 * The value of the polynomial at given index.
 	 * @param index The index.
 	 * @returns The value of the polynomial.
 	 */

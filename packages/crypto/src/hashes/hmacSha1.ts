@@ -12,9 +12,8 @@ import { nameof } from "@twin.org/nameof";
 export class HmacSha1 {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<HmacSha1>();
+	public static readonly CLASS_NAME: string = nameof<HmacSha1>();
 
 	/**
 	 * The instance of the hash.
@@ -38,8 +37,8 @@ export class HmacSha1 {
 	 * @returns The sum of the block.
 	 */
 	public static sum(key: Uint8Array, block: Uint8Array): Uint8Array {
-		Guards.uint8Array(HmacSha1._CLASS_NAME, nameof(key), key);
-		Guards.uint8Array(HmacSha1._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(HmacSha1.CLASS_NAME, nameof(key), key);
+		Guards.uint8Array(HmacSha1.CLASS_NAME, nameof(block), block);
 		return new HmacSha1(key).update(block).digest();
 	}
 
@@ -49,7 +48,7 @@ export class HmacSha1 {
 	 * @returns The instance for chaining.
 	 */
 	public update(block: Uint8Array): HmacSha1 {
-		Guards.uint8Array(HmacSha1._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(HmacSha1.CLASS_NAME, nameof(block), block);
 		this._instance.update(block);
 		return this;
 	}

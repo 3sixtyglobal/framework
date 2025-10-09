@@ -12,9 +12,8 @@ import { nameof } from "@twin.org/nameof";
 export class MathHelper {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<MathHelper>();
+	public static readonly CLASS_NAME: string = nameof<MathHelper>();
 
 	/**
 	 * @internal
@@ -58,7 +57,7 @@ export class MathHelper {
 	 */
 	public static gLog(value: number): number {
 		if (value < 1) {
-			throw new GeneralError(MathHelper._CLASS_NAME, "lessThanOne", { value });
+			throw new GeneralError(MathHelper.CLASS_NAME, "lessThanOne", { value });
 		}
 		return MathHelper._LOG_TABLE[value];
 	}

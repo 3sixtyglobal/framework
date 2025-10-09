@@ -16,9 +16,8 @@ import { QRDataMode } from "../models/qrDataMode";
 export class QRHelper {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<QRHelper>();
+	public static readonly CLASS_NAME: string = nameof<QRHelper>();
 
 	/**
 	 * @internal
@@ -191,7 +190,7 @@ export class QRHelper {
 				e = 3;
 				break;
 			default:
-				throw new GeneralError(QRHelper._CLASS_NAME, "correctionLevelRange", { errorCorrectLevel });
+				throw new GeneralError(QRHelper.CLASS_NAME, "correctionLevelRange", { errorCorrectLevel });
 		}
 
 		switch (mode) {
@@ -205,7 +204,7 @@ export class QRHelper {
 				m = 2;
 				break;
 			default:
-				throw new GeneralError(QRHelper._CLASS_NAME, "modeRange", { mode });
+				throw new GeneralError(QRHelper.CLASS_NAME, "modeRange", { mode });
 		}
 
 		return QRHelper._MAX_LENGTH[t][e][m];
@@ -252,7 +251,7 @@ export class QRHelper {
 				return (i: number, j: number) => (((i * j) % 3) + ((i + j) % 2)) % 2 === 0;
 
 			default:
-				throw new GeneralError(QRHelper._CLASS_NAME, "maskPatternRange", { maskPattern });
+				throw new GeneralError(QRHelper.CLASS_NAME, "maskPatternRange", { maskPattern });
 		}
 	}
 

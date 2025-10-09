@@ -69,6 +69,16 @@ export class CLIDisplay {
 	}
 
 	/**
+	 * Display an error message in simple form.
+	 * @param error The error to display.
+	 */
+	public static errorMessage(error: string): void {
+		CLIDisplay.writeError("❗ ");
+		CLIDisplay.writeError(chalk.red(error));
+		CLIDisplay.writeError("\n");
+	}
+
+	/**
 	 * Display a section.
 	 * @param label The label for the section.
 	 */

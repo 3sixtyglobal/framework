@@ -1,4 +1,4 @@
-# @twin.org/ts-to-openapi - Changelog
+# @twin.org/merge-locales - Changelog
 
 ## [0.0.2-next.20](https://github.com/twinfoundation/framework/compare/merge-locales-v0.0.2-next.19...merge-locales-v0.0.2-next.20) (2025-10-02)
 

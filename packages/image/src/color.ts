@@ -11,9 +11,8 @@ import { nameof } from "@twin.org/nameof";
 export class Color {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Color>();
+	public static readonly CLASS_NAME: string = nameof<Color>();
 
 	/**
 	 * @internal
@@ -43,31 +42,31 @@ export class Color {
 	 * @param blue The blue element of the color.
 	 */
 	constructor(alpha: number, red: number, green: number, blue: number) {
-		Guards.number(Color._CLASS_NAME, nameof(alpha), alpha);
-		Guards.number(Color._CLASS_NAME, nameof(red), red);
-		Guards.number(Color._CLASS_NAME, nameof(green), green);
-		Guards.number(Color._CLASS_NAME, nameof(blue), blue);
+		Guards.number(Color.CLASS_NAME, nameof(alpha), alpha);
+		Guards.number(Color.CLASS_NAME, nameof(red), red);
+		Guards.number(Color.CLASS_NAME, nameof(green), green);
+		Guards.number(Color.CLASS_NAME, nameof(blue), blue);
 
 		if (alpha < 0 || alpha > 255) {
-			throw new GeneralError(Color._CLASS_NAME, "range", {
+			throw new GeneralError(Color.CLASS_NAME, "range", {
 				prop: nameof(alpha),
 				value: alpha
 			});
 		}
 		if (red < 0 || red > 255) {
-			throw new GeneralError(Color._CLASS_NAME, "range", {
+			throw new GeneralError(Color.CLASS_NAME, "range", {
 				prop: nameof(red),
 				value: red
 			});
 		}
 		if (green < 0 || green > 255) {
-			throw new GeneralError(Color._CLASS_NAME, "range", {
+			throw new GeneralError(Color.CLASS_NAME, "range", {
 				prop: nameof(green),
 				value: green
 			});
 		}
 		if (blue < 0 || blue > 255) {
-			throw new GeneralError(Color._CLASS_NAME, "range", {
+			throw new GeneralError(Color.CLASS_NAME, "range", {
 				prop: nameof(blue),
 				value: blue
 			});
@@ -86,7 +85,7 @@ export class Color {
 	 * @throws Error if the format is incorrect.
 	 */
 	public static fromHex(hex: string): Color {
-		Guards.stringValue(Color._CLASS_NAME, nameof(hex), hex);
+		Guards.stringValue(Color.CLASS_NAME, nameof(hex), hex);
 
 		let alpha;
 		let red;
@@ -117,7 +116,7 @@ export class Color {
 			green = hex.slice(5, 7);
 			blue = hex.slice(7, 9);
 		} else {
-			throw new GeneralError(Color._CLASS_NAME, "hex");
+			throw new GeneralError(Color.CLASS_NAME, "hex", { hex });
 		}
 		return new Color(
 			Number.parseInt(alpha, 16),

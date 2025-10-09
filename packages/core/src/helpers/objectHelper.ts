@@ -12,9 +12,8 @@ import { Is } from "../utils/is";
 export class ObjectHelper {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<ObjectHelper>();
+	public static readonly CLASS_NAME: string = nameof<ObjectHelper>();
 
 	/**
 	 * Convert an object to bytes.
@@ -45,7 +44,7 @@ export class ObjectHelper {
 			const utf8 = Converter.bytesToUtf8(bytes);
 			return JSON.parse(utf8) as T;
 		} catch (err) {
-			throw new GeneralError(ObjectHelper._CLASS_NAME, "failedBytesToJSON", undefined, err);
+			throw new GeneralError(ObjectHelper.CLASS_NAME, "failedBytesToJSON", undefined, err);
 		}
 	}
 
@@ -167,7 +166,7 @@ export class ObjectHelper {
 					} else if (Is.object(pathValue)) {
 						pathValue[arrayIndex] = value;
 					} else {
-						throw new GeneralError(ObjectHelper._CLASS_NAME, "cannotSetArrayIndex", {
+						throw new GeneralError(ObjectHelper.CLASS_NAME, "cannotSetArrayIndex", {
 							property,
 							index: arrayIndex
 						});
@@ -175,7 +174,7 @@ export class ObjectHelper {
 				} else if (Is.object(pathValue)) {
 					pathValue[pathPart] = value;
 				} else {
-					throw new GeneralError(ObjectHelper._CLASS_NAME, "cannotSetProperty", { property });
+					throw new GeneralError(ObjectHelper.CLASS_NAME, "cannotSetProperty", { property });
 				}
 			} else {
 				parentObj = pathValue;

@@ -21,9 +21,8 @@ export class Sha256 {
 
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Sha256>();
+	public static readonly CLASS_NAME: string = nameof<Sha256>();
 
 	/**
 	 * The instance of the hash.
@@ -38,7 +37,7 @@ export class Sha256 {
 	 */
 	constructor(bits: number = Sha256.SIZE_256) {
 		if (bits !== Sha256.SIZE_224 && bits !== Sha256.SIZE_256) {
-			throw new GeneralError(Sha256._CLASS_NAME, "bitSize", { bitSize: bits });
+			throw new GeneralError(Sha256.CLASS_NAME, "bitSize", { bitSize: bits });
 		}
 
 		this._instance = bits === Sha256.SIZE_256 ? sha256.create() : sha224.create();
@@ -72,7 +71,7 @@ export class Sha256 {
 	 * @returns The instance for chaining.
 	 */
 	public update(block: Uint8Array): Sha256 {
-		Guards.uint8Array(Sha256._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(Sha256.CLASS_NAME, nameof(block), block);
 		this._instance.update(block);
 		return this;
 	}

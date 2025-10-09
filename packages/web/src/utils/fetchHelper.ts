@@ -16,9 +16,8 @@ import { MimeTypes } from "../models/mimeTypes";
 export class FetchHelper {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<FetchHelper>();
+	public static readonly CLASS_NAME: string = nameof<FetchHelper>();
 
 	/**
 	 * Prefix to use for cache entries.
@@ -42,41 +41,41 @@ export class FetchHelper {
 		body?: string | Uint8Array,
 		options?: Omit<IFetchOptions, "cacheTtlSeconds">
 	): Promise<Response> {
-		Guards.string(FetchHelper._CLASS_NAME, nameof(source), source);
-		Guards.string(FetchHelper._CLASS_NAME, nameof(url), url);
+		Guards.string(FetchHelper.CLASS_NAME, nameof(source), source);
+		Guards.string(FetchHelper.CLASS_NAME, nameof(url), url);
 		Guards.arrayOneOf<HttpMethod>(
-			FetchHelper._CLASS_NAME,
+			FetchHelper.CLASS_NAME,
 			nameof(method),
 			method,
 			Object.values(HttpMethod)
 		);
 		if (!Is.undefined(body) && !Is.uint8Array(body)) {
-			Guards.string(FetchHelper._CLASS_NAME, nameof(body), body);
+			Guards.string(FetchHelper.CLASS_NAME, nameof(body), body);
 		}
 		if (!Is.undefined(options)) {
-			Guards.object<IFetchOptions>(FetchHelper._CLASS_NAME, nameof(options), options);
+			Guards.object<IFetchOptions>(FetchHelper.CLASS_NAME, nameof(options), options);
 			if (!Is.undefined(options.headers)) {
 				Guards.object<IHttpHeaders>(
-					FetchHelper._CLASS_NAME,
+					FetchHelper.CLASS_NAME,
 					nameof(options.headers),
 					options.headers
 				);
 			}
 			if (!Is.undefined(options.timeoutMs)) {
-				Guards.integer(FetchHelper._CLASS_NAME, nameof(options.timeoutMs), options.timeoutMs);
+				Guards.integer(FetchHelper.CLASS_NAME, nameof(options.timeoutMs), options.timeoutMs);
 			}
 			if (!Is.undefined(options.includeCredentials)) {
 				Guards.boolean(
-					FetchHelper._CLASS_NAME,
+					FetchHelper.CLASS_NAME,
 					nameof(options.includeCredentials),
 					options.includeCredentials
 				);
 			}
 			if (!Is.undefined(options.retryCount)) {
-				Guards.integer(FetchHelper._CLASS_NAME, nameof(options.retryCount), options.retryCount);
+				Guards.integer(FetchHelper.CLASS_NAME, nameof(options.retryCount), options.retryCount);
 			}
 			if (!Is.undefined(options.retryDelayMs)) {
-				Guards.integer(FetchHelper._CLASS_NAME, nameof(options.retryDelayMs), options.retryDelayMs);
+				Guards.integer(FetchHelper.CLASS_NAME, nameof(options.retryDelayMs), options.retryDelayMs);
 			}
 		}
 
@@ -161,13 +160,24 @@ export class FetchHelper {
 					if (isErr && "statusText" in err) {
 						props.statusText = err.statusText;
 					}
-					lastError = new FetchError(
-						source,
-						`${nameofCamelCase<FetchHelper>()}.${isAbort ? "timeout" : "general"}`,
-						httpStatus,
-						props,
-						err
-					);
+
+					if (isAbort) {
+						lastError = new FetchError(
+							source,
+							`${nameofCamelCase<FetchHelper>()}.timeout`,
+							httpStatus,
+							props,
+							err
+						);
+					} else {
+						lastError = new FetchError(
+							source,
+							`${nameofCamelCase<FetchHelper>()}.general`,
+							httpStatus,
+							props,
+							err
+						);
+					}
 				}
 			} finally {
 				if (timerId) {
@@ -332,7 +342,7 @@ export class FetchHelper {
 			options.headers[HeaderTypes.ContentType] = MimeTypes.OctetStream;
 		}
 
-		const response = await this.fetch(source, url, method, requestData, options);
+		const response = await FetchHelper.fetch(source, url, method, requestData, options);
 
 		if (response.ok) {
 			if (method === HttpMethod.GET) {

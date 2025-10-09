@@ -40,6 +40,14 @@ The blue element of the color.
 
 `Color`
 
+## Properties
+
+### CLASS\_NAME
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
 ### fromHex()

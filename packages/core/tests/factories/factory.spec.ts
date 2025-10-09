@@ -1,6 +1,5 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { nameof } from "@twin.org/nameof";
 import { Factory } from "../../src/factories/factory";
 import type { IComponent } from "../../src/models/IComponent";
 import { I18n } from "../../src/utils/i18n";
@@ -12,11 +11,6 @@ const TestFactory = Factory.createFactory<IComponent>("component");
  * Test component for validation.
  */
 class TestComponent implements IComponent {
-	/**
-	 * The name of the component.
-	 */
-	public readonly CLASS_NAME: string;
-
 	/**
 	 * The name of the component.
 	 */
@@ -32,7 +26,6 @@ class TestComponent implements IComponent {
 	 * @param name The name of the component.
 	 */
 	constructor(name: string) {
-		this.CLASS_NAME = nameof<TestComponent>();
 		this.name = name;
 		this.foo = 1;
 	}

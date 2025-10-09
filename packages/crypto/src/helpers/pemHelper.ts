@@ -9,9 +9,8 @@ import { nameof } from "@twin.org/nameof";
 export class PemHelper {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<PemHelper>();
+	public static readonly CLASS_NAME: string = nameof<PemHelper>();
 
 	/**
 	 * Strip the PEM content of its headers, footers, and newlines.
@@ -19,7 +18,7 @@ export class PemHelper {
 	 * @returns The stripped PEM content in bas64 format.
 	 */
 	public static stripPemMarkers(pemContent: string): string {
-		Guards.string(PemHelper._CLASS_NAME, nameof(pemContent), pemContent);
+		Guards.string(PemHelper.CLASS_NAME, nameof(pemContent), pemContent);
 		return pemContent
 			.replace(/-----BEGIN.*-----/, "")
 			.replace(/-----END.*-----/, "")
@@ -35,8 +34,8 @@ export class PemHelper {
 	 * @returns The formatted PEM content.
 	 */
 	public static formatPem(marker: string, base64Content: string, lineLength: number = 64): string {
-		Guards.stringValue(PemHelper._CLASS_NAME, nameof(marker), marker);
-		Guards.stringBase64(PemHelper._CLASS_NAME, nameof(base64Content), base64Content);
+		Guards.stringValue(PemHelper.CLASS_NAME, nameof(marker), marker);
+		Guards.stringBase64(PemHelper.CLASS_NAME, nameof(base64Content), base64Content);
 		const lines: string[] = [];
 		for (let i = 0; i < base64Content.length; i += lineLength) {
 			lines.push(base64Content.slice(i, i + lineLength));

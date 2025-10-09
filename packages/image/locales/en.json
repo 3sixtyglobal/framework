@@ -2,6 +2,10 @@
 	"error": {
 		"jpegEncoder": {
 			"invalidQuality": "Quality must be between 1 and 100, it is \"{value}\""
+		},
+		"color": {
+			"range": "Value must be between 0 and 355, it is \"{value}\"",
+			"hex": "Value must be a valid hex color in one of the forms #RGB/#ARGB/#RRGGBB/#AARRGGBB, it is \"{hex}\""
 		}
 	}
 }

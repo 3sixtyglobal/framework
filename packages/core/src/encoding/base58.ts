@@ -11,9 +11,8 @@ import { Guards } from "../utils/guards";
 export class Base58 {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Base58>();
+	public static readonly CLASS_NAME: string = nameof<Base58>();
 
 	/**
 	 * Alphabet table for encoding.
@@ -43,7 +42,7 @@ export class Base58 {
 	 * @throws If the input string contains a character not in the Base58 alphabet.
 	 */
 	public static decode(base58: string): Uint8Array {
-		Guards.string(Base58._CLASS_NAME, nameof(base58), base58);
+		Guards.string(Base58.CLASS_NAME, nameof(base58), base58);
 
 		let zeroes = 0;
 		for (let i = 0; i < base58.length; i++) {
@@ -63,12 +62,12 @@ export class Base58 {
 			const ch = base58.charCodeAt(i);
 
 			if (ch & 0xff80) {
-				throw new GeneralError(Base58._CLASS_NAME, "invalidCharacter", { invalidCharacter: ch });
+				throw new GeneralError(Base58.CLASS_NAME, "invalidCharacter", { invalidCharacter: ch });
 			}
 
 			const val = Base58._ALPHABET_REVERSE[ch];
 			if (val === -1) {
-				throw new GeneralError(Base58._CLASS_NAME, "invalidCharacter", { invalidCharacter: ch });
+				throw new GeneralError(Base58.CLASS_NAME, "invalidCharacter", { invalidCharacter: ch });
 			}
 
 			let carry = val;
@@ -108,7 +107,7 @@ export class Base58 {
 	 * @returns The data as base58 string.
 	 */
 	public static encode(bytes: Uint8Array): string {
-		Guards.uint8Array(Base58._CLASS_NAME, nameof(bytes), bytes);
+		Guards.uint8Array(Base58.CLASS_NAME, nameof(bytes), bytes);
 
 		let zeroes = 0;
 

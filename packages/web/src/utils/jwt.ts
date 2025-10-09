@@ -14,9 +14,8 @@ import type { JwkCryptoKey } from "../models/jwkCryptoKey";
 export class Jwt {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Jwt>();
+	public static readonly CLASS_NAME: string = nameof<Jwt>();
 
 	/**
 	 * Encode a token.
@@ -30,9 +29,9 @@ export class Jwt {
 		payload: U,
 		key: JwkCryptoKey
 	): Promise<string> {
-		Guards.object<IJwtHeader>(Jwt._CLASS_NAME, nameof(header), header);
-		Guards.object<IJwtPayload>(Jwt._CLASS_NAME, nameof(payload), payload);
-		Guards.defined(Jwt._CLASS_NAME, nameof(key), key);
+		Guards.object<IJwtHeader>(Jwt.CLASS_NAME, nameof(header), header);
+		Guards.object<IJwtPayload>(Jwt.CLASS_NAME, nameof(payload), payload);
+		Guards.defined(Jwt.CLASS_NAME, nameof(key), key);
 
 		return Jwt.internalEncode<T, U>(header, payload, key);
 	}
@@ -53,11 +52,11 @@ export class Jwt {
 			key: JwkCryptoKey | undefined
 		) => Promise<string>
 	): Promise<string> {
-		Guards.object<IJwtHeader>(Jwt._CLASS_NAME, nameof(header), header);
-		Guards.stringValue(Jwt._CLASS_NAME, nameof(header.alg), header.alg);
+		Guards.object<IJwtHeader>(Jwt.CLASS_NAME, nameof(header), header);
+		Guards.stringValue(Jwt.CLASS_NAME, nameof(header.alg), header.alg);
 
-		Guards.object<IJwtPayload>(Jwt._CLASS_NAME, nameof(payload), payload);
-		Guards.function(Jwt._CLASS_NAME, nameof(signer), signer);
+		Guards.object<IJwtPayload>(Jwt.CLASS_NAME, nameof(payload), payload);
+		Guards.function(Jwt.CLASS_NAME, nameof(signer), signer);
 
 		return Jwt.internalEncode<T, U>(header, payload, undefined, signer);
 	}
@@ -74,7 +73,7 @@ export class Jwt {
 		payload?: U;
 		signature?: Uint8Array;
 	}> {
-		Guards.stringValue(Jwt._CLASS_NAME, nameof(token), token);
+		Guards.stringValue(Jwt.CLASS_NAME, nameof(token), token);
 
 		let header: T | undefined;
 		let payload: U | undefined;
@@ -119,8 +118,8 @@ export class Jwt {
 		header: T;
 		payload: U;
 	}> {
-		Guards.stringValue(Jwt._CLASS_NAME, nameof(token), token);
-		Guards.defined(Jwt._CLASS_NAME, nameof(key), key);
+		Guards.stringValue(Jwt.CLASS_NAME, nameof(token), token);
+		Guards.defined(Jwt.CLASS_NAME, nameof(key), key);
 
 		return Jwt.verifySignature<T, U>(token, key);
 	}
@@ -144,8 +143,8 @@ export class Jwt {
 		header: T;
 		payload: U;
 	}> {
-		Guards.stringValue(Jwt._CLASS_NAME, nameof(token), token);
-		Guards.function(Jwt._CLASS_NAME, nameof(verifier), verifier);
+		Guards.stringValue(Jwt.CLASS_NAME, nameof(token), token);
+		Guards.function(Jwt.CLASS_NAME, nameof(verifier), verifier);
 
 		return Jwt.verifySignature<T, U>(token, undefined, verifier);
 	}
@@ -171,11 +170,11 @@ export class Jwt {
 		header: T;
 		payload: U;
 	}> {
-		Guards.stringValue(Jwt._CLASS_NAME, nameof(token), token);
+		Guards.stringValue(Jwt.CLASS_NAME, nameof(token), token);
 		const hasKey = Is.notEmpty(key);
 		const hasVerifier = Is.notEmpty(verifier);
 		if (!hasKey && !hasVerifier) {
-			throw new GeneralError(Jwt._CLASS_NAME, "noKeyOrVerifier");
+			throw new GeneralError(Jwt.CLASS_NAME, "noKeyOrVerifier");
 		}
 
 		verifier ??= async (
@@ -201,9 +200,9 @@ export class Jwt {
 		payload: IJwtPayload,
 		key: JwkCryptoKey | undefined
 	): Promise<string> {
-		Guards.object(Jwt._CLASS_NAME, nameof(header), header);
-		Guards.object(Jwt._CLASS_NAME, nameof(payload), payload);
-		Guards.defined(Jwt._CLASS_NAME, nameof(key), key);
+		Guards.object(Jwt.CLASS_NAME, nameof(header), header);
+		Guards.object(Jwt.CLASS_NAME, nameof(payload), payload);
+		Guards.defined(Jwt.CLASS_NAME, nameof(key), key);
 
 		const signer = new SignJWT(payload);
 		signer.setProtectedHeader(header);
@@ -229,8 +228,8 @@ export class Jwt {
 		header: T;
 		payload: U;
 	}> {
-		Guards.stringValue(Jwt._CLASS_NAME, nameof(token), token);
-		Guards.defined(Jwt._CLASS_NAME, nameof(key), key);
+		Guards.stringValue(Jwt.CLASS_NAME, nameof(token), token);
+		Guards.defined(Jwt.CLASS_NAME, nameof(key), key);
 
 		try {
 			const result = await jwtVerify(token, key);
@@ -239,7 +238,7 @@ export class Jwt {
 				payload: result.payload as U
 			};
 		} catch (err) {
-			throw new GeneralError(Jwt._CLASS_NAME, "verifyFailed", undefined, err);
+			throw new GeneralError(Jwt.CLASS_NAME, "verifyFailed", undefined, err);
 		}
 	}
 
@@ -253,8 +252,8 @@ export class Jwt {
 		header: T,
 		payload: U
 	): Uint8Array {
-		Guards.object<T>(Jwt._CLASS_NAME, nameof(header), header);
-		Guards.object<U>(Jwt._CLASS_NAME, nameof(payload), payload);
+		Guards.object<T>(Jwt.CLASS_NAME, nameof(header), header);
+		Guards.object<U>(Jwt.CLASS_NAME, nameof(payload), payload);
 
 		const segments: string[] = [];
 
@@ -279,11 +278,11 @@ export class Jwt {
 		header: T;
 		payload: U;
 	} {
-		Guards.uint8Array(Jwt._CLASS_NAME, nameof(signingBytes), signingBytes);
+		Guards.uint8Array(Jwt.CLASS_NAME, nameof(signingBytes), signingBytes);
 
 		const segments = Converter.bytesToUtf8(signingBytes).split(".");
 		if (segments.length !== 2) {
-			throw new GeneralError(Jwt._CLASS_NAME, "invalidSigningBytes");
+			throw new GeneralError(Jwt.CLASS_NAME, "invalidSigningBytes");
 		}
 
 		const headerBytes = Converter.base64UrlToBytes(segments[0]);
@@ -302,8 +301,8 @@ export class Jwt {
 	 * @returns The token.
 	 */
 	public static tokenFromBytes(signingBytes: Uint8Array, signature: Uint8Array): string {
-		Guards.uint8Array(Jwt._CLASS_NAME, nameof(signingBytes), signingBytes);
-		Guards.uint8Array(Jwt._CLASS_NAME, nameof(signature), signature);
+		Guards.uint8Array(Jwt.CLASS_NAME, nameof(signingBytes), signingBytes);
+		Guards.uint8Array(Jwt.CLASS_NAME, nameof(signature), signature);
 		const signedBytesUtf8 = Converter.bytesToUtf8(signingBytes);
 		const signatureBase64 = Converter.bytesToBase64Url(signature);
 		return `${signedBytesUtf8}.${signatureBase64}`;
@@ -319,12 +318,12 @@ export class Jwt {
 		signingBytes: Uint8Array;
 		signature: Uint8Array;
 	} {
-		Guards.stringValue(Jwt._CLASS_NAME, nameof(token), token);
+		Guards.stringValue(Jwt.CLASS_NAME, nameof(token), token);
 
 		const segments: string[] = token.split(".");
 
 		if (segments.length !== 3) {
-			throw new GeneralError(Jwt._CLASS_NAME, "invalidTokenParts");
+			throw new GeneralError(Jwt.CLASS_NAME, "invalidTokenParts");
 		}
 
 		const signingBytes = Converter.utf8ToBytes(`${segments[0]}.${segments[1]}`);
@@ -358,7 +357,7 @@ export class Jwt {
 		const hasKey = Is.notEmpty(key);
 		const hasSigner = Is.notEmpty(signer);
 		if (!hasKey && !hasSigner) {
-			throw new GeneralError(Jwt._CLASS_NAME, "noKeyOrSigner");
+			throw new GeneralError(Jwt.CLASS_NAME, "noKeyOrSigner");
 		}
 
 		signer ??= async (h, p, k): Promise<string> => Jwt.defaultSigner(h, p, k);

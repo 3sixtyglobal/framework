@@ -27,8 +27,7 @@ export class Validation {
 			failures.push({
 				property,
 				reason: "validation.beEmpty",
-				fieldName: fieldNameResource ?? "validation.defaultFieldName",
-				properties: { value }
+				properties: { fieldName: fieldNameResource ?? "validation.defaultFieldName", value }
 			});
 		}
 		return is;

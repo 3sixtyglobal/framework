@@ -36,7 +36,8 @@ export class PasswordValidator {
 					property,
 					reason: "validation.minLengthRequired",
 					properties: {
-						minLength
+						minLength,
+						actualLength: password.length
 					}
 				});
 			}
@@ -47,7 +48,8 @@ export class PasswordValidator {
 					property,
 					reason: "validation.maxLengthRequired",
 					properties: {
-						maxLength
+						maxLength,
+						actualLength: password.length
 					}
 				});
 			}

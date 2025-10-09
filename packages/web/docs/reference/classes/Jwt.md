@@ -12,6 +12,14 @@ Class to handle JSON Web Tokens.
 
 `Jwt`
 
+## Properties
+
+### CLASS\_NAME
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
 ### encode()

@@ -250,6 +250,8 @@ export class BaseError extends Error implements IError {
 	 * @returns True if the error is an aggregate error.
 	 */
 	public static isAggregateError(err: unknown): err is AggregateError {
+		// This is the only way we can reliably check for AggregateError
+		// eslint-disable-next-line no-restricted-syntax
 		return err instanceof AggregateError;
 	}
 

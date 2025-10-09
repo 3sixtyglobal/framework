@@ -43,7 +43,7 @@ export class Totp {
 		for (let i = -window; i < window; i++) {
 			const intervalWindow = i * interval * 1000;
 			if (timestamp + intervalWindow > 0) {
-				const gen = this.generate(key, interval, timestamp + intervalWindow);
+				const gen = Totp.generate(key, interval, timestamp + intervalWindow);
 				if (gen === token) {
 					// We have found a matching code
 					return i;

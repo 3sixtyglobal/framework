@@ -24,7 +24,7 @@ export class EntityConditions {
 
 		if ("conditions" in condition) {
 			// It's a group of comparisons, so check the individual items and combine with the logical operator
-			const results: boolean[] = condition.conditions.map(c => this.check(entity, c));
+			const results: boolean[] = condition.conditions.map(c => EntityConditions.check(entity, c));
 			if ((condition.logicalOperator ?? LogicalOperator.And) === LogicalOperator.And) {
 				return results.every(Boolean);
 			}

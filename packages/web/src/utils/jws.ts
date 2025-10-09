@@ -11,9 +11,8 @@ import type { JwkCryptoKey } from "../models/jwkCryptoKey";
 export class Jws {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Jws>();
+	public static readonly CLASS_NAME: string = nameof<Jws>();
 
 	/**
 	 * Create a signature.
@@ -27,8 +26,8 @@ export class Jws {
 		hash: Uint8Array,
 		algOverride?: string
 	): Promise<string> {
-		Guards.defined(Jws._CLASS_NAME, nameof(privateKey), privateKey);
-		Guards.uint8Array(Jws._CLASS_NAME, nameof(hash), hash);
+		Guards.defined(Jws.CLASS_NAME, nameof(privateKey), privateKey);
+		Guards.uint8Array(Jws.CLASS_NAME, nameof(hash), hash);
 
 		try {
 			const jws = await new CompactSign(hash)
@@ -41,7 +40,7 @@ export class Jws {
 
 			return jws;
 		} catch (err) {
-			throw new GeneralError(Jws._CLASS_NAME, "createFailed", undefined, err);
+			throw new GeneralError(Jws.CLASS_NAME, "createFailed", undefined, err);
 		}
 	}
 
@@ -57,9 +56,9 @@ export class Jws {
 		publicKey: JwkCryptoKey,
 		hash: Uint8Array
 	): Promise<boolean> {
-		Guards.stringValue(Jws._CLASS_NAME, nameof(jws), jws);
-		Guards.defined(Jws._CLASS_NAME, nameof(publicKey), publicKey);
-		Guards.uint8Array(Jws._CLASS_NAME, nameof(hash), hash);
+		Guards.stringValue(Jws.CLASS_NAME, nameof(jws), jws);
+		Guards.defined(Jws.CLASS_NAME, nameof(publicKey), publicKey);
+		Guards.uint8Array(Jws.CLASS_NAME, nameof(hash), hash);
 
 		try {
 			const jwsParts: string[] = jws.split(".");
@@ -71,7 +70,7 @@ export class Jws {
 
 			return true;
 		} catch (err) {
-			throw new GeneralError(Jws._CLASS_NAME, "verifyFailed", undefined, err);
+			throw new GeneralError(Jws.CLASS_NAME, "verifyFailed", undefined, err);
 		}
 	}
 }

@@ -14,9 +14,8 @@ import type { QRCellData } from "../models/qrCellData";
 export class JpegRenderer {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<JpegRenderer>();
+	public static readonly CLASS_NAME: string = nameof<JpegRenderer>();
 
 	/**
 	 * Render the QR code data as a bitmap.
@@ -28,7 +27,7 @@ export class JpegRenderer {
 		cellData: QRCellData,
 		options?: IBitmapRendererOptions
 	): Promise<Uint8Array> {
-		Guards.array(JpegRenderer._CLASS_NAME, nameof(cellData), cellData);
+		Guards.array(JpegRenderer.CLASS_NAME, nameof(cellData), cellData);
 
 		options = options ?? {};
 		options.cellSize = options.cellSize ?? 5;

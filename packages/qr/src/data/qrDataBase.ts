@@ -1,8 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { GeneralError } from "@twin.org/core";
-import { QRDataMode } from "./qrDataMode";
+import { nameof } from "@twin.org/nameof";
 import type { BitBuffer } from "../helpers/bitBuffer";
+import { QRDataMode } from "../models/qrDataMode";
 
 /**
  * Base class for storing QR Data.
@@ -10,9 +11,9 @@ import type { BitBuffer } from "../helpers/bitBuffer";
  */
 export abstract class QRDataBase {
 	/**
-	 * @internal
+	 * Runtime name for the class.
 	 */
-	private readonly _className: string;
+	public static readonly CLASS_NAME: string = nameof<QRDataBase>();
 
 	/**
 	 * @internal
@@ -26,12 +27,10 @@ export abstract class QRDataBase {
 
 	/**
 	 * Create a new instance of QRDataBase.
-	 * @param className The class name for the derived class.
 	 * @param mode The mode for the data.
 	 * @param data The data.
 	 */
-	constructor(className: string, mode: QRDataMode, data: string) {
-		this._className = className;
+	constructor(mode: QRDataMode, data: string) {
 		this._mode = mode;
 		this._data = data;
 	}
@@ -68,7 +67,7 @@ export abstract class QRDataBase {
 				case QRDataMode.Byte8:
 					return 8;
 				default:
-					throw new GeneralError(this._className, "invalidMode", {
+					throw new GeneralError(QRDataBase.CLASS_NAME, "invalidMode", {
 						typeNumber,
 						mode: this._mode
 					});
@@ -82,7 +81,7 @@ export abstract class QRDataBase {
 				case QRDataMode.Byte8:
 					return 16;
 				default:
-					throw new GeneralError(this._className, "invalidMode", {
+					throw new GeneralError(QRDataBase.CLASS_NAME, "invalidMode", {
 						typeNumber,
 						mode: this._mode
 					});
@@ -96,13 +95,13 @@ export abstract class QRDataBase {
 				case QRDataMode.Byte8:
 					return 16;
 				default:
-					throw new GeneralError(this._className, "invalidMode", {
+					throw new GeneralError(QRDataBase.CLASS_NAME, "invalidMode", {
 						typeNumber,
 						mode: this._mode
 					});
 			}
 		} else {
-			throw new GeneralError(this._className, "invalidTypeNumber", { typeNumber });
+			throw new GeneralError(QRDataBase.CLASS_NAME, "invalidTypeNumber", { typeNumber });
 		}
 	}
 

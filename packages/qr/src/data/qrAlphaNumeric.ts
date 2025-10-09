@@ -3,8 +3,8 @@
 /* eslint-disable no-mixed-operators */
 import { GeneralError } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { QRDataBase } from "./qrDataBase";
 import type { BitBuffer } from "../helpers/bitBuffer";
-import { QRDataBase } from "../models/qrDataBase";
 import { QRDataMode } from "../models/qrDataMode";
 
 /**
@@ -14,16 +14,15 @@ import { QRDataMode } from "../models/qrDataMode";
 export class QRAlphaNumeric extends QRDataBase {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<QRAlphaNumeric>();
+	public static readonly CLASS_NAME: string = nameof<QRAlphaNumeric>();
 
 	/**
 	 * Create a new instance of QRAlphaNumeric.
 	 * @param data The data for the qr alpha numeric.
 	 */
 	constructor(data: string) {
-		super(QRAlphaNumeric._CLASS_NAME, QRDataMode.AlphaNumeric, data);
+		super(QRDataMode.AlphaNumeric, data);
 	}
 
 	/**
@@ -82,7 +81,7 @@ export class QRAlphaNumeric extends QRDataBase {
 			case ":":
 				return 44;
 			default:
-				throw new GeneralError(QRAlphaNumeric._CLASS_NAME, "illegalCharacter", { value: c });
+				throw new GeneralError(QRAlphaNumeric.CLASS_NAME, "illegalCharacter", { value: c });
 		}
 	}
 }

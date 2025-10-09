@@ -13,9 +13,8 @@ import type { JwkCryptoKey } from "../models/jwkCryptoKey";
 export class Jwk {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Jwk>();
+	public static readonly CLASS_NAME: string = nameof<Jwk>();
 
 	/**
 	 * Convert the JWK to a crypto key.
@@ -24,11 +23,11 @@ export class Jwk {
 	 * @returns The crypto key.
 	 */
 	public static async toCryptoKey(jwk: IJwk, alg?: string): Promise<JwkCryptoKey> {
-		Guards.object<IJwk>(Jwk._CLASS_NAME, nameof(jwk), jwk);
+		Guards.object<IJwk>(Jwk.CLASS_NAME, nameof(jwk), jwk);
 		try {
 			return importJWK(jwk, alg);
 		} catch (err) {
-			throw new GeneralError(Jwk._CLASS_NAME, "jwkImportFailed", undefined, err);
+			throw new GeneralError(Jwk.CLASS_NAME, "jwkImportFailed", undefined, err);
 		}
 	}
 
@@ -42,7 +41,7 @@ export class Jwk {
 		privateKey: Uint8Array,
 		overrideUse?: "enc" | "sig" | string
 	): Promise<IJwk> {
-		Guards.uint8Array(Jwk._CLASS_NAME, nameof(privateKey), privateKey);
+		Guards.uint8Array(Jwk.CLASS_NAME, nameof(privateKey), privateKey);
 
 		const publicKey = Ed25519.publicKeyFromPrivateKey(privateKey);
 
@@ -68,7 +67,7 @@ export class Jwk {
 		publicKey: Uint8Array,
 		overrideUse?: "enc" | "sig" | string
 	): Promise<IJwk> {
-		Guards.uint8Array(Jwk._CLASS_NAME, nameof(publicKey), publicKey);
+		Guards.uint8Array(Jwk.CLASS_NAME, nameof(publicKey), publicKey);
 
 		const jwk: IJwk = {
 			kty: "OKP",
@@ -90,7 +89,7 @@ export class Jwk {
 		publicKey?: Uint8Array;
 		privateKey?: Uint8Array;
 	}> {
-		Guards.object<IJwk>(Jwk._CLASS_NAME, nameof(jwk), jwk);
+		Guards.object<IJwk>(Jwk.CLASS_NAME, nameof(jwk), jwk);
 
 		let publicKey: Uint8Array | undefined;
 		let privateKey: Uint8Array | undefined;
@@ -114,7 +113,7 @@ export class Jwk {
 	 * @returns The KID.
 	 */
 	public static async generateKid(jwk: IJwk): Promise<string> {
-		Guards.object<IJwk>(Jwk._CLASS_NAME, nameof(jwk), jwk);
+		Guards.object<IJwk>(Jwk.CLASS_NAME, nameof(jwk), jwk);
 
 		const kidProps = ObjectHelper.pick(jwk, ["crv", "kty", "x"]);
 

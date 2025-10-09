@@ -11,9 +11,8 @@ import { Guards } from "../utils/guards";
 export class BitString {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<BitString>();
+	public static readonly CLASS_NAME: string = nameof<BitString>();
 
 	/**
 	 * The storage for the bits.
@@ -32,7 +31,7 @@ export class BitString {
 	 * @param numberBits The length of the bit string.
 	 */
 	constructor(numberBits: number) {
-		Guards.integer(BitString._CLASS_NAME, nameof(numberBits), numberBits);
+		Guards.integer(BitString.CLASS_NAME, nameof(numberBits), numberBits);
 		this._numberBits = numberBits;
 		this._bits = new Uint8Array(Math.ceil(numberBits / 8));
 	}
@@ -44,8 +43,8 @@ export class BitString {
 	 * @returns The new instance of BitString.
 	 */
 	public static fromBits(bits: Uint8Array, numberBits: number): BitString {
-		Guards.uint8Array(BitString._CLASS_NAME, nameof(bits), bits);
-		Guards.integer(BitString._CLASS_NAME, nameof(numberBits), numberBits);
+		Guards.uint8Array(BitString.CLASS_NAME, nameof(bits), bits);
+		Guards.integer(BitString.CLASS_NAME, nameof(numberBits), numberBits);
 		const bs = new BitString(numberBits);
 		bs._bits.set(bits);
 		return bs;
@@ -58,9 +57,9 @@ export class BitString {
 	 * @throws GeneralError if the index is out of range.
 	 */
 	public getBit(index: number): boolean {
-		Guards.integer(BitString._CLASS_NAME, nameof(index), index);
+		Guards.integer(BitString.CLASS_NAME, nameof(index), index);
 		if (index < 0 || index >= this._numberBits) {
-			throw new GeneralError(BitString._CLASS_NAME, "outOfRange", {
+			throw new GeneralError(BitString.CLASS_NAME, "outOfRange", {
 				index,
 				numberBits: this._numberBits
 			});
@@ -79,7 +78,7 @@ export class BitString {
 	 */
 	public setBit(index: number, value: boolean): void {
 		if (index < 0 || index >= this._numberBits) {
-			throw new GeneralError(BitString._CLASS_NAME, "outOfRange", {
+			throw new GeneralError(BitString.CLASS_NAME, "outOfRange", {
 				index,
 				numberBits: this._numberBits
 			});

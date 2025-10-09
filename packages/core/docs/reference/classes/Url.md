@@ -22,6 +22,14 @@ The url string.
 
 `Url`
 
+## Properties
+
+### CLASS\_NAME
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
 ### tryParseExact()
@@ -84,7 +92,7 @@ GuardError If the value does not match the assertion.
 
 ### validate()
 
-> `static` **validate**(`property`, `value`, `failures`): `value is Url`
+> `static` **validate**(`property`, `value`, `failures`, `fieldNameResource?`): `value is Url`
 
 Validate a string as a Url.
 
@@ -107,6 +115,12 @@ The url to parse.
 [`IValidationFailure`](../interfaces/IValidationFailure.md)[]
 
 The list of failures to add to.
+
+##### fieldNameResource?
+
+`string`
+
+The optional human readable name for the field as an i18 resource.
 
 #### Returns
 

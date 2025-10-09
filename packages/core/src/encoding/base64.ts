@@ -14,9 +14,8 @@ import { Guards } from "../utils/guards";
 export class Base64 {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Base64>();
+	public static readonly CLASS_NAME: string = nameof<Base64>();
 
 	/**
 	 * Alphabet table for encoding.
@@ -114,7 +113,7 @@ export class Base64 {
 	 * @returns The byte array.
 	 */
 	public static decode(base64: string): Uint8Array {
-		Guards.string(Base64._CLASS_NAME, nameof(base64), base64);
+		Guards.string(Base64.CLASS_NAME, nameof(base64), base64);
 
 		let tmp;
 		const lens = Base64.getLengths(base64);
@@ -165,7 +164,7 @@ export class Base64 {
 	 * @returns The data as base64 string.
 	 */
 	public static encode(bytes: Uint8Array): string {
-		Guards.uint8Array(Base64._CLASS_NAME, nameof(bytes), bytes);
+		Guards.uint8Array(Base64.CLASS_NAME, nameof(bytes), bytes);
 
 		let tmp;
 		const len = bytes.length;
@@ -213,7 +212,7 @@ export class Base64 {
 		const len = base64.length;
 
 		if (len % 4 > 0) {
-			throw new GeneralError(Base64._CLASS_NAME, "length4Multiple", { value: len });
+			throw new GeneralError(Base64.CLASS_NAME, "length4Multiple", { value: len });
 		}
 
 		// Trim off extra bytes after placeholder bytes are found

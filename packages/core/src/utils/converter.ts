@@ -124,7 +124,7 @@ export class Converter {
 		reverse?: boolean
 	): string {
 		let hex = "";
-		this.buildHexLookups();
+		Converter.buildHexLookups();
 		if (Converter._ENCODE_LOOKUP) {
 			const len = length ?? array.length;
 			const start = startIndex ?? 0;
@@ -153,7 +153,7 @@ export class Converter {
 		const length = sizeof << 1;
 		const array = new Uint8Array(sizeof);
 
-		this.buildHexLookups();
+		Converter.buildHexLookups();
 		if (Converter._DECODE_LOOKUP) {
 			let i = 0;
 			let n = 0;

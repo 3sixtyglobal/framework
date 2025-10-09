@@ -22,9 +22,8 @@ export class HmacSha256 {
 
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<HmacSha256>();
+	public static readonly CLASS_NAME: string = nameof<HmacSha256>();
 
 	/**
 	 * The instance of the hash.
@@ -40,7 +39,7 @@ export class HmacSha256 {
 	 */
 	constructor(key: Uint8Array, bits: number = HmacSha256.SIZE_256) {
 		if (bits !== HmacSha256.SIZE_224 && bits !== HmacSha256.SIZE_256) {
-			throw new GeneralError(HmacSha256._CLASS_NAME, "bitSize", { bitSize: bits });
+			throw new GeneralError(HmacSha256.CLASS_NAME, "bitSize", { bitSize: bits });
 		}
 
 		this._instance = hmac.create(bits === HmacSha256.SIZE_256 ? sha256 : sha224, key);
@@ -53,8 +52,8 @@ export class HmacSha256 {
 	 * @returns The sum 224 of the block.
 	 */
 	public static sum224(key: Uint8Array, block: Uint8Array): Uint8Array {
-		Guards.uint8Array(HmacSha256._CLASS_NAME, nameof(key), key);
-		Guards.uint8Array(HmacSha256._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(HmacSha256.CLASS_NAME, nameof(key), key);
+		Guards.uint8Array(HmacSha256.CLASS_NAME, nameof(block), block);
 		const instance = new HmacSha256(key, HmacSha256.SIZE_224);
 		instance.update(block);
 		return instance.digest();
@@ -67,8 +66,8 @@ export class HmacSha256 {
 	 * @returns The sum 256 of the block.
 	 */
 	public static sum256(key: Uint8Array, block: Uint8Array): Uint8Array {
-		Guards.uint8Array(HmacSha256._CLASS_NAME, nameof(key), key);
-		Guards.uint8Array(HmacSha256._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(HmacSha256.CLASS_NAME, nameof(key), key);
+		Guards.uint8Array(HmacSha256.CLASS_NAME, nameof(block), block);
 		const instance = new HmacSha256(key, HmacSha256.SIZE_256);
 		instance.update(block);
 		return instance.digest();
@@ -80,7 +79,7 @@ export class HmacSha256 {
 	 * @returns The instance for chaining.
 	 */
 	public update(block: Uint8Array): HmacSha256 {
-		Guards.uint8Array(HmacSha256._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(HmacSha256.CLASS_NAME, nameof(block), block);
 		this._instance.update(block);
 		return this;
 	}

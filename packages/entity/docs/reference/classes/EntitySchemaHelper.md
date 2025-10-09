@@ -12,6 +12,14 @@ Class to help with entity schema operations.
 
 `EntitySchemaHelper`
 
+## Properties
+
+### CLASS\_NAME
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
 ### getSchema()

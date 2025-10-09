@@ -95,6 +95,10 @@ export abstract class CLIBase {
 			CLIDisplay.spinnerStop();
 
 			let exitCode;
+			// We have no control over the response from commander
+			// so we have to do some checking and coercion here
+			// to get a valid exit code.
+			// eslint-disable-next-line no-restricted-syntax
 			if (error instanceof Error) {
 				// This error could be the exit code we errored with
 				// from the exitOverride so parse and resolve with it

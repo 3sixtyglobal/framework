@@ -20,9 +20,8 @@ export class Secp256k1 {
 
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Secp256k1>();
+	public static readonly CLASS_NAME: string = nameof<Secp256k1>();
 
 	/**
 	 * Public returns the PublicKey corresponding to private.
@@ -31,10 +30,10 @@ export class Secp256k1 {
 	 * @throws Error if the private key is not the correct length.
 	 */
 	public static publicKeyFromPrivateKey(privateKey: Uint8Array): Uint8Array {
-		Guards.uint8Array(Secp256k1._CLASS_NAME, nameof(privateKey), privateKey);
+		Guards.uint8Array(Secp256k1.CLASS_NAME, nameof(privateKey), privateKey);
 
 		if (privateKey.length !== Secp256k1.PRIVATE_KEY_SIZE) {
-			throw new GeneralError(Secp256k1._CLASS_NAME, "privateKeyLength", {
+			throw new GeneralError(Secp256k1.CLASS_NAME, "privateKeyLength", {
 				requiredSize: Secp256k1.PRIVATE_KEY_SIZE,
 				actualSize: privateKey.length
 			});
@@ -51,11 +50,11 @@ export class Secp256k1 {
 	 * @throws Error if the private key is not the correct length.
 	 */
 	public static sign(privateKey: Uint8Array, block: Uint8Array): Uint8Array {
-		Guards.uint8Array(Secp256k1._CLASS_NAME, nameof(privateKey), privateKey);
-		Guards.uint8Array(Secp256k1._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(Secp256k1.CLASS_NAME, nameof(privateKey), privateKey);
+		Guards.uint8Array(Secp256k1.CLASS_NAME, nameof(block), block);
 
 		if (privateKey.length !== Secp256k1.PRIVATE_KEY_SIZE) {
-			throw new GeneralError(Secp256k1._CLASS_NAME, "privateKeyLength", {
+			throw new GeneralError(Secp256k1.CLASS_NAME, "privateKeyLength", {
 				requiredSize: Secp256k1.PRIVATE_KEY_SIZE,
 				actualSize: privateKey.length
 			});
@@ -74,12 +73,12 @@ export class Secp256k1 {
 	 * @throws Error if the public key is not the correct length.
 	 */
 	public static verify(publicKey: Uint8Array, block: Uint8Array, signature: Uint8Array): boolean {
-		Guards.uint8Array(Secp256k1._CLASS_NAME, nameof(publicKey), publicKey);
-		Guards.uint8Array(Secp256k1._CLASS_NAME, nameof(block), block);
-		Guards.uint8Array(Secp256k1._CLASS_NAME, nameof(signature), signature);
+		Guards.uint8Array(Secp256k1.CLASS_NAME, nameof(publicKey), publicKey);
+		Guards.uint8Array(Secp256k1.CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(Secp256k1.CLASS_NAME, nameof(signature), signature);
 
 		if (publicKey.length !== Secp256k1.PUBLIC_KEY_SIZE) {
-			throw new GeneralError(Secp256k1._CLASS_NAME, "publicKeyLength", {
+			throw new GeneralError(Secp256k1.CLASS_NAME, "publicKeyLength", {
 				requiredSize: Secp256k1.PUBLIC_KEY_SIZE,
 				actualSize: publicKey ? publicKey.length : 0
 			});
