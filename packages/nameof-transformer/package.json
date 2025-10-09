@@ -15,10 +15,10 @@
 	},
 	"scripts": {
 		"clean": "rimraf dist coverage",
-		"build": "tspc",
+		"build": "tsc",
 		"dev": "nodemon --watch src --ext ts --exec \"npm run build && npm run bundle:esm\"",
 		"test": "vitest --run --config ./vitest.config.ts --no-cache",
-		"test:build": "tspc -p ./tests/tsconfig.json --noEmit",
+		"test:build": "tsc -p ./tests/tsconfig.json --noEmit",
 		"validate-locales": "echo Can not perform locale validation on nameof-transformer package as the validate-locales package depends on nameof-transformer",
 		"coverage": "vitest --run --coverage --config ./vitest.config.ts --no-cache",
 		"bundle:esm": "rollup --config rollup.config.mjs --environment MODULE:esm",
