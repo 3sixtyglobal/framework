@@ -6,7 +6,9 @@
 			"usesSingleQuotes": "Locale entry \"{key}\" uses single quotes around a parameter. Use double quotes otherwise the value will not be substituted correctly.",
 			"missingLocaleEntry": "Locale entry \"{key}\" is missing from the locale file it is referenced in source file \"{source}:{line}:{column}\".",
 			"unableToProcessContent": "Unable to process content \"{content}\".",
-			"missingPropertyInLocale": "Missing property \"{property}\" when referencing key \"{key}\" in source file \"{source}:{line}:{column}\"."
+			"missingPropertyInLocale": "Missing property \"{property}\" when referencing key \"{key}\" in source file \"{source}:{line}:{column}\".",
+			"noNeedToQualify": "No need to qualify key \"{key}\" with property \"{property}\" in source file \"{source}:{line}:{column}\", as source is the same.",
+			"shouldBeKey": "Value \"{value}\" should be an i18n key in source file \"{source}:{line}:{column}\"."
 		}
 	},
 	"commands": {

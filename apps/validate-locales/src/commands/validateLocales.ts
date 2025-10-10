@@ -9,7 +9,7 @@ import type { Command } from "commander";
 import * as glob from "glob";
 import * as ts from "typescript";
 import type { ILocaleDictionaryEntry } from "../models/ILocaleDictionaryEntry";
-import type { ILocaleMissingReference } from "../models/ILocaleMissingReference";
+import type { ILocaleFailure } from "../models/ILocaleFailure";
 
 const ERROR_TYPES = [
 	{ name: "GeneralError", dynamicPropertyIndex: 2 },
@@ -27,7 +27,7 @@ const ERROR_TYPES = [
 const SKIP_FILES = ["**/models/**/*.ts"];
 
 const SKIP_LITERALS = [
-	/\d+\.\d+\.\d+(-\w+(\.\w+)*)?$/, // Version string
+	/^\d+\.\d+\.\d+(-\w+(\.\w+)*)?(-\d)?$/, // Version string
 	/^[^@]+@[^@]+\.[^@]+$/, // Email string
 	/\.json$/i, // ending in .json
 	/\.js$/i, // ending in .js
@@ -134,7 +134,7 @@ async function validateLocales(
 
 	let hasQuoteError = false;
 	let hasUnused = false;
-	let hasMissing = false;
+	let hasFailures = false;
 
 	for (const localeFile of localeFiles) {
 		const dictionary = await CLIUtils.readJsonFile<ILocaleDictionary>(localeFile);
@@ -169,7 +169,7 @@ async function validateLocales(
 			}
 		}
 
-		let missing: ILocaleMissingReference[] = [];
+		let failures: ILocaleFailure[] = [];
 		const captureVariables: { [name: string]: ts.Node } = {};
 
 		for (const sourceFile of sourceFiles) {
@@ -183,26 +183,26 @@ async function validateLocales(
 				ts.ScriptKind.TS
 			);
 
-			visit(sourceTs, sourceTs, localeEntries, missing, captureVariables);
+			visit(sourceTs, sourceTs, localeEntries, failures, captureVariables);
 		}
 
-		missing = missing.filter(mr => !ignore.some(pattern => pattern.test(mr.key)));
+		failures = failures.filter(mr => !ignore.some(pattern => pattern.test(mr.key)));
 
-		if (missing.length === 0) {
+		if (failures.length === 0) {
 			CLIDisplay.write(
 				I18n.formatMessage("commands.validate-locales.labels.noMissingLocaleEntries")
 			);
 			CLIDisplay.break();
 		} else {
-			hasMissing = true;
-			for (const missingRef of missing) {
-				if (missingRef.type === "key") {
+			hasFailures = true;
+			for (const failureRef of failures) {
+				if (failureRef.type === "key") {
 					CLIDisplay.errorMessage(
 						I18n.formatMessage("error.validateLocales.missingLocaleEntry", {
-							key: missingRef.key,
-							source: missingRef.source,
-							line: missingRef.line,
-							column: missingRef.column
+							key: failureRef.key,
+							source: failureRef.source,
+							line: failureRef.line,
+							column: failureRef.column
 						})
 					);
 				}
@@ -236,7 +236,7 @@ async function validateLocales(
 		}
 	}
 
-	if (hasMissing || hasUnused || hasQuoteError) {
+	if (hasFailures || hasUnused || hasQuoteError) {
 		throw new GeneralError("validateLocales", "validationFailed");
 	}
 }
@@ -246,14 +246,14 @@ async function validateLocales(
  * @param sourceFile The TypeScript source file for position calculations.
  * @param node The node to visit.
  * @param localeEntries The locale entries.
- * @param missing The missing entries.
+ * @param failures The failure entries.
  * @param captureVariables The capture variables.
  */
 function visit(
 	sourceFile: ts.SourceFile,
 	node: ts.Node,
 	localeEntries: ILocaleDictionaryEntry[],
-	missing: ILocaleMissingReference[],
+	failures: ILocaleFailure[],
 	captureVariables: { [name: string]: ts.Node }
 ): void {
 	let handled = false;
@@ -262,36 +262,36 @@ function visit(
 		ts.isIdentifier(node.expression) &&
 		ERROR_TYPES.some(errorType => errorType.name === node.expression.getText())
 	) {
-		processErrorType(sourceFile, node, node.expression.text, localeEntries, missing);
+		processErrorType(sourceFile, node, node.expression.text, localeEntries, failures);
 		handled = true;
 	} else if (ts.isStringLiteral(node)) {
-		processStringLiteral(sourceFile, node, localeEntries, missing);
+		processStringLiteral(sourceFile, node, localeEntries, failures);
 		handled = true;
 	} else if (ts.isTemplateExpression(node)) {
-		processTemplateExpression(sourceFile, node, localeEntries, missing);
+		processTemplateExpression(sourceFile, node, localeEntries, failures);
 		handled = true;
 	} else if (ts.isCallExpression(node)) {
-		handled = processCallExpression(sourceFile, node, localeEntries, missing, captureVariables);
+		handled = processCallExpression(sourceFile, node, localeEntries, failures, captureVariables);
 	} else if (ts.isFunctionDeclaration(node)) {
-		handled = processFunctionDeclaration(sourceFile, node, localeEntries, missing);
+		handled = processFunctionDeclaration(sourceFile, node, localeEntries, failures);
 	} else if (ts.isVariableDeclaration(node)) {
 		handled = processVariableDeclaration(
 			sourceFile,
 			node,
 			localeEntries,
-			missing,
+			failures,
 			captureVariables
 		);
 	} else if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) {
 		// Don't care about string in imports/exports
 		handled = true;
 	} else if (ts.isPropertyAssignment(node)) {
-		handled = processPropertyAssignment(sourceFile, node, localeEntries, missing);
+		handled = processPropertyAssignment(sourceFile, node, localeEntries, failures);
 	}
 
 	if (!handled) {
 		ts.forEachChild(node, child =>
-			visit(sourceFile, child, localeEntries, missing, captureVariables)
+			visit(sourceFile, child, localeEntries, failures, captureVariables)
 		);
 	}
 }
@@ -302,19 +302,25 @@ function visit(
  * @param node The node to process.
  * @param errorType The error type.
  * @param localeEntries The locale entries.
- * @param missing The missing entries.
+ * @param failures The failure entries.
  */
 function processErrorType(
 	sourceFile: ts.SourceFile,
 	node: ts.NewExpression,
 	errorType: string,
 	localeEntries: ILocaleDictionaryEntry[],
-	missing: ILocaleMissingReference[]
+	failures: ILocaleFailure[]
 ): void {
 	const errType = ERROR_TYPES.find(e => e.name === errorType);
 
 	if (Is.object(errType)) {
-		const localeKey = localeFromClassAndMessage(node.arguments?.[0], node.arguments?.[1], "error");
+		const localeKey = localeFromClassAndMessage(
+			sourceFile,
+			node.arguments?.[0],
+			node.arguments?.[1],
+			"error",
+			failures
+		);
 
 		if (Is.stringValue(localeKey)) {
 			const localeEntry = findAndReferenceLocale(localeEntries, localeKey);
@@ -329,10 +335,10 @@ function processErrorType(
 						);
 					}
 
-					checkPropertyUsage(sourceFile, node, localeEntry, localeKey, usedProperties, missing);
+					checkPropertyUsage(sourceFile, node, localeEntry, localeKey, usedProperties, failures);
 				}
 			} else {
-				missing.push({
+				failures.push({
 					type: "key",
 					key: localeKey,
 					source: path.resolve(sourceFile.fileName),
@@ -372,13 +378,13 @@ function findAndReferenceLocale(
  * @param sourceFile The TypeScript source file for position calculations.
  * @param node The node to process.
  * @param localeEntries The locale entries.
- * @param missing The missing entries.
+ * @param failures The failure entries.
  */
 function processStringLiteral(
 	sourceFile: ts.SourceFile,
 	node: ts.StringLiteral,
 	localeEntries: ILocaleDictionaryEntry[],
-	missing: ILocaleMissingReference[]
+	failures: ILocaleFailure[]
 ): void {
 	if (
 		node.text.length > 3 &&
@@ -395,7 +401,7 @@ function processStringLiteral(
 				localeEntry.referenced = true;
 
 				const usedProperties = getPropertiesFromNode(node);
-				checkPropertyUsage(sourceFile, node, localeEntry, node.text, usedProperties, missing);
+				checkPropertyUsage(sourceFile, node, localeEntry, node.text, usedProperties, failures);
 			}
 
 			if (!localeEntry && ["validation.", "common."].some(t => node.text.startsWith(t))) {
@@ -409,13 +415,13 @@ function processStringLiteral(
 						localeEntry,
 						`error.${node.text}`,
 						usedProperties,
-						missing
+						failures
 					);
 				}
 			}
 
 			if (!localeEntry) {
-				missing.push({
+				failures.push({
 					type: "key",
 					key: node.text,
 					source: path.resolve(sourceFile.fileName),
@@ -431,13 +437,13 @@ function processStringLiteral(
  * @param sourceFile The TypeScript source file for position calculations.
  * @param node The node to process.
  * @param localeEntries The locale entries.
- * @param missing The missing entries.
+ * @param failures The failure entries.
  */
 function processTemplateExpression(
 	sourceFile: ts.SourceFile,
 	node: ts.TemplateExpression,
 	localeEntries: ILocaleDictionaryEntry[],
-	missing: ILocaleMissingReference[]
+	failures: ILocaleFailure[]
 ): void {
 	// This case handles templates like `error.${nameof(Class)}.message`
 	const templateParts = extractTemplatePartsWithExpressions(node);
@@ -449,7 +455,7 @@ function processTemplateExpression(
 		let localeEntry = findAndReferenceLocale(localeEntries, key);
 		if (localeEntry) {
 			const usedProperties = getPropertiesFromNode(node);
-			checkPropertyUsage(sourceFile, node, localeEntry, localeEntry.key, usedProperties, missing);
+			checkPropertyUsage(sourceFile, node, localeEntry, localeEntry.key, usedProperties, failures);
 		} else if (["validation.", "common."].some(t => key.startsWith(t))) {
 			localeEntry = findAndReferenceLocale(localeEntries, `error.${key}`);
 
@@ -457,7 +463,7 @@ function processTemplateExpression(
 				localeEntry.referenced = true;
 				const usedProperties = getPropertiesFromNode(node.parent.parent);
 
-				checkPropertyUsage(sourceFile, node, localeEntry, `error.${key}`, usedProperties, missing);
+				checkPropertyUsage(sourceFile, node, localeEntry, `error.${key}`, usedProperties, failures);
 			}
 		}
 	}
@@ -468,7 +474,7 @@ function processTemplateExpression(
  * @param sourceFile The TypeScript source file for position calculations.
  * @param node The node to process.
  * @param localeEntries The locale entries.
- * @param missing The missing entries.
+ * @param failures The failure entries.
  * @param captureVariables The capture variables.
  * @returns True if processed, false otherwise.
  */
@@ -476,7 +482,7 @@ function processCallExpression(
 	sourceFile: ts.SourceFile,
 	node: ts.CallExpression,
 	localeEntries: ILocaleDictionaryEntry[],
-	missing: ILocaleMissingReference[],
+	failures: ILocaleFailure[],
 	captureVariables: { [name: string]: ts.Node }
 ): boolean {
 	if (ts.isPropertyAccessExpression(node.expression)) {
@@ -510,15 +516,15 @@ function processCallExpression(
 				}
 			}
 
-			const localeKey = localeFromClassAndMessage(source, message, level);
+			const localeKey = localeFromClassAndMessage(sourceFile, source, message, level, failures);
 
 			if (Is.stringValue(localeKey)) {
 				const localeEntry = findAndReferenceLocale(localeEntries, localeKey);
 
 				if (Is.object(localeEntry)) {
-					checkPropertyUsage(sourceFile, node, localeEntry, localeKey, dataNames ?? [], missing);
+					checkPropertyUsage(sourceFile, node, localeEntry, localeKey, dataNames ?? [], failures);
 				} else {
-					missing.push({
+					failures.push({
 						type: "key",
 						key: localeKey,
 						source: path.resolve(sourceFile.fileName),
@@ -540,9 +546,9 @@ function processCallExpression(
 				const localeEntry = findAndReferenceLocale(localeEntries, localeKey);
 
 				if (Is.object(localeEntry)) {
-					checkPropertyUsage(sourceFile, node, localeEntry, localeKey, dataNames ?? [], missing);
+					checkPropertyUsage(sourceFile, node, localeEntry, localeKey, dataNames ?? [], failures);
 				} else {
-					missing.push({
+					failures.push({
 						type: "key",
 						key: localeKey,
 						source: path.resolve(sourceFile.fileName),
@@ -562,14 +568,14 @@ function processCallExpression(
  * @param sourceFile The TypeScript source file for position calculations.
  * @param node The node to process.
  * @param localeEntries The locale entries.
- * @param missing The missing entries.
+ * @param failures The failure entries.
  * @returns True if processed, false otherwise.
  */
 function processFunctionDeclaration(
 	sourceFile: ts.SourceFile,
 	node: ts.FunctionDeclaration,
 	localeEntries: ILocaleDictionaryEntry[],
-	missing: ILocaleMissingReference[]
+	failures: ILocaleFailure[]
 ): boolean {
 	if (
 		Is.object(node.name) &&
@@ -586,7 +592,7 @@ function processFunctionDeclaration(
  * @param sourceFile The TypeScript source file for position calculations.
  * @param node The node to process.
  * @param localeEntries The locale entries.
- * @param missing The missing entries.
+ * @param failures The failure entries.
  * @param captureVariables The capture variables.
  * @returns True if processed, false otherwise.
  */
@@ -594,7 +600,7 @@ function processVariableDeclaration(
 	sourceFile: ts.SourceFile,
 	node: ts.VariableDeclaration,
 	localeEntries: ILocaleDictionaryEntry[],
-	missing: ILocaleMissingReference[],
+	failures: ILocaleFailure[],
 	captureVariables: { [name: string]: ts.Node }
 ): boolean {
 	if (
@@ -615,14 +621,14 @@ function processVariableDeclaration(
  * @param sourceFile The TypeScript source file for position calculations.
  * @param node The node to process.
  * @param localeEntries The locale entries.
- * @param missing The missing entries.
+ * @param failures The failure entries.
  * @returns True if processed, false otherwise.
  */
 function processPropertyAssignment(
 	sourceFile: ts.SourceFile,
 	node: ts.PropertyAssignment,
 	localeEntries: ILocaleDictionaryEntry[],
-	missing: ILocaleMissingReference[]
+	failures: ILocaleFailure[]
 ): boolean {
 	if (Is.object(node.name) && ts.isIdentifier(node.name) && node.name.getText() === "message") {
 		const localeKey = getExpandedText(node.initializer);
@@ -635,7 +641,7 @@ function processPropertyAssignment(
 			}
 
 			if (!Is.object(localeEntry)) {
-				missing.push({
+				failures.push({
 					type: "key",
 					key: localeKey,
 					source: path.resolve(sourceFile.fileName),
@@ -701,7 +707,7 @@ function extractTemplatePartsWithExpressions(node: ts.TemplateExpression): strin
  * @returns True if the template parts are valid, false otherwise.
  */
 function hasValidTemplateContent(templateParts: string[]): boolean {
-	return !templateParts.some(part => /[ #,/:=?|]/.test(part));
+	return !templateParts.some(part => /[#,/:=?|]/.test(part));
 }
 
 /**
@@ -759,7 +765,7 @@ function expandTemplatePart(templatePart: string): string {
  * @param localeEntry The locale entry to check against.
  * @param key The key in the locale entry.
  * @param usedProperties The properties used in the code.
- * @param missing The missing entries.
+ * @param failures The failure entries.
  */
 function checkPropertyUsage(
 	sourceFile: ts.SourceFile,
@@ -767,7 +773,7 @@ function checkPropertyUsage(
 	localeEntry: ILocaleDictionaryEntry,
 	key: string,
 	usedProperties: string[],
-	missing: ILocaleMissingReference[]
+	failures: ILocaleFailure[]
 ): void {
 	for (const propName of localeEntry.propertyNames) {
 		const propIndex = usedProperties.indexOf(propName);
@@ -782,7 +788,7 @@ function checkPropertyUsage(
 					column: position.column
 				})
 			);
-			missing.push({
+			failures.push({
 				type: "property",
 				key: localeEntry.key,
 				source: path.resolve(sourceFile.fileName),
@@ -877,15 +883,19 @@ function isSkipLiteral(value: string): boolean {
 
 /**
  * Get the locale from the class and message nodes.
+ * @param sourceFile The TypeScript source file for position calculations.
  * @param classNode The class node.
  * @param messageNode The message node.
  * @param prefix The prefix for the locale key.
+ * @param failures The failure entries.
  * @returns The locale entry or undefined.
  */
 function localeFromClassAndMessage(
-	classNode?: ts.Node,
-	messageNode?: ts.Node,
-	prefix?: string
+	sourceFile: ts.SourceFile,
+	classNode: ts.Node | undefined,
+	messageNode: ts.Node | undefined,
+	prefix: string | undefined,
+	failures: ILocaleFailure[]
 ): string | undefined {
 	if (!classNode || !messageNode) {
 		return undefined;
@@ -895,23 +905,66 @@ function localeFromClassAndMessage(
 	const classNameParamParts = classNameParam?.split(".");
 
 	if (Is.array(classNameParamParts)) {
-		const localeKey = getExpandedText(messageNode);
+		const messageKey = getExpandedText(messageNode);
 
-		if (Is.stringValue(localeKey)) {
-			const localeKeyParts = [];
+		if (Is.stringValue(messageKey)) {
+			if (messageKey.includes(" ")) {
+				// If the message contains spaces then it is not a key
+				// but should be replaced by one
+				const position = getSourcePosition(sourceFile, messageNode);
+				CLIDisplay.errorMessage(
+					I18n.formatMessage("error.validateLocales.shouldBeKey", {
+						value: messageKey,
+						source: path.resolve(sourceFile.fileName),
+						line: position.line,
+						column: position.column
+					})
+				);
+				failures.push({
+					type: "noKey",
+					key: messageKey,
+					source: path.resolve(sourceFile.fileName),
+					...position
+				});
+			} else {
+				const finalKeyParts = [];
 
-			if (Is.stringValue(prefix)) {
-				localeKeyParts.push(prefix);
+				const classNameExpanded = expandTemplatePart(classNameParam);
+				const messageKeyParts = messageKey.split(".");
+
+				if (messageKeyParts.length === 2 && classNameExpanded === messageKeyParts[0]) {
+					// But if it is fully qualified with exactly two segments and starts with the class name
+					// then the class name is redundant and should be removed in the source
+					const position = getSourcePosition(sourceFile, messageNode);
+					CLIDisplay.errorMessage(
+						I18n.formatMessage("error.validateLocales.noNeedToQualify", {
+							key: messageKey,
+							property: classNameParam,
+							source: path.resolve(sourceFile.fileName),
+							line: position.line,
+							column: position.column
+						})
+					);
+					failures.push({
+						type: "qualify",
+						key: messageKey,
+						source: path.resolve(sourceFile.fileName),
+						...position
+					});
+				} else if (!messageKey.includes(".")) {
+					// If the key is not fully qualified then add the class name
+					// to the final key
+					finalKeyParts.push(classNameExpanded);
+				}
+
+				finalKeyParts.push(messageKey);
+
+				if (Is.stringValue(prefix)) {
+					finalKeyParts.unshift(prefix);
+				}
+
+				return finalKeyParts.join(".");
 			}
-
-			// If the key is not fully qualified then add the class name
-			if (!localeKey.includes(".")) {
-				localeKeyParts.push(expandTemplatePart(classNameParam));
-			}
-
-			localeKeyParts.push(localeKey);
-
-			return localeKeyParts.join(".");
 		}
 	}
 
