@@ -3,8 +3,8 @@
 /* eslint-disable no-bitwise */
 
 import { nameof } from "@twin.org/nameof";
-import { GeneralError } from "../errors/generalError";
-import { Guards } from "../utils/guards";
+import { GeneralError } from "../errors/generalError.js";
+import { Guards } from "../utils/guards.js";
 
 /**
  * Class to help with base63 Encoding/Decoding.

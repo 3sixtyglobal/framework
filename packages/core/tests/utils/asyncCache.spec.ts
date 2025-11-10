@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { AsyncCache } from "../../src/utils/asyncCache";
-import { Is } from "../../src/utils/is";
+import { AsyncCache } from "../../src/utils/asyncCache.js";
+import { Is } from "../../src/utils/is.js";
 
 let counter = 0;
 

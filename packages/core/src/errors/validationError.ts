@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@twin.org/nameof";
-import { BaseError } from "./baseError";
-import type { IValidationFailure } from "../models/IValidationFailure";
+import { BaseError } from "./baseError.js";
+import type { IValidationFailure } from "../models/IValidationFailure.js";
 
 /**
  * Class to handle errors which are triggered by entity validation.

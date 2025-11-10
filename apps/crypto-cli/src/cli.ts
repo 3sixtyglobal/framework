@@ -4,8 +4,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { CLIBase } from "@twin.org/cli-core";
 import type { Command } from "commander";
-import { buildCommandAddress } from "./commands/address";
-import { buildCommandMnemonic } from "./commands/mnemonic";
+import { buildCommandAddress } from "./commands/address.js";
+import { buildCommandMnemonic } from "./commands/mnemonic.js";
 
 /**
  * The main entry point for the CLI.
@@ -28,7 +28,7 @@ export class CLI extends CLIBase {
 			{
 				title: "TWIN Crypto",
 				appName: "twin-crypto",
-				version: "0.0.2-next.22", // x-release-please-version
+				version: "0.0.3-next.0", // x-release-please-version
 				icon: "🌍",
 				supportsEnvFiles: true,
 				overrideOutputWidth: options?.overrideOutputWidth,

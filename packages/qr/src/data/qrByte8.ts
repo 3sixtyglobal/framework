@@ -1,9 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable no-bitwise */
-import { QRDataBase } from "./qrDataBase";
-import type { BitBuffer } from "../helpers/bitBuffer";
-import { QRDataMode } from "../models/qrDataMode";
+import { QRDataBase } from "./qrDataBase.js";
+import type { BitBuffer } from "../helpers/bitBuffer.js";
+import { QRDataMode } from "../models/qrDataMode.js";
 
 /**
  * QR Data for representing a 8 bit data.

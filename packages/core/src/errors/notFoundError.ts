@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@twin.org/nameof";
-import { BaseError } from "./baseError";
+import { BaseError } from "./baseError.js";
 
 /**
  * Class to handle errors which are triggered by data not being found.

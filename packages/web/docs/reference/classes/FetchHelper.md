@@ -190,7 +190,7 @@ Clears the cache.
 
 ### getCacheEntry()
 
-> `static` **getCacheEntry**\<`T`\>(`url`): `Promise`\<`undefined` \| `T`\>
+> `static` **getCacheEntry**\<`T`\>(`url`): `Promise`\<`T` \| `undefined`\>
 
 Get a cache entry.
 
@@ -210,7 +210,7 @@ The url for the request.
 
 #### Returns
 
-`Promise`\<`undefined` \| `T`\>
+`Promise`\<`T` \| `undefined`\>
 
 The cache entry if it exists.
 

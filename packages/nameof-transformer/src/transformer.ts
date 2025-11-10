@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import * as ts from "typescript";
-import { camelCase, kebabCase } from "./stringHelper";
+import { camelCase, kebabCase } from "./stringHelper.js";
 
 /**
  * The transformer factory entry point.
@@ -59,8 +59,7 @@ function visitNode(node: ts.Node): ts.Node {
 			(expressionText === "nameof" ||
 				expressionText === "nameofKebabCase" ||
 				expressionText === "nameofCamelCase") &&
-			node.typeArguments &&
-			node.typeArguments.length === 1
+			node.typeArguments?.length === 1
 		) {
 			let typeName;
 			if (ts.isTypeReferenceNode(node.typeArguments[0])) {

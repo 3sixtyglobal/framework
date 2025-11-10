@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Compression } from "../../src/utils/compression";
-import { Converter } from "../../src/utils/converter";
+import { Compression } from "../../src/utils/compression.js";
+import { Converter } from "../../src/utils/converter.js";
 
 describe("Compression", () => {
 	test("can compress and decompress simple data using gzip", async () => {

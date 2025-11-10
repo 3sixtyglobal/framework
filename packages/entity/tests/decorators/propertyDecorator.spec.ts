@@ -1,10 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-/* eslint-disable max-classes-per-file */
 /* eslint-disable no-restricted-syntax */
-import { property } from "../../src/decorators/propertyDecorator";
-import { SortDirection } from "../../src/models/sortDirection";
-import { DecoratorHelper } from "../../src/utils/decoratorHelper";
+import { property } from "../../src/decorators/propertyDecorator.js";
+import { SortDirection } from "../../src/models/sortDirection.js";
+import { DecoratorHelper } from "../../src/utils/decoratorHelper.js";
 
 /**
  * Test entity.

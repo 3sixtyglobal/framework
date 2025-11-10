@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { GeneralError } from "../../src/errors/generalError";
-import type { IError } from "../../src/models/IError";
-import { Is } from "../../src/utils/is";
+import { GeneralError } from "../../src/errors/generalError.js";
+import type { IError } from "../../src/models/IError.js";
+import { Is } from "../../src/utils/is.js";
 
 describe("GeneralError", () => {
 	test("can construct", () => {

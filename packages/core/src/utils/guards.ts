@@ -1,10 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Is } from "./is";
-import { GuardError } from "../errors/guardError";
-import { ArrayHelper } from "../helpers/arrayHelper";
-import { HexHelper } from "../helpers/hexHelper";
-import type { ObjectOrArray } from "../models/objectOrArray";
+import { Is } from "./is.js";
+import { GuardError } from "../errors/guardError.js";
+import { ArrayHelper } from "../helpers/arrayHelper.js";
+import { HexHelper } from "../helpers/hexHelper.js";
+import type { ObjectOrArray } from "../models/objectOrArray.js";
 
 /**
  * Class to handle guard operations for parameters.
@@ -465,14 +465,17 @@ export class Guards {
 	 * @param source The source of the error.
 	 * @param property The name of the property.
 	 * @param value The value to test.
-	 * @returns True if the value is a function.
 	 * @throws GuardError If the value does not match the assertion.
 	 */
-	public static function(source: string, property: string, value: unknown): boolean {
-		if (!Is.function(value)) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public static function<T extends (...args: any[]) => any = (...args: any[]) => any>(
+		source: string,
+		property: string,
+		value: unknown
+	): asserts value is T {
+		if (!Is.function<T>(value)) {
 			throw new GuardError(source, "guard.function", property, value);
 		}
-		return true;
 	}
 
 	/**

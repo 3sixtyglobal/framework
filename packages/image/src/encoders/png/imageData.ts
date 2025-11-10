@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { Frame } from "./frame";
+import type { Frame } from "./frame.js";
 
 /**
  * Image data for the PNG encoder.

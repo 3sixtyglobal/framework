@@ -4,10 +4,10 @@ import { HDKey as HDKeySecp256k1 } from "@scure/bip32";
 import { Converter, GeneralError } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 import { HDKey as HDKeyEd25519 } from "micro-key-producer/slip10.js";
-import type { Bip32Path } from "./bip32Path";
-import { Ed25519 } from "../curves/ed25519";
-import { Secp256k1 } from "../curves/secp256k1";
-import { KeyType } from "../models/keyType";
+import type { Bip32Path } from "./bip32Path.js";
+import { Ed25519 } from "../curves/ed25519.js";
+import { Secp256k1 } from "../curves/secp256k1.js";
+import { KeyType } from "../models/keyType.js";
 
 /**
  * Class to help with slip0010 key derivation

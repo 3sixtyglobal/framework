@@ -3,7 +3,7 @@
 import { ed25519 } from "@noble/curves/ed25519.js";
 import { Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
-import { Ed25519 } from "./ed25519";
+import { Ed25519 } from "./ed25519.js";
 
 /**
  * Implementation of X25519.

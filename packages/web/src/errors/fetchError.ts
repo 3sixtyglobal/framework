@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { BaseError } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
-import type { HttpStatusCode } from "../models/httpStatusCode";
+import type { HttpStatusCode } from "../models/httpStatusCode.js";
 
 /**
  * Class to represent errors from fetch.

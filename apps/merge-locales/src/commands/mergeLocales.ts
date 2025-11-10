@@ -12,8 +12,8 @@ import {
 	type ILocaleDictionary
 } from "@twin.org/core";
 import type { Command } from "commander";
-import type { IMergeLocalesConfig } from "../models/IMergeLocalesConfig";
-import type { IPackageJson } from "../models/IPackageJson";
+import type { IMergeLocalesConfig } from "../models/IMergeLocalesConfig.js";
+import type { IPackageJson } from "../models/IPackageJson.js";
 
 /**
  * Build the root command to be consumed by the CLI.

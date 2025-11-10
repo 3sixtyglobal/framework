@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Coerce } from "../../src/utils/coerce";
+import { Coerce } from "../../src/utils/coerce.js";
 
 describe("Coerce", () => {
 	test("string can coerce if value is undefined", () => {

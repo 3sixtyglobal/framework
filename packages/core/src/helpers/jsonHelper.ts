@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@twin.org/nameof";
 import { applyPatch, createPatch, type Operation } from "rfc6902";
-import { ObjectHelper } from "./objectHelper";
-import { GeneralError } from "../errors/generalError";
-import type { IPatchOperation } from "../models/IPatchOperation";
-import { Converter } from "../utils/converter";
-import { Is } from "../utils/is";
+import { ObjectHelper } from "./objectHelper.js";
+import { GeneralError } from "../errors/generalError.js";
+import type { IPatchOperation } from "../models/IPatchOperation.js";
+import { Converter } from "../utils/converter.js";
+import { Is } from "../utils/is.js";
 
 /**
  * Helpers methods for JSON objects.

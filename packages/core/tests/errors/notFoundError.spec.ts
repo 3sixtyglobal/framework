@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { NotFoundError } from "../../src/errors/notFoundError";
+import { NotFoundError } from "../../src/errors/notFoundError.js";
 
 describe("NotFoundError", () => {
 	test("can construct", () => {

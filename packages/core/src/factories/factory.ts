@@ -1,10 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@twin.org/nameof";
-import { GeneralError } from "../errors/generalError";
-import { Guards } from "../utils/guards";
-import { Is } from "../utils/is";
-import { SharedStore } from "../utils/sharedStore";
+import { GeneralError } from "../errors/generalError.js";
+import { Guards } from "../utils/guards.js";
+import { Is } from "../utils/is.js";
+import { SharedStore } from "../utils/sharedStore.js";
 
 /**
  * Factory for creating implementation of generic types.

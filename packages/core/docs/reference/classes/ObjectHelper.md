@@ -40,7 +40,7 @@ Convert an object to bytes.
 
 The object to convert.
 
-`undefined` | `T`
+`T` | `undefined`
 
 ##### format
 
@@ -74,7 +74,7 @@ Convert a bytes to an object.
 
 The bytes to convert to an object.
 
-`undefined` | `null` | `Uint8Array`\<`ArrayBufferLike`\>
+`Uint8Array`\<`ArrayBufferLike`\> | `null` | `undefined`
 
 #### Returns
 
@@ -196,7 +196,7 @@ True is the objects are equal.
 
 ### propertyGet()
 
-> `static` **propertyGet**\<`T`\>(`obj`, `property`): `undefined` \| `T`
+> `static` **propertyGet**\<`T`\>(`obj`, `property`): `T` \| `undefined`
 
 Get the property of an unknown object.
 
@@ -222,7 +222,7 @@ The property to get, can be separated by dots for nested path.
 
 #### Returns
 
-`undefined` \| `T`
+`T` \| `undefined`
 
 The property.
 
@@ -292,7 +292,7 @@ The property to set
 
 ### extractProperty()
 
-> `static` **extractProperty**\<`T`\>(`obj`, `propertyNames`, `removeProperties`): `undefined` \| `T`
+> `static` **extractProperty**\<`T`\>(`obj`, `propertyNames`, `removeProperties`): `T` \| `undefined`
 
 Extract a property from the object, providing alternative names.
 
@@ -324,7 +324,7 @@ Remove the properties from the object, defaults to true.
 
 #### Returns
 
-`undefined` \| `T`
+`T` \| `undefined`
 
 The property if available.
 
@@ -348,7 +348,7 @@ Pick a subset of properties from an object.
 
 The object to pick the properties from.
 
-`undefined` | `T`
+`T` | `undefined`
 
 ##### keys?
 
@@ -382,7 +382,7 @@ Omit a subset of properties from an object.
 
 The object to omit the properties from.
 
-`undefined` | `T`
+`T` | `undefined`
 
 ##### keys?
 
@@ -416,7 +416,7 @@ Split an object into two with the specified keys.
 
 The object to split.
 
-`undefined` | `T`
+`T` | `undefined`
 
 ##### keys?
 
@@ -432,11 +432,11 @@ The two partial objects.
 
 ##### picked
 
-> **picked**: `undefined` \| `Partial`\<`T`\>
+> **picked**: `Partial`\<`T`\> \| `undefined`
 
 ##### omitted
 
-> **omitted**: `undefined` \| `Partial`\<`T`\>
+> **omitted**: `Partial`\<`T`\> \| `undefined`
 
 ***
 

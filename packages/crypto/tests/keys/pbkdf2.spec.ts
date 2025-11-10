@@ -1,9 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Converter } from "@twin.org/core";
-import testDataSha256 from "./pbkdf2Sha256.json";
-import testDataSha512 from "./pbkdf2Sha512.json";
-import { Pbkdf2 } from "../../src/hashes/pbkdf2";
+import testDataSha256 from "./pbkdf2Sha256.json" with { type: "json" };
+import testDataSha512 from "./pbkdf2Sha512.json" with { type: "json" };
+import { Pbkdf2 } from "../../src/hashes/pbkdf2.js";
 
 describe("Pbkdf2", () => {
 	test("Can verify with test vectors sha256", () => {

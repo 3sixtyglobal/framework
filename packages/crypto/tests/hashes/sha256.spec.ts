@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { Converter } from "@twin.org/core";
 import { describe } from "vitest";
-import testData from "./sha256.json";
-import { Sha256 } from "../../src/hashes/sha256";
+import testData from "./sha256.json" with { type: "json" };
+import { Sha256 } from "../../src/hashes/sha256.js";
 
 describe("Sha256", () => {
 	test("Can perform a sha256 on short text", () => {

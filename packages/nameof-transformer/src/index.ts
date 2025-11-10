@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import type * as ts from "typescript";
-import { transformerFactory } from "./transformer";
+import { transformerFactory } from "./transformer.js";
 
 /**
  * Exports the factory.
@@ -13,7 +13,7 @@ export const factory = (): ts.TransformerFactory<ts.Node> => transformerFactory;
  * Exports the factory version.
  * @returns The factory.
  */
-export const version = "0.0.2-next.22"; // x-release-please-version
+export const version = "0.0.3-next.0"; // x-release-please-version
 
 /**
  * Exports the factory name.
@@ -21,7 +21,7 @@ export const version = "0.0.2-next.22"; // x-release-please-version
  */
 export const name = "@twin.org/nameof-transformer";
 
-export * from "./manual";
-export * from "./svelte";
+export * from "./manual.js";
+export * from "./svelte.js";
 
 export default factory;

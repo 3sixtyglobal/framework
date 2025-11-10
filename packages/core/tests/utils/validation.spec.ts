@@ -1,21 +1,15 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { IValidationFailure } from "../../src/models/IValidationFailure";
-import { I18n } from "../../src/utils/i18n";
-import { Validation } from "../../src/utils/validation";
+import type { IValidationFailure } from "../../src/models/IValidationFailure.js";
+import { Validation } from "../../src/utils/validation.js";
 
 describe("Validation", () => {
-	beforeAll(async () => {
-		I18n.addDictionary("en", await import("../../locales/en.json"));
-	});
-
 	test("can fail if value is not empty", () => {
 		const failures: IValidationFailure[] = [];
 		expect(Validation.empty("val", "a", failures)).toEqual(false);
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beEmpty");
-		expect(I18n.hasMessage("error.validation.beEmpty")).toEqual(true);
 	});
 
 	test("can succeed if value is empty", () => {
@@ -30,7 +24,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beNotEmpty");
-		expect(I18n.hasMessage("error.validation.beNotEmpty")).toEqual(true);
 	});
 
 	test("can succeed if value is not empty", () => {
@@ -45,7 +38,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beText");
-		expect(I18n.hasMessage("error.validation.beText")).toEqual(true);
 	});
 
 	test("can fail if value is not a string matching base64", () => {
@@ -58,7 +50,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beTextBase64");
-		expect(I18n.hasMessage("error.validation.beTextBase64")).toEqual(true);
 	});
 
 	test("can succeed if value is a string matching base64", () => {
@@ -87,7 +78,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beTextBase58");
-		expect(I18n.hasMessage("error.validation.beTextBase58")).toEqual(true);
 	});
 
 	test("can succeed if value is a string matching base58", () => {
@@ -116,7 +106,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beTextHex");
-		expect(I18n.hasMessage("error.validation.beTextHex")).toEqual(true);
 	});
 
 	test("can succeed if value is a string matching hex", () => {
@@ -139,7 +128,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beTextRegExp");
-		expect(I18n.hasMessage("error.validation.beTextRegExp")).toEqual(true);
 	});
 
 	test("can succeed if value is a string matching regex", () => {
@@ -160,7 +148,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beTextMin");
-		expect(I18n.hasMessage("error.validation.beTextMin")).toEqual(true);
 	});
 
 	test("can fail if value is not string above max length", () => {
@@ -169,7 +156,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beTextMax");
-		expect(I18n.hasMessage("error.validation.beTextMax")).toEqual(true);
 	});
 
 	test("can fail if not string between min length and max length", () => {
@@ -185,7 +171,6 @@ describe("Validation", () => {
 		expect(failures[0].reason).toEqual("validation.beTextMinMax");
 		expect(failures[1].property).toEqual("val");
 		expect(failures[1].reason).toEqual("validation.beTextMinMax");
-		expect(I18n.hasMessage("error.validation.beTextMinMax")).toEqual(true);
 	});
 
 	test("can succeed if value is a string", () => {
@@ -202,7 +187,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beTextMin");
-		expect(I18n.hasMessage("error.validation.beTextMin")).toEqual(true);
 	});
 
 	test("can fail if value is not string above max length", () => {
@@ -213,7 +197,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beTextMax");
-		expect(I18n.hasMessage("error.validation.beTextMax")).toEqual(true);
 	});
 
 	test("can fail if not string between min length and max length", () => {
@@ -229,7 +212,6 @@ describe("Validation", () => {
 		expect(failures[0].reason).toEqual("validation.beTextMinMax");
 		expect(failures[1].property).toEqual("val");
 		expect(failures[1].reason).toEqual("validation.beTextMinMax");
-		expect(I18n.hasMessage("error.validation.beTextMinMax")).toEqual(true);
 	});
 
 	test("can fail if value is not a string value", () => {
@@ -238,7 +220,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beTextValue");
-		expect(I18n.hasMessage("error.validation.beTextValue")).toEqual(true);
 	});
 
 	test("can succeed if value is a string", () => {
@@ -253,7 +234,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beNumber");
-		expect(I18n.hasMessage("error.validation.beNumber")).toEqual(true);
 	});
 
 	test("can fail if value is not number below min", () => {
@@ -262,7 +242,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beNumberMin");
-		expect(I18n.hasMessage("error.validation.beNumberMin")).toEqual(true);
 	});
 
 	test("can fail if value is not number above max", () => {
@@ -271,7 +250,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beNumberMax");
-		expect(I18n.hasMessage("error.validation.beNumberMax")).toEqual(true);
 	});
 
 	test("can fail if not number between min and max", () => {
@@ -287,7 +265,6 @@ describe("Validation", () => {
 		expect(failures[0].reason).toEqual("validation.beNumberMinMax");
 		expect(failures[1].property).toEqual("val");
 		expect(failures[1].reason).toEqual("validation.beNumberMinMax");
-		expect(I18n.hasMessage("error.validation.beNumberMinMax")).toEqual(true);
 	});
 
 	test("can succeed if value is a number", () => {
@@ -302,7 +279,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beWholeNumber");
-		expect(I18n.hasMessage("error.validation.beWholeNumber")).toEqual(true);
 	});
 
 	test("can fail if value is not integer below min", () => {
@@ -311,7 +287,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beWholeNumberMin");
-		expect(I18n.hasMessage("error.validation.beWholeNumberMin")).toEqual(true);
 	});
 
 	test("can fail if value is not integer above max", () => {
@@ -320,7 +295,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beWholeNumberMax");
-		expect(I18n.hasMessage("error.validation.beWholeNumberMax")).toEqual(true);
 	});
 
 	test("can fail if not integer between min and max", () => {
@@ -336,7 +310,6 @@ describe("Validation", () => {
 		expect(failures[0].reason).toEqual("validation.beWholeNumberMinMax");
 		expect(failures[1].property).toEqual("val");
 		expect(failures[1].reason).toEqual("validation.beWholeNumberMinMax");
-		expect(I18n.hasMessage("error.validation.beWholeNumberMinMax")).toEqual(true);
 	});
 
 	test("can succeed if value is an integer", () => {
@@ -351,7 +324,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beBigInteger");
-		expect(I18n.hasMessage("error.validation.beBigInteger")).toEqual(true);
 	});
 
 	test("can fail if value is not bigint below min", () => {
@@ -360,7 +332,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beBigIntegerMin");
-		expect(I18n.hasMessage("error.validation.beBigIntegerMin")).toEqual(true);
 	});
 
 	test("can fail if value is not bigint above max", () => {
@@ -369,7 +340,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beBigIntegerMax");
-		expect(I18n.hasMessage("error.validation.beBigIntegerMax")).toEqual(true);
 	});
 
 	test("can fail if not bigint between min and max", () => {
@@ -385,7 +355,6 @@ describe("Validation", () => {
 		expect(failures[0].reason).toEqual("validation.beBigIntegerMinMax");
 		expect(failures[1].property).toEqual("val");
 		expect(failures[1].reason).toEqual("validation.beBigIntegerMinMax");
-		expect(I18n.hasMessage("error.validation.beBigIntegerMinMax")).toEqual(true);
 	});
 
 	test("can succeed if value is a big integer", () => {
@@ -400,7 +369,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beBoolean");
-		expect(I18n.hasMessage("error.validation.beBoolean")).toEqual(true);
 	});
 
 	test("can succeed if value is a boolean", () => {
@@ -415,7 +383,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beDate");
-		expect(I18n.hasMessage("error.validation.beDate")).toEqual(true);
 	});
 
 	test("can fail if value is an empty date", () => {
@@ -424,7 +391,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beDate");
-		expect(I18n.hasMessage("error.validation.beDate")).toEqual(true);
 	});
 
 	test("can succeed if value is a date", () => {
@@ -439,7 +405,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beDate");
-		expect(I18n.hasMessage("error.validation.beDate")).toEqual(true);
 	});
 
 	test("can fail if value is an empty date string", () => {
@@ -448,7 +413,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beDate");
-		expect(I18n.hasMessage("error.validation.beDate")).toEqual(true);
 	});
 
 	test("can fail if value is a date/time string", () => {
@@ -457,7 +421,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beDate");
-		expect(I18n.hasMessage("error.validation.beDate")).toEqual(true);
 	});
 
 	test("can succeed if value is a date", () => {
@@ -472,7 +435,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beDateTime");
-		expect(I18n.hasMessage("error.validation.beDateTime")).toEqual(true);
 	});
 
 	test("can fail if value is an empty date/time string", () => {
@@ -481,7 +443,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beDateTime");
-		expect(I18n.hasMessage("error.validation.beDateTime")).toEqual(true);
 	});
 
 	test("can fail if value is a date string", () => {
@@ -490,7 +451,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beDateTime");
-		expect(I18n.hasMessage("error.validation.beDateTime")).toEqual(true);
 	});
 
 	test("can succeed if value is a date/time", () => {
@@ -505,7 +465,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beTime");
-		expect(I18n.hasMessage("error.validation.beTime")).toEqual(true);
 	});
 
 	test("can fail if value is an empty date/time string", () => {
@@ -514,7 +473,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beTime");
-		expect(I18n.hasMessage("error.validation.beTime")).toEqual(true);
 	});
 
 	test("can fail if value is a date/time string", () => {
@@ -523,7 +481,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beTime");
-		expect(I18n.hasMessage("error.validation.beTime")).toEqual(true);
 	});
 
 	test("can succeed if value is a time", () => {
@@ -538,7 +495,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beTimestampMilliseconds");
-		expect(I18n.hasMessage("error.validation.beTimestampMilliseconds")).toEqual(true);
 	});
 
 	test("can fail if value is not a timestamp in milliseconds", () => {
@@ -547,7 +503,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beTimestampMilliseconds");
-		expect(I18n.hasMessage("error.validation.beTimestampMilliseconds")).toEqual(true);
 	});
 
 	test("can succeed if value is a timestamp in mílliseconds", () => {
@@ -562,7 +517,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beTimestampSeconds");
-		expect(I18n.hasMessage("error.validation.beTimestampSeconds")).toEqual(true);
 	});
 
 	test("can fail if value is not a timestamp in seconds", () => {
@@ -571,7 +525,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beTimestampSeconds");
-		expect(I18n.hasMessage("error.validation.beTimestampSeconds")).toEqual(true);
 	});
 
 	test("can succeed if value is a timestamp in seconds", () => {
@@ -586,7 +539,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beObject");
-		expect(I18n.hasMessage("error.validation.beObject")).toEqual(true);
 	});
 
 	test("can succeed if value is an object", () => {
@@ -601,7 +553,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beArray");
-		expect(I18n.hasMessage("error.validation.beArray")).toEqual(true);
 	});
 
 	test("can succeed if value is an array", () => {
@@ -616,7 +567,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beArrayValue");
-		expect(I18n.hasMessage("error.validation.beArrayValue")).toEqual(true);
 	});
 
 	test("can fail if value is an array with no entries", () => {
@@ -625,7 +575,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beArrayValue");
-		expect(I18n.hasMessage("error.validation.beArrayValue")).toEqual(true);
 	});
 
 	test("can succeed if value is an array with entries", () => {
@@ -640,7 +589,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beIncluded");
-		expect(I18n.hasMessage("error.validation.beIncluded")).toEqual(true);
 	});
 
 	test("can fail if value is not in the options array", () => {
@@ -649,7 +597,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beIncluded");
-		expect(I18n.hasMessage("error.validation.beIncluded")).toEqual(true);
 	});
 
 	test("can succeed if value is in the options array", () => {
@@ -664,7 +611,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beByteArray");
-		expect(I18n.hasMessage("error.validation.beByteArray")).toEqual(true);
 	});
 
 	test("can succeed if value is a byte array", () => {
@@ -679,7 +625,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beJSON");
-		expect(I18n.hasMessage("error.validation.beJSON")).toEqual(true);
 	});
 
 	test("can succeed if value is valid JSON", () => {
@@ -694,7 +639,6 @@ describe("Validation", () => {
 		expect(failures.length).toEqual(1);
 		expect(failures[0].property).toEqual("val");
 		expect(failures[0].reason).toEqual("validation.beEmail");
-		expect(I18n.hasMessage("error.validation.beEmail")).toEqual(true);
 	});
 
 	test("can succeed if value is valid email", () => {

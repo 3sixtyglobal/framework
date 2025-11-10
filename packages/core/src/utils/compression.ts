@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@twin.org/nameof";
-import { Guards } from "./guards";
-import { CompressionType } from "../models/compressionType";
+import { Guards } from "./guards.js";
+import { CompressionType } from "../models/compressionType.js";
 
 /**
  * A class to handle compression.

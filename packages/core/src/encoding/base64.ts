@@ -4,8 +4,8 @@
 /* eslint-disable no-mixed-operators */
 
 import { nameof } from "@twin.org/nameof";
-import { GeneralError } from "../errors/generalError";
-import { Guards } from "../utils/guards";
+import { GeneralError } from "../errors/generalError.js";
+import { Guards } from "../utils/guards.js";
 
 /**
  * Class to help with base64 Encoding/Decoding.

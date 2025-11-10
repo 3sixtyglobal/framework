@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { GeneralError, Guards, Is } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
-import { DecoratorHelper } from "./decoratorHelper";
-import type { IEntitySchema } from "../models/IEntitySchema";
-import type { IEntitySchemaProperty } from "../models/IEntitySchemaProperty";
-import type { IEntitySort } from "../models/IEntitySort";
-import type { SortDirection } from "../models/sortDirection";
+import { DecoratorHelper } from "./decoratorHelper.js";
+import type { IEntitySchema } from "../models/IEntitySchema.js";
+import type { IEntitySchemaProperty } from "../models/IEntitySchemaProperty.js";
+import type { IEntitySort } from "../models/IEntitySort.js";
+import type { SortDirection } from "../models/sortDirection.js";
 
 /**
  * Class to help with entity schema operations.

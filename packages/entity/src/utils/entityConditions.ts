@@ -1,10 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { ArrayHelper, Is, ObjectHelper } from "@twin.org/core";
-import { ComparisonOperator } from "../models/comparisonOperator";
-import type { EntityCondition } from "../models/entityCondition";
-import type { IComparator } from "../models/IComparator";
-import { LogicalOperator } from "../models/logicalOperator";
+import { ComparisonOperator } from "../models/comparisonOperator.js";
+import type { EntityCondition } from "../models/entityCondition.js";
+import type { IComparator } from "../models/IComparator.js";
+import { LogicalOperator } from "../models/logicalOperator.js";
 
 /**
  * Class to perform condition checks.

@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import "reflect-metadata";
-import type { IEntitySchema } from "../models/IEntitySchema";
+import type { IEntitySchema } from "../models/IEntitySchema.js";
 
 const META_DATA_KEY = "EntitySchemaMetadata";
 

@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { FetchError } from "../../src/errors/fetchError";
-import { HttpStatusCode } from "../../src/models/httpStatusCode";
+import { FetchError } from "../../src/errors/fetchError.js";
+import { HttpStatusCode } from "../../src/models/httpStatusCode.js";
 
 describe("FetchError", () => {
 	test("can construct", () => {

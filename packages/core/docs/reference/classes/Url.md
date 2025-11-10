@@ -34,7 +34,7 @@ Runtime name for the class.
 
 ### tryParseExact()
 
-> `static` **tryParseExact**(`url`): `undefined` \| `Url`
+> `static` **tryParseExact**(`url`): `Url` \| `undefined`
 
 Try and parse a string into the url parts.
 
@@ -48,7 +48,7 @@ The url to parse.
 
 #### Returns
 
-`undefined` \| `Url`
+`Url` \| `undefined`
 
 The formatted url or undefined if the value is not a url.
 

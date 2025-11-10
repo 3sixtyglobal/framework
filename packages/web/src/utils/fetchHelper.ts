@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { AsyncCache, BaseError, Guards, Is, ObjectHelper, type IError } from "@twin.org/core";
 import { nameof, nameofCamelCase } from "@twin.org/nameof";
-import { FetchError } from "../errors/fetchError";
-import { HeaderTypes } from "../models/headerTypes";
-import { HttpMethod } from "../models/httpMethod";
-import { HttpStatusCode } from "../models/httpStatusCode";
-import type { IFetchOptions } from "../models/IFetchOptions";
-import type { IHttpHeaders } from "../models/IHttpHeaders";
-import { MimeTypes } from "../models/mimeTypes";
+import { FetchError } from "../errors/fetchError.js";
+import { HeaderTypes } from "../models/headerTypes.js";
+import { HttpMethod } from "../models/httpMethod.js";
+import { HttpStatusCode } from "../models/httpStatusCode.js";
+import type { IFetchOptions } from "../models/IFetchOptions.js";
+import type { IHttpHeaders } from "../models/IHttpHeaders.js";
+import { MimeTypes } from "../models/mimeTypes.js";
 
 /**
  * Class to helper with fetch operations.
@@ -187,8 +187,6 @@ export class FetchHelper {
 		}
 
 		if (retryCount > 1 && attempt === retryCount) {
-			// False positive as FetchError is derived from Error
-			// eslint-disable-next-line @typescript-eslint/only-throw-error
 			throw new FetchError(
 				source,
 				`${nameofCamelCase<FetchHelper>()}.retryLimitExceeded`,
@@ -198,7 +196,7 @@ export class FetchHelper {
 			);
 		}
 
-		throw lastError;
+		throw lastError as Error;
 	}
 
 	/**
@@ -265,8 +263,6 @@ export class FetchHelper {
 			try {
 				return (await response.json()) as U;
 			} catch (err) {
-				// False positive as FetchError is derived from Error
-				// eslint-disable-next-line @typescript-eslint/only-throw-error
 				throw new FetchError(
 					source,
 					`${nameofCamelCase<FetchHelper>()}.decodingJSON`,
@@ -281,8 +277,6 @@ export class FetchHelper {
 		const errorResponse = BaseError.fromError(errorResponseData);
 		const isErrorEmpty = BaseError.isEmpty(errorResponse);
 
-		// False positive as FetchError is derived from Error
-		// eslint-disable-next-line @typescript-eslint/only-throw-error
 		throw new FetchError(
 			source,
 			`${nameofCamelCase<FetchHelper>()}.failureStatusText`,
@@ -354,8 +348,6 @@ export class FetchHelper {
 			try {
 				return (await response.json()) as T;
 			} catch (err) {
-				// False positive as FetchError is derived from Error
-				// eslint-disable-next-line @typescript-eslint/only-throw-error
 				throw new FetchError(
 					source,
 					`${nameofCamelCase<FetchHelper>()}.decodingJSON`,
@@ -370,8 +362,6 @@ export class FetchHelper {
 		const errorResponse = BaseError.fromError(errorResponseData);
 		const isErrorEmpty = BaseError.isEmpty(errorResponse);
 
-		// False positive as FetchError is derived from Error
-		// eslint-disable-next-line @typescript-eslint/only-throw-error
 		throw new FetchError(
 			source,
 			`${nameofCamelCase<FetchHelper>()}.failureStatusText`,
@@ -408,7 +398,7 @@ export class FetchHelper {
 	 * @returns The cache entry if it exists.
 	 */
 	public static async setCacheEntry<T>(url: string, value: T): Promise<void> {
-		AsyncCache.set<T>(`${FetchHelper._CACHE_PREFIX}${url}`, value);
+		await AsyncCache.set<T>(`${FetchHelper._CACHE_PREFIX}${url}`, value);
 	}
 
 	/**

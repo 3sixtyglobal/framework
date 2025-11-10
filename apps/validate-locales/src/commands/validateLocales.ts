@@ -8,8 +8,8 @@ import { manual } from "@twin.org/nameof-transformer";
 import type { Command } from "commander";
 import * as glob from "glob";
 import * as ts from "typescript";
-import type { ILocaleDictionaryEntry } from "../models/ILocaleDictionaryEntry";
-import type { ILocaleFailure } from "../models/ILocaleFailure";
+import type { ILocaleDictionaryEntry } from "../models/ILocaleDictionaryEntry.js";
+import type { ILocaleFailure } from "../models/ILocaleFailure.js";
 
 const ERROR_TYPES = [
 	{ name: "GeneralError", dynamicPropertyIndex: 2 },
@@ -37,7 +37,8 @@ const SKIP_LITERALS = [
 	/\.lock$/i, // ending in .lock
 	/\.toml$/i, // ending in .toml
 	/\.{3}/i, // ...
-	/@twin\.org/ // starting with @twin.org
+	/@twin\.org/, // starting with @twin.org
+	/^console.log/i // console.log
 ];
 
 const SKIP_METHODS = [/^generateRest/, /^generateSocket/];
@@ -487,7 +488,9 @@ function processCallExpression(
 ): boolean {
 	if (ts.isPropertyAccessExpression(node.expression)) {
 		const functionName = node.expression.name.getText();
-		if (
+		if (node.expression.getText() === "console.log") {
+			return true;
+		} else if (
 			functionName === "log" &&
 			node.arguments.length === 1 &&
 			ts.isObjectLiteralExpression(node.arguments[0])

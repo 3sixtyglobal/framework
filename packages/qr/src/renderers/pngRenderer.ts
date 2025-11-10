@@ -4,9 +4,9 @@
 import { GeneralError, Guards } from "@twin.org/core";
 import { Color, PngEncoder } from "@twin.org/image";
 import { nameof } from "@twin.org/nameof";
-import type { IBitmapRendererOptions } from "../models/IBitmapRendererOptions";
-import type { IRendererOptions } from "../models/IRendererOptions";
-import type { QRCellData } from "../models/qrCellData";
+import type { IBitmapRendererOptions } from "../models/IBitmapRendererOptions.js";
+import type { IRendererOptions } from "../models/IRendererOptions.js";
+import type { QRCellData } from "../models/qrCellData.js";
 
 /**
  * Class to render qr data as png.

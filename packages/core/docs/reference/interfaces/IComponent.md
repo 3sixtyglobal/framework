@@ -2,15 +2,21 @@
 
 Interface describing a component which can be bootstrapped, started and stopped.
 
-## Indexable
-
-\[`key`: `string`\]: `any`
-
-All methods are optional, so we introduce an index signature to allow
-any additional properties or methods, which removes the TypeScript error where
-the class has no properties in common with the type.
-
 ## Methods
+
+### className()
+
+> **className**(): `string`
+
+Returns the class name of the component.
+
+#### Returns
+
+`string`
+
+The class name of the component.
+
+***
 
 ### bootstrap()?
 
@@ -36,17 +42,11 @@ True if the bootstrapping process was successful.
 
 ### start()?
 
-> `optional` **start**(`nodeIdentity?`, `nodeLoggingComponentType?`): `Promise`\<`void`\>
+> `optional` **start**(`nodeLoggingComponentType?`): `Promise`\<`void`\>
 
 The component needs to be started when the node is initialized.
 
 #### Parameters
-
-##### nodeIdentity?
-
-`string`
-
-The identity of the node starting the component.
 
 ##### nodeLoggingComponentType?
 
@@ -64,17 +64,11 @@ Nothing.
 
 ### stop()?
 
-> `optional` **stop**(`nodeIdentity?`, `nodeLoggingComponentType?`): `Promise`\<`void`\>
+> `optional` **stop**(`nodeLoggingComponentType?`): `Promise`\<`void`\>
 
 The component needs to be stopped when the node is closed.
 
 #### Parameters
-
-##### nodeIdentity?
-
-`string`
-
-The identity of the node stopping the component.
 
 ##### nodeLoggingComponentType?
 

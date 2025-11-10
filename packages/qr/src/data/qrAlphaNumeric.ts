@@ -3,9 +3,9 @@
 /* eslint-disable no-mixed-operators */
 import { GeneralError } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
-import { QRDataBase } from "./qrDataBase";
-import type { BitBuffer } from "../helpers/bitBuffer";
-import { QRDataMode } from "../models/qrDataMode";
+import { QRDataBase } from "./qrDataBase.js";
+import type { BitBuffer } from "../helpers/bitBuffer.js";
+import { QRDataMode } from "../models/qrDataMode.js";
 
 /**
  * QR Data for representing a alpha numeric.

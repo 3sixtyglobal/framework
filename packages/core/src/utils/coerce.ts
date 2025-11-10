@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Converter } from "./converter";
-import { Is } from "./is";
-import { CoerceType } from "../models/coerceType";
+import { Converter } from "./converter.js";
+import { Is } from "./is.js";
+import { CoerceType } from "../models/coerceType.js";
 
 /**
  * Coerce an object from one type to another.
@@ -266,7 +266,6 @@ export class Coerce {
 	 * @returns The coerced value.
 	 */
 	public static byType(value: unknown, type?: CoerceType): unknown {
-		// eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
 		switch (type) {
 			case CoerceType.String:
 				return Coerce.string(value);

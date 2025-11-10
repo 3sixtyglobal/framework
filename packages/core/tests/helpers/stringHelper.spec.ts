@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { StringHelper } from "../../src/helpers/stringHelper";
+import { StringHelper } from "../../src/helpers/stringHelper.js";
 
 describe("StringHelper", () => {
 	test("can trim trailing slashes for undefined string", () => {

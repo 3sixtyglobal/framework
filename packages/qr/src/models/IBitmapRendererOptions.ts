@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import type { Color } from "@twin.org/image";
-import type { IRendererOptions } from "./IRendererOptions";
+import type { IRendererOptions } from "./IRendererOptions.js";
 
 /**
  * Options for rendering.

@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { ObjectOrArray } from "../models/objectOrArray";
-import { Is } from "../utils/is";
+import type { ObjectOrArray } from "../models/objectOrArray.js";
+import { Is } from "../utils/is.js";
 
 /**
  * Class to help with arrays.

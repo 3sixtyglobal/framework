@@ -1,7 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-/* eslint-disable max-classes-per-file */
-import { Is } from "../../src/utils/is";
+import { Is } from "../../src/utils/is.js";
 
 describe("Is", () => {
 	test("undefined can succeed if value is undefined", () => {
@@ -393,7 +392,6 @@ describe("Is", () => {
 	});
 
 	test("function can succeed when the signature matches", () => {
-		// eslint-disable-next-line unicorn/consistent-function-scoping
 		const fn: (a: number, b: string) => number = (a: number, b: string) => a;
 		expect(Is.function(fn)).toEqual(true);
 		if (Is.function(fn)) {
@@ -402,7 +400,6 @@ describe("Is", () => {
 	});
 
 	test("function can fail when the signature does not match", () => {
-		// eslint-disable-next-line unicorn/consistent-function-scoping
 		const fn: (a: number, b: string) => number = (a: number, b: string) => a;
 		expect(Is.function<(a: number, b: string) => number>(fn)).toEqual(true);
 		if (Is.function<(a: number, b: string) => number>(fn)) {
@@ -456,13 +453,12 @@ describe("Is", () => {
 		/**
 		 * MyFunc is a regular function.
 		 */
-		// eslint-disable-next-line unicorn/consistent-function-scoping
+
 		function MyFunc(): void {}
 		expect(Is.class(MyFunc)).toBe(false);
 	});
 
 	test("should return false for arrow functions", () => {
-		// eslint-disable-next-line unicorn/consistent-function-scoping
 		const arrow = (): void => {};
 		expect(Is.class(arrow)).toBe(false);
 	});

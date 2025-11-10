@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Converter } from "@twin.org/core";
-import testData from "./bip39.json";
-import { Bip39 } from "../../src/keys/bip39";
+import testData from "./bip39.json" with { type: "json" };
+import { Bip39 } from "../../src/keys/bip39.js";
 
 describe("Bip39", () => {
 	test("Can generate a random mnemonic with default length", () => {

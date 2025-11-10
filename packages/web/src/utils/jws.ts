@@ -3,7 +3,7 @@
 import { GeneralError, Guards, Is } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 import { CompactSign, flattenedVerify } from "jose";
-import type { JwkCryptoKey } from "../models/jwkCryptoKey";
+import type { JwkCryptoKey } from "../models/jwkCryptoKey.js";
 
 /**
  * Class to handle JSON Web Signatures.

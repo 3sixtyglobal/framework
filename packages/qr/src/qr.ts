@@ -5,17 +5,17 @@
 /* eslint-disable no-mixed-operators */
 import { GeneralError, Is } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
-import { QRAlphaNumeric } from "./data/qrAlphaNumeric";
-import { QRByte8 } from "./data/qrByte8";
-import type { QRDataBase } from "./data/qrDataBase";
-import { QRNumber } from "./data/qrNumber";
-import { BitBuffer } from "./helpers/bitBuffer";
-import { MathHelper } from "./helpers/mathHelper";
-import { Polynomial } from "./helpers/polynomial";
-import { QRHelper } from "./helpers/qrHelper";
-import { RSBlock } from "./helpers/rsBlock";
-import { ErrorCorrectLevel } from "./models/errorCorrectLevel";
-import type { QRCellData } from "./models/qrCellData";
+import { QRAlphaNumeric } from "./data/qrAlphaNumeric.js";
+import { QRByte8 } from "./data/qrByte8.js";
+import type { QRDataBase } from "./data/qrDataBase.js";
+import { QRNumber } from "./data/qrNumber.js";
+import { BitBuffer } from "./helpers/bitBuffer.js";
+import { MathHelper } from "./helpers/mathHelper.js";
+import { Polynomial } from "./helpers/polynomial.js";
+import { QRHelper } from "./helpers/qrHelper.js";
+import { RSBlock } from "./helpers/rsBlock.js";
+import { ErrorCorrectLevel } from "./models/errorCorrectLevel.js";
+import type { QRCellData } from "./models/qrCellData.js";
 
 /**
  * Class to generates QR codes from data.

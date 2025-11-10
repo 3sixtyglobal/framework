@@ -6,12 +6,10 @@
  */
 export interface IComponent {
 	/**
-	 * All methods are optional, so we introduce an index signature to allow
-	 * any additional properties or methods, which removes the TypeScript error where
-	 * the class has no properties in common with the type.
+	 * Returns the class name of the component.
+	 * @returns The class name of the component.
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	[key: string]: any;
+	className(): string;
 
 	/**
 	 * Bootstrap the component by creating and initializing any resources it needs.
@@ -22,17 +20,15 @@ export interface IComponent {
 
 	/**
 	 * The component needs to be started when the node is initialized.
-	 * @param nodeIdentity The identity of the node starting the component.
 	 * @param nodeLoggingComponentType The node logging component type.
 	 * @returns Nothing.
 	 */
-	start?(nodeIdentity?: string, nodeLoggingComponentType?: string): Promise<void>;
+	start?(nodeLoggingComponentType?: string): Promise<void>;
 
 	/**
 	 * The component needs to be stopped when the node is closed.
-	 * @param nodeIdentity The identity of the node stopping the component.
 	 * @param nodeLoggingComponentType The node logging component type.
 	 * @returns Nothing.
 	 */
-	stop?(nodeIdentity?: string, nodeLoggingComponentType?: string): Promise<void>;
+	stop?(nodeLoggingComponentType?: string): Promise<void>;
 }

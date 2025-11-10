@@ -1,12 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { ObjectHelper } from "../../src/helpers/objectHelper";
-import { I18n } from "../../src/utils/i18n";
+import { ObjectHelper } from "../../src/helpers/objectHelper.js";
 
 describe("ObjectHelper", () => {
-	beforeAll(async () => {
-		I18n.addDictionary("en", await import("../../locales/en.json"));
-	});
+	beforeAll(async () => {});
 
 	test("toBytes can return empty array with undefined object", () => {
 		expect(ObjectHelper.toBytes(undefined).length).toEqual(0);
@@ -44,7 +41,6 @@ describe("ObjectHelper", () => {
 		expect(() => ObjectHelper.fromBytes(Uint8Array.from([110]))).toThrow(
 			expect.objectContaining({ name: "GeneralError", message: "objectHelper.failedBytesToJSON" })
 		);
-		expect(I18n.hasMessage("error.objectHelper.failedBytesToJSON")).toEqual(true);
 	});
 
 	test("fromBytes can return an object with a non empty array", () => {

@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { ComparisonOperator } from "../../src/models/comparisonOperator";
-import { LogicalOperator } from "../../src/models/logicalOperator";
-import { EntityConditions } from "../../src/utils/entityConditions";
+import { ComparisonOperator } from "../../src/models/comparisonOperator.js";
+import { LogicalOperator } from "../../src/models/logicalOperator.js";
+import { EntityConditions } from "../../src/utils/entityConditions.js";
 
 describe("EntityConditions", () => {
 	test("can match if conditions are undefined", async () => {

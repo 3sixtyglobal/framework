@@ -3,8 +3,8 @@
 import { Converter } from "@twin.org/core";
 import { Ed25519 } from "@twin.org/crypto";
 import type { CryptoKey } from "jose";
-import type { IJwk } from "../../src/models/IJwk";
-import { Jwk } from "../../src/utils/jwk";
+import type { IJwk } from "../../src/models/IJwk.js";
+import { Jwk } from "../../src/utils/jwk.js";
 
 describe("Jwk", () => {
 	test("can import a public key", async () => {

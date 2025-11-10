@@ -1,9 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Is } from "@twin.org/core";
-import type { EntitySchemaPropertyType } from "../models/entitySchemaPropertyType";
-import type { IEntitySort } from "../models/IEntitySort";
-import { SortDirection } from "../models/sortDirection";
+import type { EntitySchemaPropertyType } from "../models/entitySchemaPropertyType.js";
+import type { IEntitySort } from "../models/IEntitySort.js";
+import { SortDirection } from "../models/sortDirection.js";
 
 /**
  * Class to perform sort operations on entities.

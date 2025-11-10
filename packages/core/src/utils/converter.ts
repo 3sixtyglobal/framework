@@ -1,10 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable no-bitwise */
-import { Base58 } from "../encoding/base58";
-import { Base64 } from "../encoding/base64";
-import { Base64Url } from "../encoding/base64Url";
-import { HexHelper } from "../helpers/hexHelper";
+import { Base58 } from "../encoding/base58.js";
+import { Base64 } from "../encoding/base64.js";
+import { Base64Url } from "../encoding/base64Url.js";
+import { HexHelper } from "../helpers/hexHelper.js";
 
 /**
  * Convert arrays to and from different formats.

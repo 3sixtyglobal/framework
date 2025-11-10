@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { UnauthorizedError } from "../../src/errors/unauthorizedError";
+import { UnauthorizedError } from "../../src/errors/unauthorizedError.js";
 
 describe("UnauthorizedError", () => {
 	test("can construct", () => {

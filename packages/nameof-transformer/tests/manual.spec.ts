@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { manual } from "../src/manual";
+import { manual } from "../src/manual.js";
 
 describe("Manual", () => {
 	test("can transform code with nameof generics in it", () => {

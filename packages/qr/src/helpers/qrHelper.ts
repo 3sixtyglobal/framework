@@ -3,11 +3,11 @@
 /* eslint-disable no-bitwise */
 import { GeneralError } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
-import { MathHelper } from "./mathHelper";
-import { Polynomial } from "./polynomial";
-import { ErrorCorrectLevel } from "../models/errorCorrectLevel";
-import { MaskPattern } from "../models/maskPattern";
-import { QRDataMode } from "../models/qrDataMode";
+import { MathHelper } from "./mathHelper.js";
+import { Polynomial } from "./polynomial.js";
+import { ErrorCorrectLevel } from "../models/errorCorrectLevel.js";
+import { MaskPattern } from "../models/maskPattern.js";
+import { QRDataMode } from "../models/qrDataMode.js";
 
 /**
  * Helper methods for QR generation.

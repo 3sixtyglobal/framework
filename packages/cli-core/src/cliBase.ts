@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { Coerce, I18n, Is } from "@twin.org/core";
 import { Command } from "commander";
-import { CLIDisplay } from "./cliDisplay";
+import { CLIDisplay } from "./cliDisplay.js";
 import {
 	addGlobalOptions,
 	handleGlobalOptions,
 	initGlobalOptions,
 	initLocales
-} from "./commands/global";
-import type { ICliOptions } from "./models/ICliOptions";
+} from "./commands/global.js";
+import type { ICliOptions } from "./models/ICliOptions.js";
 
 /**
  * The main entry point for the CLI.

@@ -1,4 +1,4 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-export * from "./cli";
-export * from "./commands/validateLocales";
+export * from "./cli.js";
+export * from "./commands/validateLocales.js";

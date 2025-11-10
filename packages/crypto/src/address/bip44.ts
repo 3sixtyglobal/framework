@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { Converter, GeneralError } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
-import { Bech32 } from "../address/bech32";
-import { Ed25519 } from "../curves/ed25519";
-import { Secp256k1 } from "../curves/secp256k1";
-import { Blake2b } from "../hashes/blake2b";
-import { Bip32Path } from "../keys/bip32Path";
-import { Slip0010 } from "../keys/slip0010";
-import { KeyType } from "../models/keyType";
+import { Bech32 } from "../address/bech32.js";
+import { Ed25519 } from "../curves/ed25519.js";
+import { Secp256k1 } from "../curves/secp256k1.js";
+import { Blake2b } from "../hashes/blake2b.js";
+import { Bip32Path } from "../keys/bip32Path.js";
+import { Slip0010 } from "../keys/slip0010.js";
+import { KeyType } from "../models/keyType.js";
 
 /**
  * Implementation of Bip44 for address generation.

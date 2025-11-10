@@ -4,7 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { CLIBase } from "@twin.org/cli-core";
 import type { Command } from "commander";
-import { buildCommandMergeLocales } from "./commands/mergeLocales";
+import { buildCommandMergeLocales } from "./commands/mergeLocales.js";
 
 /**
  * The main entry point for the CLI.
@@ -27,7 +27,7 @@ export class CLI extends CLIBase {
 			{
 				title: "TWIN Merge Locales",
 				appName: "merge-locales",
-				version: "0.0.2-next.22", // x-release-please-version
+				version: "0.0.3-next.0", // x-release-please-version
 				icon: "⚙️ ",
 				supportsEnvFiles: false,
 				overrideOutputWidth: options?.overrideOutputWidth

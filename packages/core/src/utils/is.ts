@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { HexHelper } from "../helpers/hexHelper";
+import { HexHelper } from "../helpers/hexHelper.js";
 
 /**
  * Class to check types of objects.

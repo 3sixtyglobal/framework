@@ -1,10 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { HttpMethod } from "../../src/models/httpMethod";
-import { HttpStatusCode } from "../../src/models/httpStatusCode";
-import type { IFetchOptions } from "../../src/models/IFetchOptions";
-import type { IHttpHeaders } from "../../src/models/IHttpHeaders";
-import { FetchHelper } from "../../src/utils/fetchHelper";
+import type { HttpMethod } from "../../src/models/httpMethod.js";
+import { HttpStatusCode } from "../../src/models/httpStatusCode.js";
+import type { IFetchOptions } from "../../src/models/IFetchOptions.js";
+import type { IHttpHeaders } from "../../src/models/IHttpHeaders.js";
+import { FetchHelper } from "../../src/utils/fetchHelper.js";
 
 const fetchMock = vi.fn();
 

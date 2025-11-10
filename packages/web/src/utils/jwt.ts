@@ -4,9 +4,9 @@ import { Converter, GeneralError, Guards, Is, ObjectHelper } from "@twin.org/cor
 import { Ed25519 } from "@twin.org/crypto";
 import { nameof } from "@twin.org/nameof";
 import { jwtVerify, SignJWT } from "jose";
-import type { IJwtHeader } from "../models/IJwtHeader";
-import type { IJwtPayload } from "../models/IJwtPayload";
-import type { JwkCryptoKey } from "../models/jwkCryptoKey";
+import type { IJwtHeader } from "../models/IJwtHeader.js";
+import type { IJwtPayload } from "../models/IJwtPayload.js";
+import type { JwkCryptoKey } from "../models/jwkCryptoKey.js";
 
 /**
  * Class to handle JSON Web Tokens.

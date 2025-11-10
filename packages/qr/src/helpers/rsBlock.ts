@@ -3,7 +3,7 @@
 /* eslint-disable no-mixed-operators */
 import { GeneralError } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
-import { ErrorCorrectLevel } from "../models/errorCorrectLevel";
+import { ErrorCorrectLevel } from "../models/errorCorrectLevel.js";
 
 /**
  * Class to represent a RS Block.

@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Is } from "./is";
-import { SharedStore } from "./sharedStore";
+import { Is } from "./is.js";
+import { SharedStore } from "./sharedStore.js";
 
 /**
  * Cache the results from asynchronous requests.

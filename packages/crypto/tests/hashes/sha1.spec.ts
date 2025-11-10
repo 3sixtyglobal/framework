@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Converter } from "@twin.org/core";
-import testData from "./sha1.json";
-import { Sha1 } from "../../src/hashes/sha1";
+import testData from "./sha1.json" with { type: "json" };
+import { Sha1 } from "../../src/hashes/sha1.js";
 
 describe("Sha1", () => {
 	test("Can perform a sha1 on short text", () => {

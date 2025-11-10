@@ -90,7 +90,7 @@ True if the namespace matches.
 
 ### tryParseExact()
 
-> `static` **tryParseExact**(`urn`): `undefined` \| `Urn`
+> `static` **tryParseExact**(`urn`): `Urn` \| `undefined`
 
 Try and parse a string into the urn parts.
 
@@ -104,7 +104,7 @@ The urn to parse.
 
 #### Returns
 
-`undefined` \| `Urn`
+`Urn` \| `undefined`
 
 The formatted urn or undefined if the value is not a urn.
 
@@ -134,7 +134,7 @@ The formatted urn.
 
 ### addPrefix()
 
-> `static` **addPrefix**(`urn`): `undefined` \| `string`
+> `static` **addPrefix**(`urn`): `string` \| `undefined`
 
 Add a urn: prefix if there isn't one already.
 
@@ -148,7 +148,7 @@ The urn string to add a prefix to.
 
 #### Returns
 
-`undefined` \| `string`
+`string` \| `undefined`
 
 The urn with a prefix.
 

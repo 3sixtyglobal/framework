@@ -4,8 +4,8 @@ import { Converter, GeneralError, Guards, Is, JsonHelper, ObjectHelper } from "@
 import { Ed25519, Sha256 } from "@twin.org/crypto";
 import { nameof } from "@twin.org/nameof";
 import { importJWK } from "jose";
-import type { IJwk } from "../models/IJwk";
-import type { JwkCryptoKey } from "../models/jwkCryptoKey";
+import type { IJwk } from "../models/IJwk.js";
+import type { JwkCryptoKey } from "../models/jwkCryptoKey.js";
 
 /**
  * Class to handle JSON Web Keys.
@@ -25,7 +25,8 @@ export class Jwk {
 	public static async toCryptoKey(jwk: IJwk, alg?: string): Promise<JwkCryptoKey> {
 		Guards.object<IJwk>(Jwk.CLASS_NAME, nameof(jwk), jwk);
 		try {
-			return importJWK(jwk, alg);
+			const imported = await importJWK(jwk, alg);
+			return imported;
 		} catch (err) {
 			throw new GeneralError(Jwk.CLASS_NAME, "jwkImportFailed", undefined, err);
 		}

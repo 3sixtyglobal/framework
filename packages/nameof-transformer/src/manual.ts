@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { camelCase, kebabCase } from "./stringHelper";
+import { camelCase, kebabCase } from "./stringHelper.js";
 
 /**
  * Replace the transformers manually.

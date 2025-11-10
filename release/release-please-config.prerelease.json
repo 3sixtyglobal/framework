@@ -105,6 +105,13 @@
 				"src/index.ts"
 			]
 		},
+		"packages/context": {
+			"package-name": "context",
+			"changelog-path": "docs/changelog.md",
+			"extra-files": [
+				"src/index.ts"
+			]
+		},
 		"apps/crypto-cli": {
 			"package-name": "crypto-cli",
 			"changelog-path": "docs/changelog.md",
@@ -134,6 +141,7 @@
 				"qr",
 				"web",
 				"modules",
+				"context",
 				"crypto-cli"
 			]
 		}

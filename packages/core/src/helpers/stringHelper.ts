@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable no-continue */
 /* eslint-disable no-bitwise */
-import { Is } from "../utils/is";
+import { Is } from "../utils/is.js";
 
 /**
  * Class to help with string.
@@ -41,7 +41,7 @@ export class StringHelper {
 	public static kebabCase(input: string, stripInterfacePrefix: boolean = true): string {
 		if (Is.stringValue(input)) {
 			let output = input;
-			if (stripInterfacePrefix && /I[A-Z]/.test(output)) {
+			if (stripInterfacePrefix && /^I[A-Z]/.test(output)) {
 				output = output.slice(1);
 			}
 			return StringHelper.words(output).join("-").toLowerCase();
@@ -58,7 +58,7 @@ export class StringHelper {
 	public static snakeCase(input: string, stripInterfacePrefix: boolean = true): string {
 		if (Is.stringValue(input)) {
 			let output = input;
-			if (stripInterfacePrefix && /I[A-Z]/.test(output)) {
+			if (stripInterfacePrefix && /^I[A-Z]/.test(output)) {
 				output = output.slice(1);
 			}
 			return StringHelper.words(output).join("_").toLowerCase();
@@ -75,7 +75,7 @@ export class StringHelper {
 	public static titleCase(input: string, stripInterfacePrefix: boolean = true): string {
 		if (Is.stringValue(input)) {
 			let output = input;
-			if (stripInterfacePrefix && /I[A-Z]/.test(output)) {
+			if (stripInterfacePrefix && /^I[A-Z]/.test(output)) {
 				output = output.slice(1);
 			}
 			return StringHelper.words(output)
@@ -94,7 +94,7 @@ export class StringHelper {
 	public static pascalCase(input: string, stripInterfacePrefix: boolean = true): string {
 		if (Is.stringValue(input)) {
 			let output = input;
-			if (stripInterfacePrefix && /I[A-Z]/.test(output)) {
+			if (stripInterfacePrefix && /^I[A-Z]/.test(output)) {
 				output = output.slice(1);
 			}
 			return StringHelper.words(output)
@@ -113,7 +113,7 @@ export class StringHelper {
 	public static camelCase(input: string, stripInterfacePrefix: boolean = true): string {
 		if (Is.stringValue(input)) {
 			let output = input;
-			if (stripInterfacePrefix && /I[A-Z]/.test(output)) {
+			if (stripInterfacePrefix && /^I[A-Z]/.test(output)) {
 				output = output.slice(1);
 			}
 			const words = StringHelper.words(output);
@@ -136,7 +136,7 @@ export class StringHelper {
 	public static wordPath(input: string, stripInterfacePrefix: boolean = true): string {
 		if (Is.stringValue(input)) {
 			let output = input;
-			if (stripInterfacePrefix && /I[A-Z]/.test(output)) {
+			if (stripInterfacePrefix && /^I[A-Z]/.test(output)) {
 				output = output.slice(1);
 			}
 			const words = StringHelper.words(output);
@@ -153,7 +153,7 @@ export class StringHelper {
 	public static stripPrefix(input: string): string {
 		if (Is.stringValue(input)) {
 			let output = input;
-			if (/I[A-Z]/.test(output)) {
+			if (/^I[A-Z]/.test(output)) {
 				output = output.slice(1);
 			}
 			return output;

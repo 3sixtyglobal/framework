@@ -1,11 +1,11 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { StringHelper } from "./stringHelper";
-import { BaseError } from "../errors/baseError";
-import type { IError } from "../models/IError";
-import type { IValidationFailure } from "../models/IValidationFailure";
-import { I18n } from "../utils/i18n";
-import { Is } from "../utils/is";
+import { StringHelper } from "./stringHelper.js";
+import { BaseError } from "../errors/baseError.js";
+import type { IError } from "../models/IError.js";
+import type { IValidationFailure } from "../models/IValidationFailure.js";
+import { I18n } from "../utils/i18n.js";
+import { Is } from "../utils/is.js";
 
 /**
  * Error helper functions.

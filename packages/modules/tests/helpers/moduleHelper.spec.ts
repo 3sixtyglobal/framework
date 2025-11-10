@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import path from "node:path";
-import { ModuleHelper } from "../../src/helpers/moduleHelper";
+import { ModuleHelper } from "../../src/helpers/moduleHelper.js";
 
 const TEST_MODULE = `file://${path.join(__dirname, "testModule.js")}`;
 

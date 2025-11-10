@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Converter } from "@twin.org/core";
-import testData from "./hmacSha1.json";
-import { HmacSha1 } from "../../src/hashes/hmacSha1";
+import testData from "./hmacSha1.json" with { type: "json" };
+import { HmacSha1 } from "../../src/hashes/hmacSha1.js";
 
 describe("HmacSha1", () => {
 	test("Can perform a hmac on short text", () => {

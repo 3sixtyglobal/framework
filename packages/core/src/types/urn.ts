@@ -1,12 +1,12 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@twin.org/nameof";
-import { GuardError } from "../errors/guardError";
-import { RandomHelper } from "../helpers/randomHelper";
-import type { IValidationFailure } from "../models/IValidationFailure";
-import { Converter } from "../utils/converter";
-import { Guards } from "../utils/guards";
-import { Is } from "../utils/is";
+import { GuardError } from "../errors/guardError.js";
+import { RandomHelper } from "../helpers/randomHelper.js";
+import type { IValidationFailure } from "../models/IValidationFailure.js";
+import { Converter } from "../utils/converter.js";
+import { Guards } from "../utils/guards.js";
+import { Is } from "../utils/is.js";
 
 /**
  * Class to help with urns.

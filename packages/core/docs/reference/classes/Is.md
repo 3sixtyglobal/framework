@@ -60,7 +60,7 @@ True if the value is a empty.
 
 ### empty()
 
-> `static` **empty**(`value`): value is undefined \| null
+> `static` **empty**(`value`): value is null \| undefined
 
 Is the property null or undefined.
 
@@ -74,7 +74,7 @@ The value to test.
 
 #### Returns
 
-value is undefined \| null
+value is null \| undefined
 
 True if the value is a empty.
 

@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Converter } from "@twin.org/core";
-import { PemHelper } from "../../src/helpers/pemHelper";
+import { PemHelper } from "../../src/helpers/pemHelper.js";
 
 describe("PemHelper", () => {
 	test("can strip PEM content", () => {

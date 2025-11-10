@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Converter } from "@twin.org/core";
-import { Totp } from "../../src/otp/totp";
+import { Totp } from "../../src/otp/totp.js";
 
 describe("Totp", () => {
 	test("can generate and verify OTP", () => {

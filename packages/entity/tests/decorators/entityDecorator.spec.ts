@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { entity } from "../../src/decorators/entityDecorator";
-import { DecoratorHelper } from "../../src/utils/decoratorHelper";
+import { entity } from "../../src/decorators/entityDecorator.js";
+import { DecoratorHelper } from "../../src/utils/decoratorHelper.js";
 
 /**
  * Test entity.

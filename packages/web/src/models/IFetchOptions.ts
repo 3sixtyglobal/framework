@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { IHttpHeaders } from "./IHttpHeaders";
+import type { IHttpHeaders } from "./IHttpHeaders.js";
 
 /**
  * Options for call to the fetch helper.

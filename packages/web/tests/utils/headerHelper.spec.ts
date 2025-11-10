@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { HeaderHelper } from "../../src/utils/headerHelper";
+import { HeaderHelper } from "../../src/utils/headerHelper.js";
 
 describe("HeaderHelper", () => {
 	test("can create a bearer header from a token", async () => {

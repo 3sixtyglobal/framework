@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { nameOfPluginTransform } from "../src/nameOfPlugin";
+import { nameOfPluginTransform } from "../src/nameOfPlugin.js";
 
 describe("NameOfPlugin", () => {
 	test("can transform code with nameof generics in it", () => {

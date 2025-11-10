@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { GeneralError, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
-import type { IRendererOptions } from "../models/IRendererOptions";
-import type { ITextRendererOptions } from "../models/ITextRendererOptions";
-import type { QRCellData } from "../models/qrCellData";
+import type { IRendererOptions } from "../models/IRendererOptions.js";
+import type { ITextRendererOptions } from "../models/ITextRendererOptions.js";
+import type { QRCellData } from "../models/qrCellData.js";
 
 /**
  * Class to render qr data as text.

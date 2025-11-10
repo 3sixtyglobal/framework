@@ -1,8 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Factory } from "../../src/factories/factory";
-import type { IComponent } from "../../src/models/IComponent";
-import { I18n } from "../../src/utils/i18n";
+import { Factory } from "../../src/factories/factory.js";
+import type { IComponent } from "../../src/models/IComponent.js";
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const TestFactory = Factory.createFactory<IComponent>("component");
@@ -29,12 +28,18 @@ class TestComponent implements IComponent {
 		this.name = name;
 		this.foo = 1;
 	}
+
+	/**
+	 * Returns the class name of the component.
+	 * @returns The class name of the component.
+	 */
+	public className(): string {
+		return "TestComponent";
+	}
 }
 
 describe("Factory", () => {
-	beforeAll(async () => {
-		I18n.addDictionary("en", await import("../../locales/en.json"));
-	});
+	beforeAll(async () => {});
 
 	test("register can fail if name is undefined", () => {
 		expect(() => TestFactory.register(undefined as never, undefined as never)).toThrow(
@@ -70,7 +75,6 @@ describe("Factory", () => {
 				message: "factory.noGet"
 			})
 		);
-		expect(I18n.hasMessage("error.factory.noGet")).toEqual(true);
 	});
 
 	test("register and get can succeed", () => {
@@ -128,7 +132,6 @@ describe("Factory", () => {
 				message: "factory.noUnregister"
 			})
 		);
-		expect(I18n.hasMessage("error.factory.noUnregister")).toEqual(true);
 	});
 
 	test("can reset the factory", () => {

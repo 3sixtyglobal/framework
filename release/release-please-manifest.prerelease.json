@@ -1,6 +1,7 @@
 {
 	"packages/cli-core": "0.0.2-next.22",
 	"packages/core": "0.0.2-next.22",
+	"packages/context": "0.0.2-next.22",
 	"packages/crypto": "0.0.2-next.22",
 	"packages/entity": "0.0.2-next.22",
 	"packages/image": "0.0.2-next.22",

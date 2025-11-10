@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import testData from "./base32.json";
-import { Base32 } from "../../src/encoding/base32";
-import { Converter } from "../../src/utils/converter";
+import testData from "./base32.json" with { type: "json" };
+import { Base32 } from "../../src/encoding/base32.js";
+import { Converter } from "../../src/utils/converter.js";
 
 // Test vectors
 // https://datatracker.ietf.org/doc/html/rfc4648#section-10

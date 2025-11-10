@@ -3,10 +3,10 @@
 import { Converter } from "@twin.org/core";
 import { Bip39, Blake2b, Ed25519 } from "@twin.org/crypto";
 import { SignJWT } from "jose";
-import type { IJwtHeader } from "../../src/models/IJwtHeader";
-import type { IJwtPayload } from "../../src/models/IJwtPayload";
-import type { JwkCryptoKey } from "../../src/models/jwkCryptoKey";
-import { Jwt } from "../../src/utils/jwt";
+import type { IJwtHeader } from "../../src/models/IJwtHeader.js";
+import type { IJwtPayload } from "../../src/models/IJwtPayload.js";
+import type { JwkCryptoKey } from "../../src/models/jwkCryptoKey.js";
+import { Jwt } from "../../src/utils/jwt.js";
 
 describe("Jwt", () => {
 	test("can fail to encode with missing header", async () => {
