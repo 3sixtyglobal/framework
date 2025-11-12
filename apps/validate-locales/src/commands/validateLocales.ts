@@ -535,12 +535,15 @@ function processCallExpression(
 					});
 				}
 			} else {
-				failures.push({
-					type: "key",
-					key: message?.getText() ?? "",
-					source: path.resolve(sourceFile.fileName),
-					...getSourcePosition(sourceFile, node)
-				});
+				const messageText = message?.getText();
+				if (Is.stringValue(messageText)) {
+					failures.push({
+						type: "key",
+						key: messageText,
+						source: path.resolve(sourceFile.fileName),
+						...getSourcePosition(sourceFile, node)
+					});
+				}
 			}
 			return true;
 		} else if (
