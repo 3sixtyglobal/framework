@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.0.3-next.3](https://github.com/twinfoundation/framework/compare/validate-locales-v0.0.3-next.2...validate-locales-v0.0.3-next.3) (2025-11-12)
+
+
+### Bug Fixes
+
+* validate locales missing log key ([54fb89a](https://github.com/twinfoundation/framework/commit/54fb89ae9e05ab7dc79e42dc4933575c39bffd8a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.0.3-next.2 to 0.0.3-next.3
+    * @twin.org/core bumped from 0.0.3-next.2 to 0.0.3-next.3
+    * @twin.org/nameof bumped from 0.0.3-next.2 to 0.0.3-next.3
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.2 to 0.0.3-next.3
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.0.3-next.2 to 0.0.3-next.3
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.2 to 0.0.3-next.3
+
 ## [0.0.3-next.2](https://github.com/twinfoundation/framework/compare/validate-locales-v0.0.3-next.1...validate-locales-v0.0.3-next.2) (2025-11-12)
 
 
