@@ -1,5 +1,25 @@
 # @twin.org/web - Changelog
 
+## [0.0.3-next.2](https://github.com/twinfoundation/framework/compare/web-v0.0.3-next.1...web-v0.0.3-next.2) (2025-11-12)
+
+
+### Miscellaneous Chores
+
+* **web:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.1 to 0.0.3-next.2
+    * @twin.org/crypto bumped from 0.0.3-next.1 to 0.0.3-next.2
+    * @twin.org/nameof bumped from 0.0.3-next.1 to 0.0.3-next.2
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.1 to 0.0.3-next.2
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.1 to 0.0.3-next.2
+    * @twin.org/validate-locales bumped from 0.0.3-next.1 to 0.0.3-next.2
+
 ## [0.0.3-next.1](https://github.com/twinfoundation/framework/compare/web-v0.0.3-next.0...web-v0.0.3-next.1) (2025-11-10)
 
 
