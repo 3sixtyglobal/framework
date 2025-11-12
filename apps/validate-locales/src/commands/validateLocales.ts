@@ -534,6 +534,13 @@ function processCallExpression(
 						...getSourcePosition(sourceFile, node)
 					});
 				}
+			} else {
+				failures.push({
+					type: "key",
+					key: message?.getText() ?? "",
+					source: path.resolve(sourceFile.fileName),
+					...getSourcePosition(sourceFile, node)
+				});
 			}
 			return true;
 		} else if (
