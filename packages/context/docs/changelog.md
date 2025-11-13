@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.0.3-next.4](https://github.com/twinfoundation/framework/compare/context-v0.0.3-next.3...context-v0.0.3-next.4) (2025-11-13)
+
+
+### Bug Fixes
+
+* use singleton pattern for context storage ([c69f358](https://github.com/twinfoundation/framework/commit/c69f358e45361b45d4e46f19846cd5b8c99b0ccd))
+* use singleton pattern for context storage ([5cc706a](https://github.com/twinfoundation/framework/commit/5cc706a2bbfc601fa3d00f3efd8b764052e9f91d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.3 to 0.0.3-next.4
+    * @twin.org/nameof bumped from 0.0.3-next.3 to 0.0.3-next.4
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.3 to 0.0.3-next.4
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.3 to 0.0.3-next.4
+    * @twin.org/validate-locales bumped from 0.0.3-next.3 to 0.0.3-next.4
+
 ## [0.0.3-next.3](https://github.com/twinfoundation/framework/compare/context-v0.0.3-next.2...context-v0.0.3-next.3) (2025-11-12)
 
 
