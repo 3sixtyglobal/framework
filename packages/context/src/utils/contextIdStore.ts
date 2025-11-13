@@ -21,7 +21,8 @@ export class ContextIdStore {
 	 * @returns Nothing.
 	 */
 	public static async run<T = unknown>(contextIds: IContextIds, asyncMethod: () => T): Promise<T> {
-		return (await ContextIdStore.createStorage()).run<T>(contextIds, asyncMethod);
+		const storage = await ContextIdStore.getStorage();
+		return storage.run<T>(contextIds, asyncMethod);
 	}
 
 	/**
@@ -29,14 +30,15 @@ export class ContextIdStore {
 	 * @returns The context IDs.
 	 */
 	public static async getContextIds(): Promise<IContextIds | undefined> {
-		return (await ContextIdStore.createStorage()).getStore();
+		const storage = await ContextIdStore.getStorage();
+		return storage.getStore();
 	}
 
 	/**
-	 * Create the storage if it doesn't exist.
+	 * Get the storage and create it if it doesn't exist.
 	 * @returns The storage.
 	 */
-	private static async createStorage(): Promise<AsyncLocalStorage<IContextIds>> {
+	public static async getStorage(): Promise<AsyncLocalStorage<IContextIds>> {
 		let asyncHooksStore = SharedStore.get<{ contextIds?: AsyncLocalStorage<IContextIds> }>(
 			"asyncHooks"
 		);
