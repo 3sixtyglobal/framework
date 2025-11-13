@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import type { AsyncLocalStorage } from "node:async_hooks";
-import { BaseError, GeneralError } from "@twin.org/core";
+import { BaseError, GeneralError, Is, SharedStore } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 import type { IContextIds } from "../models/IContextIds.js";
 
@@ -13,11 +13,6 @@ export class ContextIdStore {
 	 * Runtime name for the class.
 	 */
 	public static readonly CLASS_NAME: string = nameof<ContextIdStore>();
-
-	/**
-	 * The async local storage for the context ids.
-	 */
-	private static _storage: AsyncLocalStorage<IContextIds>;
 
 	/**
 	 * Execute the method wrapped in the context.
@@ -42,10 +37,15 @@ export class ContextIdStore {
 	 * @returns The storage.
 	 */
 	private static async createStorage(): Promise<AsyncLocalStorage<IContextIds>> {
-		if (!ContextIdStore._storage) {
+		let asyncHooksStore = SharedStore.get<{ contextIds?: AsyncLocalStorage<IContextIds> }>(
+			"asyncHooks"
+		);
+
+		if (Is.empty(asyncHooksStore?.contextIds)) {
 			try {
 				const hooks = await import("node:async_hooks");
-				ContextIdStore._storage = new hooks.AsyncLocalStorage<IContextIds>({
+				asyncHooksStore = asyncHooksStore ?? {};
+				asyncHooksStore.contextIds = new hooks.AsyncLocalStorage<IContextIds>({
 					name: "AsyncContextIdsStorage"
 				});
 			} catch (err) {
@@ -56,7 +56,8 @@ export class ContextIdStore {
 					BaseError.fromError(err)
 				);
 			}
+			SharedStore.set("asyncHooks", asyncHooksStore);
 		}
-		return ContextIdStore._storage;
+		return asyncHooksStore.contextIds;
 	}
 }

@@ -1,5 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+import path from "node:path";
 import { describe, it, expect } from "vitest";
 import type { IContextIds } from "../../src/models/IContextIds.js";
 import { ContextIdStore } from "../../src/utils/contextIdStore.js";
@@ -352,5 +353,46 @@ describe("ContextIdStore", () => {
 		// Validate worker actions
 		expect(worker.actions).toEqual(["unbound-call", "bound-call"]);
 		expect(await ContextIdStore.getContextIds()).toBeUndefined();
+	});
+
+	it("should load a module and maintain context", async () => {
+		const { hasNodeContext } = await import(path.join(__dirname, "module.js"));
+
+		await ContextIdStore.run({ node: "node-123" }, async () => {
+			const retrievedContextIds = await ContextIdStore.getContextIds();
+			expect(retrievedContextIds).toEqual({ node: "node-123" });
+
+			const result = await hasNodeContext();
+			expect(result).toBe("node-123");
+		});
+	});
+
+	it("should load a module and maintain context with an unbound class method", async () => {
+		// eslint-disable-next-line @typescript-eslint/naming-convention
+		const { ContextIdChecker } = await import(path.join(__dirname, "module.js"));
+
+		await ContextIdStore.run({ node: "node-123" }, async () => {
+			const retrievedContextIds = await ContextIdStore.getContextIds();
+			expect(retrievedContextIds).toEqual({ node: "node-123" });
+
+			const classInstance = new ContextIdChecker();
+			const result = await classInstance.hasNodeContext();
+			expect(result).toBe("node-123");
+		});
+	});
+
+	it("should load a module and maintain context with a bound class method", async () => {
+		// eslint-disable-next-line @typescript-eslint/naming-convention
+		const { ContextIdChecker } = await import(path.join(__dirname, "module.js"));
+
+		await ContextIdStore.run({ node: "node-123" }, async () => {
+			const retrievedContextIds = await ContextIdStore.getContextIds();
+			expect(retrievedContextIds).toEqual({ node: "node-123" });
+
+			const classInstance = new ContextIdChecker();
+			const hasNodeContextMethod = classInstance.hasNodeContext.bind(classInstance);
+			const result = await hasNodeContextMethod();
+			expect(result).toBe("node-123");
+		});
 	});
 });
