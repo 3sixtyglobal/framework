@@ -67,3 +67,17 @@ Get the context IDs.
 `Promise`\<[`IContextIds`](../interfaces/IContextIds.md) \| `undefined`\>
 
 The context IDs.
+
+***
+
+### getStorage()
+
+> `static` **getStorage**(): `Promise`\<`AsyncLocalStorage`\<[`IContextIds`](../interfaces/IContextIds.md)\>\>
+
+Get the storage and create it if it doesn't exist.
+
+#### Returns
+
+`Promise`\<`AsyncLocalStorage`\<[`IContextIds`](../interfaces/IContextIds.md)\>\>
+
+The storage.

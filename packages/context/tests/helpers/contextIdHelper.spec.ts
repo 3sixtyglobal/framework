@@ -11,6 +11,14 @@ import type { IContextIdHandler } from "../../src/models/IContextIdHandler.js";
  */
 class TestContextIdHandler implements IContextIdHandler {
 	/**
+	 * The class name of the component.
+	 * @returns The class name.
+	 */
+	public className(): string {
+		return "TestContextIdHandler";
+	}
+
+	/**
 	 * Provide a short form (first 4 chars) of the context id.
 	 * @param value The full context id value.
 	 * @returns Short form string.
