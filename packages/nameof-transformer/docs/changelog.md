@@ -1,5 +1,12 @@
 # @twin.org/nameof-transformer - Changelog
 
+## [0.0.3-next.5](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.3-next.4...nameof-transformer-v0.0.3-next.5) (2025-11-20)
+
+
+### Features
+
+* context id handler derives from component ([c868ec2](https://github.com/twinfoundation/framework/commit/c868ec21d3a576d4faa222bf130270a21936e50e))
+
 ## [0.0.3-next.4](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.3-next.3...nameof-transformer-v0.0.3-next.4) (2025-11-13)
 
 

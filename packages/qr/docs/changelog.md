@@ -1,5 +1,25 @@
 # @twin.org/qr - Changelog
 
+## [0.0.3-next.5](https://github.com/twinfoundation/framework/compare/qr-v0.0.3-next.4...qr-v0.0.3-next.5) (2025-11-20)
+
+
+### Miscellaneous Chores
+
+* **qr:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.4 to 0.0.3-next.5
+    * @twin.org/image bumped from 0.0.3-next.4 to 0.0.3-next.5
+    * @twin.org/nameof bumped from 0.0.3-next.4 to 0.0.3-next.5
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.4 to 0.0.3-next.5
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.4 to 0.0.3-next.5
+    * @twin.org/validate-locales bumped from 0.0.3-next.4 to 0.0.3-next.5
+
 ## [0.0.3-next.4](https://github.com/twinfoundation/framework/compare/qr-v0.0.3-next.3...qr-v0.0.3-next.4) (2025-11-13)
 
 
