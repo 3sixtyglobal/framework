@@ -19,106 +19,68 @@
 		},
 		"packages/nameof-vitest-plugin": {
 			"package-name": "nameof-vitest-plugin",
-			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
+			"changelog-path": "docs/changelog.md"
 		},
 		"packages/nameof": {
 			"package-name": "nameof",
-			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
+			"changelog-path": "docs/changelog.md"
 		},
 		"packages/core": {
 			"package-name": "core",
-			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
+			"changelog-path": "docs/changelog.md"
 		},
 		"packages/cli-core": {
 			"package-name": "cli-core",
-			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
+			"changelog-path": "docs/changelog.md"
 		},
 		"apps/merge-locales": {
 			"package-name": "merge-locales",
 			"changelog-path": "docs/changelog.md",
 			"extra-files": [
-				"src/cli.ts",
-				"tests/cli.spec.ts",
-				"src/index.ts"
+				"src/cli.ts"
 			]
 		},
 		"apps/validate-locales": {
 			"package-name": "validate-locales",
 			"changelog-path": "docs/changelog.md",
 			"extra-files": [
-				"src/cli.ts",
-				"tests/cli.spec.ts",
-				"src/index.ts"
+				"src/cli.ts"
 			]
 		},
 		"packages/entity": {
 			"package-name": "entity",
-			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
+			"changelog-path": "docs/changelog.md"
 		},
 		"packages/crypto": {
 			"package-name": "crypto",
-			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
+			"changelog-path": "docs/changelog.md"
 		},
 		"packages/image": {
 			"package-name": "image",
-			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
+			"changelog-path": "docs/changelog.md"
 		},
 		"packages/qr": {
 			"package-name": "qr",
-			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
+			"changelog-path": "docs/changelog.md"
 		},
 		"packages/web": {
 			"package-name": "web",
-			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
-		},
-		"packages/modules": {
-			"package-name": "modules",
-			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
+			"changelog-path": "docs/changelog.md"
 		},
 		"packages/context": {
 			"package-name": "context",
-			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
+			"changelog-path": "docs/changelog.md"
+		},
+		"packages/modules": {
+			"package-name": "modules",
+			"changelog-path": "docs/changelog.md"
 		},
 		"apps/crypto-cli": {
 			"package-name": "crypto-cli",
 			"changelog-path": "docs/changelog.md",
 			"extra-files": [
 				"src/cli.ts",
-				"tests/cli.spec.ts",
-				"src/index.ts"
+				"tests/cli.spec.ts"
 			]
 		}
 	},
@@ -140,8 +102,8 @@
 				"image",
 				"qr",
 				"web",
-				"modules",
 				"context",
+				"modules",
 				"crypto-cli"
 			]
 		}
