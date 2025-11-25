@@ -29,6 +29,7 @@
 	},
 	"dependencies": {
 		"@twin.org/core": "0.0.3-next.5",
+		"@twin.org/context": "0.0.3-next.5",
 		"@twin.org/nameof": "0.0.3-next.5"
 	},
 	"devDependencies": {

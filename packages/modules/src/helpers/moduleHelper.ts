@@ -1,8 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Worker } from "node:worker_threads";
+import type { IContextIds } from "@twin.org/context";
 import { BaseError, GeneralError, Is, SharedStore } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import type { IModuleWorker } from "../models/IModuleWorker.js";
 
 /**
  * Helper functions for modules.
@@ -99,7 +101,7 @@ export class ModuleHelper {
 			}
 			throw new GeneralError(ModuleHelper.CLASS_NAME, "notFunction", {
 				module,
-				entry: method
+				method
 			});
 		}
 
@@ -111,7 +113,7 @@ export class ModuleHelper {
 
 		throw new GeneralError(ModuleHelper.CLASS_NAME, "notFunction", {
 			module,
-			entry: method
+			method
 		});
 	}
 
@@ -141,103 +143,145 @@ export class ModuleHelper {
 	 * @param module The module.
 	 * @param method The method to execute from the module.
 	 * @param args The arguments to pass to the method.
+	 * @param contextIds The context IDs.
 	 * @returns The result of the method execution.
 	 * @throws GeneralError if executing the module entry failed.
 	 */
 	public static async execModuleMethodThread<T>(
 		module: string,
 		method: string,
-		args?: unknown[]
+		args?: unknown[],
+		contextIds?: IContextIds
 	): Promise<T> {
-		return new Promise((resolve, reject) => {
-			const worker = new Worker(
-				`(async () => {
-	try {
-		const { workerData, parentPort } = await import('node:worker_threads');
-
-		function rejectError(errorType, cause) {
-			parentPort.postMessage({ errorType, cause });
-		}
-
-		async function executeMethod(method) {
-			try {
-				const result = await method(...(args ?? []));
-
-				parentPort.postMessage({ result });
-			} catch (err) {
-				rejectError('resultError', err);
-			}
-		}
-
-		const { module, method, args } = workerData;
-
-		const moduleInstance = await import(module);
-		const methodParts = method.split('.');
-		const moduleEntry = moduleInstance[methodParts[0]];
-
-		if (moduleEntry === undefined) {
-			rejectError('entryNotFound');
-		} else if (methodParts.length === 2) {
-			const moduleMethod = moduleEntry[methodParts[1]];
-			if (typeof moduleMethod === 'function') {
-				await executeMethod(moduleMethod, args);
-			} else {
-				rejectError('notFunction');
-			}
-		} else if (typeof moduleEntry === 'function') {
-			await executeMethod(moduleEntry, args);
-		} else {
-			rejectError('notFunction');
-		}
-	} catch (err) {
-		rejectError('moduleNotFound', err);
-	}
-})();
-			`,
-				{ eval: true, workerData: { module, method, args: args ?? [] } }
+		return new Promise<T>((resolve, reject) => {
+			const messageModule = ModuleHelper.execModuleMethodThreadMessage(
+				module,
+				(resultMethod, result, err) => {
+					if (err) {
+						reject(err);
+					} else {
+						resolve(result as T);
+					}
+				}
 			);
 
-			worker.on("message", msg => {
-				if (Is.stringValue(msg.errorType)) {
-					reject(
-						new GeneralError(
-							ModuleHelper.CLASS_NAME,
-							msg.errorType,
-							{ module, entry: method },
-							msg.cause
-						)
-					);
-				} else {
-					resolve(msg.result);
-				}
-			});
+			messageModule.executeMethod(method, args, contextIds);
+		});
+	}
 
-			worker.on("error", err => {
-				reject(
+	/**
+	 * Load the module and provide a messaging interface.
+	 * @param module The module.
+	 * @param completed Callback called when the worker thread processes a completion.
+	 * @param options Optional settings.
+	 * @param options.threadName The name of the thread.
+	 * @returns The messaging interface.
+	 * @throws GeneralError if executing the module entry failed.
+	 */
+	public static execModuleMethodThreadMessage(
+		module: string,
+		completed: (operation: string, result?: unknown, err?: Error) => void,
+		options?: {
+			threadName?: string;
+		}
+	): IModuleWorker {
+		const worker = new Worker(
+			`(async () => {
+	const { workerData, parentPort } = await import('node:worker_threads');
+	const { ContextIdStore } = await import('@twin.org/context');
+	const { module } = workerData;
+
+	function rejectError(errorType, methodName, args, cause) {
+		parentPort.postMessage({ errorType, method: methodName, args, cause });
+	}
+
+	async function executeMethod(method, methodName, args, contextIds) {
+		try {
+			await ContextIdStore.run(contextIds ?? {}, async () => {
+				const result = await method(...(args ?? []));
+
+				parentPort.postMessage({ method: methodName, result });
+			});
+		} catch (err) {
+			rejectError('resultError', methodName, args, err);
+		}
+	}
+
+	const modules = {};
+
+	parentPort.on('message', async msg => {
+		const { method, args, contextIds } = msg;
+
+		try {
+			const moduleInstance = modules[module] ?? (await import(module));
+			modules[module] = moduleInstance;
+
+			const methodParts = method.split('.');
+			const moduleEntry = moduleInstance[methodParts[0]];
+
+			if (moduleEntry === undefined) {
+				rejectError('entryNotFound', method, args);
+			} else if (methodParts.length === 2) {
+				const moduleMethod = moduleEntry[methodParts[1]];
+				if (typeof moduleMethod === 'function') {
+					await executeMethod(moduleMethod, method, args, contextIds);
+				} else {
+					rejectError('notFunction', method, args);
+				}
+			} else if (typeof moduleEntry === 'function') {
+				await executeMethod(moduleEntry, method, args, contextIds);
+			} else {
+				rejectError('notFunction', method, args);
+			}
+		} catch (errInner) {
+				rejectError('moduleNotFound', method, args, errInner);
+		}
+	});
+})();`,
+			{ eval: true, workerData: { module }, name: options?.threadName }
+		);
+
+		worker.on("message", msg => {
+			if (Is.stringValue(msg.errorType)) {
+				completed(
+					msg.method,
+					undefined,
 					new GeneralError(
 						ModuleHelper.CLASS_NAME,
-						"workerException",
-						{
-							module,
-							entry: method
-						},
-						err
+						msg.errorType,
+						{ module, method: msg.method, args: msg.args },
+						msg.cause
 					)
 				);
-			});
-
-			worker.on("exit", code => {
-				if (code === 1) {
-					reject(
-						new GeneralError(ModuleHelper.CLASS_NAME, "workerFailed", {
-							module,
-							entry: method,
-							exitCode: code
-						})
-					);
-				}
-			});
+			} else {
+				completed(msg.method, msg.result);
+			}
 		});
+
+		worker.on("error", err => {
+			completed(
+				"error",
+				undefined,
+				new GeneralError(
+					ModuleHelper.CLASS_NAME,
+					"workerException",
+					{
+						module
+					},
+					err
+				)
+			);
+		});
+
+		worker.on("exit", code => {
+			completed("terminate", code);
+		});
+
+		return {
+			executeMethod: (method: string, args?: unknown, contextIds?: IContextIds) =>
+				worker.postMessage({ method, args, contextIds }),
+			terminate: async () => worker.terminate()
+		};
 	}
 
 	/**

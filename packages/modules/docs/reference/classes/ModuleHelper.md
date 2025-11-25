@@ -164,7 +164,7 @@ GeneralError if executing the module entry failed.
 
 ### execModuleMethodThread()
 
-> `static` **execModuleMethodThread**\<`T`\>(`module`, `method`, `args?`): `Promise`\<`T`\>
+> `static` **execModuleMethodThread**\<`T`\>(`module`, `method`, `args?`, `contextIds?`): `Promise`\<`T`\>
 
 Execute the method in the module in a thread.
 
@@ -194,11 +194,59 @@ The method to execute from the module.
 
 The arguments to pass to the method.
 
+##### contextIds?
+
+`IContextIds`
+
+The context IDs.
+
 #### Returns
 
 `Promise`\<`T`\>
 
 The result of the method execution.
+
+#### Throws
+
+GeneralError if executing the module entry failed.
+
+***
+
+### execModuleMethodThreadMessage()
+
+> `static` **execModuleMethodThreadMessage**(`module`, `completed`, `options?`): [`IModuleWorker`](../interfaces/IModuleWorker.md)
+
+Load the module and provide a messaging interface.
+
+#### Parameters
+
+##### module
+
+`string`
+
+The module.
+
+##### completed
+
+(`operation`, `result?`, `err?`) => `void`
+
+Callback called when the worker thread processes a completion.
+
+##### options?
+
+Optional settings.
+
+###### threadName?
+
+`string`
+
+The name of the thread.
+
+#### Returns
+
+[`IModuleWorker`](../interfaces/IModuleWorker.md)
+
+The messaging interface.
 
 #### Throws
 
