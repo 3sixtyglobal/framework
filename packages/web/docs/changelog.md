@@ -1,5 +1,48 @@
 # @twin.org/web - Changelog
 
+## [0.0.3-next.7](https://github.com/twinfoundation/framework/compare/web-v0.0.3-next.6...web-v0.0.3-next.7) (2025-11-25)
+
+
+### Features
+
+* add context id features ([#206](https://github.com/twinfoundation/framework/issues/206)) ([ef0d4ee](https://github.com/twinfoundation/framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* add guards arrayEndsWith and arrayStartsWith ([95d875e](https://github.com/twinfoundation/framework/commit/95d875ec8ccb4713c145fdde941d4cfedcec2ed3))
+* add header helper for common bearer support ([0c940b2](https://github.com/twinfoundation/framework/commit/0c940b29cccf0c3bb5b4aa8a01f1998010e44d51))
+* add jwk enc property overrides ([18b6309](https://github.com/twinfoundation/framework/commit/18b63092a386b56ea7fcd7e12865ac6e1b47cc1e))
+* add kid method to Jwk ([bc9239e](https://github.com/twinfoundation/framework/commit/bc9239ed9896a053d83e00ca221e962704ebc277))
+* add rsa cipher support ([7af6cc6](https://github.com/twinfoundation/framework/commit/7af6cc67512d3363bd4a2f2e87bd7733c2800147))
+* add set method for async caches ([ba34b55](https://github.com/twinfoundation/framework/commit/ba34b55e651ad56ab8fc59e139e4af631c19cda0))
+* add zlib/deflate mime types detection ([72c472b](https://github.com/twinfoundation/framework/commit/72c472b5a35a973e7109336f5b6cdd84dbb8bbcb))
+* additional nameof operators ([a5aab60](https://github.com/twinfoundation/framework/commit/a5aab60bf66a86f1b7ff8af7c4f044cb03706d50))
+* ensure the alg is the correct one when generating JWK or JWS ([#136](https://github.com/twinfoundation/framework/issues/136)) ([46a5af1](https://github.com/twinfoundation/framework/commit/46a5af127192d7048068275d14f555f09add3642))
+* eslint migration to flat config ([74427d7](https://github.com/twinfoundation/framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* improve bearer creation and extraction ([b9ddd6d](https://github.com/twinfoundation/framework/commit/b9ddd6dae0cb558e2227f0ec5e9cd21f85957400))
+* improve bearer creation and extraction ([29a347a](https://github.com/twinfoundation/framework/commit/29a347a760cb3bc5eb819112e84f1ac99430e72b))
+* locales validation ([#197](https://github.com/twinfoundation/framework/issues/197)) ([55fdadb](https://github.com/twinfoundation/framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* propagate includeStackTrace on error conversion ([098fc72](https://github.com/twinfoundation/framework/commit/098fc729939ea3127f2bdcc0ddb6754096c5f919))
+* relocate core packages from tools ([bcab8f3](https://github.com/twinfoundation/framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* update dependencies ([f3bd015](https://github.com/twinfoundation/framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/twinfoundation/framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+* use new shared store mechanism ([#131](https://github.com/twinfoundation/framework/issues/131)) ([934385b](https://github.com/twinfoundation/framework/commit/934385b2fbaf9f5c00a505ebf9d093bd5a425f55))
+
+
+### Bug Fixes
+
+* wrap inner error within FetchError / 2 ([#134](https://github.com/twinfoundation/framework/issues/134)) ([2ddb101](https://github.com/twinfoundation/framework/commit/2ddb101c3778be4e99559e37aa036cd7101585fb))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.6 to 0.0.3-next.7
+    * @twin.org/crypto bumped from 0.0.3-next.6 to 0.0.3-next.7
+    * @twin.org/nameof bumped from 0.0.3-next.6 to 0.0.3-next.7
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.6 to 0.0.3-next.7
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.6 to 0.0.3-next.7
+    * @twin.org/validate-locales bumped from 0.0.3-next.6 to 0.0.3-next.7
+
 ## [0.0.3-next.6](https://github.com/twinfoundation/framework/compare/web-v0.0.3-next.5...web-v0.0.3-next.6) (2025-11-25)
 
 
