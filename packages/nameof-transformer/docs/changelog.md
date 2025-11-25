@@ -1,5 +1,12 @@
 # @twin.org/nameof-transformer - Changelog
 
+## [0.0.3-next.6](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.3-next.5...nameof-transformer-v0.0.3-next.6) (2025-11-25)
+
+
+### Features
+
+* module helper can now handle long running threads with messaging ([4ecbb9a](https://github.com/twinfoundation/framework/commit/4ecbb9a526927d462d4fb3f95ba2a44889202753))
+
 ## [0.0.3-next.5](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.3-next.4...nameof-transformer-v0.0.3-next.5) (2025-11-20)
 
 

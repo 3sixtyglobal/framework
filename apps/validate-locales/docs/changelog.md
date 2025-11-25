@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.0.3-next.6](https://github.com/twinfoundation/framework/compare/validate-locales-v0.0.3-next.5...validate-locales-v0.0.3-next.6) (2025-11-25)
+
+
+### Miscellaneous Chores
+
+* **validate-locales:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.0.3-next.5 to 0.0.3-next.6
+    * @twin.org/core bumped from 0.0.3-next.5 to 0.0.3-next.6
+    * @twin.org/nameof bumped from 0.0.3-next.5 to 0.0.3-next.6
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.5 to 0.0.3-next.6
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.0.3-next.5 to 0.0.3-next.6
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.5 to 0.0.3-next.6
+
 ## [0.0.3-next.5](https://github.com/twinfoundation/framework/compare/validate-locales-v0.0.3-next.4...validate-locales-v0.0.3-next.5) (2025-11-20)
 
 
