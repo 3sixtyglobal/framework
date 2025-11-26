@@ -643,24 +643,29 @@ function processPropertyAssignment(
 	localeEntries: ILocaleDictionaryEntry[],
 	failures: ILocaleFailure[]
 ): boolean {
-	if (Is.object(node.name) && ts.isIdentifier(node.name) && node.name.getText() === "message") {
-		const localeKey = getExpandedText(node.initializer);
+	if (Is.object(node.name) && ts.isIdentifier(node.name)) {
+		if (node.name.getText() === "message") {
+			const localeKey = getExpandedText(node.initializer);
 
-		if (Is.stringValue(localeKey)) {
-			let localeEntry = findAndReferenceLocale(localeEntries, localeKey);
+			if (Is.stringValue(localeKey)) {
+				let localeEntry = findAndReferenceLocale(localeEntries, localeKey);
 
-			if (!Is.object(localeEntry)) {
-				localeEntry = findAndReferenceLocale(localeEntries, `error.${localeKey}`);
+				if (!Is.object(localeEntry)) {
+					localeEntry = findAndReferenceLocale(localeEntries, `error.${localeKey}`);
+				}
+
+				if (!Is.object(localeEntry)) {
+					failures.push({
+						type: "key",
+						key: localeKey,
+						source: path.resolve(sourceFile.fileName),
+						...getSourcePosition(sourceFile, node)
+					});
+				}
+				return true;
 			}
-
-			if (!Is.object(localeEntry)) {
-				failures.push({
-					type: "key",
-					key: localeKey,
-					source: path.resolve(sourceFile.fileName),
-					...getSourcePosition(sourceFile, node)
-				});
-			}
+		} else if (node.name.getText() === "property") {
+			// This handles cases such as { property: 'someProperty.foo' } like we have in entity conditions
 			return true;
 		}
 	}
