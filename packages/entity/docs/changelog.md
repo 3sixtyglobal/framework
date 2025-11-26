@@ -1,5 +1,24 @@
 # @twin.org/entity - Changelog
 
+## [0.0.3-next.8](https://github.com/twinfoundation/framework/compare/entity-v0.0.3-next.7...entity-v0.0.3-next.8) (2025-11-26)
+
+
+### Features
+
+* support for object comparisons in entity conditions ([edae91d](https://github.com/twinfoundation/framework/commit/edae91d3205524080188a35e0ab04da036fa4f39))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.7 to 0.0.3-next.8
+    * @twin.org/core bumped from 0.0.3-next.7 to 0.0.3-next.8
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.7 to 0.0.3-next.8
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.7 to 0.0.3-next.8
+    * @twin.org/validate-locales bumped from 0.0.3-next.7 to 0.0.3-next.8
+
 ## [0.0.3-next.7](https://github.com/twinfoundation/framework/compare/entity-v0.0.3-next.6...entity-v0.0.3-next.7) (2025-11-25)
 
 

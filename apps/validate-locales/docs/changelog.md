@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.0.3-next.8](https://github.com/twinfoundation/framework/compare/validate-locales-v0.0.3-next.7...validate-locales-v0.0.3-next.8) (2025-11-26)
+
+
+### Features
+
+* support for "property" assignments in validate-locales ([2414a0c](https://github.com/twinfoundation/framework/commit/2414a0c2e29d8935a17b58b9bdc31609c0f97140))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.0.3-next.7 to 0.0.3-next.8
+    * @twin.org/core bumped from 0.0.3-next.7 to 0.0.3-next.8
+    * @twin.org/nameof bumped from 0.0.3-next.7 to 0.0.3-next.8
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.7 to 0.0.3-next.8
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.0.3-next.7 to 0.0.3-next.8
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.7 to 0.0.3-next.8
+
 ## [0.0.3-next.7](https://github.com/twinfoundation/framework/compare/validate-locales-v0.0.3-next.6...validate-locales-v0.0.3-next.7) (2025-11-25)
 
 
