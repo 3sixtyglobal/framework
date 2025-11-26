@@ -192,6 +192,12 @@ export class EntityConditions {
 				}
 			}
 			return false;
+		} else if (Is.object(val)) {
+			if (comparator.comparison === ComparisonOperator.Equals) {
+				return ObjectHelper.equal(val, conditionValue);
+			} else if (comparator.comparison === ComparisonOperator.NotEquals) {
+				return !ObjectHelper.equal(val, conditionValue);
+			}
 		}
 
 		return false;
