@@ -3,6 +3,7 @@
 ## Classes
 
 - [FetchError](classes/FetchError.md)
+- [CookieHelper](classes/CookieHelper.md)
 - [FetchHelper](classes/FetchHelper.md)
 - [HeaderHelper](classes/HeaderHelper.md)
 - [Jwk](classes/Jwk.md)

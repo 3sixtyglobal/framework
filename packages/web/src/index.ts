@@ -11,6 +11,7 @@ export * from "./models/IJwtHeader.js";
 export * from "./models/IJwtPayload.js";
 export * from "./models/jwkCryptoKey.js";
 export * from "./models/mimeTypes.js";
+export * from "./utils/cookieHelper.js";
 export * from "./utils/fetchHelper.js";
 export * from "./utils/headerHelper.js";
 export * from "./utils/jwk.js";
