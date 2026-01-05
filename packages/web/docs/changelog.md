@@ -1,5 +1,25 @@
 # @twin.org/web - Changelog
 
+## [0.0.3-next.9](https://github.com/twinfoundation/framework/compare/web-v0.0.3-next.8...web-v0.0.3-next.9) (2026-01-05)
+
+
+### Features
+
+* add cookie helper method to web package ([#217](https://github.com/twinfoundation/framework/issues/217)) ([043c632](https://github.com/twinfoundation/framework/commit/043c63298bff96f70bdefed56b82afef42ec3f44))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.8 to 0.0.3-next.9
+    * @twin.org/crypto bumped from 0.0.3-next.8 to 0.0.3-next.9
+    * @twin.org/nameof bumped from 0.0.3-next.8 to 0.0.3-next.9
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.8 to 0.0.3-next.9
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.8 to 0.0.3-next.9
+    * @twin.org/validate-locales bumped from 0.0.3-next.8 to 0.0.3-next.9
+
 ## [0.0.3-next.8](https://github.com/twinfoundation/framework/compare/web-v0.0.3-next.7...web-v0.0.3-next.8) (2025-11-26)
 
 

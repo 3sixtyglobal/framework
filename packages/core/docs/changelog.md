@@ -1,5 +1,22 @@
 # @twin.org/core - Changelog
 
+## [0.0.3-next.9](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.8...core-v0.0.3-next.9) (2026-01-05)
+
+
+### Features
+
+* add uuidv7 support ([#219](https://github.com/twinfoundation/framework/issues/219)) ([916c657](https://github.com/twinfoundation/framework/commit/916c657d270ce99fafe554233739fdd9ca28635b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.8 to 0.0.3-next.9
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.8 to 0.0.3-next.9
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.8 to 0.0.3-next.9
+
 ## [0.0.3-next.8](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.7...core-v0.0.3-next.8) (2025-11-26)
 
 
