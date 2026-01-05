@@ -419,4 +419,24 @@ export class Is {
 		const str = Function.prototype.toString.call(obj);
 		return /^class\s/.test(str);
 	}
+
+	/**
+	 * Is the value a uuidV7 string.
+	 * @param value The value to test.
+	 * @param format The format of the UUIDv7 string.
+	 * @returns True if the value is a uuidV7 string.
+	 */
+	public static uuidV7(value: unknown, format?: "standard" | "compact"): value is string {
+		if (format === "compact") {
+			// 32 hex chars, where:
+			// - char 13 (0-based index 12) is the version (7)
+			// - char 17 (0-based index 16) is the variant (8, 9, a, b)
+			return Is.stringValue(value) && /^[\da-f]{12}7[\da-f]{3}[89ab][\da-f]{15}$/i.test(value);
+		}
+
+		return (
+			Is.stringValue(value) &&
+			/^[\da-f]{8}-[\da-f]{4}-7[\da-f]{3}-[89ab][\da-f]{3}-[\da-f]{12}$/i.test(value)
+		);
+	}
 }

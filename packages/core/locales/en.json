@@ -69,7 +69,9 @@
 			"function": "Property \"{property}\" must be a function, it is \"{value}\"",
 			"urn": "Property \"{property}\" must be a Urn formatted string, it is \"{value}\"",
 			"url": "Property \"{property}\" must be a Url formatted string, it is \"{value}\"",
-			"email": "Property \"{property}\" must be string in e-mail format, it is \"{value}\""
+			"email": "Property \"{property}\" must be string in e-mail format, it is \"{value}\"",
+			"uuidV7": "Property \"{property}\" must be a UUIDv7 formatted string, it is \"{value}\"",
+			"uuidV7Compact": "Property \"{property}\" must be a UUIDv7 formatted string in compact mode, it is \"{value}\""
 		},
 		"objectHelper": {
 			"failedBytesToJSON": "Failed converting bytes to JSON",

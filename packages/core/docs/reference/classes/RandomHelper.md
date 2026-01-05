@@ -12,6 +12,14 @@ Class to help with random generation.
 
 `RandomHelper`
 
+## Properties
+
+### CLASS\_NAME
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
 ### generate()
@@ -33,3 +41,47 @@ The length of buffer to create.
 `Uint8Array`
 
 The random array.
+
+***
+
+### generateUuidV7()
+
+> `static` **generateUuidV7**(`format`): `string`
+
+Generate a new UUIDv7.
+
+#### Parameters
+
+##### format
+
+The format of the UUIDv7 string.
+
+`"standard"` | `"compact"`
+
+#### Returns
+
+`string`
+
+The UUIDv7 string.
+
+***
+
+### uuidV7ExtractTimestamp()
+
+> `static` **uuidV7ExtractTimestamp**(`uuid`): `number`
+
+Extract the unix timestamp (ms) from a UUIDv7.
+
+#### Parameters
+
+##### uuid
+
+`string`
+
+The UUIDv7 string.
+
+#### Returns
+
+`number`
+
+The unix timestamp in milliseconds.

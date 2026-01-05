@@ -490,4 +490,26 @@ export class Guards {
 			throw new GuardError(source, "guard.email", property, value);
 		}
 	}
+
+	/**
+	 * Is the property a string containing uuidV7.
+	 * @param source The source of the error.
+	 * @param property The name of the property.
+	 * @param value The value to test.
+	 * @param format The format of the uuidV7, either standard or compact.
+	 * @throws GuardError If the value does not match the assertion.
+	 */
+	public static uuidV7(
+		source: string,
+		property: string,
+		value: unknown,
+		format?: "standard" | "compact"
+	): asserts value is string {
+		if (!Is.uuidV7(value, format)) {
+			if (format === "compact") {
+				throw new GuardError(source, "guard.uuidV7Compact", property, value);
+			}
+			throw new GuardError(source, "guard.uuidV7", property, value);
+		}
+	}
 }

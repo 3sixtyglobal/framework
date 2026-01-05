@@ -853,3 +853,31 @@ The object to check.
 `obj is (args: any[]) => T`
 
 True if the object is a class, false otherwise.
+
+***
+
+### uuidV7()
+
+> `static` **uuidV7**(`value`, `format?`): `value is string`
+
+Is the value a uuidV7 string.
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+The value to test.
+
+##### format?
+
+The format of the UUIDv7 string.
+
+`"standard"` | `"compact"`
+
+#### Returns
+
+`value is string`
+
+True if the value is a uuidV7 string.

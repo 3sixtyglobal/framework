@@ -1,5 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+import { RandomHelper } from "../../src/helpers/randomHelper.js";
 import { Is } from "../../src/utils/is.js";
 
 describe("Is", () => {
@@ -488,5 +489,52 @@ describe("Is", () => {
 		} else {
 			throw new Error("Is.class failed to detect class");
 		}
+	});
+
+	test("uuidV7 can fail if value is undefined", () => {
+		expect(Is.uuidV7(undefined)).toEqual(false);
+	});
+
+	test("uuidV7 can fail if value is null", () => {
+		expect(Is.uuidV7(null)).toEqual(false);
+	});
+
+	test("uuidV7 can fail if value is empty", () => {
+		expect(Is.uuidV7("")).toEqual(false);
+	});
+
+	test("uuidV7 can succeed for a generated UUIDv7", () => {
+		const uuid = RandomHelper.generateUuidV7();
+		expect(Is.uuidV7(uuid)).toEqual(true);
+	});
+
+	test("uuidV7 can fail for a generated UUIDv7 in generated compact mode", () => {
+		const uuid = RandomHelper.generateUuidV7("compact");
+		expect(Is.uuidV7(uuid)).toEqual(false);
+	});
+
+	test("uuidV7 can fail for a generated UUIDv7 in test compact mode", () => {
+		const uuid = RandomHelper.generateUuidV7();
+		expect(Is.uuidV7(uuid, "compact")).toEqual(false);
+	});
+
+	test("uuidV7 can succeed for a generated UUIDv7 with both in compact mode", () => {
+		const uuid = RandomHelper.generateUuidV7("compact");
+		expect(Is.uuidV7(uuid, "compact")).toEqual(true);
+	});
+
+	test("uuidV7 can fail if the version is not 7", () => {
+		const uuid = RandomHelper.generateUuidV7();
+		// UUID format: xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx
+		// The version is the first nibble of the 3rd group (index 14 in the string)
+		const notV7 = `${uuid.slice(0, 14)}4${uuid.slice(15)}`;
+		expect(Is.uuidV7(notV7)).toEqual(false);
+	});
+
+	test("uuidV7 can fail if the variant is not RFC 9562 v2 variant", () => {
+		const uuid = RandomHelper.generateUuidV7();
+		// The variant is the first nibble of the 4th group (index 19 in the string)
+		const badVariant = `${uuid.slice(0, 19)}0${uuid.slice(20)}`;
+		expect(Is.uuidV7(badVariant)).toEqual(false);
 	});
 });

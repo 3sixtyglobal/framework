@@ -349,4 +349,28 @@ describe("Guards", () => {
 			expect.objectContaining({ name: "GuardError", message: "guard.function" })
 		);
 	});
+
+	test("uuidV7 can succeed if value is a UUIDv7 formatted string", () => {
+		expect(
+			Guards.uuidV7("source", "propName", "017f7f80-7e4b-7e4b-8e4b-7e4b8e4b7e4b")
+		).toBeUndefined();
+	});
+
+	test("uuidv7 can fail if value is not in the correct format", () => {
+		expect(() => Guards.uuidV7("source", "propName", 10)).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.uuidV7" })
+		);
+	});
+
+	test("uuidV7Compact can succeed if value is a UUIDv7 compact formatted string", () => {
+		expect(
+			Guards.uuidV7("source", "propName", "017f7f807e4b7e4b8e4b7e4b8e4b7e4b", "compact")
+		).toBeUndefined();
+	});
+
+	test("uuidv7 can fail if value is not in the correct format for compact", () => {
+		expect(() => Guards.uuidV7("source", "propName", 10, "compact")).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.uuidV7Compact" })
+		);
+	});
 });
