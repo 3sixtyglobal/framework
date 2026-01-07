@@ -1,5 +1,23 @@
 # @twin.org/cli-core - Changelog
 
+## [0.0.3-next.11](https://github.com/twinfoundation/framework/compare/cli-core-v0.0.3-next.10...cli-core-v0.0.3-next.11) (2026-01-07)
+
+
+### Miscellaneous Chores
+
+* **cli-core:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.10 to 0.0.3-next.11
+    * @twin.org/nameof bumped from 0.0.3-next.10 to 0.0.3-next.11
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.10 to 0.0.3-next.11
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.10 to 0.0.3-next.11
+
 ## [0.0.3-next.10](https://github.com/twinfoundation/framework/compare/cli-core-v0.0.3-next.9...cli-core-v0.0.3-next.10) (2026-01-07)
 
 

@@ -1,5 +1,25 @@
 # @twin.org/web - Changelog
 
+## [0.0.3-next.11](https://github.com/twinfoundation/framework/compare/web-v0.0.3-next.10...web-v0.0.3-next.11) (2026-01-07)
+
+
+### Features
+
+* add additional header types ([#222](https://github.com/twinfoundation/framework/issues/222)) ([05f01cf](https://github.com/twinfoundation/framework/commit/05f01cf34b7bcec561ee989f679281b1cacdf032))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.10 to 0.0.3-next.11
+    * @twin.org/crypto bumped from 0.0.3-next.10 to 0.0.3-next.11
+    * @twin.org/nameof bumped from 0.0.3-next.10 to 0.0.3-next.11
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.10 to 0.0.3-next.11
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.10 to 0.0.3-next.11
+    * @twin.org/validate-locales bumped from 0.0.3-next.10 to 0.0.3-next.11
+
 ## [0.0.3-next.10](https://github.com/twinfoundation/framework/compare/web-v0.0.3-next.9...web-v0.0.3-next.10) (2026-01-07)
 
 
