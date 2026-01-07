@@ -189,10 +189,11 @@ export class ModuleHelper {
 			`(async () => {
 	const { workerData, parentPort } = await import('node:worker_threads');
 	const { ContextIdStore } = await import('@twin.org/context');
+	const { BaseError } = await import('@twin.org/core');
 	const { module } = workerData;
 
 	function rejectError(errorType, methodName, args, cause) {
-		parentPort.postMessage({ errorType, method: methodName, args, cause });
+		parentPort.postMessage({ errorType, method: methodName, args, cause: BaseError.fromError(cause).toJsonObject(true) });
 	}
 
 	async function executeMethod(method, methodName, args, contextIds) {
