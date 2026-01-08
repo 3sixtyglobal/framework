@@ -100,7 +100,7 @@ describe("HeaderHelper", () => {
 	});
 
 	test("returns undefined for undefined Link header", async () => {
-		const url = HeaderHelper.extractLinkHeader(undefined);
+		const url = HeaderHelper.extractLinkHeader(undefined as unknown as string);
 		expect(url).toBeUndefined();
 	});
 
@@ -115,7 +115,9 @@ describe("HeaderHelper", () => {
 	});
 
 	test("returns undefined for non-string Link header", async () => {
-		const url = HeaderHelper.extractLinkHeader({ header: '<https://example.com>; rel="next"' });
+		const url = HeaderHelper.extractLinkHeader({
+			header: '<https://example.com>; rel="next"'
+		} as unknown as string);
 		expect(url).toBeUndefined();
 	});
 
@@ -158,6 +160,102 @@ describe("HeaderHelper", () => {
 			'<https://example.com/resource>; rel="next"; rel="prev"'
 		);
 		expect(link).toEqual({ url: "https://example.com/resource", rel: "prev" });
+	});
+
+	test("can extract link headers from a valid Link header string", async () => {
+		const headers = HeaderHelper.extractLinkHeaders(
+			'<https://example.com/api?cursor=abc123>; rel="next"; title="Example"'
+		);
+		expect(headers).toEqual([
+			{
+				url: "https://example.com/api?cursor=abc123",
+				urlQueryParams: {
+					cursor: "abc123"
+				},
+				rel: "next",
+				params: {
+					title: "Example"
+				}
+			}
+		]);
+	});
+
+	test("returns an empty array for an invalid Link header string", async () => {
+		const headers = HeaderHelper.extractLinkHeaders("https://example.com/no-brackets");
+		expect(headers).toEqual([]);
+	});
+
+	test("returns undefined for extractLinkHeaders when input is undefined", async () => {
+		const headers = HeaderHelper.extractLinkHeaders(undefined);
+		expect(headers).toBeUndefined();
+	});
+
+	test("can extract link headers from an array and skip invalid entries", async () => {
+		const headers = HeaderHelper.extractLinkHeaders([
+			'<https://example.com/api?cursor=abc123>; rel="next"',
+			"https://example.com/no-brackets",
+			'<https://example.com/api?page=2>; rel="prev"'
+		]);
+
+		expect(headers).toEqual([
+			{
+				url: "https://example.com/api?cursor=abc123",
+				urlQueryParams: {
+					cursor: "abc123"
+				},
+				rel: "next"
+			},
+			{
+				url: "https://example.com/api?page=2",
+				urlQueryParams: {
+					page: "2"
+				},
+				rel: "prev"
+			}
+		]);
+	});
+
+	test("can extract a specific relation from a Link header string", async () => {
+		const header = '<https://example.com/api?cursor=abc123>; rel="next"';
+		const next = HeaderHelper.extractLinkHeaderRelation(header, "next");
+		expect(next).toEqual({
+			url: "https://example.com/api?cursor=abc123",
+			urlQueryParams: {
+				cursor: "abc123"
+			},
+			rel: "next"
+		});
+	});
+
+	test("can extract a specific relation from an array of Link headers", async () => {
+		const header = HeaderHelper.extractLinkHeaderRelation(
+			[
+				'<https://example.com/api?cursor=abc123>; rel="next"',
+				'<https://example.com/api?page=2>; rel="prev"'
+			],
+			"prev"
+		);
+
+		expect(header).toEqual({
+			url: "https://example.com/api?page=2",
+			urlQueryParams: {
+				page: "2"
+			},
+			rel: "prev"
+		});
+	});
+
+	test("returns undefined when extractLinkHeaderRelation can't find the relation", async () => {
+		const header = HeaderHelper.extractLinkHeaderRelation(
+			'<https://example.com/api?cursor=abc123>; rel="next"',
+			"prev"
+		);
+		expect(header).toBeUndefined();
+	});
+
+	test("returns undefined when extractLinkHeaderRelation input is invalid", async () => {
+		const header = HeaderHelper.extractLinkHeaderRelation({} as unknown, "next");
+		expect(header).toBeUndefined();
 	});
 
 	test("can create a Link header with next rel", async () => {

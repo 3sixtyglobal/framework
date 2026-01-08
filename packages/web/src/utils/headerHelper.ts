@@ -40,12 +40,67 @@ export class HeaderHelper {
 	}
 
 	/**
+	 * Extract the properties from a Link header for a specific relation type.
+	 * @param linkHeader The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
+	 * @param relation The relation type to extract.
+	 * @returns The extracted URL, rel and optional params or undefined if invalid/missing.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
+	 */
+	public static extractLinkHeaderRelation(
+		linkHeader: unknown,
+		relation: string
+	):
+		| {
+				url: string;
+				urlQueryParams?: { [id: string]: string };
+				rel: string;
+				params?: { [id: string]: string };
+		  }
+		| undefined {
+		const headers = HeaderHelper.extractLinkHeaders(linkHeader);
+		if (Is.arrayValue(headers)) {
+			return headers.find(h => h.rel === relation);
+		}
+	}
+
+	/**
+	 * Extract the link headers.
+	 * @param linkHeader The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
+	 * @returns The extracted possible array of URL, rel and optional params or undefined if invalid/missing.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
+	 */
+	public static extractLinkHeaders(linkHeader: unknown):
+		| {
+				url: string;
+				urlQueryParams?: { [id: string]: string };
+				rel: string;
+				params?: { [id: string]: string };
+		  }[]
+		| undefined {
+		if (Is.stringValue(linkHeader)) {
+			const header = HeaderHelper.extractLinkHeader(linkHeader);
+			return header ? [header] : [];
+		}
+		if (Is.arrayValue<string>(linkHeader)) {
+			const results = [];
+			for (const singleLinkHeader of linkHeader) {
+				const header = HeaderHelper.extractLinkHeader(singleLinkHeader);
+				if (header) {
+					results.push(header);
+				}
+			}
+			return results;
+		}
+		return undefined;
+	}
+
+	/**
 	 * Extract the properties from a Link header.
 	 * @param linkHeader The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
 	 * @returns The extracted URL, rel and optional params or undefined if invalid/missing.
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
 	 */
-	public static extractLinkHeader(linkHeader: unknown):
+	public static extractLinkHeader(linkHeader: string):
 		| {
 				url: string;
 				urlQueryParams?: { [id: string]: string };

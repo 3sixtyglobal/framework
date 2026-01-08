@@ -66,6 +66,64 @@ The extracted token if it exists.
 
 ***
 
+### extractLinkHeaderRelation()
+
+> `static` **extractLinkHeaderRelation**(`linkHeader`, `relation`): \{ `url`: `string`; `urlQueryParams?`: \{\[`id`: `string`\]: `string`; \}; `rel`: `string`; `params?`: \{\[`id`: `string`\]: `string`; \}; \} \| `undefined`
+
+Extract the properties from a Link header for a specific relation type.
+
+#### Parameters
+
+##### linkHeader
+
+`unknown`
+
+The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
+
+##### relation
+
+`string`
+
+The relation type to extract.
+
+#### Returns
+
+\{ `url`: `string`; `urlQueryParams?`: \{\[`id`: `string`\]: `string`; \}; `rel`: `string`; `params?`: \{\[`id`: `string`\]: `string`; \}; \} \| `undefined`
+
+The extracted URL, rel and optional params or undefined if invalid/missing.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
+
+***
+
+### extractLinkHeaders()
+
+> `static` **extractLinkHeaders**(`linkHeader`): `object`[] \| `undefined`
+
+Extract the link headers.
+
+#### Parameters
+
+##### linkHeader
+
+`unknown`
+
+The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
+
+#### Returns
+
+`object`[] \| `undefined`
+
+The extracted possible array of URL, rel and optional params or undefined if invalid/missing.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
+
+***
+
 ### extractLinkHeader()
 
 > `static` **extractLinkHeader**(`linkHeader`): \{ `url`: `string`; `urlQueryParams?`: \{\[`id`: `string`\]: `string`; \}; `rel`: `string`; `params?`: \{\[`id`: `string`\]: `string`; \}; \} \| `undefined`
@@ -76,7 +134,7 @@ Extract the properties from a Link header.
 
 ##### linkHeader
 
-`unknown`
+`string`
 
 The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
 
