@@ -1036,7 +1036,7 @@ GuardError If the value does not match the assertion.
 
 ### uuidV7()
 
-> `static` **uuidV7**(`source`, `property`, `value`): `asserts value is string`
+> `static` **uuidV7**(`source`, `property`, `value`, `format?`): `asserts value is string`
 
 Is the property a string containing uuidV7.
 
@@ -1060,41 +1060,11 @@ The name of the property.
 
 The value to test.
 
-#### Returns
+##### format?
 
-`asserts value is string`
+The format of the uuidV7, either standard or compact.
 
-#### Throws
-
-GuardError If the value does not match the assertion.
-
-***
-
-### uuidV7Compact()
-
-> `static` **uuidV7Compact**(`source`, `property`, `value`): `asserts value is string`
-
-Is the property a string containing uuidV7 in compact mode.
-
-#### Parameters
-
-##### source
-
-`string`
-
-The source of the error.
-
-##### property
-
-`string`
-
-The name of the property.
-
-##### value
-
-`unknown`
-
-The value to test.
+`"standard"` | `"compact"`
 
 #### Returns
 

@@ -21,6 +21,10 @@
 		"jws": {
 			"createFailed": "Failed to create JWS",
 			"verifyFailed": "Failed to verify JWS"
+		},
+		"headerHelper": {
+			"invalidLinkHeaderURL": "URL for Link header cannot contain \">\" character.",
+			"invalidLinkHeaderRel": "Relation type for Link header cannot contain \" character."
 		}
 	},
 	"errorMessages": {
