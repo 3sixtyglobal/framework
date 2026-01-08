@@ -1,5 +1,22 @@
 # @twin.org/core - Changelog
 
+## [0.0.3-next.13](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.12...core-v0.0.3-next.13) (2026-01-08)
+
+
+### Miscellaneous Chores
+
+* **core:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.12 to 0.0.3-next.13
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.12 to 0.0.3-next.13
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.12 to 0.0.3-next.13
+
 ## [0.0.3-next.12](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.11...core-v0.0.3-next.12) (2026-01-08)
 
 

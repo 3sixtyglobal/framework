@@ -1,5 +1,25 @@
 # @twin.org/web - Changelog
 
+## [0.0.3-next.13](https://github.com/twinfoundation/framework/compare/web-v0.0.3-next.12...web-v0.0.3-next.13) (2026-01-08)
+
+
+### Features
+
+* add Link header array support ([aff32a3](https://github.com/twinfoundation/framework/commit/aff32a3ff8ad3d076cade7c889444220706bfb1e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.12 to 0.0.3-next.13
+    * @twin.org/crypto bumped from 0.0.3-next.12 to 0.0.3-next.13
+    * @twin.org/nameof bumped from 0.0.3-next.12 to 0.0.3-next.13
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.12 to 0.0.3-next.13
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.12 to 0.0.3-next.13
+    * @twin.org/validate-locales bumped from 0.0.3-next.12 to 0.0.3-next.13
+
 ## [0.0.3-next.12](https://github.com/twinfoundation/framework/compare/web-v0.0.3-next.11...web-v0.0.3-next.12) (2026-01-08)
 
 

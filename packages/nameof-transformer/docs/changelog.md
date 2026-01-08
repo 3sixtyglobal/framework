@@ -1,5 +1,12 @@
 # @twin.org/nameof-transformer - Changelog
 
+## [0.0.3-next.13](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.3-next.12...nameof-transformer-v0.0.3-next.13) (2026-01-08)
+
+
+### Features
+
+* add Link header array support ([aff32a3](https://github.com/twinfoundation/framework/commit/aff32a3ff8ad3d076cade7c889444220706bfb1e))
+
 ## [0.0.3-next.12](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.3-next.11...nameof-transformer-v0.0.3-next.12) (2026-01-08)
 
 
