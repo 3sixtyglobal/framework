@@ -13,6 +13,12 @@ export const HeaderTypes = {
 	ContentType: "content-type",
 
 	/**
+	 * Content Language.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Language
+	 */
+	ContentLanguage: "content-language",
+
+	/**
 	 * Content Length.
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Length
 	 */
@@ -29,6 +35,36 @@ export const HeaderTypes = {
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding
 	 */
 	ContentEncoding: "content-encoding",
+
+	/**
+	 * Cache Control.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+	 */
+	CacheControl: "cache-control",
+
+	/**
+	 * ETag.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag
+	 */
+	ETag: "etag",
+
+	/**
+	 * If-None-Match.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match
+	 */
+	IfNoneMatch: "if-none-match",
+
+	/**
+	 * Last-Modified.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Last-Modified
+	 */
+	LastModified: "last-modified",
+
+	/**
+	 * If-Modified-Since.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-Modified-Since
+	 */
+	IfModifiedSince: "if-modified-since",
 
 	/**
 	 * Accept.
@@ -55,6 +91,12 @@ export const HeaderTypes = {
 	Authorization: "authorization",
 
 	/**
+	 * WWW-Authenticate.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/WWW-Authenticate
+	 */
+	WwwAuthenticate: "www-authenticate",
+
+	/**
 	 * Cookie.
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cookie
 	 */
@@ -73,10 +115,82 @@ export const HeaderTypes = {
 	Location: "location",
 
 	/**
+	 * Origin.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin
+	 */
+	Origin: "origin",
+
+	/**
+	 * Referer.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer
+	 */
+	Referer: "referer",
+
+	/**
 	 * Link
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
 	 */
 	Link: "link",
+
+	/**
+	 * Vary.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Vary
+	 */
+	Vary: "vary",
+
+	/**
+	 * Access-Control-Allow-Origin.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
+	 */
+	AccessControlAllowOrigin: "access-control-allow-origin",
+
+	/**
+	 * Access-Control-Allow-Methods.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Methods
+	 */
+	AccessControlAllowMethods: "access-control-allow-methods",
+
+	/**
+	 * Access-Control-Allow-Headers.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers
+	 */
+	AccessControlAllowHeaders: "access-control-allow-headers",
+
+	/**
+	 * Access-Control-Expose-Headers.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers
+	 */
+	AccessControlExposeHeaders: "access-control-expose-headers",
+
+	/**
+	 * Access-Control-Max-Age.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age
+	 */
+	AccessControlMaxAge: "access-control-max-age",
+
+	/**
+	 * Access-Control-Allow-Credentials.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials
+	 */
+	AccessControlAllowCredentials: "access-control-allow-credentials",
+
+	/**
+	 * Range.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Range
+	 */
+	Range: "range",
+
+	/**
+	 * Accept-Ranges.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Ranges
+	 */
+	AcceptRanges: "accept-ranges",
+
+	/**
+	 * Content-Range.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Range
+	 */
+	ContentRange: "content-range",
 
 	/**
 	 * User-Agent

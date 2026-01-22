@@ -12,11 +12,19 @@ Standard HTTP status codes.
 
 Continue status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/100
+
 ### switchingProtocols
 
 > `readonly` **switchingProtocols**: `101` = `101`
 
 Switching Protocols status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/101
 
 ### processing
 
@@ -24,11 +32,19 @@ Switching Protocols status code.
 
 Processing status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/102
+
 ### earlyHints
 
 > `readonly` **earlyHints**: `103` = `103`
 
 Early Hints status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/103
 
 ### ok
 
@@ -36,11 +52,19 @@ Early Hints status code.
 
 OK status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200
+
 ### created
 
 > `readonly` **created**: `201` = `201`
 
 Created status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201
 
 ### accepted
 
@@ -48,11 +72,19 @@ Created status code.
 
 Accepted status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/202
+
 ### nonAuthoritativeInformation
 
 > `readonly` **nonAuthoritativeInformation**: `203` = `203`
 
 Non-Authoritative Information status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/203
 
 ### noContent
 
@@ -60,11 +92,19 @@ Non-Authoritative Information status code.
 
 No Content status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204
+
 ### resetContent
 
 > `readonly` **resetContent**: `205` = `205`
 
 Reset Content status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/205
 
 ### partialContent
 
@@ -72,11 +112,19 @@ Reset Content status code.
 
 Partial Content status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/206
+
 ### multiStatus
 
 > `readonly` **multiStatus**: `207` = `207`
 
 Multi-Status status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/207
 
 ### alreadyReported
 
@@ -84,11 +132,19 @@ Multi-Status status code.
 
 Already Reported status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/208
+
 ### imUsed
 
 > `readonly` **imUsed**: `226` = `226`
 
 IM Used status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/226
 
 ### multipleChoices
 
@@ -96,11 +152,19 @@ IM Used status code.
 
 Multiple Choices status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/300
+
 ### movedPermanently
 
 > `readonly` **movedPermanently**: `301` = `301`
 
 Moved Permanently status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/301
 
 ### found
 
@@ -108,11 +172,19 @@ Moved Permanently status code.
 
 Found status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302
+
 ### seeOther
 
 > `readonly` **seeOther**: `303` = `303`
 
 See Other status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/303
 
 ### notModified
 
@@ -120,11 +192,19 @@ See Other status code.
 
 Not Modified status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/304
+
 ### useProxy
 
 > `readonly` **useProxy**: `305` = `305`
 
 Use Proxy status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/305
 
 ### temporaryRedirect
 
@@ -132,11 +212,19 @@ Use Proxy status code.
 
 Temporary Redirect status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/307
+
 ### permanentRedirect
 
 > `readonly` **permanentRedirect**: `308` = `308`
 
 Permanent Redirect status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/308
 
 ### badRequest
 
@@ -144,11 +232,19 @@ Permanent Redirect status code.
 
 Bad Request status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+
 ### unauthorized
 
 > `readonly` **unauthorized**: `401` = `401`
 
 Unauthorized status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
 
 ### paymentRequired
 
@@ -156,11 +252,19 @@ Unauthorized status code.
 
 Payment Required status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402
+
 ### forbidden
 
 > `readonly` **forbidden**: `403` = `403`
 
 Forbidden status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
 
 ### notFound
 
@@ -168,11 +272,19 @@ Forbidden status code.
 
 Not Found status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+
 ### methodNotAllowed
 
 > `readonly` **methodNotAllowed**: `405` = `405`
 
 Method Not Allowed status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/405
 
 ### notAcceptable
 
@@ -180,11 +292,19 @@ Method Not Allowed status code.
 
 Not Acceptable status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/406
+
 ### proxyAuthenticationRequired
 
 > `readonly` **proxyAuthenticationRequired**: `407` = `407`
 
 Proxy Authentication Required status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/407
 
 ### requestTimeout
 
@@ -192,11 +312,19 @@ Proxy Authentication Required status code.
 
 Request Timeout status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408
+
 ### conflict
 
 > `readonly` **conflict**: `409` = `409`
 
 Conflict status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/409
 
 ### gone
 
@@ -204,11 +332,19 @@ Conflict status code.
 
 Gone status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/410
+
 ### lengthRequired
 
 > `readonly` **lengthRequired**: `411` = `411`
 
 Length Required status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/411
 
 ### preconditionFailed
 
@@ -216,11 +352,19 @@ Length Required status code.
 
 Precondition Failed status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/412
+
 ### payloadTooLarge
 
 > `readonly` **payloadTooLarge**: `413` = `413`
 
 Payload Too Large status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/413
 
 ### uriTooLong
 
@@ -228,11 +372,19 @@ Payload Too Large status code.
 
 URI Too Long status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/414
+
 ### unsupportedMediaType
 
 > `readonly` **unsupportedMediaType**: `415` = `415`
 
 Unsupported Media Type status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/415
 
 ### rangeNotSatisfiable
 
@@ -240,11 +392,19 @@ Unsupported Media Type status code.
 
 Range Not Satisfiable status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/416
+
 ### expectationFailed
 
 > `readonly` **expectationFailed**: `417` = `417`
 
 Expectation Failed status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/417
 
 ### imATeapot
 
@@ -252,11 +412,19 @@ Expectation Failed status code.
 
 I'm a Teapot status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/418
+
 ### misdirectedRequest
 
 > `readonly` **misdirectedRequest**: `421` = `421`
 
 Misdirected Request status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/421
 
 ### unprocessableEntity
 
@@ -264,11 +432,19 @@ Misdirected Request status code.
 
 Unprocessable Entity status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/422
+
 ### locked
 
 > `readonly` **locked**: `423` = `423`
 
 Locked status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/423
 
 ### failedDependency
 
@@ -276,11 +452,19 @@ Locked status code.
 
 Failed Dependency status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/424
+
 ### tooEarly
 
 > `readonly` **tooEarly**: `425` = `425`
 
 Too Early status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/425
 
 ### upgradeRequired
 
@@ -288,11 +472,19 @@ Too Early status code.
 
 Upgrade Required status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/426
+
 ### preconditionRequired
 
 > `readonly` **preconditionRequired**: `428` = `428`
 
 Precondition Required status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/428
 
 ### tooManyRequests
 
@@ -300,11 +492,19 @@ Precondition Required status code.
 
 Too Many Requests status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+
 ### requestHeaderFieldsTooLarge
 
 > `readonly` **requestHeaderFieldsTooLarge**: `431` = `431`
 
 Request Header Fields Too Large status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/431
 
 ### unavailableForLegalReasons
 
@@ -312,11 +512,19 @@ Request Header Fields Too Large status code.
 
 Unavailable For Legal Reasons status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451
+
 ### internalServerError
 
 > `readonly` **internalServerError**: `500` = `500`
 
 Internal Server Error status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
 
 ### notImplemented
 
@@ -324,11 +532,19 @@ Internal Server Error status code.
 
 Not Implemented status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/501
+
 ### badGateway
 
 > `readonly` **badGateway**: `502` = `502`
 
 Bad Gateway status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502
 
 ### serviceUnavailable
 
@@ -336,11 +552,19 @@ Bad Gateway status code.
 
 Service Unavailable status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503
+
 ### gatewayTimeout
 
 > `readonly` **gatewayTimeout**: `504` = `504`
 
 Gateway Timeout status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504
 
 ### httpVersionNotSupported
 
@@ -348,11 +572,19 @@ Gateway Timeout status code.
 
 HTTP Version Not Supported status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/505
+
 ### variantAlsoNegotiates
 
 > `readonly` **variantAlsoNegotiates**: `506` = `506`
 
 Variant Also Negotiates status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/506
 
 ### insufficientStorage
 
@@ -360,11 +592,19 @@ Variant Also Negotiates status code.
 
 Insufficient Storage status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/507
+
 ### loopDetected
 
 > `readonly` **loopDetected**: `508` = `508`
 
 Loop Detected status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/508
 
 ### notExtended
 
@@ -372,8 +612,20 @@ Loop Detected status code.
 
 Not Extended status code.
 
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/510
+
 ### networkAuthenticationRequired
 
 > `readonly` **networkAuthenticationRequired**: `511` = `511`
 
 Network Authentication Required status code.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/511
+
+## See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
