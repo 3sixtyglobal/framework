@@ -1,5 +1,25 @@
 # @twin.org/web - Changelog
 
+## [0.0.3-next.14](https://github.com/twinfoundation/framework/compare/web-v0.0.3-next.13...web-v0.0.3-next.14) (2026-01-22)
+
+
+### Features
+
+* add/update http and mime types ([#229](https://github.com/twinfoundation/framework/issues/229)) ([d50154a](https://github.com/twinfoundation/framework/commit/d50154a484711b67feb42ea20a94e4415e53d392))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.13 to 0.0.3-next.14
+    * @twin.org/crypto bumped from 0.0.3-next.13 to 0.0.3-next.14
+    * @twin.org/nameof bumped from 0.0.3-next.13 to 0.0.3-next.14
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.13 to 0.0.3-next.14
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.13 to 0.0.3-next.14
+    * @twin.org/validate-locales bumped from 0.0.3-next.13 to 0.0.3-next.14
+
 ## [0.0.3-next.13](https://github.com/twinfoundation/framework/compare/web-v0.0.3-next.12...web-v0.0.3-next.13) (2026-01-08)
 
 
