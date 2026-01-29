@@ -1,5 +1,22 @@
 # @twin.org/core - Changelog
 
+## [0.0.3-next.15](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.14...core-v0.0.3-next.15) (2026-01-29)
+
+
+### Features
+
+* urn random switched to using uuidv7 ([6a29f8b](https://github.com/twinfoundation/framework/commit/6a29f8bd573d06992b7eaa027b1daf4c2a2e1e85))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.14 to 0.0.3-next.15
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.14 to 0.0.3-next.15
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.14 to 0.0.3-next.15
+
 ## [0.0.3-next.14](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.13...core-v0.0.3-next.14) (2026-01-22)
 
 
