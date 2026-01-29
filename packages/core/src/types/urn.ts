@@ -49,7 +49,7 @@ export class Urn {
 	 * @returns A new Id in URN format.
 	 */
 	public static generateRandom(namespace: string): Urn {
-		return new Urn(namespace, Converter.bytesToHex(RandomHelper.generate(32)));
+		return new Urn(namespace, RandomHelper.generateUuidV7("compact"));
 	}
 
 	/**

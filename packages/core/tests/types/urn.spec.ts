@@ -13,7 +13,7 @@ describe("Urn", () => {
 
 		expect(urn[0]).toEqual("urn");
 		expect(urn[1]).toEqual("twin-ilt");
-		expect(urn[2].length).toEqual(64);
+		expect(urn[2].length).toEqual(32);
 	});
 
 	test("can fail to construct an id with no namespace id", () => {
