@@ -4,7 +4,6 @@ import { nameof } from "@twin.org/nameof";
 import { GuardError } from "../errors/guardError.js";
 import { RandomHelper } from "../helpers/randomHelper.js";
 import type { IValidationFailure } from "../models/IValidationFailure.js";
-import { Converter } from "../utils/converter.js";
 import { Guards } from "../utils/guards.js";
 import { Is } from "../utils/is.js";
 
