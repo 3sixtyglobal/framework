@@ -1,5 +1,12 @@
 # @twin.org/nameof-transformer - Changelog
 
+## [0.0.3-next.16](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.3-next.15...nameof-transformer-v0.0.3-next.16) (2026-02-06)
+
+
+### Features
+
+* improved password generation and validation ([#232](https://github.com/twinfoundation/framework/issues/232)) ([ca4e18f](https://github.com/twinfoundation/framework/commit/ca4e18f388b1882cdfb774fc0d0921b8530fac33))
+
 ## [0.0.3-next.15](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.3-next.14...nameof-transformer-v0.0.3-next.15) (2026-01-29)
 
 

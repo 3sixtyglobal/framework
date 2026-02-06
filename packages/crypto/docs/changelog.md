@@ -1,5 +1,24 @@
 # @twin.org/crypto - Changelog
 
+## [0.0.3-next.16](https://github.com/twinfoundation/framework/compare/crypto-v0.0.3-next.15...crypto-v0.0.3-next.16) (2026-02-06)
+
+
+### Features
+
+* improved password generation and validation ([#232](https://github.com/twinfoundation/framework/issues/232)) ([ca4e18f](https://github.com/twinfoundation/framework/commit/ca4e18f388b1882cdfb774fc0d0921b8530fac33))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.15 to 0.0.3-next.16
+    * @twin.org/nameof bumped from 0.0.3-next.15 to 0.0.3-next.16
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.15 to 0.0.3-next.16
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.15 to 0.0.3-next.16
+    * @twin.org/validate-locales bumped from 0.0.3-next.15 to 0.0.3-next.16
+
 ## [0.0.3-next.15](https://github.com/twinfoundation/framework/compare/crypto-v0.0.3-next.14...crypto-v0.0.3-next.15) (2026-01-29)
 
 
