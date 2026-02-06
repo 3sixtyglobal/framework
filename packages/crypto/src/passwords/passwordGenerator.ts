@@ -76,6 +76,7 @@ export class PasswordGenerator {
 	 * Get a random character from the given character set.
 	 * @param charSet The character set to get a random character from.
 	 * @returns A random character from the given character set.
+	 * @internal
 	 */
 	private static getRandomChar(charSet: string): string {
 		let b = 0;
@@ -89,6 +90,7 @@ export class PasswordGenerator {
 	 * Push a random character from the given character set to the chars array, ensuring no three repeated characters in a row.
 	 * @param chars The array to push the character to.
 	 * @param charSet The character set to get a random character from.
+	 * @internal
 	 */
 	private static pushChar(chars: string[], charSet: string): void {
 		let next = PasswordGenerator.getRandomChar(charSet);
