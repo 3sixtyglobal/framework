@@ -102,7 +102,7 @@ Options to configure the testing.
 
 `number`
 
-The minimum length of the password, defaults to 8.
+The minimum length of the password, defaults to 15.
 
 ###### maxLength?
 

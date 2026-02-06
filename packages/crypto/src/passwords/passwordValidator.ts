@@ -113,7 +113,7 @@ export class PasswordValidator {
 	 * Validate the password against security policy.
 	 * @param password The password to validate.
 	 * @param options Options to configure the testing.
-	 * @param options.minLength The minimum length of the password, defaults to 8.
+	 * @param options.minLength The minimum length of the password, defaults to 15.
 	 * @param options.maxLength The minimum length of the password, defaults to 128.
 	 * @param options.minPhraseLength The minimum length of the password for it to be considered a pass phrase.
 	 * @throws Error if the password does not meet the requirements.
