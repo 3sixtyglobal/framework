@@ -27,7 +27,7 @@ export class Factory<T> {
 	 */
 	private _generators: {
 		[name: string]: {
-			generator: () => T;
+			generator: (args?: unknown) => T;
 			order: number;
 		};
 	};
@@ -140,7 +140,7 @@ export class Factory<T> {
 	 * @param name The name of the generator.
 	 * @param generator The function to create an instance.
 	 */
-	public register<U extends T>(name: string, generator: () => U): void {
+	public register<U extends T>(name: string, generator: (args?: unknown) => U): void {
 		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
 		Guards.function(Factory.CLASS_NAME, nameof(generator), generator);
 		this._generators[name] = {
@@ -190,6 +190,28 @@ export class Factory<T> {
 			});
 		}
 		return instance as U;
+	}
+
+	/**
+	 * Create a new instance without caching it.
+	 * @param name The name of the instance to generate.
+	 * @param args The arguments to pass to the generator.
+	 * @returns A new instance of the item.
+	 * @throws GuardError if the parameters are invalid.
+	 * @throws GeneralError if no item exists to create.
+	 */
+	public create<U extends T>(name: string, args?: unknown): U {
+		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
+		const matchName = this._matcher(Object.keys(this._generators), name);
+
+		if (Is.stringValue(matchName) && this._generators[matchName]) {
+			return this._generators[matchName].generator(args) as U;
+		}
+
+		throw new GeneralError(Factory.CLASS_NAME, "noGet", {
+			typeName: this._typeName,
+			name
+		});
 	}
 
 	/**

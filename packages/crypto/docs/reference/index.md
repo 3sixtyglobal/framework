@@ -19,6 +19,7 @@
 - [Sha256](classes/Sha256.md)
 - [Sha3](classes/Sha3.md)
 - [Sha512](classes/Sha512.md)
+- [IntegrityHelper](classes/IntegrityHelper.md)
 - [PemHelper](classes/PemHelper.md)
 - [Bip32Path](classes/Bip32Path.md)
 - [Bip39](classes/Bip39.md)
@@ -30,8 +31,10 @@
 
 ## Type Aliases
 
+- [IntegrityAlgorithm](type-aliases/IntegrityAlgorithm.md)
 - [KeyType](type-aliases/KeyType.md)
 
 ## Variables
 
+- [IntegrityAlgorithm](variables/IntegrityAlgorithm.md)
 - [KeyType](variables/KeyType.md)

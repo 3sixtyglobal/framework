@@ -77,6 +77,24 @@ describe("Factory", () => {
 		);
 	});
 
+	test("create can fail if name is undefined", () => {
+		expect(() => TestFactory.create(undefined as never)).toThrow(
+			expect.objectContaining({
+				name: "GuardError",
+				message: "guard.string"
+			})
+		);
+	});
+
+	test("create fail if unknown type", () => {
+		expect(() => TestFactory.create("test-create")).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "factory.noGet"
+			})
+		);
+	});
+
 	test("register and get can succeed", () => {
 		TestFactory.register("test", () => new TestComponent("test"));
 		const t = TestFactory.get<TestComponent>("test");
@@ -99,6 +117,25 @@ describe("Factory", () => {
 		if (t2b) {
 			expect(t2b.foo).toEqual(2);
 		}
+	});
+
+	test("create can pass args and always create a new instance", () => {
+		const testFactory = Factory.createFactory<TestComponent>("component-create");
+		testFactory.register("test-create", args => {
+			const payload = args as { name: string; foo: number };
+			const instance = new TestComponent(payload.name);
+			instance.foo = payload.foo;
+			return instance;
+		});
+
+		const first = testFactory.create<TestComponent>("test-create", { name: "t1", foo: 10 });
+		const second = testFactory.create<TestComponent>("test-create", { name: "t2", foo: 20 });
+
+		expect(first).not.toBe(second);
+		expect(first.name).toEqual("t1");
+		expect(first.foo).toEqual(10);
+		expect(second.name).toEqual("t2");
+		expect(second.foo).toEqual(20);
 	});
 
 	test("unregister can succeed", () => {

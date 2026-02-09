@@ -118,7 +118,7 @@ The name of the generator.
 
 ##### generator
 
-() => `U`
+(`args?`) => `U`
 
 The function to create an instance.
 
@@ -189,6 +189,48 @@ GuardError if the parameters are invalid.
 #### Throws
 
 GeneralError if no item exists to get.
+
+***
+
+### create()
+
+> **create**\<`U`\>(`name`, `args?`): `U`
+
+Create a new instance without caching it.
+
+#### Type Parameters
+
+##### U
+
+`U`
+
+#### Parameters
+
+##### name
+
+`string`
+
+The name of the instance to generate.
+
+##### args?
+
+`unknown`
+
+The arguments to pass to the generator.
+
+#### Returns
+
+`U`
+
+A new instance of the item.
+
+#### Throws
+
+GuardError if the parameters are invalid.
+
+#### Throws
+
+GeneralError if no item exists to create.
 
 ***
 
