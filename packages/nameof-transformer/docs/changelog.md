@@ -1,5 +1,12 @@
 # @twin.org/nameof-transformer - Changelog
 
+## [0.0.3-next.17](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.3-next.16...nameof-transformer-v0.0.3-next.17) (2026-02-09)
+
+
+### Features
+
+* factory create and integrity ([#235](https://github.com/twinfoundation/framework/issues/235)) ([9f98b99](https://github.com/twinfoundation/framework/commit/9f98b99daf46eb365346fae49cc4ffba63e74cb3))
+
 ## [0.0.3-next.16](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.3-next.15...nameof-transformer-v0.0.3-next.16) (2026-02-06)
 
 

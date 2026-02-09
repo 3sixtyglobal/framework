@@ -1,5 +1,30 @@
 # @twin.org/crypto - Changelog
 
+## [0.0.3-next.17](https://github.com/twinfoundation/framework/compare/crypto-v0.0.3-next.16...crypto-v0.0.3-next.17) (2026-02-09)
+
+
+### Features
+
+* factory create and integrity ([#235](https://github.com/twinfoundation/framework/issues/235)) ([9f98b99](https://github.com/twinfoundation/framework/commit/9f98b99daf46eb365346fae49cc4ffba63e74cb3))
+
+
+### Bug Fixes
+
+* docs ([9df46e0](https://github.com/twinfoundation/framework/commit/9df46e0a3940a4d1f479373f58830519262f9590))
+* docs ([67c8887](https://github.com/twinfoundation/framework/commit/67c888739448e753106ea067a8703d058e0ddf12))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.16 to 0.0.3-next.17
+    * @twin.org/nameof bumped from 0.0.3-next.16 to 0.0.3-next.17
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.16 to 0.0.3-next.17
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.16 to 0.0.3-next.17
+    * @twin.org/validate-locales bumped from 0.0.3-next.16 to 0.0.3-next.17
+
 ## [0.0.3-next.16](https://github.com/twinfoundation/framework/compare/crypto-v0.0.3-next.15...crypto-v0.0.3-next.16) (2026-02-06)
 
 
