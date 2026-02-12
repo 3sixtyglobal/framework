@@ -56,7 +56,8 @@
 			"types": "./dist/types/index.d.ts",
 			"import": "./dist/es/index.js",
 			"default": "./dist/es/index.js"
-		}
+		},
+		"./locales/*.json": "./locales/*.json"
 	},
 	"files": [
 		"dist/es",
