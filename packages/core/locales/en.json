@@ -84,7 +84,8 @@
 		},
 		"factory": {
 			"noUnregister": "There is no {typeName} registered with the name \"{name}\"",
-			"noGet": "The requested {typeName} \"{name}\" does not exist in the factory"
+			"noGet": "The requested {typeName} \"{name}\" does not exist in the factory",
+			"noCreate": "The requested {typeName} \"{name}\" cannot be created by the factory, with params \"{params}\""
 		},
 		"bitString": {
 			"outOfRange": "The index should be >= 0 and less than the length of the bit string, the index is \"{index}\" and the number of bit is \"{numberBits}\""

@@ -193,28 +193,6 @@ export class Factory<T> {
 	}
 
 	/**
-	 * Create a new instance without caching it.
-	 * @param name The name of the instance to generate.
-	 * @param args The arguments to pass to the generator.
-	 * @returns A new instance of the item.
-	 * @throws GuardError if the parameters are invalid.
-	 * @throws GeneralError if no item exists to create.
-	 */
-	public create<U extends T>(name: string, args?: unknown): U {
-		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
-		const matchName = this._matcher(Object.keys(this._generators), name);
-
-		if (Is.stringValue(matchName) && this._generators[matchName]) {
-			return this._generators[matchName].generator(args) as U;
-		}
-
-		throw new GeneralError(Factory.CLASS_NAME, "noGet", {
-			typeName: this._typeName,
-			name
-		});
-	}
-
-	/**
 	 * Get a generator instance with no exceptions.
 	 * @param name The name of the instance to generate.
 	 * @returns An instance of the item or undefined if it does not exist.
@@ -234,6 +212,43 @@ export class Factory<T> {
 			if (this._instances[matchName]) {
 				return this._instances[matchName] as U;
 			}
+		}
+	}
+
+	/**
+	 * Create a new instance without caching it.
+	 * @param name The name of the instance to generate.
+	 * @param args The arguments to pass to the generator.
+	 * @returns A new instance of the item.
+	 * @throws GuardError if the parameters are invalid.
+	 * @throws GeneralError if no item exists to create.
+	 */
+	public create<U extends T>(name: string, args?: unknown): U {
+		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
+		const instance = this.createIfExists(name, args);
+		if (!instance) {
+			throw new GeneralError(Factory.CLASS_NAME, "noCreate", {
+				typeName: this._typeName,
+				name,
+				args: Is.undefined(args) ? "" : JSON.stringify(args)
+			});
+		}
+		return instance as U;
+	}
+
+	/**
+	 * Create a new instance without caching it if it exists.
+	 * @param name The name of the instance to generate.
+	 * @param args The arguments to pass to the generator.
+	 * @returns A new instance of the item if it exists.
+	 * @throws GuardError if the parameters are invalid.
+	 */
+	public createIfExists<U extends T>(name: string, args?: unknown): U | undefined {
+		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
+		const matchName = this._matcher(Object.keys(this._generators), name);
+
+		if (Is.stringValue(matchName) && this._generators[matchName]) {
+			return this._generators[matchName].generator(args) as U;
 		}
 	}
 

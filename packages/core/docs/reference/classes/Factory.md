@@ -192,6 +192,34 @@ GeneralError if no item exists to get.
 
 ***
 
+### getIfExists()
+
+> **getIfExists**\<`U`\>(`name?`): `U` \| `undefined`
+
+Get a generator instance with no exceptions.
+
+#### Type Parameters
+
+##### U
+
+`U`
+
+#### Parameters
+
+##### name?
+
+`string`
+
+The name of the instance to generate.
+
+#### Returns
+
+`U` \| `undefined`
+
+An instance of the item or undefined if it does not exist.
+
+***
+
 ### create()
 
 > **create**\<`U`\>(`name`, `args?`): `U`
@@ -234,11 +262,11 @@ GeneralError if no item exists to create.
 
 ***
 
-### getIfExists()
+### createIfExists()
 
-> **getIfExists**\<`U`\>(`name?`): `U` \| `undefined`
+> **createIfExists**\<`U`\>(`name`, `args?`): `U` \| `undefined`
 
-Get a generator instance with no exceptions.
+Create a new instance without caching it if it exists.
 
 #### Type Parameters
 
@@ -248,17 +276,27 @@ Get a generator instance with no exceptions.
 
 #### Parameters
 
-##### name?
+##### name
 
 `string`
 
 The name of the instance to generate.
 
+##### args?
+
+`unknown`
+
+The arguments to pass to the generator.
+
 #### Returns
 
 `U` \| `undefined`
 
-An instance of the item or undefined if it does not exist.
+A new instance of the item if it exists.
+
+#### Throws
+
+GuardError if the parameters are invalid.
 
 ***
 
