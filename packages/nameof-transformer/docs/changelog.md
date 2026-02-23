@@ -1,5 +1,12 @@
 # @twin.org/nameof-transformer - Changelog
 
+## [0.0.3-next.18](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.3-next.17...nameof-transformer-v0.0.3-next.18) (2026-02-23)
+
+
+### Features
+
+* add factory.createIfExists ([aad5a53](https://github.com/twinfoundation/framework/commit/aad5a53cef1b1c2e04344ea46244d41e371dff9b))
+
 ## [0.0.3-next.17](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.3-next.16...nameof-transformer-v0.0.3-next.17) (2026-02-09)
 
 

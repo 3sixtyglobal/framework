@@ -1,5 +1,23 @@
 # @twin.org/cli-core - Changelog
 
+## [0.0.3-next.18](https://github.com/twinfoundation/framework/compare/cli-core-v0.0.3-next.17...cli-core-v0.0.3-next.18) (2026-02-23)
+
+
+### Bug Fixes
+
+* export the json locales for cli-core ([188b47d](https://github.com/twinfoundation/framework/commit/188b47d3339deb42d08c32715909337749fb0e4a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.17 to 0.0.3-next.18
+    * @twin.org/nameof bumped from 0.0.3-next.17 to 0.0.3-next.18
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.17 to 0.0.3-next.18
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.17 to 0.0.3-next.18
+
 ## [0.0.3-next.17](https://github.com/twinfoundation/framework/compare/cli-core-v0.0.3-next.16...cli-core-v0.0.3-next.17) (2026-02-09)
 
 

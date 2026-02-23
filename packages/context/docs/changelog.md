@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.0.3-next.18](https://github.com/twinfoundation/framework/compare/context-v0.0.3-next.17...context-v0.0.3-next.18) (2026-02-23)
+
+
+### Miscellaneous Chores
+
+* **context:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.17 to 0.0.3-next.18
+    * @twin.org/nameof bumped from 0.0.3-next.17 to 0.0.3-next.18
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.17 to 0.0.3-next.18
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.17 to 0.0.3-next.18
+    * @twin.org/validate-locales bumped from 0.0.3-next.17 to 0.0.3-next.18
+
 ## [0.0.3-next.17](https://github.com/twinfoundation/framework/compare/context-v0.0.3-next.16...context-v0.0.3-next.17) (2026-02-09)
 
 
