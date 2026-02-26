@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.0.3-next.21](https://github.com/twinfoundation/framework/compare/context-v0.0.3-next.20...context-v0.0.3-next.21) (2026-02-26)
+
+
+### Features
+
+* add context id features ([#206](https://github.com/twinfoundation/framework/issues/206)) ([ef0d4ee](https://github.com/twinfoundation/framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* context id handler derives from component ([c868ec2](https://github.com/twinfoundation/framework/commit/c868ec21d3a576d4faa222bf130270a21936e50e))
+
+
+### Bug Fixes
+
+* use singleton pattern for context storage ([c69f358](https://github.com/twinfoundation/framework/commit/c69f358e45361b45d4e46f19846cd5b8c99b0ccd))
+* use singleton pattern for context storage ([5cc706a](https://github.com/twinfoundation/framework/commit/5cc706a2bbfc601fa3d00f3efd8b764052e9f91d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.20 to 0.0.3-next.21
+    * @twin.org/nameof bumped from 0.0.3-next.20 to 0.0.3-next.21
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.20 to 0.0.3-next.21
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.20 to 0.0.3-next.21
+    * @twin.org/validate-locales bumped from 0.0.3-next.20 to 0.0.3-next.21
+
 ## [0.0.3-next.20](https://github.com/twinfoundation/framework/compare/context-v0.0.3-next.19...context-v0.0.3-next.20) (2026-02-26)
 
 

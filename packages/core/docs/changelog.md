@@ -1,5 +1,58 @@
 # @twin.org/core - Changelog
 
+## [0.0.3-next.21](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.20...core-v0.0.3-next.21) (2026-02-26)
+
+
+### Features
+
+* add context id features ([#206](https://github.com/twinfoundation/framework/issues/206)) ([ef0d4ee](https://github.com/twinfoundation/framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* add factory.createIfExists ([aad5a53](https://github.com/twinfoundation/framework/commit/aad5a53cef1b1c2e04344ea46244d41e371dff9b))
+* add guards arrayEndsWith and arrayStartsWith ([95d875e](https://github.com/twinfoundation/framework/commit/95d875ec8ccb4713c145fdde941d4cfedcec2ed3))
+* add Is.class method ([4988205](https://github.com/twinfoundation/framework/commit/498820543e256a130b4888c958fe1d87ca865d7f))
+* add isDefault option to factory registration ([a8a700b](https://github.com/twinfoundation/framework/commit/a8a700bb8ddaf7dd5097869a358b8fc5f7c40ce7))
+* add objectHelper.split ([386830a](https://github.com/twinfoundation/framework/commit/386830a77f8e842a5b119be0983708e042c3b14b))
+* add ObjectOrArray and ArrayHelper methods ([0ac9077](https://github.com/twinfoundation/framework/commit/0ac907764d64b38ad1b04b0e9c3027055b527559))
+* add rsa cipher support ([7af6cc6](https://github.com/twinfoundation/framework/commit/7af6cc67512d3363bd4a2f2e87bd7733c2800147))
+* add set method for async caches ([ba34b55](https://github.com/twinfoundation/framework/commit/ba34b55e651ad56ab8fc59e139e4af631c19cda0))
+* add typeName method to factory ([699fcbd](https://github.com/twinfoundation/framework/commit/699fcbd1168228401ddb81fdacb959b8cdc4206a))
+* add uuidv7 support ([#219](https://github.com/twinfoundation/framework/issues/219)) ([916c657](https://github.com/twinfoundation/framework/commit/916c657d270ce99fafe554233739fdd9ca28635b))
+* add zlib/deflate mime types detection ([72c472b](https://github.com/twinfoundation/framework/commit/72c472b5a35a973e7109336f5b6cdd84dbb8bbcb))
+* adding link header helper ([#225](https://github.com/twinfoundation/framework/issues/225)) ([703c072](https://github.com/twinfoundation/framework/commit/703c0725aceac6b6ec0c4fa729ef832d12fb3fd7))
+* additional nameof operators ([a5aab60](https://github.com/twinfoundation/framework/commit/a5aab60bf66a86f1b7ff8af7c4f044cb03706d50))
+* additional RSA methods and async ([1fceee2](https://github.com/twinfoundation/framework/commit/1fceee2d1248a24a7620846025fcf906495c07f4))
+* async cache don't cache failures unless requested ([658ec4b](https://github.com/twinfoundation/framework/commit/658ec4b67a58a075de4702a3886d151e25ad3ddc))
+* bump version ([c5354fa](https://github.com/twinfoundation/framework/commit/c5354fa906f4493c70f2642a9175a66780a10636))
+* eslint migration to flat config ([74427d7](https://github.com/twinfoundation/framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* expand error params to accept properties ([032e9fd](https://github.com/twinfoundation/framework/commit/032e9fd1388e457cde32ca1005dfe014a5a9c077))
+* factory create and integrity ([#235](https://github.com/twinfoundation/framework/issues/235)) ([9f98b99](https://github.com/twinfoundation/framework/commit/9f98b99daf46eb365346fae49cc4ffba63e74cb3))
+* improve base error data extraction ([dccc933](https://github.com/twinfoundation/framework/commit/dccc93361a1544b41db0e7c126ff90e858d87960))
+* improve error display in CLI ([94b6ca8](https://github.com/twinfoundation/framework/commit/94b6ca8bdcfe3ca7671c4095b436ea7bddaae98e))
+* improve Is.function and ModuleHelper.getModuleMethod signatures ([ecf968b](https://github.com/twinfoundation/framework/commit/ecf968b02934b3676be4bf7cd2d1e7f8e7af6ce2))
+* improve Is.function definition to retain types ([f20b6b0](https://github.com/twinfoundation/framework/commit/f20b6b0dd16e74b75dc359be72b05989305c6410))
+* locales validation ([#197](https://github.com/twinfoundation/framework/issues/197)) ([55fdadb](https://github.com/twinfoundation/framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* nodeIdentity optional in IComponent methods ([c78dc17](https://github.com/twinfoundation/framework/commit/c78dc17f4357d3e1ae40e415f468d3eae13e81f4))
+* propagate includeStackTrace on error conversion ([8471cbb](https://github.com/twinfoundation/framework/commit/8471cbb71f8fc98247a0e92126c438c1a8b04d9b))
+* propagate includeStackTrace on error conversion ([818337d](https://github.com/twinfoundation/framework/commit/818337d50d14bf5a7e8b3204649aa7527115cca9))
+* relocate core packages from tools ([bcab8f3](https://github.com/twinfoundation/framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* simplify async set ([#121](https://github.com/twinfoundation/framework/issues/121)) ([2693c32](https://github.com/twinfoundation/framework/commit/2693c325266fd1a0aede6f1336c8b254c981a9ca))
+* simplify StringHelper signature ([0390403](https://github.com/twinfoundation/framework/commit/039040344952f91ee3c671249bc0e1c8f3b38e17))
+* support indexed properties set in objects ([b9c001d](https://github.com/twinfoundation/framework/commit/b9c001dc4614f6ff7486f4370735a553613d823a))
+* update dependencies ([f3bd015](https://github.com/twinfoundation/framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* urn random switched to using uuidv7 ([606c9a2](https://github.com/twinfoundation/framework/commit/606c9a2ed68a10fc7fc2bc5f93388c1b71033154))
+* urn random switched to using uuidv7 ([6a29f8b](https://github.com/twinfoundation/framework/commit/6a29f8bd573d06992b7eaa027b1daf4c2a2e1e85))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/twinfoundation/framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+* use new shared store mechanism ([#131](https://github.com/twinfoundation/framework/issues/131)) ([934385b](https://github.com/twinfoundation/framework/commit/934385b2fbaf9f5c00a505ebf9d093bd5a425f55))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.20 to 0.0.3-next.21
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.20 to 0.0.3-next.21
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.20 to 0.0.3-next.21
+
 ## [0.0.3-next.20](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.19...core-v0.0.3-next.20) (2026-02-26)
 
 
