@@ -76,7 +76,6 @@ jobs:
   publish-packages:
     runs-on: ubuntu-latest
     permissions:
-      attestations: write
       contents: read
       id-token: write # Needed for npm provenance
     needs: process-workspaces # Wait for the process-workspaces job to complete
@@ -174,20 +173,12 @@ jobs:
           if [ "$IS_PRIVATE" = "true" ]; then
             echo "Package is marked as private, skipping publication"
             echo "published=false" >> $GITHUB_OUTPUT
-            echo "is_public_package=false" >> $GITHUB_OUTPUT
           else
             npm publish "${{ steps.pack_npm_package.outputs.tarball_filename }}" --access public --tag ${NPM_TAG}
             echo "published=true" >> $GITHUB_OUTPUT
-            echo "is_public_package=true" >> $GITHUB_OUTPUT
           fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Attest NPM Package Tarball
-        if: steps.publish_npm_package.outputs.published == 'true' && steps.publish_npm_package.outputs.is_public_package == 'true'
-        uses: actions/attest-build-provenance@v2
-        with:
-          subject-path: ${{ matrix.package }}/${{ steps.pack_npm_package.outputs.tarball_filename }}
 
       - name: Wait for package to be available on npm
         if: steps.publish_npm_package.outputs.published == 'true'
