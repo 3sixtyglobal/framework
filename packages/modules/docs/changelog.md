@@ -1,5 +1,25 @@
 # @twin.org/modules - Changelog
 
+## [0.0.3-next.20](https://github.com/twinfoundation/framework/compare/modules-v0.0.3-next.19...modules-v0.0.3-next.20) (2026-02-26)
+
+
+### Miscellaneous Chores
+
+* **modules:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.19 to 0.0.3-next.20
+    * @twin.org/context bumped from 0.0.3-next.19 to 0.0.3-next.20
+    * @twin.org/nameof bumped from 0.0.3-next.19 to 0.0.3-next.20
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.19 to 0.0.3-next.20
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.19 to 0.0.3-next.20
+    * @twin.org/validate-locales bumped from 0.0.3-next.19 to 0.0.3-next.20
+
 ## [0.0.3-next.19](https://github.com/twinfoundation/framework/compare/modules-v0.0.3-next.18...modules-v0.0.3-next.19) (2026-02-26)
 
 
