@@ -162,7 +162,8 @@ export class Factory<T> {
 			order: this._orderCounter++
 		};
 
-		// If this is the default generator, we want to make sure it is the first one by resetting the order of all generators.
+		// If this is the default generator, we want to make sure it
+		// is the first one by resetting the order of all generators.
 		if (options?.isDefault ?? false) {
 			let lowestOrder = 0;
 			for (const generatorName in this._generators) {
