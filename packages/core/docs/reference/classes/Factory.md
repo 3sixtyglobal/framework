@@ -112,7 +112,7 @@ The type name of the factory.
 
 ### register()
 
-> **register**\<`U`\>(`name`, `generator`, `options?`): `void`
+> **register**\<`U`\>(`name`, `generator`): `void`
 
 Register a new generator.
 
@@ -135,16 +135,6 @@ The name of the generator.
 (`args?`) => `U`
 
 The function to create an instance.
-
-##### options?
-
-Options for the generator.
-
-###### isDefault?
-
-`boolean`
-
-Whether the generator is the default one i.e. should be the first generator.
 
 #### Returns
 

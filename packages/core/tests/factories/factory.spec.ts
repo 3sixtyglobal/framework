@@ -276,25 +276,6 @@ describe("Factory", () => {
 		expect(names[2]).toEqual("test1");
 	});
 
-	test("can register a default component and make it first", () => {
-		const testFactory = Factory.createFactory<TestComponent>("component-default-order");
-		testFactory.register("test3", () => new TestComponent("test3"));
-		testFactory.register("test2", () => new TestComponent("test2"));
-		testFactory.register("test1", () => new TestComponent("test1"), { isDefault: true });
-
-		expect(testFactory.names()).toEqual(["test1", "test3", "test2"]);
-
-		testFactory.get("test1");
-		testFactory.get("test2");
-		testFactory.get("test3");
-
-		const instanceList = testFactory.instancesList();
-		expect(instanceList.length).toEqual(3);
-		expect(instanceList[0].name).toEqual("test1");
-		expect(instanceList[1].name).toEqual("test3");
-		expect(instanceList[2].name).toEqual("test2");
-	});
-
 	test("can have two factories which don't collide", () => {
 		const testFactory1 = Factory.createFactory<IComponent>("component11");
 		const testFactory2 = Factory.createFactory<IComponent>("component12");

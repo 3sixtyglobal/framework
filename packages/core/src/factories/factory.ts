@@ -147,32 +147,14 @@ export class Factory<T> {
 	 * Register a new generator.
 	 * @param name The name of the generator.
 	 * @param generator The function to create an instance.
-	 * @param options Options for the generator.
-	 * @param options.isDefault Whether the generator is the default one i.e. should be the first generator.
 	 */
-	public register<U extends T>(
-		name: string,
-		generator: (args?: unknown) => U,
-		options?: { isDefault?: boolean }
-	): void {
+	public register<U extends T>(name: string, generator: (args?: unknown) => U): void {
 		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
 		Guards.function(Factory.CLASS_NAME, nameof(generator), generator);
 		this._generators[name] = {
 			generator,
 			order: this._orderCounter++
 		};
-
-		// If this is the default generator, we want to make sure it
-		// is the first one by resetting the order of all generators.
-		if (options?.isDefault ?? false) {
-			let lowestOrder = 0;
-			for (const generatorName in this._generators) {
-				lowestOrder = Math.min(lowestOrder, this._generators[generatorName].order);
-				this._generators[generatorName].order++;
-			}
-
-			this._generators[name].order = lowestOrder;
-		}
 
 		// Remove any existing instance
 		this.removeInstance(name);
