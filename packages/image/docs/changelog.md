@@ -1,5 +1,24 @@
 # @twin.org/image - Changelog
 
+## [0.0.3-next.19](https://github.com/twinfoundation/framework/compare/image-v0.0.3-next.18...image-v0.0.3-next.19) (2026-02-26)
+
+
+### Miscellaneous Chores
+
+* **image:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.18 to 0.0.3-next.19
+    * @twin.org/nameof bumped from 0.0.3-next.18 to 0.0.3-next.19
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.18 to 0.0.3-next.19
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.18 to 0.0.3-next.19
+    * @twin.org/validate-locales bumped from 0.0.3-next.18 to 0.0.3-next.19
+
 ## [0.0.3-next.18](https://github.com/twinfoundation/framework/compare/image-v0.0.3-next.17...image-v0.0.3-next.18) (2026-02-23)
 
 
