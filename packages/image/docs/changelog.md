@@ -1,5 +1,24 @@
 # @twin.org/image - Changelog
 
+## [0.0.3-next.22](https://github.com/twinfoundation/framework/compare/image-v0.0.3-next.21...image-v0.0.3-next.22) (2026-02-26)
+
+
+### Miscellaneous Chores
+
+* **image:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.21 to 0.0.3-next.22
+    * @twin.org/nameof bumped from 0.0.3-next.21 to 0.0.3-next.22
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.21 to 0.0.3-next.22
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.21 to 0.0.3-next.22
+    * @twin.org/validate-locales bumped from 0.0.3-next.21 to 0.0.3-next.22
+
 ## [0.0.3-next.21](https://github.com/twinfoundation/framework/compare/image-v0.0.3-next.20...image-v0.0.3-next.21) (2026-02-26)
 
 
