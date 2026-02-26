@@ -1,5 +1,22 @@
 # @twin.org/core - Changelog
 
+## [0.0.3-next.20](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.19...core-v0.0.3-next.20) (2026-02-26)
+
+
+### Features
+
+* add typeName method to factory ([699fcbd](https://github.com/twinfoundation/framework/commit/699fcbd1168228401ddb81fdacb959b8cdc4206a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.19 to 0.0.3-next.20
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.19 to 0.0.3-next.20
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.19 to 0.0.3-next.20
+
 ## [0.0.3-next.19](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.18...core-v0.0.3-next.19) (2026-02-26)
 
 
