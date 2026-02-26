@@ -1,5 +1,22 @@
 # @twin.org/core - Changelog
 
+## [0.0.3-next.19](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.18...core-v0.0.3-next.19) (2026-02-26)
+
+
+### Features
+
+* add isDefault option to factory registration ([a8a700b](https://github.com/twinfoundation/framework/commit/a8a700bb8ddaf7dd5097869a358b8fc5f7c40ce7))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.18 to 0.0.3-next.19
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.18 to 0.0.3-next.19
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.18 to 0.0.3-next.19
+
 ## [0.0.3-next.18](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.17...core-v0.0.3-next.18) (2026-02-23)
 
 
