@@ -1,5 +1,22 @@
 # @twin.org/core - Changelog
 
+## [0.0.3-next.22](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.21...core-v0.0.3-next.22) (2026-02-26)
+
+
+### Features
+
+* simplify factory options ([7f85a85](https://github.com/twinfoundation/framework/commit/7f85a8553dd3008364e8e1104f2e6f6b6595d77e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.21 to 0.0.3-next.22
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.21 to 0.0.3-next.22
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.21 to 0.0.3-next.22
+
 ## [0.0.3-next.21](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.20...core-v0.0.3-next.21) (2026-02-26)
 
 
