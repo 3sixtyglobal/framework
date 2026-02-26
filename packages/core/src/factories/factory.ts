@@ -136,6 +136,14 @@ export class Factory<T> {
 	}
 
 	/**
+	 * Get the type name of the factory.
+	 * @returns The type name of the factory.
+	 */
+	public typeName(): string {
+		return this._typeName;
+	}
+
+	/**
 	 * Register a new generator.
 	 * @param name The name of the generator.
 	 * @param generator The function to create an instance.

@@ -96,6 +96,20 @@ Clear all the factories, which removes anything registered with the factories.
 
 ***
 
+### typeName()
+
+> **typeName**(): `string`
+
+Get the type name of the factory.
+
+#### Returns
+
+`string`
+
+The type name of the factory.
+
+***
+
 ### register()
 
 > **register**\<`U`\>(`name`, `generator`, `options?`): `void`
