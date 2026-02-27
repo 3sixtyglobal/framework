@@ -7,7 +7,9 @@ import { transformerFactory } from "./transformer.js";
  * Exports the factory.
  * @returns The factory.
  */
-export const factory = (): ts.TransformerFactory<ts.Node> => transformerFactory;
+export function factory(): ts.TransformerFactory<ts.Node> {
+	return transformerFactory;
+}
 
 /**
  * Exports the factory version.

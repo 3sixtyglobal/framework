@@ -3,7 +3,15 @@
 import { manual } from "@twin.org/nameof-transformer";
 import type { Plugin } from "vitest/config";
 
-export const nameOfPluginTransform = (code: string, id: string): string => manual(code);
+/**
+ * Transforms the code using the nameOf plugin.
+ * @param code The code to transform.
+ * @param id The id of the file being transformed.
+ * @returns The transformed code.
+ */
+export function nameOfPluginTransform(code: string, id: string): string {
+	return manual(code);
+}
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const NameOfPlugin: Plugin = {
