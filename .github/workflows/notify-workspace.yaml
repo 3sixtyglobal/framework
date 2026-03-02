@@ -38,5 +38,14 @@ jobs:
 
           gh api repos/twinfoundation/workspace/dispatches \
             --method POST \
-            -f event_type='submodule-changed' \
-            -f client_payload="{\"submodule\":\"${{ github.event.repository.name }}\",\"branch\":\"${BRANCH}\",\"sha\":\"${SHA}\",\"pr\":${PR_NUMBER}}"
+            --input - <<EOF
+          {
+            "event_type": "submodule-changed",
+            "client_payload": {
+              "submodule": "${{ github.event.repository.name }}",
+              "branch": "${BRANCH}",
+              "sha": "${SHA}",
+              "pr": ${PR_NUMBER}
+            }
+          }
+          EOF
