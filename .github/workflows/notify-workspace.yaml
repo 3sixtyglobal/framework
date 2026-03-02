@@ -4,6 +4,9 @@ name: Notify Workspace On Merge
 on:
   # Manually trigger this workflow from the GitHub UI to notify the workspace about a merged PR in the next branch.
   workflow_dispatch:
+  # Trigger when commits are pushed to next.
+  push:
+    branches: [next]
   # Trigger when a PR targeting next is closed.
   pull_request:
     types: [closed]
@@ -11,8 +14,8 @@ on:
 
 jobs:
   notify-workspace:
-    # Only continue if the closed PR was actually merged.
-    if: ${{ github.event.pull_request.merged == true }}
+    # Continue for pushes, and for closed PRs only if they were merged.
+    if: ${{ github.event_name == 'push' || github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +26,17 @@ jobs:
           GH_TOKEN: ${{ secrets.GHA_RELEASE_TOKEN }}
         run: |
           # Send a repository_dispatch event to the workspace repo.
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BRANCH="${{ github.base_ref }}"
+            SHA="${{ github.event.pull_request.merge_commit_sha }}"
+            PR_NUMBER='${{ github.event.pull_request.number }}'
+          else
+            BRANCH="${{ github.ref_name }}"
+            SHA="${{ github.sha }}"
+            PR_NUMBER='null'
+          fi
+
           gh api repos/twinfoundation/workspace/dispatches \
             --method POST \
             -f event_type='submodule-changed' \
-            -f client_payload="{\"submodule\":\"${{ github.event.repository.name }}\",\"branch\":\"${{ github.base_ref }}\",\"sha\":\"${{ github.event.pull_request.merge_commit_sha }}\",\"pr\":${{ github.event.pull_request.number }}}"
+            -f client_payload="{\"submodule\":\"${{ github.event.repository.name }}\",\"branch\":\"${BRANCH}\",\"sha\":\"${SHA}\",\"pr\":${PR_NUMBER}}"
