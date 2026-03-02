@@ -46,7 +46,7 @@ The stripped PEM content in bas64 format.
 
 ### formatPem()
 
-> `static` **formatPem**(`marker`, `base64Content`, `lineLength`): `string`
+> `static` **formatPem**(`marker`, `base64Content`, `lineLength?`): `string`
 
 Format the PEM content to have a specific line length.
 
@@ -64,7 +64,7 @@ The marker for the PEM content, e.g. RSA PRIVATE KEY
 
 The base64 content to format.
 
-##### lineLength
+##### lineLength?
 
 `number` = `64`
 

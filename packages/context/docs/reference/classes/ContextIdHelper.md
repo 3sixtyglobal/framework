@@ -164,7 +164,7 @@ The short versions of the context IDs.
 
 ### shortCombined()
 
-> `static` **shortCombined**(`contextIds`, `keys`, `separator`): `string` \| `undefined`
+> `static` **shortCombined**(`contextIds`, `keys`, `separator?`): `string` \| `undefined`
 
 Gets the combined short version.
 
@@ -182,7 +182,7 @@ The context ID keys to get the short versions for.
 
 `string`[] | `undefined`
 
-##### separator
+##### separator?
 
 `string` = `"/"`
 
@@ -198,7 +198,7 @@ The short version combined.
 
 ### shortSplit()
 
-> `static` **shortSplit**(`keys`, `combined`, `separator`): [`IContextIds`](../interfaces/IContextIds.md)
+> `static` **shortSplit**(`keys`, `combined`, `separator?`): [`IContextIds`](../interfaces/IContextIds.md)
 
 Split a combined short version in to the separate context IDs.
 
@@ -216,7 +216,7 @@ The context ID keys to get the short versions for.
 
 The combined short version to separate.
 
-##### separator
+##### separator?
 
 `string` = `"/"`
 
@@ -236,7 +236,7 @@ GeneralError if the number of parts does not match the number of keys.
 
 ### combinedContextKey()
 
-> `static` **combinedContextKey**(`contextIds`, `keys`, `separator`): `string` \| `undefined`
+> `static` **combinedContextKey**(`contextIds`, `keys`, `separator?`): `string` \| `undefined`
 
 Create a combined key.
 
@@ -254,7 +254,7 @@ The context ID keys to get the short versions for.
 
 `string`[] | `undefined`
 
-##### separator
+##### separator?
 
 `string` = `"/"`
 

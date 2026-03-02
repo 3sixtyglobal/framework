@@ -236,7 +236,7 @@ True if the value is a base58 string.
 
 ### stringHex()
 
-> `static` **stringHex**(`value`, `allowPrefix`): `value is string`
+> `static` **stringHex**(`value`, `allowPrefix?`): `value is string`
 
 Is the value a hex string.
 
@@ -248,7 +248,7 @@ Is the value a hex string.
 
 The value to test.
 
-##### allowPrefix
+##### allowPrefix?
 
 `boolean` = `false`
 
@@ -264,7 +264,7 @@ True if the value is a hex string.
 
 ### stringHexLength()
 
-> `static` **stringHexLength**(`value`, `length`, `allowPrefix`): `value is string`
+> `static` **stringHexLength**(`value`, `length`, `allowPrefix?`): `value is string`
 
 Is the value a hex string of fixed length.
 
@@ -282,7 +282,7 @@ The value to test.
 
 The length to test.
 
-##### allowPrefix
+##### allowPrefix?
 
 `boolean` = `false`
 

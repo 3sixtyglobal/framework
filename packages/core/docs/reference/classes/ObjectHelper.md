@@ -24,7 +24,7 @@ Runtime name for the class.
 
 ### toBytes()
 
-> `static` **toBytes**\<`T`\>(`obj`, `format`): `Uint8Array`
+> `static` **toBytes**\<`T`\>(`obj`, `format?`): `Uint8Array`
 
 Convert an object to bytes.
 
@@ -42,7 +42,7 @@ The object to convert.
 
 `T` | `undefined`
 
-##### format
+##### format?
 
 `boolean` = `false`
 
@@ -292,7 +292,7 @@ The property to set
 
 ### extractProperty()
 
-> `static` **extractProperty**\<`T`\>(`obj`, `propertyNames`, `removeProperties`): `T` \| `undefined`
+> `static` **extractProperty**\<`T`\>(`obj`, `propertyNames`, `removeProperties?`): `T` \| `undefined`
 
 Extract a property from the object, providing alternative names.
 
@@ -316,7 +316,7 @@ The possible names for the property.
 
 `string` | `string`[]
 
-##### removeProperties
+##### removeProperties?
 
 `boolean` = `true`
 

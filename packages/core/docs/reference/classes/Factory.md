@@ -20,7 +20,7 @@ Runtime name for the class.
 
 ### createFactory()
 
-> `static` **createFactory**\<`U`\>(`typeName`, `autoInstance`, `matcher?`): `Factory`\<`U`\>
+> `static` **createFactory**\<`U`\>(`typeName`, `autoInstance?`, `matcher?`): `Factory`\<`U`\>
 
 Create a new factory, which is shared throughout all library instances.
 
@@ -38,7 +38,7 @@ Create a new factory, which is shared throughout all library instances.
 
 The type name for the instances.
 
-##### autoInstance
+##### autoInstance?
 
 `boolean` = `false`
 

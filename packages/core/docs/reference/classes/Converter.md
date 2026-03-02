@@ -72,7 +72,7 @@ The array.
 
 ### bytesToHex()
 
-> `static` **bytesToHex**(`array`, `includePrefix`, `startIndex?`, `length?`, `reverse?`): `string`
+> `static` **bytesToHex**(`array`, `includePrefix?`, `startIndex?`, `length?`, `reverse?`): `string`
 
 Encode a raw array to hex string.
 
@@ -84,7 +84,7 @@ Encode a raw array to hex string.
 
 The bytes to encode.
 
-##### includePrefix
+##### includePrefix?
 
 `boolean` = `false`
 
@@ -146,7 +146,7 @@ The array.
 
 ### utf8ToHex()
 
-> `static` **utf8ToHex**(`utf8`, `includePrefix`): `string`
+> `static` **utf8ToHex**(`utf8`, `includePrefix?`): `string`
 
 Convert the UTF8 to hex.
 
@@ -158,7 +158,7 @@ Convert the UTF8 to hex.
 
 The text to convert.
 
-##### includePrefix
+##### includePrefix?
 
 `boolean` = `false`
 

@@ -6,13 +6,13 @@ Perform a SHA-3 hash on the block.
 
 ### Constructor
 
-> **new Sha3**(`bits`): `Sha3`
+> **new Sha3**(`bits?`): `Sha3`
 
 Create a new instance of Sha3.
 
 #### Parameters
 
-##### bits
+##### bits?
 
 `number` = `Sha3.SIZE_256`
 

@@ -232,13 +232,13 @@ The formatted urn.
 
 ### parts()
 
-> **parts**(`startIndex`): `string`[]
+> **parts**(`startIndex?`): `string`[]
 
 Get the parts.
 
 #### Parameters
 
-##### startIndex
+##### startIndex?
 
 `number` = `0`
 
@@ -282,13 +282,13 @@ The namespace method.
 
 ### namespaceSpecificParts()
 
-> **namespaceSpecificParts**(`startIndex`): `string`[]
+> **namespaceSpecificParts**(`startIndex?`): `string`[]
 
 Get the namespace specific parts.
 
 #### Parameters
 
-##### startIndex
+##### startIndex?
 
 `number` = `0`
 
@@ -304,13 +304,13 @@ The namespace specific parts.
 
 ### namespaceSpecific()
 
-> **namespaceSpecific**(`startIndex`): `string`
+> **namespaceSpecific**(`startIndex?`): `string`
 
 Get the namespace specific.
 
 #### Parameters
 
-##### startIndex
+##### startIndex?
 
 `number` = `0`
 
@@ -326,13 +326,13 @@ The namespace specific.
 
 ### toString()
 
-> **toString**(`omitPrefix`): `string`
+> **toString**(`omitPrefix?`): `string`
 
 Convert the parts in to a full string.
 
 #### Parameters
 
-##### omitPrefix
+##### omitPrefix?
 
 `boolean` = `true`
 

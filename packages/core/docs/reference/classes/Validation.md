@@ -1008,7 +1008,7 @@ ValidationError From the converted failures.
 
 ### toPropertyMap()
 
-> `static` **toPropertyMap**(`failures`, `propertyMap`, `clearMap`): `void`
+> `static` **toPropertyMap**(`failures`, `propertyMap`, `clearMap?`): `void`
 
 Map a list of failures to their properties in a map.
 
@@ -1024,7 +1024,7 @@ The validation failures to combine into the map for the properties.
 
 The map to add the failures to.
 
-##### clearMap
+##### clearMap?
 
 `boolean` = `true`
 

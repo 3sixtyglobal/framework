@@ -6,7 +6,7 @@ Class to help with HmacSha256 scheme.
 
 ### Constructor
 
-> **new HmacSha256**(`key`, `bits`): `HmacSha256`
+> **new HmacSha256**(`key`, `bits?`): `HmacSha256`
 
 Create a new instance of HmacSha256.
 
@@ -18,7 +18,7 @@ Create a new instance of HmacSha256.
 
 The key for the hmac.
 
-##### bits
+##### bits?
 
 `number` = `HmacSha256.SIZE_256`
 

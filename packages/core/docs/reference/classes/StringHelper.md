@@ -60,7 +60,7 @@ The trimmed string or the original.
 
 ### kebabCase()
 
-> `static` **kebabCase**(`input`, `stripInterfacePrefix`): `string`
+> `static` **kebabCase**(`input`, `stripInterfacePrefix?`): `string`
 
 Convert the input string to kebab case.
 
@@ -72,7 +72,7 @@ Convert the input string to kebab case.
 
 The input to convert.
 
-##### stripInterfacePrefix
+##### stripInterfacePrefix?
 
 `boolean` = `true`
 
@@ -88,7 +88,7 @@ The kebab case version of the input.
 
 ### snakeCase()
 
-> `static` **snakeCase**(`input`, `stripInterfacePrefix`): `string`
+> `static` **snakeCase**(`input`, `stripInterfacePrefix?`): `string`
 
 Convert the input string to snake case.
 
@@ -100,7 +100,7 @@ Convert the input string to snake case.
 
 The input to convert.
 
-##### stripInterfacePrefix
+##### stripInterfacePrefix?
 
 `boolean` = `true`
 
@@ -116,7 +116,7 @@ The snake case version of the input.
 
 ### titleCase()
 
-> `static` **titleCase**(`input`, `stripInterfacePrefix`): `string`
+> `static` **titleCase**(`input`, `stripInterfacePrefix?`): `string`
 
 Title case all the words.
 
@@ -128,7 +128,7 @@ Title case all the words.
 
 The input to convert.
 
-##### stripInterfacePrefix
+##### stripInterfacePrefix?
 
 `boolean` = `true`
 
@@ -144,7 +144,7 @@ The title case version of the input.
 
 ### pascalCase()
 
-> `static` **pascalCase**(`input`, `stripInterfacePrefix`): `string`
+> `static` **pascalCase**(`input`, `stripInterfacePrefix?`): `string`
 
 Pascal case all the words.
 
@@ -156,7 +156,7 @@ Pascal case all the words.
 
 The input to convert.
 
-##### stripInterfacePrefix
+##### stripInterfacePrefix?
 
 `boolean` = `true`
 
@@ -172,7 +172,7 @@ The pascal case version of the input.
 
 ### camelCase()
 
-> `static` **camelCase**(`input`, `stripInterfacePrefix`): `string`
+> `static` **camelCase**(`input`, `stripInterfacePrefix?`): `string`
 
 Camel case all the words.
 
@@ -184,7 +184,7 @@ Camel case all the words.
 
 The input to convert.
 
-##### stripInterfacePrefix
+##### stripInterfacePrefix?
 
 `boolean` = `true`
 
@@ -200,7 +200,7 @@ The camel case version of the input.
 
 ### wordPath()
 
-> `static` **wordPath**(`input`, `stripInterfacePrefix`): `string`
+> `static` **wordPath**(`input`, `stripInterfacePrefix?`): `string`
 
 Convert the words to a path.
 
@@ -212,7 +212,7 @@ Convert the words to a path.
 
 The input to convert.
 
-##### stripInterfacePrefix
+##### stripInterfacePrefix?
 
 `boolean` = `true`
 

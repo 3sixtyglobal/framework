@@ -24,19 +24,19 @@ Runtime name for the class.
 
 ### randomMnemonic()
 
-> `static` **randomMnemonic**(`strength`, `words`): `string`
+> `static` **randomMnemonic**(`strength?`, `words?`): `string`
 
 Generate a random mnemonic.
 
 #### Parameters
 
-##### strength
+##### strength?
 
 `number` = `256`
 
 The strength of the mnemonic to generate, defaults to 256.
 
-##### words
+##### words?
 
 `string`[] = `wordlist`
 
@@ -56,7 +56,7 @@ Error if the length is not a multiple of 32.
 
 ### entropyToMnemonic()
 
-> `static` **entropyToMnemonic**(`entropy`, `words`): `string`
+> `static` **entropyToMnemonic**(`entropy`, `words?`): `string`
 
 Generate a mnemonic from the entropy.
 
@@ -68,7 +68,7 @@ Generate a mnemonic from the entropy.
 
 The entropy to generate.
 
-##### words
+##### words?
 
 `string`[] = `wordlist`
 
@@ -116,7 +116,7 @@ The seed.
 
 ### mnemonicToEntropy()
 
-> `static` **mnemonicToEntropy**(`mnemonic`, `words`): `Uint8Array`
+> `static` **mnemonicToEntropy**(`mnemonic`, `words?`): `Uint8Array`
 
 Convert the mnemonic back to entropy.
 
@@ -128,7 +128,7 @@ Convert the mnemonic back to entropy.
 
 The mnemonic to convert.
 
-##### words
+##### words?
 
 `string`[] = `wordlist`
 
@@ -148,7 +148,7 @@ Error if the number of words is not a multiple of 3.
 
 ### validateMnemonic()
 
-> `static` **validateMnemonic**(`mnemonic`, `wordCount`, `words`): `boolean`
+> `static` **validateMnemonic**(`mnemonic`, `wordCount?`, `words?`): `boolean`
 
 Validate the mnemonic.
 
@@ -160,13 +160,13 @@ Validate the mnemonic.
 
 The mnemonic to validate.
 
-##### wordCount
+##### wordCount?
 
 `number` = `24`
 
 The expected number of words in the mnemonic, defaults to 24.
 
-##### words
+##### words?
 
 `string`[] = `wordlist`
 

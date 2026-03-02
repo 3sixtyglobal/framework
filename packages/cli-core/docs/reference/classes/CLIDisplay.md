@@ -100,7 +100,7 @@ The icon for the CLI.
 
 ### error()
 
-> `static` **error**(`error`, `lineBreaks`): `void`
+> `static` **error**(`error`, `lineBreaks?`): `void`
 
 Display an error message.
 
@@ -112,7 +112,7 @@ Display an error message.
 
 The error to display.
 
-##### lineBreaks
+##### lineBreaks?
 
 `boolean` = `true`
 
@@ -166,7 +166,7 @@ The label for the section.
 
 ### value()
 
-> `static` **value**(`label`, `value`, `indentLevel`): `void`
+> `static` **value**(`label`, `value`, `indentLevel?`): `void`
 
 Display a value with a label.
 
@@ -184,7 +184,7 @@ The label for the value.
 
 The value to display.
 
-##### indentLevel
+##### indentLevel?
 
 `number` = `0`
 
@@ -288,25 +288,25 @@ Display the processing is done.
 
 ### spinnerStart()
 
-> `static` **spinnerStart**(`i18nMessage`, `spinnerCharacters`, `interval`): `void`
+> `static` **spinnerStart**(`i18nMessage?`, `spinnerCharacters?`, `interval?`): `void`
 
 Start the spinner.
 
 #### Parameters
 
-##### i18nMessage
+##### i18nMessage?
 
 `string` = `"cli.progress.pleaseWait"`
 
 The message to display with the spinner.
 
-##### spinnerCharacters
+##### spinnerCharacters?
 
 `string`[] = `...`
 
 The characters to use in the spinner.
 
-##### interval
+##### interval?
 
 `number` = `100`
 

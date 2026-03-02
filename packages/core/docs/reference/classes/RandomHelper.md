@@ -46,13 +46,13 @@ The random array.
 
 ### generateUuidV7()
 
-> `static` **generateUuidV7**(`format`): `string`
+> `static` **generateUuidV7**(`format?`): `string`
 
 Generate a new UUIDv7.
 
 #### Parameters
 
-##### format
+##### format?
 
 The format of the UUIDv7 string.
 

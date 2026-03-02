@@ -6,7 +6,7 @@ Class to help with HmacSha512 scheme.
 
 ### Constructor
 
-> **new HmacSha512**(`key`, `bits`): `HmacSha512`
+> **new HmacSha512**(`key`, `bits?`): `HmacSha512`
 
 Create a new instance of HmacSha512.
 
@@ -18,7 +18,7 @@ Create a new instance of HmacSha512.
 
 The key for the hmac.
 
-##### bits
+##### bits?
 
 `number` = `HmacSha512.SIZE_512`
 

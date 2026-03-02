@@ -82,7 +82,7 @@ True if the hex string has the prefix.
 
 ### isHex()
 
-> `static` **isHex**(`value`, `allowPrefix`): `boolean`
+> `static` **isHex**(`value`, `allowPrefix?`): `boolean`
 
 Is the data hex format.
 
@@ -94,7 +94,7 @@ Is the data hex format.
 
 The value to test.
 
-##### allowPrefix
+##### allowPrefix?
 
 `boolean` = `false`
 

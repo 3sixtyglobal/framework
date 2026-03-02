@@ -50,7 +50,7 @@ The sorted list.
 
 ### compare()
 
-> `static` **compare**\<`T`\>(`entity1`, `entity2`, `prop`, `type`, `direction`): `number`
+> `static` **compare**\<`T`\>(`entity1`, `entity2`, `prop`, `type`, `direction?`): `number`
 
 Compare two properties.
 
@@ -86,7 +86,7 @@ The property to compare.
 
 The type of the property.
 
-##### direction
+##### direction?
 
 [`SortDirection`](../type-aliases/SortDirection.md) = `SortDirection.Ascending`
 

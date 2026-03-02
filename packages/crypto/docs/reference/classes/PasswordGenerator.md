@@ -24,13 +24,13 @@ Runtime name for the class.
 
 ### generate()
 
-> `static` **generate**(`length`): `string`
+> `static` **generate**(`length?`): `string`
 
 Generate a password of given length.
 
 #### Parameters
 
-##### length
+##### length?
 
 `number` = `PasswordGenerator._DEFAULT_MIN_PASSWORD_LENGTH`
 
