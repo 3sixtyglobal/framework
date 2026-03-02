@@ -1,5 +1,5 @@
 # Notify the workspace repository when a PR targeting the next branch is merged. This allows the workspace to update its submodule references accordingly.
-name: Notify Workspace On Merge
+name: Notify Workspace
 
 on:
   # Manually trigger this workflow from the GitHub UI to notify the workspace about a merged PR in the next branch.
