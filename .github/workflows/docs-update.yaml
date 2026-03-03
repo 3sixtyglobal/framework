@@ -118,8 +118,8 @@ jobs:
           git checkout -b "$BRANCH_NAME"
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
 
-          # Stage everything to capture docs updates across all workspaces.
-          git add -A
+          # Stage docs folders only so no non-doc changes are committed.
+          git add -- ':(glob)**/docs/**'
 
           # Signed docs commit on a dedicated branch.
           git commit -S -m "docs: regenerate package documentation" --signoff
@@ -155,7 +155,7 @@ jobs:
       - name: Enable auto-merge for docs update PR
         if: ${{ !inputs.dryRun && steps.create-pr.outputs.pr_number != '' }}
         run: |
-          gh pr merge ${{ steps.create-pr.outputs.pr_number }} --auto --merge --delete-branch
+          gh pr merge ${{ steps.create-pr.outputs.pr_number }} --auto --squash --delete-branch
         env:
           GH_TOKEN: ${{ secrets.GHA_RELEASE_TOKEN }}
 
