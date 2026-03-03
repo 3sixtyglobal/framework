@@ -57,6 +57,40 @@ jobs:
           echo "Using branch: $BRANCH"
           echo "Using semver type: $SEMVER_TYPE"
 
+      # Ensure docs are refreshed on the target branch before release preparation starts.
+      - name: Run docs update workflow
+        run: |
+          TARGET_BRANCH="${{ steps.set-branch.outputs.branch }}"
+          START_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          gh workflow run docs-update.yaml \
+            --ref "$TARGET_BRANCH" \
+            -f dryRun=false
+
+          echo "Waiting for Docs Update run id..."
+          for i in {1..30}; do
+            RUN_ID=$(gh run list \
+              --workflow "Docs Update" \
+              --branch "$TARGET_BRANCH" \
+              --event workflow_dispatch \
+              --json databaseId,createdAt \
+              --jq "map(select(.createdAt >= \"$START_TIME\")) | sort_by(.createdAt) | reverse | .[0].databaseId")
+
+            if [ -n "$RUN_ID" ] && [ "$RUN_ID" != "null" ]; then
+              echo "Docs Update run found: $RUN_ID"
+              gh run watch "$RUN_ID" --exit-status
+              exit 0
+            fi
+
+            echo "Docs Update run not visible yet (attempt $i/30), retrying in 10s..."
+            sleep 10
+          done
+
+          echo "Could not find the Docs Update workflow run after dispatch."
+          exit 1
+        env:
+          GH_TOKEN: ${{ secrets.GHA_RELEASE_TOKEN }}
+
       # Clone the repository to the runner
       - name: Checkout
         uses: actions/checkout@v4
