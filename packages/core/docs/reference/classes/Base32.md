@@ -1,6 +1,6 @@
 # Class: Base32
 
-Class to help with base63 Encoding/Decoding.
+Class to help with base32 Encoding/Decoding.
 
 ## Constructors
 
