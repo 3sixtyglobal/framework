@@ -24,7 +24,7 @@ permissions:
 jobs:
   update-docs:
     # Use self-hosted runners for private repos; otherwise use GitHub-hosted Ubuntu.
-    runs-on: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+    runs-on: 'ubuntu-latest'
 
     steps:
       # Safety guard: docs updates are only allowed on the next branch.
