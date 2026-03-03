@@ -64,37 +64,20 @@ jobs:
       # Loop workspaces in package.json order; run build before docs for each.
       - name: Generate package docs
         run: |
-          node - <<'NODE'
-          const fs = require("node:fs");
-          const { execSync } = require("node:child_process");
-
-          const rootPkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
-          const workspaces = Array.isArray(rootPkg.workspaces) ? rootPkg.workspaces : [];
-
-          if (workspaces.length === 0) {
-            throw new Error("No workspaces found in package.json workspaces field.");
-          }
-
-          for (const workspace of workspaces) {
-            console.log(`Building ${workspace}`);
-            execSync(`npm run build --workspace ${workspace}`, { stdio: "inherit" });
-
-            console.log(`Generating docs for ${workspace}`);
-            execSync(`npm run docs --workspace ${workspace}`, { stdio: "inherit" });
-          }
-          NODE
+          npm run build
+          npm run docs
 
       # Create one repo-wide commit and push only when docs changed.
       - name: Report docs change status
         run: |
-          if git diff --quiet; then
+          if git diff --quiet -- ':(glob)**/docs/**'; then
             echo "No documentation changes were generated."
             exit 0
           fi
 
-          echo "Documentation changes detected."
-          git status --short
-          git diff --name-only
+          echo "Documentation changes detected in docs folders."
+          git status --short -- ':(glob)**/docs/**'
+          git diff --name-only -- ':(glob)**/docs/**'
 
       # Commit/push is disabled during dry-run mode.
       - name: Commit and push docs update
