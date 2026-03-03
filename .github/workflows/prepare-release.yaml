@@ -25,6 +25,7 @@ jobs:
   prepare:
     runs-on: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
     permissions:
+      actions: write # Needed to dispatch and monitor docs-update workflow runs
       contents: write # Needed for creating/updating branches for version bumps
       pull-requests: write # Needed for creating the release PR
       id-token: write # Keep existing permissions for authentication
@@ -92,7 +93,7 @@ jobs:
           echo "Could not find the Docs Update workflow run after dispatch."
           exit 1
         env:
-          GH_TOKEN: ${{ secrets.GHA_RELEASE_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
 
       # Clone the repository to the runner
       - name: Checkout
