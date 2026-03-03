@@ -60,7 +60,7 @@ export class BitBuffer {
 			this._buffer.push(0);
 		}
 		if (bit) {
-			this._buffer[~~(this._length / 8)] |= 0x80 >>> this._length % 8;
+			this._buffer[~~(this._length / 8)] |= 0x80 >>> (this._length % 8);
 		}
 		this._length++;
 	}
