@@ -61,15 +61,18 @@ jobs:
       - name: Run docs update workflow
         run: |
           TARGET_BRANCH="${{ steps.set-branch.outputs.branch }}"
+          REPO="${{ github.repository }}"
           START_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
           gh workflow run docs-update.yaml \
+            --repo "$REPO" \
             --ref "$TARGET_BRANCH" \
             -f dryRun=false
 
           echo "Waiting for Docs Update run id..."
           for i in {1..30}; do
             RUN_ID=$(gh run list \
+              --repo "$REPO" \
               --workflow "Docs Update" \
               --branch "$TARGET_BRANCH" \
               --event workflow_dispatch \
@@ -78,7 +81,7 @@ jobs:
 
             if [ -n "$RUN_ID" ] && [ "$RUN_ID" != "null" ]; then
               echo "Docs Update run found: $RUN_ID"
-              gh run watch "$RUN_ID" --exit-status
+              gh run watch "$RUN_ID" --repo "$REPO" --exit-status
               exit 0
             fi
 

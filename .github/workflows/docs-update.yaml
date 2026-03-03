@@ -151,6 +151,35 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GHA_RELEASE_TOKEN }}
 
+      # Block until the PR is actually merged so callers can safely continue.
+      - name: Wait for docs update PR merge
+        if: ${{ !inputs.dryRun && steps.create-pr.outputs.pr_number != '' }}
+        run: |
+          PR_NUMBER="${{ steps.create-pr.outputs.pr_number }}"
+
+          for i in {1..60}; do
+            PR_STATE=$(gh pr view "$PR_NUMBER" --repo "${{ github.repository }}" --json state --jq '.state')
+            PR_MERGED_AT=$(gh pr view "$PR_NUMBER" --repo "${{ github.repository }}" --json mergedAt --jq '.mergedAt')
+
+            if [ "$PR_MERGED_AT" != "null" ] && [ -n "$PR_MERGED_AT" ]; then
+              echo "Docs update PR #$PR_NUMBER merged at $PR_MERGED_AT."
+              exit 0
+            fi
+
+            if [ "$PR_STATE" = "CLOSED" ]; then
+              echo "Docs update PR #$PR_NUMBER was closed without merge."
+              exit 1
+            fi
+
+            echo "Docs update PR #$PR_NUMBER not merged yet (attempt $i/60), retrying in 10s..."
+            sleep 10
+          done
+
+          echo "Timed out waiting for docs update PR #$PR_NUMBER to merge."
+          exit 1
+        env:
+          GH_TOKEN: ${{ secrets.GHA_RELEASE_TOKEN }}
+
       - name: Dry run summary
         if: ${{ inputs.dryRun }}
         run: |
