@@ -22,9 +22,47 @@ permissions:
   contents: write
 
 jobs:
-  update-docs:
-    # Use self-hosted runners for private repos; otherwise use GitHub-hosted Ubuntu.
+  discover-workspaces:
     runs-on: 'ubuntu-latest'
+    outputs:
+      workspaces: ${{ steps.workspaces.outputs.workspaces }}
+
+    steps:
+      # Safety guard: docs updates are only allowed on the next branch.
+      - name: Enforce next branch
+        run: |
+          if [ "${{ github.ref_name }}" != "next" ]; then
+            echo "This workflow only runs on the next branch."
+            exit 1
+          fi
+
+      # Checkout next explicitly so workspace discovery reads the expected package.json.
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ github.token }}
+          ref: next
+
+      # Use root package.json workspaces directly for the matrix.
+      - name: Resolve workspace matrix
+        id: workspaces
+        run: |
+          node - <<'NODE'
+          const fs = require("node:fs");
+          const rootPkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `workspaces=${JSON.stringify(rootPkg.workspaces)}\n`);
+          console.log(`Using ${rootPkg.workspaces.length} workspaces from package.json.`);
+          console.log(rootPkg.workspaces.join("\n"));
+          NODE
+
+  generate-docs:
+    needs: discover-workspaces
+    runs-on: 'ubuntu-latest'
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        workspace: ${{ fromJson(needs.discover-workspaces.outputs.workspaces) }}
 
     steps:
       # Safety guard: docs updates are only allowed on the next branch.
@@ -62,57 +100,95 @@ jobs:
             }
           done
 
-      # Iterate all root workspaces and run docs only where a docs script exists.
+      # Build each workspace before docs so generated API references reflect current build output.
+      - name: Build workspace
+        run: |
+          npm run build --workspace ${{ matrix.workspace }}
+
+      # Generate docs for this workspace matrix entry.
       - name: Generate package docs
         run: |
-          # Keep workspace selection dynamic by reading root package.json workspaces.
-          # This avoids hardcoding package paths in the workflow.
-          node - <<'NODE'
-          const fs = require("node:fs");
-          const path = require("node:path");
-          const { execSync } = require("node:child_process");
+          npm run docs --workspace ${{ matrix.workspace }}
 
-          const root = process.cwd();
-          const rootPkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
-          const workspaces = Array.isArray(rootPkg.workspaces) ? rootPkg.workspaces : [];
+      # Persist each workspace diff as a patch for final aggregation in one commit.
+      - name: Create patch artifact
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No documentation updates for ${{ matrix.workspace }}."
+            exit 0
+          fi
 
-          for (const workspace of workspaces) {
-            const packageJsonPath = path.join(root, workspace, "package.json");
+          patch_name="$(echo "${{ matrix.workspace }}" | tr '/' '-')"
+          mkdir -p patches
+          git diff --cached --binary > "patches/${patch_name}.patch"
 
-            if (!fs.existsSync(packageJsonPath)) {
-              // Skip stale workspace entries without a package.json.
-              continue;
-            }
+      - name: Upload patch artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-patch-${{ strategy.job-index }}
+          path: patches/*.patch
+          if-no-files-found: ignore
 
-            const workspacePkg = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
-            if (!workspacePkg.scripts || !workspacePkg.scripts.docs) {
-              // Only run docs where the workspace explicitly supports it.
-              continue;
-            }
+  commit-docs:
+    needs:
+      - discover-workspaces
+      - generate-docs
+    runs-on: 'ubuntu-latest'
+    steps:
+      # Safety guard: docs updates are only allowed on the next branch.
+      - name: Enforce next branch
+        run: |
+          if [ "${{ github.ref_name }}" != "next" ]; then
+            echo "This workflow only runs on the next branch."
+            exit 1
+          fi
 
-            console.log(`Generating docs for ${workspace}`);
-            execSync(`npm run docs --workspace ${workspace}`, {
-              cwd: root,
-              stdio: "inherit"
-            });
-          }
-          NODE
+      # Checkout next explicitly so commits always target the correct branch.
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ github.token }}
+          ref: next
+
+      - name: Download patch artifacts
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          pattern: docs-patch-*
+          merge-multiple: true
+          path: .patches
+
+      - name: Apply workspace patches
+        run: |
+          if [ ! -d .patches ]; then
+            echo "No patch artifacts found."
+            exit 0
+          fi
+
+          shopt -s nullglob
+          patches=(.patches/*.patch)
+          if [ ${#patches[@]} -eq 0 ]; then
+            echo "No patch files to apply."
+            exit 0
+          fi
+
+          for patch in "${patches[@]}"; do
+            echo "Applying ${patch}"
+            git apply --index --whitespace=nowarn "$patch"
+          done
 
       # Create one repo-wide commit and push only when docs changed.
       - name: Report docs change status
         run: |
-          # Working tree diff is enough here because docs generation edits tracked files.
-          if git diff --quiet; then
-            echo "status=no-changes" >> $GITHUB_OUTPUT
+          if git diff --cached --quiet; then
             echo "No documentation changes were generated."
             exit 0
           fi
 
-          # Expose a simple status output and print a concise change summary in logs.
-          echo "status=changes-detected" >> $GITHUB_OUTPUT
           echo "Documentation changes detected."
           git status --short
-          git diff --name-only
+          git diff --cached --name-only
 
       # Commit/push is disabled during dry-run mode.
       - name: Commit and push docs update
@@ -121,9 +197,6 @@ jobs:
           # Configure bot identity so audit trail is explicit in git history.
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          # Stage everything to capture docs updates across all workspaces.
-          git add -A
 
           if git diff --cached --quiet; then
             echo "No documentation updates to commit."
