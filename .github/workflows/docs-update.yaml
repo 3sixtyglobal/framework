@@ -1,0 +1,140 @@
+name: Docs Update
+
+on:
+  # Manual-only workflow for controlled docs refreshes.
+  # Tip: run with dryRun=true first to inspect changes before writing to next.
+  workflow_dispatch:
+    inputs:
+      dryRun:
+        # When true, docs are generated and diffs are printed, but no commit is created.
+        description: 'Run docs generation and report changes without committing'
+        required: true
+        default: false
+        type: boolean
+
+# Prevent multiple docs jobs from racing on the same branch.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Needed to create commits and push them back to next.
+permissions:
+  contents: write
+
+jobs:
+  update-docs:
+    # Use self-hosted runners for private repos; otherwise use GitHub-hosted Ubuntu.
+    runs-on: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+
+    steps:
+      # Safety guard: docs updates are only allowed on the next branch.
+      - name: Enforce next branch
+        run: |
+          if [ "${{ github.ref_name }}" != "next" ]; then
+            echo "This workflow only runs on the next branch."
+            exit 1
+          fi
+
+      # Checkout next explicitly so commits always target the correct branch.
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ github.token }}
+          ref: next
+
+      # Use the same Node runtime as other CI workflows in this repo.
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      # Install dependencies once at repo root for workspace docs generation.
+      - name: Install dependencies
+        run: |
+          for i in {1..3}; do
+            npm ci && break || {
+              if [ $i -eq 3 ]; then
+                echo "npm ci failed after 3 attempts"
+                exit 1
+              fi
+              echo "npm ci failed, retrying in 30 seconds (attempt $i/3)..."
+              sleep 30
+            }
+          done
+
+      # Iterate all root workspaces and run docs only where a docs script exists.
+      - name: Generate package docs
+        run: |
+          # Keep workspace selection dynamic by reading root package.json workspaces.
+          # This avoids hardcoding package paths in the workflow.
+          node - <<'NODE'
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const { execSync } = require("node:child_process");
+
+          const root = process.cwd();
+          const rootPkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
+          const workspaces = Array.isArray(rootPkg.workspaces) ? rootPkg.workspaces : [];
+
+          for (const workspace of workspaces) {
+            const packageJsonPath = path.join(root, workspace, "package.json");
+
+            if (!fs.existsSync(packageJsonPath)) {
+              // Skip stale workspace entries without a package.json.
+              continue;
+            }
+
+            const workspacePkg = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+            if (!workspacePkg.scripts || !workspacePkg.scripts.docs) {
+              // Only run docs where the workspace explicitly supports it.
+              continue;
+            }
+
+            console.log(`Generating docs for ${workspace}`);
+            execSync(`npm run docs --workspace ${workspace}`, {
+              cwd: root,
+              stdio: "inherit"
+            });
+          }
+          NODE
+
+      # Create one repo-wide commit and push only when docs changed.
+      - name: Report docs change status
+        run: |
+          # Working tree diff is enough here because docs generation edits tracked files.
+          if git diff --quiet; then
+            echo "status=no-changes" >> $GITHUB_OUTPUT
+            echo "No documentation changes were generated."
+            exit 0
+          fi
+
+          # Expose a simple status output and print a concise change summary in logs.
+          echo "status=changes-detected" >> $GITHUB_OUTPUT
+          echo "Documentation changes detected."
+          git status --short
+          git diff --name-only
+
+      # Commit/push is disabled during dry-run mode.
+      - name: Commit and push docs update
+        if: ${{ !inputs.dryRun }}
+        run: |
+          # Configure bot identity so audit trail is explicit in git history.
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Stage everything to capture docs updates across all workspaces.
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No documentation updates to commit."
+            exit 0
+          fi
+
+          # Single conventional commit for all docs changes, then push directly to next.
+          git commit -m "docs: update" --signoff
+          git push origin HEAD:next
+
+      - name: Dry run summary
+        if: ${{ inputs.dryRun }}
+        run: |
+          echo "Dry run enabled: no commit or push performed."
