@@ -7,7 +7,7 @@ import { GeneralError } from "../errors/generalError.js";
 import { Guards } from "../utils/guards.js";
 
 /**
- * Class to help with base63 Encoding/Decoding.
+ * Class to help with base32 Encoding/Decoding.
  */
 export class Base32 {
 	/**
