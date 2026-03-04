@@ -210,7 +210,7 @@ describe("ModuleHelper", () => {
 
 		await Promise.race([
 			allTaskResultsPromise,
-			new Promise<void>((_, reject) => {
+			new Promise<void>((resolve, reject) => {
 				setTimeout(() => reject(new Error("Timed out waiting for task results")), 3000);
 			})
 		]);
@@ -219,7 +219,7 @@ describe("ModuleHelper", () => {
 
 		await Promise.race([
 			taskEndPromise,
-			new Promise<void>((_, reject) => {
+			new Promise<void>((resolve, reject) => {
 				setTimeout(() => reject(new Error("Timed out waiting for task runner end")), 3000);
 			})
 		]);
