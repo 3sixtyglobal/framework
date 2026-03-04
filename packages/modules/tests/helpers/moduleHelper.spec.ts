@@ -172,19 +172,33 @@ describe("ModuleHelper", () => {
 
 	test("execModuleMethodThreadMessage can run a long background task", async () => {
 		let finalTotal = 0;
-		let startCalled = false;
 		let endCalled = false;
 		const taskResults: number[] = [];
+		let taskResultsResolved = false;
+		let resolveTaskResults: (() => void) | undefined;
+		let resolveTaskEnd: (() => void) | undefined;
+
+		const allTaskResultsPromise = new Promise<void>(resolve => {
+			resolveTaskResults = resolve;
+		});
+
+		const taskEndPromise = new Promise<void>(resolve => {
+			resolveTaskEnd = resolve;
+		});
 		const module = ModuleHelper.execModuleMethodThreadMessage(
 			TEST_MODULE,
 			(operation, result, err) => {
-				if (operation === "testStartTaskRunner") {
-					startCalled = true;
-				} else if (operation === "testEndTaskRunner") {
+				if (operation === "testEndTaskRunner") {
 					endCalled = true;
 					finalTotal = Coerce.number(result) ?? 0;
+					resolveTaskEnd?.();
 				} else {
 					taskResults.push(Coerce.number(result) ?? 0);
+
+					if (taskResults.length === 3 && !taskResultsResolved) {
+						taskResultsResolved = true;
+						resolveTaskResults?.();
+					}
 				}
 			}
 		);
@@ -194,14 +208,22 @@ describe("ModuleHelper", () => {
 		module.executeMethod("testTask", [2]);
 		module.executeMethod("testTask", [3]);
 
-		// Allow some time for tasks to complete
-		await new Promise<void>(resolve => setTimeout(() => resolve(), 300));
+		await Promise.race([
+			allTaskResultsPromise,
+			new Promise<void>((_, reject) => {
+				setTimeout(() => reject(new Error("Timed out waiting for task results")), 3000);
+			})
+		]);
+
 		module.executeMethod("testEndTaskRunner");
 
-		// Allow some time for finalisation
-		await new Promise<void>(resolve => setTimeout(() => resolve(), 200));
+		await Promise.race([
+			taskEndPromise,
+			new Promise<void>((_, reject) => {
+				setTimeout(() => reject(new Error("Timed out waiting for task runner end")), 3000);
+			})
+		]);
 
-		expect(startCalled).toBeTruthy();
 		expect(taskResults).toEqual([1, 3, 6]);
 		expect(finalTotal).toEqual(6);
 		expect(endCalled).toBeTruthy();
