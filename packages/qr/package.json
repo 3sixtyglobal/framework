@@ -1,7 +1,7 @@
 {
 	"name": "@twin.org/qr",
 	"version": "0.0.3-next.22",
-	"description": "Package for creating QR codes",
+	"description": "Creating QR codes",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/twinfoundation/framework.git",

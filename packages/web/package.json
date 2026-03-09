@@ -1,7 +1,7 @@
 {
 	"name": "@twin.org/web",
 	"version": "0.0.3-next.22",
-	"description": "Contains classes for use with web operations",
+	"description": "Classes for use with web operations",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/twinfoundation/framework.git",

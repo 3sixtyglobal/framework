@@ -1,16 +1,16 @@
 # TWIN Validate Locales
 
-This tool will read the source files and validate the usage of the locales.
+This application is part of the framework workspace and provides validate source files against the locales to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install @twin.org/validate-locales
+npm install -D @twin.org/validate-locales
 ```
 
 ## Examples
 
-Usage of the tool is shown in the examples [docs/examples.md](docs/examples.md)
+Usage of the APIs is shown in the examples [docs/examples.md](docs/examples.md)
 
 ## Reference
 

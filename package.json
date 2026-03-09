@@ -1,7 +1,7 @@
 {
 	"name": "@twin.org/framework",
 	"version": "0.0.0",
-	"description": "Framework",
+	"description": "Shared foundation packages and developer tools for the framework ecosystem.",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/twinfoundation/framework.git"

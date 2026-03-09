@@ -1,16 +1,6 @@
 # TWIN Framework Crypto
 
-This package contains helper methods and classes which implement cryptographic functions.
-
-- Blake2B
-- Sha256
-- HmacSha1
-- Ed25519
-- Bip32
-- Slip100
-- Pbkdf2
-
-- Totp
+This package is part of the framework workspace and provides helper methods and classes which implement cryptographic functions to support consistent development workflows across the ecosystem.
 
 ## Installation
 

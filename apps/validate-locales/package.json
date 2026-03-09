@@ -1,7 +1,7 @@
 {
 	"name": "@twin.org/validate-locales",
 	"version": "0.0.3-next.22",
-	"description": "Tool to validate source files against the locales",
+	"description": "Validate source files against the locales",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/twinfoundation/framework.git",

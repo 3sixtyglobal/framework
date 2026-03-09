@@ -1,6 +1,6 @@
 # TWIN Framework Modules
 
-Helper classes for loading and executing from modules.
+This package is part of the framework workspace and provides helper classes for loading and executing from modules to support consistent development workflows across the ecosystem.
 
 ## Installation
 

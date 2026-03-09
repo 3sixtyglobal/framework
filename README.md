@@ -1,27 +1,29 @@
 # TWIN Framework
 
-This mono-repository contains some of the fundamental packages that the rest of the TWIN packages depend on. Utility functions and helper classes.
+This repository brings together shared libraries and practical command line tools that make it easier to build, validate, and maintain framework-based projects with a consistent developer experience. The packages focus on common concerns such as runtime helpers, data modelling, cryptography, media handling, and web-facing utilities.
+
+Alongside those libraries, the workspace includes applications that support operational tasks like locale management and cryptographic workflows, so teams can apply the same standards and tooling patterns across multiple projects.
 
 ## Packages
 
-- [nameof-transformer](packages/nameof-transformer/README.md) - A TypeScript transformer which converts types and properties to their actual name for use at runtime.
-- [nameof](packages/nameof/README.md) - Provides the definitions for the methods which are processed by the `nameof-transformer`.
-- [nameof-vitest-plugin](packages/nameof-vitest-plugin/README.md) - Plugin for Vitest to perform the nameof transformation inline.
+- [nameof-transformer](packages/nameof-transformer/README.md) - Typed transformer which converts types and properties to their actual name for use at runtime.
+- [nameof-vitest-plugin](packages/nameof-vitest-plugin/README.md) - Vitest plugin which perform the nameof transformation.
+- [nameof](packages/nameof/README.md) - The definitions for the methods which are processed by the nameof-transformer.
 - [core](packages/core/README.md) - Helper methods/classes for data type checking/validation/guarding/error handling.
-- [context](packages/context/README.md) - Helper methods/classes for using contexts.
+- [cli-core](packages/cli-core/README.md) - Core classes for building a CLI.
 - [entity](packages/entity/README.md) - Helpers for defining and working with entities.
-- [crypto](packages/crypto/README.md) - Helpers which implement cryptographic functions.
-- [image](packages/image/README.md) - Package contains classes for processing images.
-- [qr](packages/qr/README.md) - Package contains classes for generating QR codes.
-- [web](packages/web/README.md) - Contains classes for use with web operations.
+- [crypto](packages/crypto/README.md) - Helper methods and classes which implement cryptographic functions.
+- [image](packages/image/README.md) - Classes for image manipulation.
+- [qr](packages/qr/README.md) - Creating QR codes.
+- [web](packages/web/README.md) - Classes for use with web operations.
+- [context](packages/context/README.md) - Helper methods/classes for context handling.
 - [modules](packages/modules/README.md) - Helper classes for loading and executing from modules.
-- [cli-core](packages/cli-core/README.md) - Provides core classes and methods to be used when building a CLI.
 
 ## Apps
 
-- [merge-locales](packages/merge-locales/README.md) - Tool to merge locales from the dependencies of a package.
-- [validate-locales](packages/validate-locales/README.md) - Tool to validate locales for a package against their usage in the source.
-- [crypto-cli](apps/crypto-cli/README.md) - A command line interface for interacting with the crypto packages.
+- [merge-locales](apps/merge-locales/README.md) - Merge locale files from all dependencies.
+- [validate-locales](apps/validate-locales/README.md) - Validate source files against the locales.
+- [crypto-cli](apps/crypto-cli/README.md) - Command line interface for interacting with the crypto tools.
 
 ## Contributing
 

@@ -1,6 +1,6 @@
 # TWIN Web
 
-Contains classes for use with web operations.
+This package is part of the framework workspace and provides classes for use with web operations to support consistent development workflows across the ecosystem.
 
 ## Installation
 

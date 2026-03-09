@@ -1,6 +1,6 @@
 # TWIN QR
 
-The package contains classes for generating QR codes.
+This package is part of the framework workspace and provides creating QR codes to support consistent development workflows across the ecosystem.
 
 ## Installation
 

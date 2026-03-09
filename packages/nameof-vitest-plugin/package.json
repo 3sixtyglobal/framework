@@ -1,7 +1,7 @@
 {
 	"name": "@twin.org/nameof-vitest-plugin",
 	"version": "0.0.3-next.22",
-	"description": "A Vitest plugin which perform the nameof transformation",
+	"description": "Vitest plugin which perform the nameof transformation",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/twinfoundation/framework.git",

@@ -1,7 +1,7 @@
 {
 	"name": "@twin.org/nameof",
 	"version": "0.0.3-next.22",
-	"description": "Provides the definitions for the methods which are processed by the nameof-transformer",
+	"description": "The definitions for the methods which are processed by the nameof-transformer",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/twinfoundation/framework.git",

@@ -1,4 +1,4 @@
-# @twin.org/crypto-cli - Examples
+# Crypto CLI Usage
 
 ## Running
 
@@ -33,9 +33,7 @@ Commands:
   help [command]      display help for command
 ```
 
-## Command
-
-### mnemonic
+## Mnemonic Output
 
 The mnemonic command can be used to generate a new mnemonic for use in the other crypto functions.
 
@@ -78,7 +76,7 @@ Options:
   -h, --help              display help for command
 ```
 
-#### Example
+### Example
 
 To output generate mnemonic and base64 formatted seed, store them in a JSON and env file but not display them to the console you would enter the following.
 
@@ -102,7 +100,7 @@ and the JSON file would be:
 }
 ```
 
-### address
+## Address Output
 
 The address command can be used to generate addresses and key pairs based on the specified seed. The seed can be provided from the command line of read from an environment variable or .env file. By default 10 addresses will be generated starting at address index 0, for account 0.
 
@@ -209,7 +207,7 @@ Options:
   -h, --help             display help for command
 ```
 
-#### Examples
+### Examples
 
 To read from an env file and load the variable named SEED from the file, and output only 2 addresses, outputting the keys in base64 format.
 

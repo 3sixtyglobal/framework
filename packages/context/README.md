@@ -1,6 +1,6 @@
 # TWIN Framework Context
 
-This package contains helper methods and classes for using contexts.
+This package is part of the framework workspace and provides helper methods/classes for context handling to support consistent development workflows across the ecosystem.
 
 ## Installation
 

@@ -1,9 +1,6 @@
 # TWIN Image
 
-This package contains classes for processing images.
-
-- JpegEncoder
-- PngEncoder
+This package is part of the framework workspace and provides classes for image manipulation to support consistent development workflows across the ecosystem.
 
 ## Installation
 

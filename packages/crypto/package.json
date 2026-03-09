@@ -1,7 +1,7 @@
 {
 	"name": "@twin.org/crypto",
 	"version": "0.0.3-next.22",
-	"description": "Contains helper methods and classes which implement cryptographic functions",
+	"description": "Helper methods and classes which implement cryptographic functions",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/twinfoundation/framework.git",

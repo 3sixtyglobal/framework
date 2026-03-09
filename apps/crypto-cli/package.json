@@ -1,7 +1,7 @@
 {
 	"name": "@twin.org/crypto-cli",
 	"version": "0.0.3-next.22",
-	"description": "A command line interface for interacting with the crypto tools",
+	"description": "Command line interface for interacting with the crypto tools",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/twinfoundation/framework.git",
