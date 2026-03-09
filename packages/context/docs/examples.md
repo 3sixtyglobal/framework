@@ -1,6 +1,6 @@
 # Context Examples
 
-These examples show how to normalise and carry context identifiers through async work and nested calls.
+Use these snippets to keep trace identifiers consistent across asynchronous operations and service boundaries.
 
 ## ContextIdHelper
 
@@ -37,4 +37,21 @@ import { ContextIdStore } from '@twin.org/context';
 await ContextIdStore.run({ traceId: 'trc-01', spanId: 'spn-02' }, async () => {
   ContextIdStore.getContextIds(); // { traceId: 'trc-01', spanId: 'spn-02' }
 });
+```
+
+## ContextIdHandlerFactory
+
+```typescript
+import { ContextIdHandlerFactory } from '@twin.org/context';
+import type { IContextIdHandler } from '@twin.org/context';
+
+class RequestContextHandler implements IContextIdHandler {
+  public getContextIds() {
+    return { traceId: 'trc-1001', spanId: 'spn-2002' };
+  }
+}
+
+ContextIdHandlerFactory.register('request', () => new RequestContextHandler());
+const handler = ContextIdHandlerFactory.create('request');
+handler.getContextIds().traceId; // 'trc-1001'
 ```

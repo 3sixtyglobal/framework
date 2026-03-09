@@ -1,6 +1,6 @@
 # Crypto Examples
 
-These examples show practical building blocks for hashes, signatures, key derivation, passwords and one-time passwords.
+Use these snippets as practical building blocks for hashes, signatures, key derivation, passwords and one-time passwords.
 
 ## Sha3, Sha512, HmacSha512
 

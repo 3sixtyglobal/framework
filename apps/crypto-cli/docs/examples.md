@@ -1,5 +1,7 @@
 # Crypto CLI Usage
 
+Use this guide to run commands, inspect options and check expected terminal output before automation.
+
 ## Running
 
 To install and run the CLI locally use the following commands:

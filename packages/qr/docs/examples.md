@@ -1,6 +1,6 @@
 # QR Examples
 
-These examples show creating QR symbols from different input modes and rendering them into text or bitmap formats.
+Use these snippets to create QR symbols from different input modes and render them as text or bitmap output.
 
 ## QR
 

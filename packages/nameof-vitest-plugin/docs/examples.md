@@ -1,6 +1,6 @@
 # Nameof Vitest Plugin Examples
 
-These examples show how to enable compile-time name replacement during test execution so test code can use typed name helpers without runtime overhead.
+Use these snippets to enable compile-time name replacement during test execution so typed name helpers add no runtime overhead.
 
 ## nameOfPluginTransform
 

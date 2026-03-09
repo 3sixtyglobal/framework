@@ -1,6 +1,6 @@
 # CLI Core Examples
 
-These examples show reusable building blocks for command line tools, including output formatting, option parsing and shell execution.
+Use these snippets to compose clear command line workflows with consistent output, argument parsing and file handling.
 
 ## CLIDisplay
 
@@ -14,18 +14,6 @@ CLIDisplay.warning('2 rows have missing optional fields');
 CLIDisplay.done();
 ```
 
-## CLIUtils
-
-```typescript
-import { CLIUtils } from '@twin.org/cli-core';
-
-await CLIUtils.fileExists('./config/import.json'); // true
-const config = await CLIUtils.readJsonFile<{ source: string }>('./config/import.json');
-await CLIUtils.writeEnvFile('./dist/import.env', {
-  SOURCE: config.source
-});
-```
-
 ## CLIParam
 
 ```typescript
@@ -35,24 +23,48 @@ const parsedCount = CLIParam.integer('count', '25');
 const parsedDebug = CLIParam.boolean('debug', 'true');
 const parsedUrl = CLIParam.url('endpoint', 'https://api.example.org');
 
-parsedCount + 1; // 26
-parsedDebug; // true
-parsedUrl.host; // 'api.example.org'
+console.log(parsedCount + 1); // 26
+console.log(parsedDebug); // true
+console.log(parsedUrl.host); // api.example.org
 ```
 
 ## CLIBase
 
 ```typescript
 import { CLIBase } from '@twin.org/cli-core';
+import type { Command } from 'commander';
 
 class ToolCli extends CLIBase {
-  protected configureRoot(): void {
-    this.root.name('tool-cli');
+  protected getCommands(program: Command): Command[] {
+    return [program.command('status').action(() => {})];
   }
 }
 
 const cli = new ToolCli();
-await cli.execute(['node', 'tool-cli', '--help']);
+const exitCode = await cli.execute(
+  {
+    appName: 'tool-cli',
+    title: 'Tool CLI',
+    version: '1.0.0'
+  },
+  './locales',
+  ['node', 'tool-cli', 'status']
+);
+
+console.log(exitCode); // 0
+```
+
+## CLIUtils
+
+```typescript
+import { CLIUtils } from '@twin.org/cli-core';
+
+console.log(await CLIUtils.fileExists('./config/import.json')); // true
+const config = await CLIUtils.readJsonFile<{ source: string }>('./config/import.json');
+await CLIUtils.writeEnvFile('./dist/import.env', {
+  SOURCE: config.source
+});
+console.log(config.source); // ./data/source.json
 ```
 
 ## CLIOptions
@@ -65,4 +77,6 @@ const options = new CLIOptions();
 options.output({
   json: './dist/output.json'
 });
+
+console.log(options.toObject().json); // ./dist/output.json
 ```

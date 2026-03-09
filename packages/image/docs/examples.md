@@ -1,6 +1,6 @@
 # Image Examples
 
-These examples show colour handling and image encoding for generated assets.
+Use these snippets for colour handling and image encoding when generating image assets.
 
 ## Color
 

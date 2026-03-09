@@ -1,6 +1,6 @@
 # Web Examples
 
-These examples cover token handling, fetch utilities and HTTP header helpers used in browser and server runtimes.
+Use these snippets for token handling, fetch utilities and HTTP header helpers in browser and server runtimes.
 
 ## Jwt
 

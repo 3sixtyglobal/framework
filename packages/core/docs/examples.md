@@ -1,18 +1,22 @@
 # Core Examples
 
-These examples cover common validation, conversion and helper patterns used throughout services and command line tools.
+Use these snippets to validate input, transform data and handle errors consistently in shared runtime code.
 
 ## Is
 
 ```typescript
 import { Is } from '@twin.org/core';
 
-Is.string('alpha'); // true
-Is.number(42); // true
-Is.array(['a', 'b']); // true
-Is.json('{"ok":true}'); // true
-Is.email('dev@example.org'); // true
-Is.uuidV7('019531ce-6f7d-7c08-a6f3-f6f7cf9f41b0'); // true
+console.log(Is.string('alpha')); // true
+console.log(Is.number(42)); // true
+console.log(Is.array(['a', 'b'])); // true
+console.log(Is.objectValue({ id: 'u-1' })); // true
+console.log(Is.boolean(false)); // true
+console.log(Is.json('{"ok":true}')); // true
+console.log(Is.email('dev@example.org')); // true
+console.log(Is.dateTimeString('2026-03-09T11:32:00Z')); // true
+console.log(Is.stringHex('aabbccdd')); // true
+console.log(Is.uuidV7('019531ce-6f7d-7c08-a6f3-f6f7cf9f41b0')); // true
 ```
 
 ## Guards
@@ -22,24 +26,51 @@ import { Guards } from '@twin.org/core';
 import { nameof } from '@twin.org/nameof';
 
 const name = 'Ari';
+const profile = {
+  age: 31,
+  active: true
+};
 const createdAt = new Date('2026-03-09T10:00:00.000Z');
 
 Guards.stringValue(this.CLASS_NAME, nameof(name), name);
+Guards.objectValue(this.CLASS_NAME, nameof(profile), profile);
+Guards.integer(this.CLASS_NAME, nameof(profile.age), profile.age);
+Guards.boolean(this.CLASS_NAME, nameof(profile.active), profile.active);
 Guards.date(this.CLASS_NAME, nameof(createdAt), createdAt);
+
+console.log(name.toUpperCase()); // ARI
+console.log(profile.age + 1); // 32
+
+const amount = 'ten';
+
+try {
+  Guards.number(this.CLASS_NAME, nameof(amount), amount);
+} catch (error) {
+  if (error instanceof GuardError) {
+    console.log(error.message); // guard.number
+  }
+}
 ```
 
 ## Validation
 
 ```typescript
+import type { IValidationFailure } from '@twin.org/core';
 import { Validation } from '@twin.org/core';
 
-const failures = [
-  Validation.string('customer.name', ''),
-  Validation.number('customer.age', 31),
-  Validation.email('customer.email', 'customer@example.org')
-].filter(result => result !== undefined);
+const failures: IValidationFailure[] = [];
 
-Validation.asValidationError('saveCustomer', failures);
+Validation.stringValue('customer.name', 'Ari', failures, undefined, {
+  minLength: 2,
+  maxLength: 30
+});
+Validation.integer('customer.age', 31, failures, undefined, {
+  minValue: 18,
+  maxValue: 120
+});
+Validation.email('customer.email', 'customer@example.org', failures);
+
+console.log(failures.length); // 0
 ```
 
 ## ObjectHelper
@@ -211,6 +242,17 @@ const right = { id: 'u-1', active: false };
 
 const patch = JsonHelper.diff(left, right);
 JsonHelper.patch(left, patch); // { id: 'u-1', active: false }
+```
+
+## ErrorHelper
+
+```typescript
+import { BaseError, ErrorHelper } from '@twin.org/core';
+
+const error = new BaseError(this.CLASS_NAME, 'saveFailed', { entityId: 'u-1' });
+const messages = ErrorHelper.formatErrors(error);
+
+messages[0]; // 'saveFailed'
 ```
 
 ## Array, Uint8Array, Filename and Env Helpers

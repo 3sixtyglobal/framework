@@ -1,6 +1,6 @@
 # Nameof Transformer Examples
 
-These examples show how to apply source transforms before compile and test steps so strongly typed name expressions are converted into static strings.
+Use these snippets to apply source transforms before compile and test steps so typed name expressions become static strings.
 
 ## factory
 

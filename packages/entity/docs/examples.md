@@ -1,6 +1,6 @@
 # Entity Examples
 
-These examples focus on building schemas, composing conditions and ordering data for query-style workflows.
+Use these snippets to build schemas, compose conditions and order data for query-style workflows.
 
 ## EntitySchemaHelper
 

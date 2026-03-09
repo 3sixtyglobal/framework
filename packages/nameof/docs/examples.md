@@ -1,6 +1,6 @@
 # Nameof Examples
 
-These examples show strongly typed name extraction patterns that remain safe during refactors.
+Use these snippets for strongly typed name extraction patterns that remain safe during refactors.
 
 ## `nameof`
 
