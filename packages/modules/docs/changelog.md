@@ -1,4 +1,4 @@
-# @twin.org/modules - Changelog
+# Changelog
 
 ## [0.0.3-next.22](https://github.com/twinfoundation/framework/compare/modules-v0.0.3-next.21...modules-v0.0.3-next.22) (2026-02-26)
 

@@ -8,9 +8,9 @@ This application is part of the framework workspace and provides command line in
 npm install -D @twin.org/crypto-cli
 ```
 
-## Examples
+## Usage
 
-Usage of the APIs is shown in the examples [docs/examples.md](docs/examples.md)
+Usage of the tool is shown in the examples [docs/usage.md](docs/usage.md)
 
 ## Reference
 

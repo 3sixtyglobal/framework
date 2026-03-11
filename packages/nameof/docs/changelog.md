@@ -1,4 +1,4 @@
-# @twin.org/nameof - Changelog
+# Changelog
 
 ## [0.0.3-next.22](https://github.com/twinfoundation/framework/compare/nameof-v0.0.3-next.21...nameof-v0.0.3-next.22) (2026-02-26)
 

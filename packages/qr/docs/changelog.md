@@ -1,4 +1,4 @@
-# @twin.org/qr - Changelog
+# Changelog
 
 ## [0.0.3-next.22](https://github.com/twinfoundation/framework/compare/qr-v0.0.3-next.21...qr-v0.0.3-next.22) (2026-02-26)
 

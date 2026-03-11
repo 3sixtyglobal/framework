@@ -1,4 +1,4 @@
-# @twin.org/nameof-vitest-plugin - Changelog
+# Changelog
 
 ## [0.0.3-next.22](https://github.com/twinfoundation/framework/compare/nameof-vitest-plugin-v0.0.3-next.21...nameof-vitest-plugin-v0.0.3-next.22) (2026-02-26)
 

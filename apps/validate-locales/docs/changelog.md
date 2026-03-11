@@ -498,4 +498,4 @@
   * devDependencies
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.20 to 0.0.2-next.21
 
-## @twin.org/validate-locales - Changelog
+## Changelog

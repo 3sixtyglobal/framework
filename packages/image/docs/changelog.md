@@ -1,4 +1,4 @@
-# @twin.org/image - Changelog
+# Changelog
 
 ## [0.0.3-next.22](https://github.com/twinfoundation/framework/compare/image-v0.0.3-next.21...image-v0.0.3-next.22) (2026-02-26)
 

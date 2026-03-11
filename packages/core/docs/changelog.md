@@ -1,4 +1,4 @@
-# @twin.org/core - Changelog
+# Changelog
 
 ## [0.0.3-next.22](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.21...core-v0.0.3-next.22) (2026-02-26)
 
