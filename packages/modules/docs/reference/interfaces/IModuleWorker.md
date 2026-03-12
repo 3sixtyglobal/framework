@@ -4,7 +4,7 @@ Worker definition for modules.
 
 ## Methods
 
-### executeMethod()
+### executeMethod() {#executemethod}
 
 > **executeMethod**(`method`, `args?`, `contextIds?`): `void`
 
@@ -38,7 +38,7 @@ The result of the method.
 
 ***
 
-### terminate()
+### terminate() {#terminate}
 
 > **terminate**(): `Promise`\<`number`\>
 

@@ -14,7 +14,7 @@ Implementation of the password based key derivation function 2.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### sha256()
+### sha256() {#sha256}
 
 > `static` **sha256**(`password`, `salt`, `iterations`, `keyLength`): `Uint8Array`
 
@@ -62,7 +62,7 @@ The derived key.
 
 ***
 
-### sha512()
+### sha512() {#sha512}
 
 > `static` **sha512**(`password`, `salt`, `iterations`, `keyLength`): `Uint8Array`
 

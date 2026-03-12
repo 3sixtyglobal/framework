@@ -14,7 +14,7 @@ Class to maintain context ids and execute an async method.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### run()
+### run() {#run}
 
 > `static` **run**\<`T`\>(`contextIds`, `asyncMethod`): `Promise`\<`T`\>
 
@@ -56,7 +56,7 @@ Nothing.
 
 ***
 
-### getContextIds()
+### getContextIds() {#getcontextids}
 
 > `static` **getContextIds**(): `Promise`\<[`IContextIds`](../interfaces/IContextIds.md) \| `undefined`\>
 
@@ -70,7 +70,7 @@ The context IDs.
 
 ***
 
-### getStorage()
+### getStorage() {#getstorage}
 
 > `static` **getStorage**(): `Promise`\<`AsyncLocalStorage`\<[`IContextIds`](../interfaces/IContextIds.md)\>\>
 

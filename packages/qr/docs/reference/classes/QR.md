@@ -35,7 +35,7 @@ Error if the typeNumber is invalid.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -43,7 +43,7 @@ Runtime name for the class.
 
 ## Methods
 
-### addText()
+### addText() {#addtext}
 
 > **addText**(`qrData`): `void`
 
@@ -63,7 +63,7 @@ The data to add.
 
 ***
 
-### addNumber()
+### addNumber() {#addnumber}
 
 > **addNumber**(`qrData`): `void`
 
@@ -83,7 +83,7 @@ The data to add.
 
 ***
 
-### addAlphaNumeric()
+### addAlphaNumeric() {#addalphanumeric}
 
 > **addAlphaNumeric**(`qrData`): `void`
 
@@ -103,7 +103,7 @@ The data to add.
 
 ***
 
-### generate()
+### generate() {#generate}
 
 > **generate**(): [`QRCellData`](../type-aliases/QRCellData.md)
 

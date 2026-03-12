@@ -4,7 +4,7 @@ Model to describe serialized error.
 
 ## Properties
 
-### name
+### name {#name}
 
 > **name**: `string`
 
@@ -12,7 +12,7 @@ The name for the error.
 
 ***
 
-### message
+### message {#message}
 
 > **message**: `string`
 
@@ -20,7 +20,7 @@ The message for the error.
 
 ***
 
-### source?
+### source? {#source}
 
 > `optional` **source**: `string`
 
@@ -28,7 +28,7 @@ The source of the error.
 
 ***
 
-### properties?
+### properties? {#properties}
 
 > `optional` **properties**: `object`
 
@@ -40,7 +40,7 @@ Any additional information for the error.
 
 ***
 
-### stack?
+### stack? {#stack}
 
 > `optional` **stack**: `string`
 
@@ -48,7 +48,7 @@ The stack trace for the error.
 
 ***
 
-### cause?
+### cause? {#cause}
 
 > `optional` **cause**: `IError`
 

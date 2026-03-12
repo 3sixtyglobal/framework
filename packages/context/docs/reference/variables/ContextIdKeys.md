@@ -6,25 +6,25 @@ Default definition of some context keys.
 
 ## Type Declaration
 
-### Node
+### Node {#node}
 
 > `readonly` **Node**: `"node"` = `"node"`
 
 Standard property type definition for node.
 
-### Tenant
+### Tenant {#tenant}
 
 > `readonly` **Tenant**: `"tenant"` = `"tenant"`
 
 Standard property type definition for tenant.
 
-### Organization
+### Organization {#organization}
 
 > `readonly` **Organization**: `"organization"` = `"organization"`
 
 Standard property type definition for organization.
 
-### User
+### User {#user}
 
 > `readonly` **User**: `"user"` = `"user"`
 

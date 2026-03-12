@@ -4,7 +4,7 @@ Interface describing the reason a validation failed.
 
 ## Properties
 
-### property
+### property {#property}
 
 > **property**: `string`
 
@@ -12,7 +12,7 @@ The property that failed validation.
 
 ***
 
-### reason
+### reason {#reason}
 
 > **reason**: `string`
 
@@ -20,7 +20,7 @@ The reason the validation failed as an i18 resource error.
 
 ***
 
-### properties?
+### properties? {#properties}
 
 > `optional` **properties**: `object`
 

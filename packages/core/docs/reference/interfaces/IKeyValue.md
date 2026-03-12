@@ -10,7 +10,7 @@ Interface describing a key/value pair.
 
 ## Properties
 
-### key
+### key {#key}
 
 > **key**: `string`
 
@@ -18,7 +18,7 @@ The key for the item.
 
 ***
 
-### value
+### value {#value}
 
 > **value**: `T`
 

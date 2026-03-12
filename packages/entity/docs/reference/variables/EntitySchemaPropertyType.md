@@ -6,37 +6,37 @@ Definition of the entity property types.
 
 ## Type Declaration
 
-### String
+### String {#string}
 
 > `readonly` **String**: `"string"` = `"string"`
 
 String.
 
-### Number
+### Number {#number}
 
 > `readonly` **Number**: `"number"` = `"number"`
 
 Number.
 
-### Integer
+### Integer {#integer}
 
 > `readonly` **Integer**: `"integer"` = `"integer"`
 
 Integer.
 
-### Boolean
+### Boolean {#boolean}
 
 > `readonly` **Boolean**: `"boolean"` = `"boolean"`
 
 Boolean.
 
-### Array
+### Array {#array}
 
 > `readonly` **Array**: `"array"` = `"array"`
 
 Array.
 
-### Object
+### Object {#object}
 
 > `readonly` **Object**: `"object"` = `"object"`
 

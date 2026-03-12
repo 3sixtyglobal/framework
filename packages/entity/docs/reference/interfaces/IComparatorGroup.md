@@ -10,7 +10,7 @@ Interface defining condition group operator.
 
 ## Properties
 
-### conditions
+### conditions {#conditions}
 
 > **conditions**: [`EntityCondition`](../type-aliases/EntityCondition.md)\<`T`\>[]
 
@@ -18,7 +18,7 @@ The conditions to join in a group.
 
 ***
 
-### logicalOperator?
+### logicalOperator? {#logicaloperator}
 
 > `optional` **logicalOperator**: [`LogicalOperator`](../type-aliases/LogicalOperator.md)
 

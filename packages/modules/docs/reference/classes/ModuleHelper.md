@@ -14,7 +14,7 @@ Helper functions for modules.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### overrideImport()
+### overrideImport() {#overrideimport}
 
 > `static` **overrideImport**(`overrideImport`): `void`
 
@@ -42,7 +42,7 @@ The override import function.
 
 ***
 
-### getModuleEntry()
+### getModuleEntry() {#getmoduleentry}
 
 > `static` **getModuleEntry**\<`T`\>(`module`, `entry`): `Promise`\<`T`\>
 
@@ -80,7 +80,7 @@ GeneralError if getting the module entry failed.
 
 ***
 
-### getModuleMethod()
+### getModuleMethod() {#getmodulemethod}
 
 > `static` **getModuleMethod**\<`T`\>(`module`, `method`): `Promise`\<`T`\>
 
@@ -118,7 +118,7 @@ GeneralError if executing the module entry failed.
 
 ***
 
-### execModuleMethod()
+### execModuleMethod() {#execmodulemethod}
 
 > `static` **execModuleMethod**\<`T`\>(`module`, `method`, `args?`): `Promise`\<`T`\>
 
@@ -162,7 +162,7 @@ GeneralError if executing the module entry failed.
 
 ***
 
-### execModuleMethodThread()
+### execModuleMethodThread() {#execmodulemethodthread}
 
 > `static` **execModuleMethodThread**\<`T`\>(`module`, `method`, `args?`, `contextIds?`): `Promise`\<`T`\>
 
@@ -212,7 +212,7 @@ GeneralError if executing the module entry failed.
 
 ***
 
-### execModuleMethodThreadMessage()
+### execModuleMethodThreadMessage() {#execmodulemethodthreadmessage}
 
 > `static` **execModuleMethodThreadMessage**(`module`, `completed`, `options?`): [`IModuleWorker`](../interfaces/IModuleWorker.md)
 
@@ -254,7 +254,7 @@ GeneralError if executing the module entry failed.
 
 ***
 
-### isLocalModule()
+### isLocalModule() {#islocalmodule}
 
 > `static` **isLocalModule**(`name`): `boolean`
 
@@ -276,7 +276,7 @@ True if the module is local, false otherwise.
 
 ***
 
-### isRelativeModule()
+### isRelativeModule() {#isrelativemodule}
 
 > `static` **isRelativeModule**(`name`): `boolean`
 

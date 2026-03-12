@@ -30,7 +30,7 @@ The number of bits.
 
 ## Properties
 
-### SIZE\_224
+### SIZE\_224 {#size_224}
 
 > `static` **SIZE\_224**: `number` = `224`
 
@@ -38,7 +38,7 @@ Sha512 224.
 
 ***
 
-### SIZE\_256
+### SIZE\_256 {#size_256}
 
 > `static` **SIZE\_256**: `number` = `256`
 
@@ -46,7 +46,7 @@ Sha512 256.
 
 ***
 
-### SIZE\_384
+### SIZE\_384 {#size_384}
 
 > `static` **SIZE\_384**: `number` = `384`
 
@@ -54,7 +54,7 @@ Sha512 384.
 
 ***
 
-### SIZE\_512
+### SIZE\_512 {#size_512}
 
 > `static` **SIZE\_512**: `number` = `512`
 
@@ -62,7 +62,7 @@ Sha512 512.
 
 ***
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -70,7 +70,7 @@ Runtime name for the class.
 
 ## Methods
 
-### sum512()
+### sum512() {#sum512}
 
 > `static` **sum512**(`key`, `block`): `Uint8Array`
 
@@ -98,7 +98,7 @@ The sum 512 of the block.
 
 ***
 
-### sum384()
+### sum384() {#sum384}
 
 > `static` **sum384**(`key`, `block`): `Uint8Array`
 
@@ -126,7 +126,7 @@ The sum 384 of the block.
 
 ***
 
-### sum256()
+### sum256() {#sum256}
 
 > `static` **sum256**(`key`, `block`): `Uint8Array`
 
@@ -154,7 +154,7 @@ The sum 256 of the block.
 
 ***
 
-### sum224()
+### sum224() {#sum224}
 
 > `static` **sum224**(`key`, `block`): `Uint8Array`
 
@@ -182,7 +182,7 @@ The sum 224 of the block.
 
 ***
 
-### update()
+### update() {#update}
 
 > **update**(`block`): `HmacSha512`
 
@@ -204,7 +204,7 @@ The instance for chaining.
 
 ***
 
-### digest()
+### digest() {#digest}
 
 > **digest**(): `Uint8Array`
 

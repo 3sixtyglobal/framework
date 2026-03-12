@@ -14,7 +14,7 @@ Helper class for working with PEM (Privacy-Enhanced Mail) formatted data.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### stripPemMarkers()
+### stripPemMarkers() {#strippemmarkers}
 
 > `static` **stripPemMarkers**(`pemContent`): `string`
 
@@ -44,7 +44,7 @@ The stripped PEM content in bas64 format.
 
 ***
 
-### formatPem()
+### formatPem() {#formatpem}
 
 > `static` **formatPem**(`marker`, `base64Content`, `lineLength?`): `string`
 

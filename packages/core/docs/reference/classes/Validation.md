@@ -14,7 +14,7 @@ Class to handle validation operations.
 
 ## Methods
 
-### empty()
+### empty() {#empty}
 
 > `static` **empty**(`property`, `value`, `failures`, `fieldNameResource?`): value is null \| undefined
 
@@ -54,7 +54,7 @@ True if the value is a empty.
 
 ***
 
-### notEmpty()
+### notEmpty() {#notempty}
 
 > `static` **notEmpty**(`property`, `value`, `failures`, `fieldNameResource?`): `boolean`
 
@@ -94,7 +94,7 @@ True if the value is a not empty.
 
 ***
 
-### string()
+### string() {#string}
 
 > `static` **string**(`property`, `value`, `failures`, `fieldNameResource?`, `options?`): `value is string`
 
@@ -156,7 +156,7 @@ True if the value is a valid string.
 
 ***
 
-### stringValue()
+### stringValue() {#stringvalue}
 
 > `static` **stringValue**(`property`, `value`, `failures`, `fieldNameResource?`, `options?`): `value is string`
 
@@ -212,7 +212,7 @@ True if the value is a valid string.
 
 ***
 
-### number()
+### number() {#number}
 
 > `static` **number**(`property`, `value`, `failures`, `fieldNameResource?`, `options?`): `value is number`
 
@@ -268,7 +268,7 @@ True if the value is a valid number.
 
 ***
 
-### integer()
+### integer() {#integer}
 
 > `static` **integer**(`property`, `value`, `failures`, `fieldNameResource?`, `options?`): `value is number`
 
@@ -324,7 +324,7 @@ True if the value is a valid integer.
 
 ***
 
-### bigint()
+### bigint() {#bigint}
 
 > `static` **bigint**(`property`, `value`, `failures`, `fieldNameResource?`, `options?`): `value is bigint`
 
@@ -380,7 +380,7 @@ True if the value is a valid bigint.
 
 ***
 
-### boolean()
+### boolean() {#boolean}
 
 > `static` **boolean**(`property`, `value`, `failures`, `fieldNameResource?`): `value is boolean`
 
@@ -420,7 +420,7 @@ True if the value is a boolean.
 
 ***
 
-### date()
+### date() {#date}
 
 > `static` **date**(`property`, `value`, `failures`, `fieldNameResource?`): `value is Date`
 
@@ -460,7 +460,7 @@ True if the value is a date.
 
 ***
 
-### dateString()
+### dateString() {#datestring}
 
 > `static` **dateString**(`property`, `value`, `failures`, `fieldNameResource?`): `value is string`
 
@@ -500,7 +500,7 @@ True if the value is a date.
 
 ***
 
-### dateTimeString()
+### dateTimeString() {#datetimestring}
 
 > `static` **dateTimeString**(`property`, `value`, `failures`, `fieldNameResource?`): `value is string`
 
@@ -540,7 +540,7 @@ True if the value is a date/time.
 
 ***
 
-### timeString()
+### timeString() {#timestring}
 
 > `static` **timeString**(`property`, `value`, `failures`, `fieldNameResource?`): `value is string`
 
@@ -580,7 +580,7 @@ True if the value is a time.
 
 ***
 
-### timestampMilliseconds()
+### timestampMilliseconds() {#timestampmilliseconds}
 
 > `static` **timestampMilliseconds**(`property`, `value`, `failures`, `fieldNameResource?`): `value is number`
 
@@ -620,7 +620,7 @@ True if the value is a timestamp in milliseconds.
 
 ***
 
-### timestampSeconds()
+### timestampSeconds() {#timestampseconds}
 
 > `static` **timestampSeconds**(`property`, `value`, `failures`, `fieldNameResource?`): `value is number`
 
@@ -660,7 +660,7 @@ True if the value is a timestamp in seconds.
 
 ***
 
-### object()
+### object() {#object}
 
 > `static` **object**\<`T`\>(`property`, `value`, `failures`, `fieldNameResource?`): `value is T`
 
@@ -706,7 +706,7 @@ True if the value is a object.
 
 ***
 
-### array()
+### array() {#array}
 
 > `static` **array**\<`T`\>(`property`, `value`, `failures`, `fieldNameResource?`): `value is T[]`
 
@@ -752,7 +752,7 @@ True if the value is an array.
 
 ***
 
-### arrayValue()
+### arrayValue() {#arrayvalue}
 
 > `static` **arrayValue**\<`T`\>(`property`, `value`, `failures`, `fieldNameResource?`): `value is T[]`
 
@@ -798,7 +798,7 @@ True if the value is an array with at least one element.
 
 ***
 
-### arrayOneOf()
+### arrayOneOf() {#arrayoneof}
 
 > `static` **arrayOneOf**\<`T`\>(`property`, `value`, `options`, `failures`, `fieldNameResource?`): `value is T`
 
@@ -850,7 +850,7 @@ True if the value is one of the items in the options.
 
 ***
 
-### uint8Array()
+### uint8Array() {#uint8array}
 
 > `static` **uint8Array**(`property`, `value`, `failures`, `fieldNameResource?`): `value is Uint8Array<ArrayBufferLike>`
 
@@ -890,7 +890,7 @@ True if the value is a Uint8Array.
 
 ***
 
-### json()
+### json() {#json}
 
 > `static` **json**(`property`, `value`, `failures`, `fieldNameResource?`): `value is string`
 
@@ -930,7 +930,7 @@ True if the value is valid JSON.
 
 ***
 
-### email()
+### email() {#email}
 
 > `static` **email**(`property`, `value`, `failures`, `fieldNameResource?`): `value is string`
 
@@ -970,7 +970,7 @@ True if the value is a valid looking e-mail.
 
 ***
 
-### asValidationError()
+### asValidationError() {#asvalidationerror}
 
 > `static` **asValidationError**(`source`, `objectName`, `failures`): `void`
 
@@ -1006,7 +1006,7 @@ ValidationError From the converted failures.
 
 ***
 
-### toPropertyMap()
+### toPropertyMap() {#topropertymap}
 
 > `static` **toPropertyMap**(`failures`, `propertyMap`, `clearMap?`): `void`
 

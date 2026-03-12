@@ -15,7 +15,7 @@ instance loads of a packages.
 
 ## Methods
 
-### get()
+### get() {#get}
 
 > `static` **get**\<`T`\>(`prop`): `T` \| `undefined`
 
@@ -43,7 +43,7 @@ The property if it exists.
 
 ***
 
-### set()
+### set() {#set}
 
 > `static` **set**\<`T`\>(`prop`, `value`): `void`
 
@@ -75,7 +75,7 @@ The value to set.
 
 ***
 
-### remove()
+### remove() {#remove}
 
 > `static` **remove**(`prop`): `void`
 

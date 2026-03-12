@@ -14,7 +14,7 @@ Utilities function for helping in the CLI.
 
 ## Methods
 
-### fileExists()
+### fileExists() {#fileexists}
 
 > `static` **fileExists**(`filename`): `Promise`\<`boolean`\>
 
@@ -36,7 +36,7 @@ True if the file exists.
 
 ***
 
-### fileExistsSync()
+### fileExistsSync() {#fileexistssync}
 
 > `static` **fileExistsSync**(`filename`): `boolean`
 
@@ -58,7 +58,7 @@ True if the file exists.
 
 ***
 
-### dirExists()
+### dirExists() {#direxists}
 
 > `static` **dirExists**(`dir`): `Promise`\<`boolean`\>
 
@@ -80,7 +80,7 @@ True if the dir exists.
 
 ***
 
-### dirExistsSync()
+### dirExistsSync() {#direxistssync}
 
 > `static` **dirExistsSync**(`dir`): `boolean`
 
@@ -102,7 +102,7 @@ True if the dir exists.
 
 ***
 
-### readJsonFile()
+### readJsonFile() {#readjsonfile}
 
 > `static` **readJsonFile**\<`T`\>(`filename`): `Promise`\<`T` \| `undefined`\>
 
@@ -130,7 +130,7 @@ The parsed JSON.
 
 ***
 
-### readJsonFileSync()
+### readJsonFileSync() {#readjsonfilesync}
 
 > `static` **readJsonFileSync**\<`T`\>(`filename`): `T` \| `undefined`
 
@@ -158,7 +158,7 @@ The parsed JSON.
 
 ***
 
-### readLinesFile()
+### readLinesFile() {#readlinesfile}
 
 > `static` **readLinesFile**(`filename`): `Promise`\<`string`[] \| `undefined`\>
 
@@ -180,7 +180,7 @@ The lines.
 
 ***
 
-### readLinesFileSync()
+### readLinesFileSync() {#readlinesfilesync}
 
 > `static` **readLinesFileSync**(`filename`): `string`[] \| `undefined`
 
@@ -202,7 +202,7 @@ The lines.
 
 ***
 
-### findNpmRoot()
+### findNpmRoot() {#findnpmroot}
 
 > `static` **findNpmRoot**(`rootFolder`): `Promise`\<`string`\>
 
@@ -224,7 +224,7 @@ The root path.
 
 ***
 
-### runShellCmd()
+### runShellCmd() {#runshellcmd}
 
 > `static` **runShellCmd**(`command`, `args`, `cwd`): `Promise`\<`void`\>
 
@@ -258,7 +258,7 @@ Promise to wait for command execution to complete.
 
 ***
 
-### runShellApp()
+### runShellApp() {#runshellapp}
 
 > `static` **runShellApp**(`app`, `args`, `cwd`): `Promise`\<`void`\>
 
@@ -292,7 +292,7 @@ Promise to wait for command execution to complete.
 
 ***
 
-### writeJsonFile()
+### writeJsonFile() {#writejsonfile}
 
 > `static` **writeJsonFile**\<`T`\>(`jsonFilename`, `data`, `append`): `Promise`\<`void`\>
 
@@ -330,7 +330,7 @@ Append to the file.
 
 ***
 
-### writeEnvFile()
+### writeEnvFile() {#writeenvfile}
 
 > `static` **writeEnvFile**(`envFilename`, `data`, `append`): `Promise`\<`void`\>
 

@@ -48,7 +48,7 @@ The cause of the error if we have wrapped another error.
 
 ## Properties
 
-### source?
+### source? {#source}
 
 > `optional` **source**: `string`
 
@@ -60,7 +60,7 @@ The source of the error.
 
 ***
 
-### properties?
+### properties? {#properties}
 
 > `optional` **properties**: `object`
 
@@ -76,7 +76,7 @@ Any additional information for the error.
 
 ***
 
-### cause?
+### cause? {#cause}
 
 > `optional` **cause**: [`IError`](../interfaces/IError.md)
 
@@ -88,7 +88,7 @@ The cause of the error.
 
 ***
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -96,7 +96,7 @@ Runtime name for the class.
 
 ## Methods
 
-### fromError()
+### fromError() {#fromerror}
 
 > `static` **fromError**(`err`): [`BaseError`](BaseError.md)
 
@@ -122,7 +122,7 @@ The new instance.
 
 ***
 
-### flatten()
+### flatten() {#flatten}
 
 > `static` **flatten**(`err`): [`IError`](../interfaces/IError.md)[]
 
@@ -148,7 +148,7 @@ The list of all internal errors.
 
 ***
 
-### expand()
+### expand() {#expand}
 
 > `static` **expand**(`errors`): [`IError`](../interfaces/IError.md) \| `undefined`
 
@@ -174,7 +174,7 @@ The first level error.
 
 ***
 
-### isErrorName()
+### isErrorName() {#iserrorname}
 
 > `static` **isErrorName**(`error`, `name`): `error is BaseError`
 
@@ -206,7 +206,7 @@ True if the error has the name.
 
 ***
 
-### isErrorMessage()
+### isErrorMessage() {#iserrormessage}
 
 > `static` **isErrorMessage**(`error`, `message`): `error is BaseError`
 
@@ -238,7 +238,7 @@ True if the error has the name.
 
 ***
 
-### isErrorCode()
+### isErrorCode() {#iserrorcode}
 
 > `static` **isErrorCode**(`error`, `code`): `boolean`
 
@@ -270,7 +270,7 @@ True if the error has the code.
 
 ***
 
-### someErrorName()
+### someErrorName() {#someerrorname}
 
 > `static` **someErrorName**(`error`, `name`): `error is BaseError`
 
@@ -302,7 +302,7 @@ True if the error has the name.
 
 ***
 
-### someErrorMessage()
+### someErrorMessage() {#someerrormessage}
 
 > `static` **someErrorMessage**(`error`, `message`): `error is BaseError`
 
@@ -334,7 +334,7 @@ True if the error has the name.
 
 ***
 
-### someErrorClass()
+### someErrorClass() {#someerrorclass}
 
 > `static` **someErrorClass**(`error`, `cls`): `error is BaseError`
 
@@ -366,7 +366,7 @@ True if the error has the specific class.
 
 ***
 
-### someErrorCode()
+### someErrorCode() {#someerrorcode}
 
 > `static` **someErrorCode**(`error`, `code`): `error is BaseError`
 
@@ -398,7 +398,7 @@ True if the error has the name.
 
 ***
 
-### isEmpty()
+### isEmpty() {#isempty}
 
 > `static` **isEmpty**(`err`): `boolean`
 
@@ -424,7 +424,7 @@ True if the error is empty.
 
 ***
 
-### isAggregateError()
+### isAggregateError() {#isaggregateerror}
 
 > `static` **isAggregateError**(`err`): `err is AggregateError`
 
@@ -450,7 +450,7 @@ True if the error is an aggregate error.
 
 ***
 
-### fromAggregate()
+### fromAggregate() {#fromaggregate}
 
 > `static` **fromAggregate**(`err`, `includeStackTrace?`): [`IError`](../interfaces/IError.md)[]
 
@@ -482,7 +482,7 @@ The array of errors.
 
 ***
 
-### toJsonObject()
+### toJsonObject() {#tojsonobject}
 
 > **toJsonObject**(`includeStackTrace?`): [`IError`](../interfaces/IError.md)
 

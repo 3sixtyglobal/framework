@@ -14,7 +14,7 @@ Class to help with mime types.
 
 ## Methods
 
-### detect()
+### detect() {#detect}
 
 > `static` **detect**(`data`): `Promise`\<`string` \| `undefined`\>
 
@@ -36,7 +36,7 @@ The mime type if detected.
 
 ***
 
-### defaultExtension()
+### defaultExtension() {#defaultextension}
 
 > `static` **defaultExtension**(`mimeType`): `string` \| `undefined`
 

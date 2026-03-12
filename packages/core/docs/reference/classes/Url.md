@@ -24,7 +24,7 @@ The url string.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -32,7 +32,7 @@ Runtime name for the class.
 
 ## Methods
 
-### tryParseExact()
+### tryParseExact() {#tryparseexact}
 
 > `static` **tryParseExact**(`url`): `Url` \| `undefined`
 
@@ -54,7 +54,7 @@ The formatted url or undefined if the value is not a url.
 
 ***
 
-### guard()
+### guard() {#guard}
 
 > `static` **guard**(`source`, `property`, `value`): `asserts value is string`
 
@@ -90,7 +90,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### validate()
+### validate() {#validate}
 
 > `static` **validate**(`property`, `value`, `failures`, `fieldNameResource?`): `value is Url`
 
@@ -130,7 +130,7 @@ The formatted url.
 
 ***
 
-### fromURLToParts()
+### fromURLToParts() {#fromurltoparts}
 
 > `static` **fromURLToParts**(`url`): [`IUrlParts`](../interfaces/IUrlParts.md)
 
@@ -152,7 +152,7 @@ The formatted url.
 
 ***
 
-### fromParts()
+### fromParts() {#fromparts}
 
 > `static` **fromParts**(`urlParts`): `Url`
 
@@ -174,7 +174,7 @@ The formatted url.
 
 ***
 
-### parts()
+### parts() {#parts}
 
 > **parts**(): [`IUrlParts`](../interfaces/IUrlParts.md)
 
@@ -188,7 +188,7 @@ The parts of the url.
 
 ***
 
-### toString()
+### toString() {#tostring}
 
 > **toString**(): `string`
 

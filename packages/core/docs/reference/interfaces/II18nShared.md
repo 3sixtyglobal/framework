@@ -4,7 +4,7 @@ The shared state for the I18n global.
 
 ## Properties
 
-### localeDictionaries
+### localeDictionaries {#localedictionaries}
 
 > **localeDictionaries**: `object`
 
@@ -16,7 +16,7 @@ Dictionaries for lookups.
 
 ***
 
-### currentLocale
+### currentLocale {#currentlocale}
 
 > **currentLocale**: `string`
 
@@ -24,7 +24,7 @@ The current locale.
 
 ***
 
-### localeChangedHandlers
+### localeChangedHandlers {#localechangedhandlers}
 
 > **localeChangedHandlers**: `object`
 
@@ -36,7 +36,7 @@ Change handler for the locale being updated.
 
 ***
 
-### dictionaryChangedHandlers
+### dictionaryChangedHandlers {#dictionarychangedhandlers}
 
 > **dictionaryChangedHandlers**: `object`
 

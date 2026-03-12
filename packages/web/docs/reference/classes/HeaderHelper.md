@@ -14,7 +14,7 @@ Class to helper with header operations.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### createBearer()
+### createBearer() {#createbearer}
 
 > `static` **createBearer**(`token`): `string`
 
@@ -44,7 +44,7 @@ The bearer token header.
 
 ***
 
-### extractBearer()
+### extractBearer() {#extractbearer}
 
 > `static` **extractBearer**(`header`): `string`
 
@@ -66,7 +66,7 @@ The extracted token if it exists.
 
 ***
 
-### extractLinkHeaderRelation()
+### extractLinkHeaderRelation() {#extractlinkheaderrelation}
 
 > `static` **extractLinkHeaderRelation**(`linkHeader`, `relation`): \{ `url`: `string`; `urlQueryParams?`: \{\[`id`: `string`\]: `string`; \}; `rel`: `string`; `params?`: \{\[`id`: `string`\]: `string`; \}; \} \| `undefined`
 
@@ -98,7 +98,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
 
 ***
 
-### extractLinkHeaders()
+### extractLinkHeaders() {#extractlinkheaders}
 
 > `static` **extractLinkHeaders**(`linkHeader`): `object`[] \| `undefined`
 
@@ -124,7 +124,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
 
 ***
 
-### extractLinkHeader()
+### extractLinkHeader() {#extractlinkheader}
 
 > `static` **extractLinkHeader**(`linkHeader`): \{ `url`: `string`; `urlQueryParams?`: \{\[`id`: `string`\]: `string`; \}; `rel`: `string`; `params?`: \{\[`id`: `string`\]: `string`; \}; \} \| `undefined`
 
@@ -150,7 +150,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
 
 ***
 
-### createLinkHeader()
+### createLinkHeader() {#createlinkheader}
 
 > `static` **createLinkHeader**(`url`, `urlQueryParams`, `rel`, `params?`): `string`
 

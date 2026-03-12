@@ -14,7 +14,7 @@ Bech32 encoding and decoding.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### encode()
+### encode() {#encode}
 
 > `static` **encode**(`humanReadablePart`, `data`): `string`
 
@@ -50,7 +50,7 @@ The encoded data.
 
 ***
 
-### decode()
+### decode() {#decode}
 
 > `static` **decode**(`bech`): `object`
 
@@ -84,7 +84,7 @@ An error if the decoding fails.
 
 ***
 
-### isBech32()
+### isBech32() {#isbech32}
 
 > `static` **isBech32**(`bech`): `bech is string`
 

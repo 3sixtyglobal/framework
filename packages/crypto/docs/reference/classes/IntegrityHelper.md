@@ -18,7 +18,7 @@ https://www.w3.org/TR/SRI/
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -26,7 +26,7 @@ Runtime name for the class.
 
 ## Methods
 
-### generate()
+### generate() {#generate}
 
 > `static` **generate**(`type`, `content`): `string`
 
@@ -54,7 +54,7 @@ The integrity signature in the format "type-base64hash".
 
 ***
 
-### verify()
+### verify() {#verify}
 
 > `static` **verify**(`integrity`, `content`): `boolean`
 

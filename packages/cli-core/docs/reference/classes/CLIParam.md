@@ -14,7 +14,7 @@ Parameter utilities for the CLI.
 
 ## Methods
 
-### env()
+### env() {#env}
 
 > `static` **env**(`optionName`, `optionValue`, `allowEnvVar`): `string` \| `undefined`
 
@@ -52,7 +52,7 @@ An error if the option is invalid.
 
 ***
 
-### stringValue()
+### stringValue() {#stringvalue}
 
 > `static` **stringValue**(`optionName`, `optionValue`, `allowEnvVar?`): `string`
 
@@ -90,7 +90,7 @@ An error if the option is invalid.
 
 ***
 
-### arrayOneOf()
+### arrayOneOf() {#arrayoneof}
 
 > `static` **arrayOneOf**\<`T`\>(`optionName`, `optionValue`, `validValues`, `allowEnvVar?`): `T`
 
@@ -140,7 +140,7 @@ An error if the option is invalid.
 
 ***
 
-### url()
+### url() {#url}
 
 > `static` **url**(`optionName`, `optionValue`, `allowEnvVar?`): `string`
 
@@ -178,7 +178,7 @@ An error if the option is invalid.
 
 ***
 
-### number()
+### number() {#number}
 
 > `static` **number**(`optionName`, `optionValue`, `allowEnvVar?`, `minValue?`, `maxValue?`): `number`
 
@@ -228,7 +228,7 @@ An error if the option is invalid.
 
 ***
 
-### integer()
+### integer() {#integer}
 
 > `static` **integer**(`optionName`, `optionValue`, `allowEnvVar?`, `minValue?`, `maxValue?`): `number`
 
@@ -278,7 +278,7 @@ An error if the option is invalid.
 
 ***
 
-### bigint()
+### bigint() {#bigint}
 
 > `static` **bigint**(`optionName`, `optionValue`, `allowEnvVar?`, `minValue?`, `maxValue?`): `bigint`
 
@@ -328,7 +328,7 @@ An error if the option is invalid.
 
 ***
 
-### boolean()
+### boolean() {#boolean}
 
 > `static` **boolean**(`optionName`, `optionValue`, `allowEnvVar?`): `boolean`
 
@@ -366,7 +366,7 @@ An error if the option is invalid.
 
 ***
 
-### hex()
+### hex() {#hex}
 
 > `static` **hex**(`optionName`, `optionValue`, `allowEnvVar?`): `Uint8Array`
 
@@ -404,7 +404,7 @@ An error if the option is invalid.
 
 ***
 
-### base64()
+### base64() {#base64}
 
 > `static` **base64**(`optionName`, `optionValue`, `allowEnvVar?`): `Uint8Array`
 
@@ -442,7 +442,7 @@ An error if the option is invalid.
 
 ***
 
-### hexBase64()
+### hexBase64() {#hexbase64}
 
 > `static` **hexBase64**(`optionName`, `optionValue`, `allowEnvVar?`): `Uint8Array`
 

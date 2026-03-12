@@ -30,7 +30,7 @@ The specific part of the namespace.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -38,7 +38,7 @@ Runtime name for the class.
 
 ## Methods
 
-### generateRandom()
+### generateRandom() {#generaterandom}
 
 > `static` **generateRandom**(`namespace`): `Urn`
 
@@ -60,7 +60,7 @@ A new Id in URN format.
 
 ***
 
-### hasNamespace()
+### hasNamespace() {#hasnamespace}
 
 > `static` **hasNamespace**(`urn`, `namespace`): `boolean`
 
@@ -88,7 +88,7 @@ True if the namespace matches.
 
 ***
 
-### tryParseExact()
+### tryParseExact() {#tryparseexact}
 
 > `static` **tryParseExact**(`urn`): `Urn` \| `undefined`
 
@@ -110,7 +110,7 @@ The formatted urn or undefined if the value is not a urn.
 
 ***
 
-### fromValidString()
+### fromValidString() {#fromvalidstring}
 
 > `static` **fromValidString**(`urn`): `Urn`
 
@@ -132,7 +132,7 @@ The formatted urn.
 
 ***
 
-### addPrefix()
+### addPrefix() {#addprefix}
 
 > `static` **addPrefix**(`urn`): `string` \| `undefined`
 
@@ -154,7 +154,7 @@ The urn with a prefix.
 
 ***
 
-### guard()
+### guard() {#guard}
 
 > `static` **guard**(`source`, `property`, `value`): `asserts value is string`
 
@@ -190,7 +190,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### validate()
+### validate() {#validate}
 
 > `static` **validate**(`property`, `value`, `failures`, `fieldNameResource?`): `value is string`
 
@@ -230,7 +230,7 @@ The formatted urn.
 
 ***
 
-### parts()
+### parts() {#parts}
 
 > **parts**(`startIndex?`): `string`[]
 
@@ -252,7 +252,7 @@ The parts.
 
 ***
 
-### namespaceIdentifier()
+### namespaceIdentifier() {#namespaceidentifier}
 
 > **namespaceIdentifier**(): `string`
 
@@ -266,7 +266,7 @@ The namespace identifier.
 
 ***
 
-### namespaceMethod()
+### namespaceMethod() {#namespacemethod}
 
 > **namespaceMethod**(): `string`
 
@@ -280,7 +280,7 @@ The namespace method.
 
 ***
 
-### namespaceSpecificParts()
+### namespaceSpecificParts() {#namespacespecificparts}
 
 > **namespaceSpecificParts**(`startIndex?`): `string`[]
 
@@ -302,7 +302,7 @@ The namespace specific parts.
 
 ***
 
-### namespaceSpecific()
+### namespaceSpecific() {#namespacespecific}
 
 > **namespaceSpecific**(`startIndex?`): `string`
 
@@ -324,7 +324,7 @@ The namespace specific.
 
 ***
 
-### toString()
+### toString() {#tostring}
 
 > **toString**(`omitPrefix?`): `string`
 

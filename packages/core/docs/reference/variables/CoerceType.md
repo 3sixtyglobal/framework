@@ -6,61 +6,61 @@ The types the extracted data can be coerced to.
 
 ## Type Declaration
 
-### String
+### String {#string}
 
 > `readonly` **String**: `"string"` = `"string"`
 
 String.
 
-### Number
+### Number {#number}
 
 > `readonly` **Number**: `"number"` = `"number"`
 
 Number.
 
-### Integer
+### Integer {#integer}
 
 > `readonly` **Integer**: `"integer"` = `"integer"`
 
 Integer.
 
-### Boolean
+### Boolean {#boolean}
 
 > `readonly` **Boolean**: `"boolean"` = `"boolean"`
 
 Boolean.
 
-### BigInt
+### BigInt {#bigint}
 
 > `readonly` **BigInt**: `"bigint"` = `"bigint"`
 
 Big Integer.
 
-### Date
+### Date {#date}
 
 > `readonly` **Date**: `"date"` = `"date"`
 
 Date.
 
-### DateTime
+### DateTime {#datetime}
 
 > `readonly` **DateTime**: `"datetime"` = `"datetime"`
 
 Date Time.
 
-### Time
+### Time {#time}
 
 > `readonly` **Time**: `"time"` = `"time"`
 
 Time.
 
-### Object
+### Object {#object}
 
 > `readonly` **Object**: `"object"` = `"object"`
 
 Object.
 
-### Uint8Array
+### Uint8Array {#uint8array}
 
 > `readonly` **Uint8Array**: `"uint8array"` = `"uint8array"`
 

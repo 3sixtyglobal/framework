@@ -14,7 +14,7 @@ Class to help with random generation.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### generate()
+### generate() {#generate}
 
 > `static` **generate**(`length`): `Uint8Array`
 
@@ -44,7 +44,7 @@ The random array.
 
 ***
 
-### generateUuidV7()
+### generateUuidV7() {#generateuuidv7}
 
 > `static` **generateUuidV7**(`format?`): `string`
 
@@ -66,7 +66,7 @@ The UUIDv7 string.
 
 ***
 
-### uuidV7ExtractTimestamp()
+### uuidV7ExtractTimestamp() {#uuidv7extracttimestamp}
 
 > `static` **uuidV7ExtractTimestamp**(`uuid`): `number`
 

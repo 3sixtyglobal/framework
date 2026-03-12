@@ -14,7 +14,7 @@ Class to check types of objects.
 
 ## Methods
 
-### undefined()
+### undefined() {#undefined}
 
 > `static` **undefined**(`value`): `value is undefined`
 
@@ -36,7 +36,7 @@ True if the value is a empty.
 
 ***
 
-### null()
+### null() {#null}
 
 > `static` **null**(`value`): `value is null`
 
@@ -58,7 +58,7 @@ True if the value is a empty.
 
 ***
 
-### empty()
+### empty() {#empty}
 
 > `static` **empty**(`value`): value is null \| undefined
 
@@ -80,7 +80,7 @@ True if the value is a empty.
 
 ***
 
-### notEmpty()
+### notEmpty() {#notempty}
 
 > `static` **notEmpty**(`value`): `boolean`
 
@@ -102,7 +102,7 @@ True if the value is a not empty.
 
 ***
 
-### string()
+### string() {#string}
 
 > `static` **string**(`value`): `value is string`
 
@@ -124,7 +124,7 @@ True if the value is a string.
 
 ***
 
-### stringValue()
+### stringValue() {#stringvalue}
 
 > `static` **stringValue**(`value`): `value is string`
 
@@ -146,7 +146,7 @@ True if the value is a string.
 
 ***
 
-### json()
+### json() {#json}
 
 > `static` **json**(`value`): `value is string`
 
@@ -168,7 +168,7 @@ True if the value is a JSON string.
 
 ***
 
-### stringBase64()
+### stringBase64() {#stringbase64}
 
 > `static` **stringBase64**(`value`): `value is string`
 
@@ -190,7 +190,7 @@ True if the value is a base64 string.
 
 ***
 
-### stringBase64Url()
+### stringBase64Url() {#stringbase64url}
 
 > `static` **stringBase64Url**(`value`): `value is string`
 
@@ -212,7 +212,7 @@ True if the value is a base64 string.
 
 ***
 
-### stringBase58()
+### stringBase58() {#stringbase58}
 
 > `static` **stringBase58**(`value`): `value is string`
 
@@ -234,7 +234,7 @@ True if the value is a base58 string.
 
 ***
 
-### stringHex()
+### stringHex() {#stringhex}
 
 > `static` **stringHex**(`value`, `allowPrefix?`): `value is string`
 
@@ -262,7 +262,7 @@ True if the value is a hex string.
 
 ***
 
-### stringHexLength()
+### stringHexLength() {#stringhexlength}
 
 > `static` **stringHexLength**(`value`, `length`, `allowPrefix?`): `value is string`
 
@@ -296,7 +296,7 @@ True if the value is a hex string of required length.
 
 ***
 
-### number()
+### number() {#number}
 
 > `static` **number**(`value`): `value is number`
 
@@ -318,7 +318,7 @@ True if the value is a number.
 
 ***
 
-### integer()
+### integer() {#integer}
 
 > `static` **integer**(`value`): `value is number`
 
@@ -340,7 +340,7 @@ True if the value is an integer.
 
 ***
 
-### bigint()
+### bigint() {#bigint}
 
 > `static` **bigint**(`value`): `value is bigint`
 
@@ -362,7 +362,7 @@ True if the value is a big integer.
 
 ***
 
-### boolean()
+### boolean() {#boolean}
 
 > `static` **boolean**(`value`): `value is boolean`
 
@@ -384,7 +384,7 @@ True if the value is a boolean.
 
 ***
 
-### date()
+### date() {#date}
 
 > `static` **date**(`value`): `value is Date`
 
@@ -406,7 +406,7 @@ True if the value is a date.
 
 ***
 
-### dateEmpty()
+### dateEmpty() {#dateempty}
 
 > `static` **dateEmpty**(`value`): `boolean`
 
@@ -428,7 +428,7 @@ True if the value is an empty date.
 
 ***
 
-### dateString()
+### dateString() {#datestring}
 
 > `static` **dateString**(`value`): `boolean`
 
@@ -450,7 +450,7 @@ True if the value is a string in ISO 8601 date format.
 
 ***
 
-### dateTimeString()
+### dateTimeString() {#datetimestring}
 
 > `static` **dateTimeString**(`value`): `boolean`
 
@@ -472,7 +472,7 @@ True if the value is a string in ISO 8601 date/time format.
 
 ***
 
-### timeString()
+### timeString() {#timestring}
 
 > `static` **timeString**(`value`): `boolean`
 
@@ -494,7 +494,7 @@ True if the value is a string in ISO 8601 time format.
 
 ***
 
-### timestampSeconds()
+### timestampSeconds() {#timestampseconds}
 
 > `static` **timestampSeconds**(`value`): `value is number`
 
@@ -516,7 +516,7 @@ True if the value is a date.
 
 ***
 
-### timestampMilliseconds()
+### timestampMilliseconds() {#timestampmilliseconds}
 
 > `static` **timestampMilliseconds**(`value`): `value is number`
 
@@ -538,7 +538,7 @@ True if the value is a date.
 
 ***
 
-### object()
+### object() {#object}
 
 > `static` **object**\<`T`\>(`value`): `value is T`
 
@@ -566,7 +566,7 @@ True if the value is a object.
 
 ***
 
-### objectValue()
+### objectValue() {#objectvalue}
 
 > `static` **objectValue**\<`T`\>(`value`): `value is T`
 
@@ -594,7 +594,7 @@ True if the value is a object.
 
 ***
 
-### array()
+### array() {#array}
 
 > `static` **array**\<`T`\>(`value`): `value is T[]`
 
@@ -622,7 +622,7 @@ True if the value is an array.
 
 ***
 
-### arrayValue()
+### arrayValue() {#arrayvalue}
 
 > `static` **arrayValue**\<`T`\>(`value`): `value is T[]`
 
@@ -650,7 +650,7 @@ True if the value is an array with at least one element.
 
 ***
 
-### arrayOneOf()
+### arrayOneOf() {#arrayoneof}
 
 > `static` **arrayOneOf**\<`T`\>(`value`, `options`): `value is T`
 
@@ -684,7 +684,7 @@ True if the value is an element from the options array.
 
 ***
 
-### uint8Array()
+### uint8Array() {#uint8array}
 
 > `static` **uint8Array**(`value`): `value is Uint8Array<ArrayBufferLike>`
 
@@ -706,7 +706,7 @@ True if the value is a Uint8Array.
 
 ***
 
-### typedArray()
+### typedArray() {#typedarray}
 
 > `static` **typedArray**(`value`): value is Uint8Array\<ArrayBufferLike\> \| Int8Array\<ArrayBufferLike\> \| Uint16Array\<ArrayBufferLike\> \| Int16Array\<ArrayBufferLike\> \| Uint32Array\<ArrayBufferLike\> \| Int32Array\<ArrayBufferLike\> \| Float32Array\<ArrayBufferLike\> \| Float64Array\<ArrayBufferLike\>
 
@@ -728,7 +728,7 @@ True if the value is a TypedArray.
 
 ***
 
-### function()
+### function() {#function}
 
 > `static` **function**\<`T`\>(`value`): `value is T`
 
@@ -756,7 +756,7 @@ True if the value is a function.
 
 ***
 
-### email()
+### email() {#email}
 
 > `static` **email**(`value`): `value is string`
 
@@ -778,7 +778,7 @@ True if the value is a string.
 
 ***
 
-### promise()
+### promise() {#promise}
 
 > `static` **promise**\<`T`\>(`value`): `value is Promise<T>`
 
@@ -806,7 +806,7 @@ True if the value is a promise.
 
 ***
 
-### regexp()
+### regexp() {#regexp}
 
 > `static` **regexp**(`value`): `value is RegExp`
 
@@ -828,7 +828,7 @@ True if the value is a regexp.
 
 ***
 
-### class()
+### class() {#class}
 
 > `static` **class**\<`T`\>(`obj`): `obj is (args: any[]) => T`
 
@@ -856,7 +856,7 @@ True if the object is a class, false otherwise.
 
 ***
 
-### uuidV7()
+### uuidV7() {#uuidv7}
 
 > `static` **uuidV7**(`value`, `format?`): `value is string`
 

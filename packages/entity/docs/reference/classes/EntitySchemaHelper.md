@@ -14,7 +14,7 @@ Class to help with entity schema operations.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### getSchema()
+### getSchema() {#getschema}
 
 > `static` **getSchema**\<`T`\>(`target`): [`IEntitySchema`](../interfaces/IEntitySchema.md)\<`T`\>
 
@@ -50,7 +50,7 @@ The schema for the object if it can be found.
 
 ***
 
-### getPrimaryKey()
+### getPrimaryKey() {#getprimarykey}
 
 > `static` **getPrimaryKey**\<`T`\>(`entitySchema`): [`IEntitySchemaProperty`](../interfaces/IEntitySchemaProperty.md)\<`T`\>
 
@@ -82,7 +82,7 @@ If no primary key was found, or more than one.
 
 ***
 
-### getSortProperties()
+### getSortProperties() {#getsortproperties}
 
 > `static` **getSortProperties**\<`T`\>(`entitySchema`): [`IEntitySort`](../interfaces/IEntitySort.md)\<`T`\>[] \| `undefined`
 
@@ -110,7 +110,7 @@ The sort keys from the schema or undefined if there are none.
 
 ***
 
-### buildSortProperties()
+### buildSortProperties() {#buildsortproperties}
 
 > `static` **buildSortProperties**\<`T`\>(`entitySchema`, `overrideSortKeys?`): [`IEntitySort`](../interfaces/IEntitySort.md)\<`T`\>[] \| `undefined`
 
@@ -144,7 +144,7 @@ The finalised sort keys.
 
 ***
 
-### validateEntity()
+### validateEntity() {#validateentity}
 
 > `static` **validateEntity**\<`T`\>(`entity`, `entitySchema`): `void`
 

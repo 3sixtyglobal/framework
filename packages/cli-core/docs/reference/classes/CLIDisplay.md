@@ -14,7 +14,7 @@ Display utilities for the CLI.
 
 ## Properties
 
-### write()
+### write() {#write}
 
 > `static` **write**: (`buffer`) => `void`
 
@@ -34,7 +34,7 @@ The message to output.
 
 ***
 
-### writeError()
+### writeError() {#writeerror}
 
 > `static` **writeError**: (`buffer`) => `void`
 
@@ -54,7 +54,7 @@ The message to output.
 
 ***
 
-### clearLine()
+### clearLine() {#clearline}
 
 > `static` **clearLine**: () => `void`
 
@@ -66,7 +66,7 @@ The default output method for clearing the current line.
 
 ## Methods
 
-### header()
+### header() {#header}
 
 > `static` **header**(`title`, `version`, `icon`): `void`
 
@@ -98,7 +98,7 @@ The icon for the CLI.
 
 ***
 
-### error()
+### error() {#error}
 
 > `static` **error**(`error`, `lineBreaks?`): `void`
 
@@ -124,7 +124,7 @@ Whether to add a line break after the error.
 
 ***
 
-### errorMessage()
+### errorMessage() {#errormessage}
 
 > `static` **errorMessage**(`error`): `void`
 
@@ -144,7 +144,7 @@ The error to display.
 
 ***
 
-### section()
+### section() {#section}
 
 > `static` **section**(`label`): `void`
 
@@ -164,7 +164,7 @@ The label for the section.
 
 ***
 
-### value()
+### value() {#value}
 
 > `static` **value**(`label`, `value`, `indentLevel?`): `void`
 
@@ -196,7 +196,7 @@ The level of indentation.
 
 ***
 
-### task()
+### task() {#task}
 
 > `static` **task**(`label`, `task?`): `void`
 
@@ -222,7 +222,7 @@ The task to display.
 
 ***
 
-### break()
+### break() {#break}
 
 > `static` **break**(): `void`
 
@@ -234,7 +234,7 @@ Display a break.
 
 ***
 
-### json()
+### json() {#json}
 
 > `static` **json**(`obj`): `void`
 
@@ -254,7 +254,7 @@ The object to display.
 
 ***
 
-### warning()
+### warning() {#warning}
 
 > `static` **warning**(`label`): `void`
 
@@ -274,7 +274,7 @@ The label for the warning.
 
 ***
 
-### done()
+### done() {#done}
 
 > `static` **done**(): `void`
 
@@ -286,7 +286,7 @@ Display the processing is done.
 
 ***
 
-### spinnerStart()
+### spinnerStart() {#spinnerstart}
 
 > `static` **spinnerStart**(`i18nMessage?`, `spinnerCharacters?`, `interval?`): `void`
 
@@ -318,7 +318,7 @@ The interval for the spinner.
 
 ***
 
-### spinnerStop()
+### spinnerStop() {#spinnerstop}
 
 > `static` **spinnerStop**(): `void`
 

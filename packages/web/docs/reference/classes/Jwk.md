@@ -14,7 +14,7 @@ Class to handle JSON Web Keys.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### toCryptoKey()
+### toCryptoKey() {#tocryptokey}
 
 > `static` **toCryptoKey**(`jwk`, `alg?`): `Promise`\<[`JwkCryptoKey`](../type-aliases/JwkCryptoKey.md)\>
 
@@ -50,7 +50,7 @@ The crypto key.
 
 ***
 
-### fromEd25519Private()
+### fromEd25519Private() {#fromed25519private}
 
 > `static` **fromEd25519Private**(`privateKey`, `overrideUse?`): `Promise`\<`JWK`\>
 
@@ -78,7 +78,7 @@ The crypto key.
 
 ***
 
-### fromEd25519Public()
+### fromEd25519Public() {#fromed25519public}
 
 > `static` **fromEd25519Public**(`publicKey`, `overrideUse?`): `Promise`\<`JWK`\>
 
@@ -106,7 +106,7 @@ The crypto key.
 
 ***
 
-### toRaw()
+### toRaw() {#toraw}
 
 > `static` **toRaw**(`jwk`): `Promise`\<\{ `publicKey?`: `Uint8Array`\<`ArrayBufferLike`\>; `privateKey?`: `Uint8Array`\<`ArrayBufferLike`\>; \}\>
 
@@ -128,7 +128,7 @@ The crypto key.
 
 ***
 
-### generateKid()
+### generateKid() {#generatekid}
 
 > `static` **generateKid**(`jwk`): `Promise`\<`string`\>
 

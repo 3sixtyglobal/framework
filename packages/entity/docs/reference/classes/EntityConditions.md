@@ -14,7 +14,7 @@ Class to perform condition checks.
 
 ## Methods
 
-### check()
+### check() {#check}
 
 > `static` **check**\<`T`\>(`entity`, `condition?`): `boolean`
 
@@ -48,7 +48,7 @@ True if the entity matches.
 
 ***
 
-### compare()
+### compare() {#compare}
 
 > `static` **compare**\<`T`\>(`entity`, `comparator`): `boolean`
 

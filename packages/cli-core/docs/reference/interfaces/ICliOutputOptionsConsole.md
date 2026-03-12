@@ -4,7 +4,7 @@ Options for the CLI Output for console.
 
 ## Properties
 
-### console
+### console {#console}
 
 > **console**: `boolean`
 

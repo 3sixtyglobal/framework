@@ -15,7 +15,7 @@ Implementation of https://datatracker.ietf.org/doc/html/rfc4226 .
 
 ## Methods
 
-### generate()
+### generate() {#generate}
 
 > `static` **generate**(`key`, `interval?`, `timestamp?`): `string`
 
@@ -49,7 +49,7 @@ The one time password.
 
 ***
 
-### verify()
+### verify() {#verify}
 
 > `static` **verify**(`token`, `key`, `window?`, `interval?`, `timestamp?`): `number` \| `undefined`
 
@@ -96,7 +96,7 @@ Undefined if failure, delta on success
 
 ***
 
-### generateSecret()
+### generateSecret() {#generatesecret}
 
 > `static` **generateSecret**(`length`): `string`
 
@@ -118,7 +118,7 @@ The secret encoded as base32.
 
 ***
 
-### secretToBytes()
+### secretToBytes() {#secrettobytes}
 
 > `static` **secretToBytes**(`secretBase32`): `Uint8Array`
 
@@ -140,7 +140,7 @@ The bytes of the secret.
 
 ***
 
-### generateAuthUrl()
+### generateAuthUrl() {#generateauthurl}
 
 > `static` **generateAuthUrl**(`issuer`, `label`, `secretBase32`): `string`
 

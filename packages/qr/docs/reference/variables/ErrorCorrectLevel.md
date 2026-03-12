@@ -7,25 +7,25 @@ Based on https://github.com/kazuhikoarase/qrcode-generator/ .
 
 ## Type Declaration
 
-### L
+### L {#l}
 
 > `readonly` **L**: `1` = `1`
 
 7% Error correction.
 
-### M
+### M {#m}
 
 > `readonly` **M**: `0` = `0`
 
 15% Error correction.
 
-### Q
+### Q {#q}
 
 > `readonly` **Q**: `3` = `3`
 
 25% Error correction.
 
-### H
+### H {#h}
 
 > `readonly` **H**: `2` = `2`
 

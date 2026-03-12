@@ -4,7 +4,7 @@ Interface describing a component which can be bootstrapped, started and stopped.
 
 ## Methods
 
-### className()
+### className() {#classname}
 
 > **className**(): `string`
 
@@ -18,7 +18,7 @@ The class name of the component.
 
 ***
 
-### bootstrap()?
+### bootstrap()? {#bootstrap}
 
 > `optional` **bootstrap**(`nodeLoggingComponentType?`): `Promise`\<`boolean`\>
 
@@ -40,7 +40,7 @@ True if the bootstrapping process was successful.
 
 ***
 
-### start()?
+### start()? {#start}
 
 > `optional` **start**(`nodeLoggingComponentType?`): `Promise`\<`void`\>
 
@@ -62,7 +62,7 @@ Nothing.
 
 ***
 
-### stop()?
+### stop()? {#stop}
 
 > `optional` **stop**(`nodeLoggingComponentType?`): `Promise`\<`void`\>
 

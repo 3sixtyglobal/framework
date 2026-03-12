@@ -14,7 +14,7 @@ Generate random passwords.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### generate()
+### generate() {#generate}
 
 > `static` **generate**(`length?`): `string`
 
@@ -44,7 +44,7 @@ The random password.
 
 ***
 
-### hashPassword()
+### hashPassword() {#hashpassword}
 
 > `static` **hashPassword**(`passwordBytes`, `saltBytes`): `Promise`\<`string`\>
 

@@ -14,7 +14,7 @@ Class to help with objects.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### toBytes()
+### toBytes() {#tobytes}
 
 > `static` **toBytes**\<`T`\>(`obj`, `format?`): `Uint8Array`
 
@@ -56,7 +56,7 @@ The object as bytes.
 
 ***
 
-### fromBytes()
+### fromBytes() {#frombytes}
 
 > `static` **fromBytes**\<`T`\>(`bytes`): `T`
 
@@ -88,7 +88,7 @@ GeneralError if there was an error parsing the JSON.
 
 ***
 
-### clone()
+### clone() {#clone}
 
 > `static` **clone**\<`T`\>(`obj`): `T`
 
@@ -116,7 +116,7 @@ The objects clone.
 
 ***
 
-### merge()
+### merge() {#merge}
 
 > `static` **merge**\<`T`, `U`\>(`obj1`, `obj2`): `T` & `U`
 
@@ -154,7 +154,7 @@ The combined deep merge of the objects.
 
 ***
 
-### equal()
+### equal() {#equal}
 
 > `static` **equal**\<`T`\>(`obj1`, `obj2`, `strictPropertyOrder?`): `boolean`
 
@@ -194,7 +194,7 @@ True is the objects are equal.
 
 ***
 
-### propertyGet()
+### propertyGet() {#propertyget}
 
 > `static` **propertyGet**\<`T`\>(`obj`, `property`): `T` \| `undefined`
 
@@ -228,7 +228,7 @@ The property.
 
 ***
 
-### propertySet()
+### propertySet() {#propertyset}
 
 > `static` **propertySet**(`obj`, `property`, `value`): `void`
 
@@ -264,7 +264,7 @@ GeneralError if the property target is not an object.
 
 ***
 
-### propertyDelete()
+### propertyDelete() {#propertydelete}
 
 > `static` **propertyDelete**(`obj`, `property`): `void`
 
@@ -290,7 +290,7 @@ The property to set
 
 ***
 
-### extractProperty()
+### extractProperty() {#extractproperty}
 
 > `static` **extractProperty**\<`T`\>(`obj`, `propertyNames`, `removeProperties?`): `T` \| `undefined`
 
@@ -330,7 +330,7 @@ The property if available.
 
 ***
 
-### pick()
+### pick() {#pick}
 
 > `static` **pick**\<`T`\>(`obj`, `keys?`): `Partial`\<`T`\>
 
@@ -364,7 +364,7 @@ The partial object.
 
 ***
 
-### omit()
+### omit() {#omit}
 
 > `static` **omit**\<`T`\>(`obj`, `keys?`): `Partial`\<`T`\>
 
@@ -398,7 +398,7 @@ The partial object.
 
 ***
 
-### split()
+### split() {#split}
 
 > `static` **split**\<`T`\>(`obj`, `keys?`): `object`
 
@@ -440,7 +440,7 @@ The two partial objects.
 
 ***
 
-### toExtended()
+### toExtended() {#toextended}
 
 > `static` **toExtended**(`obj`): `any`
 
@@ -462,7 +462,7 @@ The object with extended properties.
 
 ***
 
-### fromExtended()
+### fromExtended() {#fromextended}
 
 > `static` **fromExtended**(`obj`): `any`
 
@@ -484,7 +484,7 @@ The object with regular properties.
 
 ***
 
-### removeEmptyProperties()
+### removeEmptyProperties() {#removeemptyproperties}
 
 > `static` **removeEmptyProperties**\<`T`\>(`obj`, `options?`): `T`
 

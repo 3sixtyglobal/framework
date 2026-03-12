@@ -14,7 +14,7 @@ Class to help with context IDs.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### guard()
+### guard() {#guard}
 
 > `static` **guard**\<`T`, `K`\>(`contextIds`, `key`): `asserts contextIds is T & { [P in string]: string }`
 
@@ -62,7 +62,7 @@ Guard error if the value is invalid.
 
 ***
 
-### short()
+### short() {#short}
 
 > `static` **short**(`contextIds`, `key`): `string`
 
@@ -94,7 +94,7 @@ Guard error if the value is invalid.
 
 ***
 
-### guardAll()
+### guardAll() {#guardall}
 
 > `static` **guardAll**\<`T`, `K`\>(`contextIds`, `keys`): `asserts contextIds is T & { [P in string]: string }`
 
@@ -134,7 +134,7 @@ Guard error if the value is invalid.
 
 ***
 
-### shortAll()
+### shortAll() {#shortall}
 
 > `static` **shortAll**(`contextIds`, `keys`): [`IContextIds`](../interfaces/IContextIds.md)
 
@@ -162,7 +162,7 @@ The short versions of the context IDs.
 
 ***
 
-### shortCombined()
+### shortCombined() {#shortcombined}
 
 > `static` **shortCombined**(`contextIds`, `keys`, `separator?`): `string` \| `undefined`
 
@@ -196,7 +196,7 @@ The short version combined.
 
 ***
 
-### shortSplit()
+### shortSplit() {#shortsplit}
 
 > `static` **shortSplit**(`keys`, `combined`, `separator?`): [`IContextIds`](../interfaces/IContextIds.md)
 
@@ -234,7 +234,7 @@ GeneralError if the number of parts does not match the number of keys.
 
 ***
 
-### combinedContextKey()
+### combinedContextKey() {#combinedcontextkey}
 
 > `static` **combinedContextKey**(`contextIds`, `keys`, `separator?`): `string` \| `undefined`
 
@@ -268,7 +268,7 @@ The short version combined.
 
 ***
 
-### pickKeysFromAvailable()
+### pickKeysFromAvailable() {#pickkeysfromavailable}
 
 > `static` **pickKeysFromAvailable**(`availableKeys?`, `desiredKeys?`): `string`[]
 

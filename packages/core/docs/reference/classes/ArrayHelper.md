@@ -14,7 +14,7 @@ Class to help with arrays.
 
 ## Methods
 
-### matches()
+### matches() {#matches}
 
 > `static` **matches**(`arr1`, `arr2`): `boolean`
 
@@ -42,7 +42,7 @@ True if both arrays are empty of have the same values.
 
 ***
 
-### fromObjectOrArray()
+### fromObjectOrArray() {#fromobjectorarray}
 
 Convert an object or array to an array.
 

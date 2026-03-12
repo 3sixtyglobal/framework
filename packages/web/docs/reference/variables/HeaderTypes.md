@@ -6,7 +6,7 @@ Common http header types.
 
 ## Type Declaration
 
-### ContentType
+### ContentType {#contenttype}
 
 > `readonly` **ContentType**: `"content-type"` = `"content-type"`
 
@@ -16,7 +16,7 @@ Content Type.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type
 
-### ContentLanguage
+### ContentLanguage {#contentlanguage}
 
 > `readonly` **ContentLanguage**: `"content-language"` = `"content-language"`
 
@@ -26,7 +26,7 @@ Content Language.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Language
 
-### ContentLength
+### ContentLength {#contentlength}
 
 > `readonly` **ContentLength**: `"content-length"` = `"content-length"`
 
@@ -36,7 +36,7 @@ Content Length.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Length
 
-### ContentDisposition
+### ContentDisposition {#contentdisposition}
 
 > `readonly` **ContentDisposition**: `"content-disposition"` = `"content-disposition"`
 
@@ -46,7 +46,7 @@ Content Disposition.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
 
-### ContentEncoding
+### ContentEncoding {#contentencoding}
 
 > `readonly` **ContentEncoding**: `"content-encoding"` = `"content-encoding"`
 
@@ -56,7 +56,7 @@ Content Encoding.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding
 
-### CacheControl
+### CacheControl {#cachecontrol}
 
 > `readonly` **CacheControl**: `"cache-control"` = `"cache-control"`
 
@@ -66,7 +66,7 @@ Cache Control.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
-### ETag
+### ETag {#etag}
 
 > `readonly` **ETag**: `"etag"` = `"etag"`
 
@@ -76,7 +76,7 @@ ETag.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag
 
-### IfNoneMatch
+### IfNoneMatch {#ifnonematch}
 
 > `readonly` **IfNoneMatch**: `"if-none-match"` = `"if-none-match"`
 
@@ -86,7 +86,7 @@ If-None-Match.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match
 
-### LastModified
+### LastModified {#lastmodified}
 
 > `readonly` **LastModified**: `"last-modified"` = `"last-modified"`
 
@@ -96,7 +96,7 @@ Last-Modified.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Last-Modified
 
-### IfModifiedSince
+### IfModifiedSince {#ifmodifiedsince}
 
 > `readonly` **IfModifiedSince**: `"if-modified-since"` = `"if-modified-since"`
 
@@ -106,7 +106,7 @@ If-Modified-Since.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-Modified-Since
 
-### Accept
+### Accept {#accept}
 
 > `readonly` **Accept**: `"accept"` = `"accept"`
 
@@ -116,7 +116,7 @@ Accept.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept
 
-### AcceptLanguage
+### AcceptLanguage {#acceptlanguage}
 
 > `readonly` **AcceptLanguage**: `"accept-language"` = `"accept-language"`
 
@@ -126,7 +126,7 @@ Accept-Language.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept-Language
 
-### AcceptEncoding
+### AcceptEncoding {#acceptencoding}
 
 > `readonly` **AcceptEncoding**: `"accept-encoding"` = `"accept-encoding"`
 
@@ -136,7 +136,7 @@ Accept-Encoding.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept-Encoding
 
-### Authorization
+### Authorization {#authorization}
 
 > `readonly` **Authorization**: `"authorization"` = `"authorization"`
 
@@ -146,7 +146,7 @@ Authorization.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization
 
-### WwwAuthenticate
+### WwwAuthenticate {#wwwauthenticate}
 
 > `readonly` **WwwAuthenticate**: `"www-authenticate"` = `"www-authenticate"`
 
@@ -156,7 +156,7 @@ WWW-Authenticate.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/WWW-Authenticate
 
-### Cookie
+### Cookie {#cookie}
 
 > `readonly` **Cookie**: `"cookie"` = `"cookie"`
 
@@ -166,7 +166,7 @@ Cookie.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cookie
 
-### SetCookie
+### SetCookie {#setcookie}
 
 > `readonly` **SetCookie**: `"set-cookie"` = `"set-cookie"`
 
@@ -176,7 +176,7 @@ Set Cookie.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
 
-### Location
+### Location {#location}
 
 > `readonly` **Location**: `"location"` = `"location"`
 
@@ -186,7 +186,7 @@ Location
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Location
 
-### Origin
+### Origin {#origin}
 
 > `readonly` **Origin**: `"origin"` = `"origin"`
 
@@ -196,7 +196,7 @@ Origin.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin
 
-### Referer
+### Referer {#referer}
 
 > `readonly` **Referer**: `"referer"` = `"referer"`
 
@@ -206,7 +206,7 @@ Referer.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer
 
-### Link
+### Link {#link}
 
 > `readonly` **Link**: `"link"` = `"link"`
 
@@ -216,7 +216,7 @@ Link
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
 
-### Vary
+### Vary {#vary}
 
 > `readonly` **Vary**: `"vary"` = `"vary"`
 
@@ -226,7 +226,7 @@ Vary.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Vary
 
-### AccessControlAllowOrigin
+### AccessControlAllowOrigin {#accesscontrolalloworigin}
 
 > `readonly` **AccessControlAllowOrigin**: `"access-control-allow-origin"` = `"access-control-allow-origin"`
 
@@ -236,7 +236,7 @@ Access-Control-Allow-Origin.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
 
-### AccessControlAllowMethods
+### AccessControlAllowMethods {#accesscontrolallowmethods}
 
 > `readonly` **AccessControlAllowMethods**: `"access-control-allow-methods"` = `"access-control-allow-methods"`
 
@@ -246,7 +246,7 @@ Access-Control-Allow-Methods.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Methods
 
-### AccessControlAllowHeaders
+### AccessControlAllowHeaders {#accesscontrolallowheaders}
 
 > `readonly` **AccessControlAllowHeaders**: `"access-control-allow-headers"` = `"access-control-allow-headers"`
 
@@ -256,7 +256,7 @@ Access-Control-Allow-Headers.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers
 
-### AccessControlExposeHeaders
+### AccessControlExposeHeaders {#accesscontrolexposeheaders}
 
 > `readonly` **AccessControlExposeHeaders**: `"access-control-expose-headers"` = `"access-control-expose-headers"`
 
@@ -266,7 +266,7 @@ Access-Control-Expose-Headers.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers
 
-### AccessControlMaxAge
+### AccessControlMaxAge {#accesscontrolmaxage}
 
 > `readonly` **AccessControlMaxAge**: `"access-control-max-age"` = `"access-control-max-age"`
 
@@ -276,7 +276,7 @@ Access-Control-Max-Age.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age
 
-### AccessControlAllowCredentials
+### AccessControlAllowCredentials {#accesscontrolallowcredentials}
 
 > `readonly` **AccessControlAllowCredentials**: `"access-control-allow-credentials"` = `"access-control-allow-credentials"`
 
@@ -286,7 +286,7 @@ Access-Control-Allow-Credentials.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials
 
-### Range
+### Range {#range}
 
 > `readonly` **Range**: `"range"` = `"range"`
 
@@ -296,7 +296,7 @@ Range.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Range
 
-### AcceptRanges
+### AcceptRanges {#acceptranges}
 
 > `readonly` **AcceptRanges**: `"accept-ranges"` = `"accept-ranges"`
 
@@ -306,7 +306,7 @@ Accept-Ranges.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Ranges
 
-### ContentRange
+### ContentRange {#contentrange}
 
 > `readonly` **ContentRange**: `"content-range"` = `"content-range"`
 
@@ -316,7 +316,7 @@ Content-Range.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Range
 
-### UserAgent
+### UserAgent {#useragent}
 
 > `readonly` **UserAgent**: `"user-agent"` = `"user-agent"`
 

@@ -14,7 +14,7 @@ Class to help with string.
 
 ## Methods
 
-### trimTrailingSlashes()
+### trimTrailingSlashes() {#trimtrailingslashes}
 
 > `static` **trimTrailingSlashes**(`value`): `string`
 
@@ -36,7 +36,7 @@ The trimmed string or the original.
 
 ***
 
-### trimLeadingSlashes()
+### trimLeadingSlashes() {#trimleadingslashes}
 
 > `static` **trimLeadingSlashes**(`value`): `string`
 
@@ -58,7 +58,7 @@ The trimmed string or the original.
 
 ***
 
-### kebabCase()
+### kebabCase() {#kebabcase}
 
 > `static` **kebabCase**(`input`, `stripInterfacePrefix?`): `string`
 
@@ -86,7 +86,7 @@ The kebab case version of the input.
 
 ***
 
-### snakeCase()
+### snakeCase() {#snakecase}
 
 > `static` **snakeCase**(`input`, `stripInterfacePrefix?`): `string`
 
@@ -114,7 +114,7 @@ The snake case version of the input.
 
 ***
 
-### titleCase()
+### titleCase() {#titlecase}
 
 > `static` **titleCase**(`input`, `stripInterfacePrefix?`): `string`
 
@@ -142,7 +142,7 @@ The title case version of the input.
 
 ***
 
-### pascalCase()
+### pascalCase() {#pascalcase}
 
 > `static` **pascalCase**(`input`, `stripInterfacePrefix?`): `string`
 
@@ -170,7 +170,7 @@ The pascal case version of the input.
 
 ***
 
-### camelCase()
+### camelCase() {#camelcase}
 
 > `static` **camelCase**(`input`, `stripInterfacePrefix?`): `string`
 
@@ -198,7 +198,7 @@ The camel case version of the input.
 
 ***
 
-### wordPath()
+### wordPath() {#wordpath}
 
 > `static` **wordPath**(`input`, `stripInterfacePrefix?`): `string`
 
@@ -226,7 +226,7 @@ The path version of the input.
 
 ***
 
-### stripPrefix()
+### stripPrefix() {#stripprefix}
 
 > `static` **stripPrefix**(`input`): `string`
 
@@ -248,7 +248,7 @@ The input with any interface prefix stripped.
 
 ***
 
-### words()
+### words() {#words}
 
 > `static` **words**(`input`): `string`[]
 
@@ -270,7 +270,7 @@ The string split into words.
 
 ***
 
-### isUtf8()
+### isUtf8() {#isutf8}
 
 > `static` **isUtf8**(`data`): `boolean`
 

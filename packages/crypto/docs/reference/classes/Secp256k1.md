@@ -14,7 +14,7 @@ Implementation of secp256k1.
 
 ## Properties
 
-### PRIVATE\_KEY\_SIZE
+### PRIVATE\_KEY\_SIZE {#private_key_size}
 
 > `static` **PRIVATE\_KEY\_SIZE**: `number` = `32`
 
@@ -22,7 +22,7 @@ Private Key Size is the size, in bytes, of private keys as used in this package.
 
 ***
 
-### PUBLIC\_KEY\_SIZE
+### PUBLIC\_KEY\_SIZE {#public_key_size}
 
 > `static` **PUBLIC\_KEY\_SIZE**: `number` = `33`
 
@@ -30,7 +30,7 @@ Public Key Size is the size, in bytes, of public keys as used in this package.
 
 ***
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -38,7 +38,7 @@ Runtime name for the class.
 
 ## Methods
 
-### publicKeyFromPrivateKey()
+### publicKeyFromPrivateKey() {#publickeyfromprivatekey}
 
 > `static` **publicKeyFromPrivateKey**(`privateKey`): `Uint8Array`
 
@@ -64,7 +64,7 @@ Error if the private key is not the correct length.
 
 ***
 
-### sign()
+### sign() {#sign}
 
 > `static` **sign**(`privateKey`, `block`): `Uint8Array`
 
@@ -96,7 +96,7 @@ Error if the private key is not the correct length.
 
 ***
 
-### verify()
+### verify() {#verify}
 
 > `static` **verify**(`publicKey`, `block`, `signature`): `boolean`
 

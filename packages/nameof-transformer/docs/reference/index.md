@@ -13,6 +13,6 @@
 
 ## References
 
-### default
+### default {#default}
 
 Renames and re-exports [factory](functions/factory.md)

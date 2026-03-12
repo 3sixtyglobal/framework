@@ -18,7 +18,7 @@ https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Pass
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -26,7 +26,7 @@ Runtime name for the class.
 
 ## Methods
 
-### validate()
+### validate() {#validate}
 
 > `static` **validate**(`property`, `password`, `failures`, `options?`): `void`
 
@@ -80,7 +80,7 @@ The minimum length of the password for it to be considered a pass phrase.
 
 ***
 
-### validatePassword()
+### validatePassword() {#validatepassword}
 
 > `static` **validatePassword**(`password`, `options?`): `void`
 
@@ -126,7 +126,7 @@ Error if the password does not meet the requirements.
 
 ***
 
-### comparePasswordBytes()
+### comparePasswordBytes() {#comparepasswordbytes}
 
 > `static` **comparePasswordBytes**(`hashedPasswordBytes`, `storedPasswordBytes`): `boolean`
 
@@ -154,7 +154,7 @@ True if the bytes match, false otherwise.
 
 ***
 
-### comparePasswordHashes()
+### comparePasswordHashes() {#comparepasswordhashes}
 
 > `static` **comparePasswordHashes**(`hashedPassword`, `storedPassword`): `boolean`
 

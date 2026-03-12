@@ -14,7 +14,7 @@ Class to perform sort operations on entities.
 
 ## Methods
 
-### sort()
+### sort() {#sort}
 
 > `static` **sort**\<`T`\>(`entities`, `entitySorters?`): `T`[]
 
@@ -48,7 +48,7 @@ The sorted list.
 
 ***
 
-### compare()
+### compare() {#compare}
 
 > `static` **compare**\<`T`\>(`entity1`, `entity2`, `prop`, `type`, `direction?`): `number`
 

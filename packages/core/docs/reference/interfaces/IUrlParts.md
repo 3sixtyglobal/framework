@@ -4,7 +4,7 @@ Model to describe the parts of a url.
 
 ## Properties
 
-### schema
+### schema {#schema}
 
 > **schema**: `string`
 
@@ -12,7 +12,7 @@ The schema for the url.
 
 ***
 
-### host
+### host {#host}
 
 > **host**: `string`
 
@@ -20,7 +20,7 @@ The host for the url.
 
 ***
 
-### port?
+### port? {#port}
 
 > `optional` **port**: `number`
 
@@ -28,7 +28,7 @@ The port for the url.
 
 ***
 
-### path
+### path {#path}
 
 > **path**: `string`
 
@@ -36,7 +36,7 @@ The path for the url.
 
 ***
 
-### params?
+### params? {#params}
 
 > `optional` **params**: `string`
 
@@ -44,7 +44,7 @@ The params for the url.
 
 ***
 
-### hash?
+### hash? {#hash}
 
 > `optional` **hash**: `string`
 

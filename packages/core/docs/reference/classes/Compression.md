@@ -14,7 +14,7 @@ A class to handle compression.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### compress()
+### compress() {#compress}
 
 > `static` **compress**(`bytes`, `type`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
@@ -50,7 +50,7 @@ The compressed bytes.
 
 ***
 
-### decompress()
+### decompress() {#decompress}
 
 > `static` **decompress**(`compressedBytes`, `type`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 

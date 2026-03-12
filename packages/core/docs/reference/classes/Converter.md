@@ -14,7 +14,7 @@ Convert arrays to and from different formats.
 
 ## Methods
 
-### bytesToUtf8()
+### bytesToUtf8() {#bytestoutf8}
 
 > `static` **bytesToUtf8**(`array`, `startIndex?`, `length?`): `string`
 
@@ -48,7 +48,7 @@ The array formatted as UTF8.
 
 ***
 
-### utf8ToBytes()
+### utf8ToBytes() {#utf8tobytes}
 
 > `static` **utf8ToBytes**(`utf8`): `Uint8Array`
 
@@ -70,7 +70,7 @@ The array.
 
 ***
 
-### bytesToHex()
+### bytesToHex() {#bytestohex}
 
 > `static` **bytesToHex**(`array`, `includePrefix?`, `startIndex?`, `length?`, `reverse?`): `string`
 
@@ -116,7 +116,7 @@ The array formatted as hex.
 
 ***
 
-### hexToBytes()
+### hexToBytes() {#hextobytes}
 
 > `static` **hexToBytes**(`hex`, `reverse?`): `Uint8Array`
 
@@ -144,7 +144,7 @@ The array.
 
 ***
 
-### utf8ToHex()
+### utf8ToHex() {#utf8tohex}
 
 > `static` **utf8ToHex**(`utf8`, `includePrefix?`): `string`
 
@@ -172,7 +172,7 @@ The hex version of the bytes.
 
 ***
 
-### hexToUtf8()
+### hexToUtf8() {#hextoutf8}
 
 > `static` **hexToUtf8**(`hex`): `string`
 
@@ -194,7 +194,7 @@ The UTF8 version of the bytes.
 
 ***
 
-### bytesToBinary()
+### bytesToBinary() {#bytestobinary}
 
 > `static` **bytesToBinary**(`bytes`): `string`
 
@@ -216,7 +216,7 @@ A binary string of the bytes.
 
 ***
 
-### binaryToBytes()
+### binaryToBytes() {#binarytobytes}
 
 > `static` **binaryToBytes**(`binary`): `Uint8Array`
 
@@ -238,7 +238,7 @@ The bytes.
 
 ***
 
-### bytesToBase64()
+### bytesToBase64() {#bytestobase64}
 
 > `static` **bytesToBase64**(`bytes`): `string`
 
@@ -260,7 +260,7 @@ A base64 string of the bytes.
 
 ***
 
-### base64ToBytes()
+### base64ToBytes() {#base64tobytes}
 
 > `static` **base64ToBytes**(`base64`): `Uint8Array`
 
@@ -282,7 +282,7 @@ The bytes.
 
 ***
 
-### bytesToBase64Url()
+### bytesToBase64Url() {#bytestobase64url}
 
 > `static` **bytesToBase64Url**(`bytes`): `string`
 
@@ -304,7 +304,7 @@ A base64 url string of the bytes.
 
 ***
 
-### base64UrlToBytes()
+### base64UrlToBytes() {#base64urltobytes}
 
 > `static` **base64UrlToBytes**(`base64Url`): `Uint8Array`
 
@@ -326,7 +326,7 @@ The bytes.
 
 ***
 
-### bytesToBase58()
+### bytesToBase58() {#bytestobase58}
 
 > `static` **bytesToBase58**(`bytes`): `string`
 
@@ -348,7 +348,7 @@ A base58 string of the bytes.
 
 ***
 
-### base58ToBytes()
+### base58ToBytes() {#base58tobytes}
 
 > `static` **base58ToBytes**(`base58`): `Uint8Array`
 

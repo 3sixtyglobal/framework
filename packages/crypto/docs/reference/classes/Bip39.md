@@ -14,7 +14,7 @@ Implementation of Bip39 for mnemonic generation.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### randomMnemonic()
+### randomMnemonic() {#randommnemonic}
 
 > `static` **randomMnemonic**(`strength?`, `words?`): `string`
 
@@ -54,7 +54,7 @@ Error if the length is not a multiple of 32.
 
 ***
 
-### entropyToMnemonic()
+### entropyToMnemonic() {#entropytomnemonic}
 
 > `static` **entropyToMnemonic**(`entropy`, `words?`): `string`
 
@@ -86,7 +86,7 @@ Error if the length of the entropy is not a multiple of 4, or is less than 16 or
 
 ***
 
-### mnemonicToSeed()
+### mnemonicToSeed() {#mnemonictoseed}
 
 > `static` **mnemonicToSeed**(`mnemonic`, `password?`): `Uint8Array`
 
@@ -114,7 +114,7 @@ The seed.
 
 ***
 
-### mnemonicToEntropy()
+### mnemonicToEntropy() {#mnemonictoentropy}
 
 > `static` **mnemonicToEntropy**(`mnemonic`, `words?`): `Uint8Array`
 
@@ -146,7 +146,7 @@ Error if the number of words is not a multiple of 3.
 
 ***
 
-### validateMnemonic()
+### validateMnemonic() {#validatemnemonic}
 
 > `static` **validateMnemonic**(`mnemonic`, `wordCount?`, `words?`): `boolean`
 

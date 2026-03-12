@@ -14,7 +14,7 @@ Environment variable helper.
 
 ## Methods
 
-### envToJson()
+### envToJson() {#envtojson}
 
 > `static` **envToJson**\<`T`\>(`envVars`, `prefix?`): `T`
 

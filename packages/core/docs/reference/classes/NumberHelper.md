@@ -14,7 +14,7 @@ Class to help with numbers.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### clamp()
+### clamp() {#clamp}
 
 > `static` **clamp**(`value`, `minValue?`, `maxValue?`): `number`
 

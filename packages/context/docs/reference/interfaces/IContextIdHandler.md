@@ -8,7 +8,7 @@ Interface describing a context ID handler.
 
 ## Methods
 
-### short()?
+### short()? {#short}
 
 > `optional` **short**(`value`): `string`
 
@@ -30,7 +30,7 @@ The short form version of the context ID.
 
 ***
 
-### guard()?
+### guard()? {#guard}
 
 > `optional` **guard**(`value`): `void`
 
@@ -54,7 +54,7 @@ Guard error if the value is invalid.
 
 ***
 
-### className()
+### className() {#classname}
 
 > **className**(): `string`
 
@@ -72,7 +72,7 @@ The class name of the component.
 
 ***
 
-### bootstrap()?
+### bootstrap()? {#bootstrap}
 
 > `optional` **bootstrap**(`nodeLoggingComponentType?`): `Promise`\<`boolean`\>
 
@@ -98,7 +98,7 @@ True if the bootstrapping process was successful.
 
 ***
 
-### start()?
+### start()? {#start}
 
 > `optional` **start**(`nodeLoggingComponentType?`): `Promise`\<`void`\>
 
@@ -124,7 +124,7 @@ Nothing.
 
 ***
 
-### stop()?
+### stop()? {#stop}
 
 > `optional` **stop**(`nodeLoggingComponentType?`): `Promise`\<`void`\>
 

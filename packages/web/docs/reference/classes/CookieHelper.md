@@ -14,7 +14,7 @@ Class to help with cookie operations.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### createCookie()
+### createCookie() {#createcookie}
 
 > `static` **createCookie**(`cookieName`, `cookieValue`, `options?`): `string`
 
@@ -78,7 +78,7 @@ The created cookie string.
 
 ***
 
-### deleteCookie()
+### deleteCookie() {#deletecookie}
 
 > `static` **deleteCookie**(`cookieName`, `options?`): `string`
 
@@ -128,7 +128,7 @@ The created cookie string.
 
 ***
 
-### getCookieFromHeaders()
+### getCookieFromHeaders() {#getcookiefromheaders}
 
 > `static` **getCookieFromHeaders**(`headers`, `cookieName`): `string` \| `undefined`
 

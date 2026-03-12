@@ -4,7 +4,7 @@ Options for the CLI Output for JSON.
 
 ## Properties
 
-### json?
+### json? {#json}
 
 > `optional` **json**: `string`
 
@@ -12,7 +12,7 @@ Output the data to an JSON file.
 
 ***
 
-### mergeJson
+### mergeJson {#mergejson}
 
 > **mergeJson**: `boolean`
 

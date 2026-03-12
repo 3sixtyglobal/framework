@@ -4,7 +4,7 @@ Configuration for the CLI.
 
 ## Properties
 
-### locales?
+### locales? {#locales}
 
 > `optional` **locales**: `ILocale`[]
 
@@ -12,7 +12,7 @@ The languages to include while merging, if none are supplied only English will b
 
 ***
 
-### includePackages?
+### includePackages? {#includepackages}
 
 > `optional` **includePackages**: `string`[]
 
@@ -20,7 +20,7 @@ Additional packages to add locales for, which are not part of the dependencies.
 
 ***
 
-### excludePackages?
+### excludePackages? {#excludepackages}
 
 > `optional` **excludePackages**: `string`[]
 
@@ -28,7 +28,7 @@ Packages to exclude from the locales.
 
 ***
 
-### outputDirectory?
+### outputDirectory? {#outputdirectory}
 
 > `optional` **outputDirectory**: `string`
 

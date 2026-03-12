@@ -4,7 +4,7 @@ Model for a local.
 
 ## Properties
 
-### label
+### label {#label}
 
 > **label**: `string`
 
@@ -12,7 +12,7 @@ The label.
 
 ***
 
-### code
+### code {#code}
 
 > **code**: `string`
 

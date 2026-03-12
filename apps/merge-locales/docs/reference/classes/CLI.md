@@ -22,7 +22,7 @@ The main entry point for the CLI.
 
 ## Methods
 
-### execute()
+### execute() {#execute}
 
 > **execute**(`options`, `localesDirectory`, `argv`): `Promise`\<`number`\>
 
@@ -60,7 +60,7 @@ The exit code.
 
 ***
 
-### getCommands()
+### getCommands() {#getcommands}
 
 > `protected` **getCommands**(`program`): `Command`[]
 
@@ -86,7 +86,7 @@ The commands for the CLI.
 
 ***
 
-### run()
+### run() {#run}
 
 > **run**(`argv`, `localesDirectory?`, `options?`): `Promise`\<`number`\>
 
@@ -124,7 +124,7 @@ The exit code.
 
 ***
 
-### configureRoot()
+### configureRoot() {#configureroot}
 
 > `protected` **configureRoot**(`program`): `void`
 

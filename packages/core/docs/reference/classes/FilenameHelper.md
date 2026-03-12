@@ -14,7 +14,7 @@ Class to help with filenames.
 
 ## Methods
 
-### safeFilename()
+### safeFilename() {#safefilename}
 
 > `static` **safeFilename**(`filename`): `string`
 

@@ -10,7 +10,7 @@ Factory for creating implementation of generic types.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -18,7 +18,7 @@ Runtime name for the class.
 
 ## Methods
 
-### createFactory()
+### createFactory() {#createfactory}
 
 > `static` **createFactory**\<`U`\>(`typeName`, `autoInstance?`, `matcher?`): `Factory`\<`U`\>
 
@@ -58,7 +58,7 @@ The factory instance.
 
 ***
 
-### getFactories()
+### getFactories() {#getfactories}
 
 > `static` **getFactories**(): `object`
 
@@ -72,7 +72,7 @@ All the factories.
 
 ***
 
-### resetFactories()
+### resetFactories() {#resetfactories}
 
 > `static` **resetFactories**(): `void`
 
@@ -84,7 +84,7 @@ Reset all the factories, which removes any created instances, but not the regist
 
 ***
 
-### clearFactories()
+### clearFactories() {#clearfactories}
 
 > `static` **clearFactories**(): `void`
 
@@ -96,7 +96,7 @@ Clear all the factories, which removes anything registered with the factories.
 
 ***
 
-### typeName()
+### typeName() {#typename}
 
 > **typeName**(): `string`
 
@@ -110,7 +110,7 @@ The type name of the factory.
 
 ***
 
-### register()
+### register() {#register}
 
 > **register**\<`U`\>(`name`, `generator`): `void`
 
@@ -142,7 +142,7 @@ The function to create an instance.
 
 ***
 
-### unregister()
+### unregister() {#unregister}
 
 > **unregister**(`name`): `void`
 
@@ -170,7 +170,7 @@ GeneralError if no generator exists.
 
 ***
 
-### get()
+### get() {#get}
 
 > **get**\<`U`\>(`name`): `U`
 
@@ -206,7 +206,7 @@ GeneralError if no item exists to get.
 
 ***
 
-### getIfExists()
+### getIfExists() {#getifexists}
 
 > **getIfExists**\<`U`\>(`name?`): `U` \| `undefined`
 
@@ -234,7 +234,7 @@ An instance of the item or undefined if it does not exist.
 
 ***
 
-### create()
+### create() {#create}
 
 > **create**\<`U`\>(`name`, `args?`): `U`
 
@@ -276,7 +276,7 @@ GeneralError if no item exists to create.
 
 ***
 
-### createIfExists()
+### createIfExists() {#createifexists}
 
 > **createIfExists**\<`U`\>(`name`, `args?`): `U` \| `undefined`
 
@@ -314,7 +314,7 @@ GuardError if the parameters are invalid.
 
 ***
 
-### reset()
+### reset() {#reset}
 
 > **reset**(): `void`
 
@@ -326,7 +326,7 @@ Remove all the instances and leave the generators intact.
 
 ***
 
-### clear()
+### clear() {#clear}
 
 > **clear**(): `void`
 
@@ -338,7 +338,7 @@ Remove all the instances and the generators.
 
 ***
 
-### instancesMap()
+### instancesMap() {#instancesmap}
 
 > **instancesMap**(): `object`
 
@@ -352,7 +352,7 @@ The instances as a map.
 
 ***
 
-### instancesList()
+### instancesList() {#instanceslist}
 
 > **instancesList**(): `T`[]
 
@@ -366,7 +366,7 @@ The instances as a list in the order they were registered.
 
 ***
 
-### names()
+### names() {#names}
 
 > **names**(): `string`[]
 
@@ -380,7 +380,7 @@ The ordered generator names.
 
 ***
 
-### hasName()
+### hasName() {#hasname}
 
 > **hasName**(`name`): `boolean`
 

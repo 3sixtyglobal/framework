@@ -14,7 +14,7 @@ Class to handle JSON Web Signatures.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,7 @@ Runtime name for the class.
 
 ## Methods
 
-### create()
+### create() {#create}
 
 > `static` **create**(`privateKey`, `hash`, `algOverride?`): `Promise`\<`string`\>
 
@@ -56,7 +56,7 @@ The signature.
 
 ***
 
-### verify()
+### verify() {#verify}
 
 > `static` **verify**(`jws`, `publicKey`, `hash`): `Promise`\<`boolean`\>
 

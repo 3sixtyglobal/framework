@@ -6,13 +6,13 @@ Compression types.
 
 ## Type Declaration
 
-### Gzip
+### Gzip {#gzip}
 
 > `readonly` **Gzip**: `"gzip"` = `"gzip"`
 
 Gzip.
 
-### Deflate
+### Deflate {#deflate}
 
 > `readonly` **Deflate**: `"deflate"` = `"deflate"`
 
