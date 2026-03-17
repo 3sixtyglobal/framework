@@ -1,0 +1,188 @@
+# i18n Support Architecture
+
+This document explains how internationalisation works in the framework workspace, how locale
+assets are built, and how locale key quality is enforced in CI.
+
+## Overview
+
+The i18n model has three main parts:
+
+1. Runtime message formatting in `@twin.org/core` (`I18n`, `ErrorHelper`, error classes).
+2. Locale asset aggregation with `@twin.org/merge-locales`.
+3. Locale key and placeholder validation with `@twin.org/validate-locales`.
+
+Together these provide:
+
+- localised runtime messages,
+- deterministic locale bundles in `dist/locales`,
+- checks that keys referenced in code exist and are used correctly.
+
+## Runtime i18n in Core
+
+`I18n` in `packages/core/src/utils/i18n.ts` is the runtime formatter.
+
+Key behaviours:
+
+- Dictionaries are registered per locale with `I18n.addDictionary(locale, dictionary)`.
+- Nested JSON dictionaries are flattened to dot-path keys for fast lookup.
+- `I18n.formatMessage(key, values)` formats ICU messages through `IntlMessageFormat`.
+- Missing locale returns `!!Missing <locale>`.
+- Missing key returns `!!Missing <locale>.<key>`.
+- If formatting fails due to missing placeholders, the formatter retries with missing properties
+  set to empty strings.
+
+Debug locale modes are also supported:
+
+- `debug-k`: returns the key instead of the translated message.
+- `debug-x`: obfuscates letters and digits in the output while preserving shape.
+
+## Locale Key Structure Conventions
+
+The workspace uses namespace prefixes such as:
+
+- `error.*`
+- `warn.*`
+- `log.*`
+- `commands.*`
+- `cli.*`
+
+This keeps message intent explicit and allows tooling to infer keys from code patterns.
+
+For class-scoped messages, the top-level segment also commonly uses the camelCase class name of
+the originating type. For example, `GeneralError` messages from `ValidateLocales` are expected to
+resolve under keys such as `error.validateLocales.validationFailed`.
+
+## How Errors Are Constructed
+
+Error construction and localisation are designed to avoid free-text literals in throws.
+
+### Error Classes
+
+Framework code uses typed error classes such as `GeneralError`, `ValidationError`,
+`UnauthorizedError`, and others.
+
+`GeneralError` extends `BaseError` and typically receives:
+
+- `source`: class or module source
+- `message`: message key fragment or full key
+- optional properties and cause
+
+### Message Key Derivation
+
+`BaseError` applies a key normalisation rule:
+
+- If `message` is camelCase and has no dot, it is automatically prefixed with the camel-cased
+  source.
+
+Example:
+
+- `new GeneralError("validateLocales", "validationFailed")`
+- becomes message key segment `validateLocales.validationFailed`
+- localisation lookup then uses `error.validateLocales.validationFailed`
+
+### Localisation of Errors
+
+`ErrorHelper.localizeErrors` resolves two keys:
+
+- error name: `errorNames.<errorType>`
+- error message: `error.<message>`
+
+So the practical locale key for most framework errors is under `error.*`.
+
+## How Log and Warn Messages Are Constructed
+
+For non-exception messaging, the convention is to use explicit i18n keys directly, for example:
+
+- `I18n.formatMessage("warn.common.devOnlyTool")`
+- `I18n.formatMessage("cli.progress.done")`
+
+In logging-style object calls, the validator recognises a pattern like:
+
+- `log({ level, source, message, data })`
+
+and constructs an expected key shape:
+
+- `<level>.<sourceCamelCase>.<message>` when `message` is unqualified
+- or uses the provided fully-qualified key when already namespaced
+
+Typical levels map to namespaces such as `error`, `warn`, and `log`.
+
+## merge-locales Tool
+
+`@twin.org/merge-locales` builds distributable locale bundles.
+
+What it does:
+
+1. Resolves project dependencies recursively for `@twin.org/*` packages.
+2. Excludes selected packages by default (including tooling packages).
+3. Reads each package `locales/<lang>.json`.
+4. Merges dictionaries into a single dictionary per language.
+5. Merges the current package locales last so local overrides win.
+6. Writes final files to `dist/locales/<lang>.json`.
+
+Configuration supports:
+
+- `locales`: list of locale descriptors
+- `includePackages`: force-include additional packages
+- `excludePackages`: remove packages from merge
+- `outputDirectory`: destination directory
+
+If no locales are configured, English (`en`) is used by default.
+
+## validate-locales Tool
+
+`@twin.org/validate-locales` statically checks source and locale consistency.
+
+What it validates:
+
+- locale keys referenced in code exist,
+- placeholders used in locale strings are supplied by code,
+- locale entries are not unused,
+- single-quoted placeholders in locale text are flagged,
+- free-text values that should be keys are flagged.
+
+It parses TypeScript AST and recognises key construction patterns from:
+
+- typed error constructors,
+- `I18n.formatMessage(...)` calls,
+- template-literal key construction,
+- logger object patterns (`level`, `source`, `message`, `data`).
+
+It also uses `@twin.org/nameof-transformer` manual expansion when resolving template parts that use
+`nameof(...)` expressions.
+
+Validation failures throw a `GeneralError("validateLocales", "validationFailed")`, which maps to
+`error.validateLocales.validationFailed`.
+
+## Typical Build Workflow
+
+In app/package scripts, the common release flow is:
+
+1. compile TypeScript,
+2. merge locales,
+3. validate locales,
+4. run tests.
+
+Example (from workspace packages/apps):
+
+```json
+{
+  "scripts": {
+    "dist": "npm run clean && npm run build && npm run merge-locales && npm run validate-locales && npm run test:build && npm run test"
+  }
+}
+```
+
+This ensures distributed artefacts include up-to-date locale bundles and fail fast on key drift.
+
+## Practical Guidance
+
+- Treat user-facing strings as locale keys, not inline text.
+- Keep keys stable and namespaced (`error.*`, `warn.*`, `commands.*`, `cli.*`).
+- Provide placeholder data objects that match locale template property names.
+- Run locale merge and validation in CI and in local dist workflows.
+- Use `debug-k` and `debug-x` locales during UI and CLI verification.
+
+## Further Reading
+
+- [TypeScript Transformers](./typescript-transformers.md)
