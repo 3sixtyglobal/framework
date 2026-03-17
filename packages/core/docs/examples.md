@@ -255,6 +255,34 @@ const messages = ErrorHelper.formatErrors(error);
 messages[0]; // 'saveFailed'
 ```
 
+## Type Utilities
+
+```typescript
+import type { ObjectOrArray, SingleOccurrenceArray } from '@twin.org/core';
+
+type IdOrIds = ObjectOrArray<string>;
+
+const singleId: IdOrIds = 'id-1';
+const manyIds: IdOrIds = ['id-1', 'id-2'];
+
+const withOneNumber: SingleOccurrenceArray<string, number> = ['alpha', 7, 'beta'];
+const numberOnly: SingleOccurrenceArray<string, number> = [7];
+
+interface IFoo {
+  foo: boolean;
+}
+
+interface IBar {
+  bar: string;
+}
+
+const mixedObjects: SingleOccurrenceArray<IFoo, IBar> = [
+  { foo: true },
+  { bar: 'marker' },
+  { foo: false }
+];
+```
+
 ## Array, Uint8Array, Filename and Env Helpers
 
 ```typescript

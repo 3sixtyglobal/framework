@@ -10,4 +10,8 @@ export type SingleOccurrenceArrayDepthHelper<T, U, Depth extends 0[]> = Depth["l
 /**
  * Utility type to create a non-empty array with values of type T and exactly one value of type U.
  */
-export type SingleOccurrenceArray<T = unknown, U = never> = SingleOccurrenceArrayDepthHelper<T, U, []>;
+export type SingleOccurrenceArray<T = unknown, U = never> = SingleOccurrenceArrayDepthHelper<
+	T,
+	U,
+	[]
+>;
