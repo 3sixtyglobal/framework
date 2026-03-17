@@ -61,6 +61,8 @@
 - [CoerceType](type-aliases/CoerceType.md)
 - [CompressionType](type-aliases/CompressionType.md)
 - [ObjectOrArray](type-aliases/ObjectOrArray.md)
+- [SingleOccurrenceArrayDepthHelper](type-aliases/SingleOccurrenceArrayDepthHelper.md)
+- [SingleOccurrenceArray](type-aliases/SingleOccurrenceArray.md)
 
 ## Variables
 
