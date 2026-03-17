@@ -1,0 +1,182 @@
+# TypeScript Transformers and the `nameof` Operator
+
+This document explains how the framework uses TypeScript transformers to turn typed `nameof`
+expressions into string literals at build and test time.
+
+## Why We Use a Transformer
+
+TypeScript type information is erased at runtime, so expressions such as:
+
+```typescript
+nameof<MyType>();
+```
+
+cannot be resolved by normal JavaScript execution.
+
+In this repository, `@twin.org/nameof` exports placeholder functions that intentionally return an
+error-style fallback string when no transform is applied. The `@twin.org/nameof-transformer`
+package rewrites these calls during compilation so runtime code contains plain strings instead.
+
+### Refactor Safety and Name Synchronisation
+
+The main reason we do this is to stop name drift between code symbols and hand-written string constants.
+
+With embedded strings, renames are easy to miss:
+
+```typescript
+class CustomerProfile {
+  public givenName!: string;
+}
+
+// Fragile: string is detached from the symbol.
+const fieldName = 'givenName';
+```
+
+If `givenName` is renamed to `firstName`, the string may stay unchanged and continue to compile,
+but behaviour can silently break at runtime (validation keys, serialisation maps, locale lookup
+keys, error paths, telemetry tags, and query field selection).
+
+Using `nameof` keeps the reference attached to real symbols:
+
+```typescript
+class CustomerProfile {
+  public givenName!: string;
+}
+
+const fieldName = nameof(CustomerProfile.prototype.givenName);
+```
+
+When refactoring, editor rename operations and normal TypeScript symbol updates keep these
+expressions in sync. The transformer then emits final static strings, so runtime still gets the
+literal values it needs without keeping runtime reflection.
+
+In practice this gives us both:
+
+- Refactor-safe authoring at development time.
+- Zero-reflection, string-literal output at runtime.
+
+This is especially useful in framework code where symbol names are reused across multiple layers,
+for example guards, error identifiers, localisation keys, and protocol payload property paths.
+
+## Operator Variations
+
+The framework supports three operator families:
+
+- `nameof`
+- `nameofCamelCase`
+- `nameofKebabCase`
+
+Each supports type-based and property-path forms.
+
+### Type Form
+
+```typescript
+nameof<MyType>(); // => "MyType"
+nameofCamelCase<MyType>(); // => "myType"
+nameofKebabCase<MyType>(); // => "my-type"
+```
+
+Notes:
+
+- Interface-style prefixes such as `IMyType` are normalised for camel/kebab output.
+- Array type arguments are supported, for example `nameof<MyType[]>()`.
+
+### Property Form
+
+```typescript
+nameof(obj.prop); // => "obj.prop"
+nameof(obj?.nested?.value); // => "obj.nested.value"
+nameofCamelCase(obj.someValue); // => "objSomeValue"
+nameofKebabCase(obj.someValue); // => "obj-some-value"
+```
+
+The transformer strips optional chaining markers (`?`) from the generated path.
+
+### Property Form with Parent Replacement
+
+A second argument can replace the root object in a property path:
+
+```typescript
+nameof(request.query.page, 'params');
+```
+
+This is transformed as a concatenation expression equivalent to:
+
+```typescript
+'params' + '.query.page';
+```
+
+## What the Transformer Rewrites
+
+The AST transformer in `packages/nameof-transformer/src/transformer.ts` performs these key steps:
+
+1. Detects calls to `nameof`, `nameofCamelCase`, and `nameofKebabCase`.
+2. Replaces recognised calls with string literals (or concatenation for parent replacement).
+3. Removes imports from `@twin.org/nameof` after transformation so compiled output does not keep
+   unused placeholder imports.
+
+## tsconfig Integration
+
+Framework packages and apps register the transformer through TypeScript plugin configuration:
+
+```json
+{
+  "compilerOptions": {
+    "plugins": [{ "transform": "@twin.org/nameof-transformer" }]
+  }
+}
+```
+
+This pattern is used across workspace packages and apps, including `core`, `context`, `crypto`,
+`entity`, `image`, `modules`, `nameof`, `qr`, `web`, and CLI/locale apps.
+
+## Build Pipeline in This Repository
+
+Most framework packages compile with:
+
+- `build`: `tspc`
+- `test:build`: `tspc -p ./tests/tsconfig.json --noEmit`
+
+`ts-patch` is included in package dev dependencies, and `tspc` is used as the transformer-aware
+compiler command for production and test compilation.
+
+At workspace level, scripts such as `npm run build` and `npm run dist` fan out into per-package
+scripts via `scripts/workspaces.mjs`, so transformer support is consistently applied through each
+package's own `tspc`-based build steps.
+
+## Test Pipeline (Vitest)
+
+Vitest commonly uses esbuild transforms, which do not apply TypeScript transformer plugins from
+`tsconfig` by default. To keep behaviour aligned with build output, framework packages register the
+`@twin.org/nameof-vitest-plugin` plugin:
+
+```typescript
+import { NameOfPlugin } from '@twin.org/nameof-vitest-plugin';
+
+export default defineConfig({
+  plugins: [NameOfPlugin]
+});
+```
+
+The plugin runs as a pre-transform and applies the same string rewriting logic using the manual
+transform helper.
+
+## Additional Pipelines Using Manual Transform
+
+Some tooling flows process source-like strings outside normal TypeScript compilation. For those
+cases, the repository uses `manual(...)` from `@twin.org/nameof-transformer` directly.
+
+Example: locale validation command expansion in
+`apps/validate-locales/src/commands/validateLocales.ts`.
+
+This keeps `nameof` expansion consistent even when code is handled as text fragments.
+
+## Practical Guidance
+
+- Always import operators from `@twin.org/nameof`.
+- Ensure `compilerOptions.plugins` includes `@twin.org/nameof-transformer` in any new package/app
+  tsconfig.
+- Use `tspc` in build and type-check scripts where transformer behaviour is required.
+- Add `NameOfPlugin` to `vitest.config.ts` so test-time behaviour matches compiled output.
+- If you execute TypeScript-like templates as strings, use the `manual(...)` helper to expand
+  `nameof` expressions before further processing.
