@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.0.3-next.23](https://github.com/twinfoundation/framework/compare/merge-locales-v0.0.3-next.22...merge-locales-v0.0.3-next.23) (2026-03-17)
+
+
+### Miscellaneous Chores
+
+* **merge-locales:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.0.3-next.22 to 0.0.3-next.23
+    * @twin.org/core bumped from 0.0.3-next.22 to 0.0.3-next.23
+    * @twin.org/nameof bumped from 0.0.3-next.22 to 0.0.3-next.23
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.22 to 0.0.3-next.23
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.22 to 0.0.3-next.23
+
 ## [0.0.3-next.22](https://github.com/twinfoundation/framework/compare/merge-locales-v0.0.3-next.21...merge-locales-v0.0.3-next.22) (2026-02-26)
 
 

@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.0.3-next.23](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.22...core-v0.0.3-next.23) (2026-03-17)
+
+
+### Features
+
+* add single occurrence array type ([e890e43](https://github.com/twinfoundation/framework/commit/e890e4399e75ae5097f3ad8b1007321cbb1ed4ac))
+* add single occurrence array type ([#245](https://github.com/twinfoundation/framework/issues/245)) ([771dc78](https://github.com/twinfoundation/framework/commit/771dc78025b5546c9c9681be9494a76ab71171c6))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.22 to 0.0.3-next.23
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.22 to 0.0.3-next.23
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.22 to 0.0.3-next.23
+
 ## [0.0.3-next.22](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.21...core-v0.0.3-next.22) (2026-02-26)
 
 
