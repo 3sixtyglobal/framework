@@ -25,6 +25,11 @@ Alongside those libraries, the workspace includes applications that support oper
 - [validate-locales](apps/validate-locales/README.md) - Validate source files against the locales.
 - [crypto-cli](apps/crypto-cli/README.md) - Command line interface for interacting with the crypto tools.
 
+## Architecture
+
+- [i18n Support](docs/architecture/i18n-support.md) - Internationalisation support model, locale conventions, and runtime usage patterns.
+- [TypeScript Transformers](docs/architecture/typescript-transformers.md) - Transformer pipeline, build integration, and runtime naming strategy.
+
 ## Contributing
 
 To contribute to this package see the guidelines for building and publishing in [CONTRIBUTING](./CONTRIBUTING.md)
