@@ -4,7 +4,7 @@ import { Is } from "./is.js";
 import { GuardError } from "../errors/guardError.js";
 import { ArrayHelper } from "../helpers/arrayHelper.js";
 import { HexHelper } from "../helpers/hexHelper.js";
-import type { ObjectOrArray } from "../models/objectOrArray.js";
+import type { ObjectOrArray } from "../types/objectOrArray.js";
 
 /**
  * Class to handle guard operations for parameters.
