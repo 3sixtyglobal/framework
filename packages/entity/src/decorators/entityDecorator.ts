@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import "reflect-metadata";
+import "tslib";
 import type { IEntitySchemaOptions } from "../models/IEntitySchemaOptions.js";
 import { DecoratorHelper } from "../utils/decoratorHelper.js";
 

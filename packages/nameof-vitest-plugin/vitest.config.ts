@@ -1,18 +1,24 @@
-// Copyright 2024 IOTA Stiftung.
+// Copyright 2025 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { defineConfig } from "vitest/config";
 
+// This configuration is deliberately left without the NameOfPlugin as we are testing the transformer itself.
+
 export default defineConfig({
+	plugins: [],
 	test: {
 		include: ["./tests/**/*.spec.ts"],
 		globals: true,
-		bail: 1,
 		testTimeout: 300000,
 		hookTimeout: 300000,
+		bail: 1,
+		reporters: ["verbose"],
+		disableConsoleIntercept: true,
 		coverage: {
-			provider: "v8",
 			reporter: ["text", "lcov"],
-			exclude: ["**/index.ts", "**/models/**/*.ts", "**/tests/**/*.ts"]
-		}
+			include: ["src/**/*.ts"],
+			exclude: ["**/index.ts", "**/models/**/*.ts"]
+		},
+		fileParallelism: false
 	}
 });
