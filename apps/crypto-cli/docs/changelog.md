@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.0.3-next.24](https://github.com/twinfoundation/framework/compare/crypto-cli-v0.0.3-next.23...crypto-cli-v0.0.3-next.24) (2026-03-19)
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/twinfoundation/framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.0.3-next.23 to 0.0.3-next.24
+    * @twin.org/core bumped from 0.0.3-next.23 to 0.0.3-next.24
+    * @twin.org/crypto bumped from 0.0.3-next.23 to 0.0.3-next.24
+    * @twin.org/nameof bumped from 0.0.3-next.23 to 0.0.3-next.24
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.0.3-next.23 to 0.0.3-next.24
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.23 to 0.0.3-next.24
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.23 to 0.0.3-next.24
+    * @twin.org/validate-locales bumped from 0.0.3-next.23 to 0.0.3-next.24
+
 ## [0.0.3-next.23](https://github.com/twinfoundation/framework/compare/crypto-cli-v0.0.3-next.22...crypto-cli-v0.0.3-next.23) (2026-03-17)
 
 

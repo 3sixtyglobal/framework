@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3-next.24](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.3-next.23...nameof-transformer-v0.0.3-next.24) (2026-03-19)
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/twinfoundation/framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
 ## [0.0.3-next.23](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.3-next.22...nameof-transformer-v0.0.3-next.23) (2026-03-17)
 
 
