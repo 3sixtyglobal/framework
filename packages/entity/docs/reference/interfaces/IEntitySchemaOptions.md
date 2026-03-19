@@ -6,6 +6,6 @@ Definition for an entity schema options.
 
 ### description? {#description}
 
-> `optional` **description**: `string`
+> `optional` **description?**: `string`
 
 Description of the object.

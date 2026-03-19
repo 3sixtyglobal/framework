@@ -1062,9 +1062,9 @@ The value to test.
 
 ##### format?
 
-The format of the uuidV7, either standard or compact.
+`"standard"` \| `"compact"`
 
-`"standard"` | `"compact"`
+The format of the uuidV7, either standard or compact.
 
 #### Returns
 

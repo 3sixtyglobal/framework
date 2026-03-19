@@ -308,9 +308,9 @@ Write a JSON file.
 
 ##### jsonFilename
 
-The filename to write.
+`string` \| `undefined`
 
-`string` | `undefined`
+The filename to write.
 
 ##### data
 
@@ -340,9 +340,9 @@ Write an env file.
 
 ##### envFilename
 
-The filename to write.
+`string` \| `undefined`
 
-`string` | `undefined`
+The filename to write.
 
 ##### data
 

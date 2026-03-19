@@ -166,9 +166,9 @@ The URL to include in the Link header.
 
 ##### urlQueryParams
 
-Optional query parameters to include in the URL.
+\{\[`id`: `string`\]: `string`; \} \| `undefined`
 
-\{\[`id`: `string`\]: `string`; \} | `undefined`
+Optional query parameters to include in the URL.
 
 ##### rel
 

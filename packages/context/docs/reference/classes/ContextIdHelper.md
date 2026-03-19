@@ -42,9 +42,9 @@ Perform a runtime guard on the provided context ID value.
 
 ##### contextIds
 
-The context IDs to guard.
+`T` \| `undefined`
 
-`T` | `undefined`
+The context IDs to guard.
 
 ##### key
 
@@ -72,9 +72,9 @@ Gets the short version of a context ID.
 
 ##### contextIds
 
-The context IDs to get the short version from.
+[`IContextIds`](../interfaces/IContextIds.md) \| `undefined`
 
-[`IContextIds`](../interfaces/IContextIds.md) | `undefined`
+The context IDs to get the short version from.
 
 ##### key
 
@@ -114,15 +114,15 @@ Perform a runtime guard on the provided context ID values.
 
 ##### contextIds
 
-The context IDs to guard.
+`T` \| `undefined`
 
-`T` | `undefined`
+The context IDs to guard.
 
 ##### keys
 
-The context ID keys to guard.
+readonly `K`[] \| `undefined`
 
-readonly `K`[] | `undefined`
+The context ID keys to guard.
 
 #### Returns
 
@@ -144,15 +144,15 @@ Gets the short versions of multiple context IDs.
 
 ##### contextIds
 
-The context IDs to get the short versions from.
+[`IContextIds`](../interfaces/IContextIds.md) \| `undefined`
 
-[`IContextIds`](../interfaces/IContextIds.md) | `undefined`
+The context IDs to get the short versions from.
 
 ##### keys
 
-The context ID keys to get the short versions for.
+`string`[] \| `undefined`
 
-`string`[] | `undefined`
+The context ID keys to get the short versions for.
 
 #### Returns
 
@@ -172,15 +172,15 @@ Gets the combined short version.
 
 ##### contextIds
 
-The context IDs to get the short versions from.
+[`IContextIds`](../interfaces/IContextIds.md) \| `undefined`
 
-[`IContextIds`](../interfaces/IContextIds.md) | `undefined`
+The context IDs to get the short versions from.
 
 ##### keys
 
-The context ID keys to get the short versions for.
+`string`[] \| `undefined`
 
-`string`[] | `undefined`
+The context ID keys to get the short versions for.
 
 ##### separator?
 
@@ -244,15 +244,15 @@ Create a combined key.
 
 ##### contextIds
 
-The context IDs to create the combined key for.
+[`IContextIds`](../interfaces/IContextIds.md) \| `undefined`
 
-[`IContextIds`](../interfaces/IContextIds.md) | `undefined`
+The context IDs to create the combined key for.
 
 ##### keys
 
-The context ID keys to get the short versions for.
+`string`[] \| `undefined`
 
-`string`[] | `undefined`
+The context ID keys to get the short versions for.
 
 ##### separator?
 

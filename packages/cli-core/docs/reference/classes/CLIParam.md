@@ -30,9 +30,9 @@ The name of the option.
 
 ##### optionValue
 
-The option value.
+`string` \| `undefined`
 
-`string` | `undefined`
+The option value.
 
 ##### allowEnvVar
 
@@ -68,9 +68,9 @@ The name of the option.
 
 ##### optionValue
 
-The option value.
+`string` \| `undefined`
 
-`string` | `undefined`
+The option value.
 
 ##### allowEnvVar?
 
@@ -112,9 +112,9 @@ The name of the option.
 
 ##### optionValue
 
-The option value.
+`string` \| `undefined`
 
-`string` | `undefined`
+The option value.
 
 ##### validValues
 
@@ -156,9 +156,9 @@ The name of the option.
 
 ##### optionValue
 
-The option value.
+`string` \| `undefined`
 
-`string` | `undefined`
+The option value.
 
 ##### allowEnvVar?
 
@@ -194,9 +194,9 @@ The name of the option.
 
 ##### optionValue
 
-The option value.
+`string` \| `undefined`
 
-`string` | `undefined`
+The option value.
 
 ##### allowEnvVar?
 
@@ -244,9 +244,9 @@ The name of the option.
 
 ##### optionValue
 
-The option value.
+`string` \| `undefined`
 
-`string` | `undefined`
+The option value.
 
 ##### allowEnvVar?
 
@@ -294,9 +294,9 @@ The name of the option.
 
 ##### optionValue
 
-The option value.
+`string` \| `undefined`
 
-`string` | `undefined`
+The option value.
 
 ##### allowEnvVar?
 
@@ -344,9 +344,9 @@ The name of the option.
 
 ##### optionValue
 
-The option value.
+`string` \| `undefined`
 
-`string` | `undefined`
+The option value.
 
 ##### allowEnvVar?
 
@@ -382,9 +382,9 @@ The name of the option.
 
 ##### optionValue
 
-The option value.
+`string` \| `undefined`
 
-`string` | `undefined`
+The option value.
 
 ##### allowEnvVar?
 
@@ -420,9 +420,9 @@ The name of the option.
 
 ##### optionValue
 
-The option value.
+`string` \| `undefined`
 
-`string` | `undefined`
+The option value.
 
 ##### allowEnvVar?
 
@@ -458,9 +458,9 @@ The name of the option.
 
 ##### optionValue
 
-The option value.
+`string` \| `undefined`
 
-`string` | `undefined`
+The option value.
 
 ##### allowEnvVar?
 

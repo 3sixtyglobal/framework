@@ -22,7 +22,7 @@ The reason the validation failed as an i18 resource error.
 
 ### properties? {#properties}
 
-> `optional` **properties**: `object`
+> `optional` **properties?**: `object`
 
 Additional properties for the validation failure.
 

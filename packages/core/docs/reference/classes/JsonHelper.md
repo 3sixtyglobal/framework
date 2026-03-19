@@ -135,9 +135,9 @@ The object to stringify.
 
 ##### space?
 
-Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
+`string` \| `number`
 
-`string` | `number`
+Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
 
 #### Returns
 

@@ -20,6 +20,6 @@ The conditions to join in a group.
 
 ### logicalOperator? {#logicaloperator}
 
-> `optional` **logicalOperator**: [`LogicalOperator`](../type-aliases/LogicalOperator.md)
+> `optional` **logicalOperator?**: [`LogicalOperator`](../type-aliases/LogicalOperator.md)
 
 The logical operator to use.

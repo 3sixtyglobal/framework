@@ -22,7 +22,7 @@ The host for the url.
 
 ### port? {#port}
 
-> `optional` **port**: `number`
+> `optional` **port?**: `number`
 
 The port for the url.
 
@@ -38,7 +38,7 @@ The path for the url.
 
 ### params? {#params}
 
-> `optional` **params**: `string`
+> `optional` **params?**: `string`
 
 The params for the url.
 
@@ -46,6 +46,6 @@ The params for the url.
 
 ### hash? {#hash}
 
-> `optional` **hash**: `string`
+> `optional` **hash?**: `string`
 
 The hash for the url.

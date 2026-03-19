@@ -10,7 +10,7 @@ Options for rendering as text.
 
 ### cellSize? {#cellsize}
 
-> `optional` **cellSize**: `number`
+> `optional` **cellSize?**: `number`
 
 The cell size.
 
@@ -22,7 +22,7 @@ The cell size.
 
 ### marginSize? {#marginsize}
 
-> `optional` **marginSize**: `number`
+> `optional` **marginSize?**: `number`
 
 The margin size.
 
@@ -34,7 +34,7 @@ The margin size.
 
 ### onChar? {#onchar}
 
-> `optional` **onChar**: `string`
+> `optional` **onChar?**: `string`
 
 The character to use for on pixels.
 
@@ -42,6 +42,6 @@ The character to use for on pixels.
 
 ### offChar? {#offchar}
 
-> `optional` **offChar**: `string`
+> `optional` **offChar?**: `string`
 
 The character to use for off pixels.

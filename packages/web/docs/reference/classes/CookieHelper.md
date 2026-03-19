@@ -138,9 +138,9 @@ Get cookies from headers.
 
 ##### headers
 
-The headers to get cookies from.
+`string` \| `string`[] \| `undefined`
 
-`string` | `string`[] | `undefined`
+The headers to get cookies from.
 
 ##### cookieName
 

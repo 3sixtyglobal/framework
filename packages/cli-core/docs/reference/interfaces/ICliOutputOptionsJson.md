@@ -6,7 +6,7 @@ Options for the CLI Output for JSON.
 
 ### json? {#json}
 
-> `optional` **json**: `string`
+> `optional` **json?**: `string`
 
 Output the data to an JSON file.
 

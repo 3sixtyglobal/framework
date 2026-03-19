@@ -73,7 +73,7 @@ The cause of error if we have wrapped another error.
 
 ### source? {#source}
 
-> `optional` **source**: `string`
+> `optional` **source?**: `string`
 
 The source of the error.
 
@@ -85,7 +85,7 @@ The source of the error.
 
 ### properties? {#properties}
 
-> `optional` **properties**: `object`
+> `optional` **properties?**: `object`
 
 Any additional information for the error.
 
@@ -101,7 +101,7 @@ Any additional information for the error.
 
 ### cause? {#cause}
 
-> `optional` **cause**: [`IError`](../interfaces/IError.md)
+> `optional` **cause?**: [`IError`](../interfaces/IError.md)
 
 The cause of the error.
 
@@ -169,9 +169,9 @@ Expand an error tree.
 
 ##### errors
 
-The list of errors to expand.
+[`IError`](../interfaces/IError.md)[] \| `undefined`
 
-[`IError`](../interfaces/IError.md)[] | `undefined`
+The list of errors to expand.
 
 #### Returns
 
@@ -197,9 +197,9 @@ The error to test.
 
 ##### name
 
-The name to check for.
+`string` \| `RegExp`
 
-`string` | `RegExp`
+The name to check for.
 
 #### Returns
 
@@ -225,9 +225,9 @@ The error to test.
 
 ##### message
 
-The message to check for.
+`string` \| `RegExp`
 
-`string` | `RegExp`
+The message to check for.
 
 #### Returns
 
@@ -253,9 +253,9 @@ The error to test.
 
 ##### code
 
-The code to check for.
+`string` \| `RegExp`
 
-`string` | `RegExp`
+The code to check for.
 
 #### Returns
 
@@ -281,9 +281,9 @@ The error to test.
 
 ##### name
 
-The name to check for.
+`string` \| `RegExp`
 
-`string` | `RegExp`
+The name to check for.
 
 #### Returns
 
@@ -309,9 +309,9 @@ The error to test.
 
 ##### message
 
-The message to check for.
+`string` \| `RegExp`
 
-`string` | `RegExp`
+The message to check for.
 
 #### Returns
 
@@ -365,9 +365,9 @@ The error to test.
 
 ##### code
 
-The code to check for.
+`string` \| `RegExp`
 
-`string` | `RegExp`
+The code to check for.
 
 #### Returns
 

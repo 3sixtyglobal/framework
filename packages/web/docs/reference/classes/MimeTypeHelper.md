@@ -46,9 +46,9 @@ Return the default extension for a mime type.
 
 ##### mimeType
 
-The mimetype to get the extension for.
+`string` \| `undefined`
 
-`string` | `undefined`
+The mimetype to get the extension for.
 
 #### Returns
 

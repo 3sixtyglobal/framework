@@ -6,7 +6,7 @@ Options for call to the fetch helper.
 
 ### headers? {#headers}
 
-> `optional` **headers**: [`IHttpHeaders`](IHttpHeaders.md)
+> `optional` **headers?**: [`IHttpHeaders`](IHttpHeaders.md)
 
 #### Param
 
@@ -16,7 +16,7 @@ The headers for the request.
 
 ### timeoutMs? {#timeoutms}
 
-> `optional` **timeoutMs**: `number`
+> `optional` **timeoutMs?**: `number`
 
 Timeout for requests in milliseconds.
 
@@ -24,7 +24,7 @@ Timeout for requests in milliseconds.
 
 ### includeCredentials? {#includecredentials}
 
-> `optional` **includeCredentials**: `boolean`
+> `optional` **includeCredentials?**: `boolean`
 
 Include credentials in the requests.
 
@@ -32,7 +32,7 @@ Include credentials in the requests.
 
 ### retryCount? {#retrycount}
 
-> `optional` **retryCount**: `number`
+> `optional` **retryCount?**: `number`
 
 The number of times to retry fetching defaults to no retries.
 
@@ -40,7 +40,7 @@ The number of times to retry fetching defaults to no retries.
 
 ### retryDelayMs? {#retrydelayms}
 
-> `optional` **retryDelayMs**: `number`
+> `optional` **retryDelayMs?**: `number`
 
 The number of milliseconds we should delay before any retry.
 
@@ -48,6 +48,6 @@ The number of milliseconds we should delay before any retry.
 
 ### cacheTtlMs? {#cachettlms}
 
-> `optional` **cacheTtlMs**: `number`
+> `optional` **cacheTtlMs?**: `number`
 
 The number of milliseconds to cache the response for, leave undefined for no cache, 0 means infinite.

@@ -10,7 +10,7 @@ Options for rendering.
 
 ### background? {#background}
 
-> `optional` **background**: `string` \| `Color`
+> `optional` **background?**: `string` \| `Color`
 
 Background color.
 
@@ -18,7 +18,7 @@ Background color.
 
 ### foreground? {#foreground}
 
-> `optional` **foreground**: `string` \| `Color`
+> `optional` **foreground?**: `string` \| `Color`
 
 Foreground color.
 
@@ -26,7 +26,7 @@ Foreground color.
 
 ### cellSize? {#cellsize}
 
-> `optional` **cellSize**: `number`
+> `optional` **cellSize?**: `number`
 
 The cell size.
 
@@ -38,7 +38,7 @@ The cell size.
 
 ### marginSize? {#marginsize}
 
-> `optional` **marginSize**: `number`
+> `optional` **marginSize?**: `number`
 
 The margin size.
 

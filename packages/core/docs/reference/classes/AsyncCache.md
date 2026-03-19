@@ -36,9 +36,9 @@ The key for the entry in the cache.
 
 ##### ttlMs
 
-The TTL of the entry in the cache.
+`number` \| `undefined`
 
-`number` | `undefined`
+The TTL of the entry in the cache.
 
 ##### requestMethod
 

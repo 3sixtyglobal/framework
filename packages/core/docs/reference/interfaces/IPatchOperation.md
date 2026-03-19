@@ -22,7 +22,7 @@ The path to the object that was changed.
 
 ### from? {#from}
 
-> `optional` **from**: `string`
+> `optional` **from?**: `string`
 
 The path the value was copied or moved from.
 
@@ -30,6 +30,6 @@ The path the value was copied or moved from.
 
 ### value? {#value}
 
-> `optional` **value**: `unknown`
+> `optional` **value?**: `unknown`
 
 The value to add.

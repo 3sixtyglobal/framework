@@ -54,9 +54,9 @@ Generate a new UUIDv7.
 
 ##### format?
 
-The format of the UUIDv7 string.
+`"standard"` \| `"compact"`
 
-`"standard"` | `"compact"`
+The format of the UUIDv7 string.
 
 #### Returns
 

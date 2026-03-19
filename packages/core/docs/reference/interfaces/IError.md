@@ -22,7 +22,7 @@ The message for the error.
 
 ### source? {#source}
 
-> `optional` **source**: `string`
+> `optional` **source?**: `string`
 
 The source of the error.
 
@@ -30,7 +30,7 @@ The source of the error.
 
 ### properties? {#properties}
 
-> `optional` **properties**: `object`
+> `optional` **properties?**: `object`
 
 Any additional information for the error.
 
@@ -42,7 +42,7 @@ Any additional information for the error.
 
 ### stack? {#stack}
 
-> `optional` **stack**: `string`
+> `optional` **stack?**: `string`
 
 The stack trace for the error.
 
@@ -50,6 +50,6 @@ The stack trace for the error.
 
 ### cause? {#cause}
 
-> `optional` **cause**: `IError`
+> `optional` **cause?**: `IError`
 
 The cause of the error if there was one.

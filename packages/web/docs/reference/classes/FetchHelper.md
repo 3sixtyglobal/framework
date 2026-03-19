@@ -50,9 +50,9 @@ The http method.
 
 ##### body?
 
-Request to send to the endpoint.
+`string` \| `Uint8Array`\<`ArrayBufferLike`\>
 
-`string` | `Uint8Array`\<`ArrayBufferLike`\>
+Request to send to the endpoint.
 
 ##### options?
 
@@ -152,9 +152,9 @@ The url for the request.
 
 ##### method
 
-The http method.
+`"GET"` \| `"POST"`
 
-`"GET"` | `"POST"`
+The http method.
 
 ##### requestData?
 

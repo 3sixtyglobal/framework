@@ -38,7 +38,7 @@ The icon for the CLI as an emoji character.
 
 ### supportsLang? {#supportslang}
 
-> `optional` **supportsLang**: `boolean`
+> `optional` **supportsLang?**: `boolean`
 
 Supports different languages.
 
@@ -46,7 +46,7 @@ Supports different languages.
 
 ### supportsEnvFiles? {#supportsenvfiles}
 
-> `optional` **supportsEnvFiles**: `boolean`
+> `optional` **supportsEnvFiles?**: `boolean`
 
 Supports the loading of env files.
 
@@ -54,7 +54,7 @@ Supports the loading of env files.
 
 ### overrideOutputWidth? {#overrideoutputwidth}
 
-> `optional` **overrideOutputWidth**: `number`
+> `optional` **overrideOutputWidth?**: `number`
 
 Override the default output width.
 
@@ -62,6 +62,6 @@ Override the default output width.
 
 ### showDevToolWarning? {#showdevtoolwarning}
 
-> `optional` **showDevToolWarning**: `boolean`
+> `optional` **showDevToolWarning?**: `boolean`
 
 Show a warning that this is a dev tool and not for production use.

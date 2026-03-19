@@ -14,7 +14,7 @@ Display utilities for the CLI.
 
 ## Properties
 
-### write() {#write}
+### write {#write}
 
 > `static` **write**: (`buffer`) => `void`
 
@@ -24,9 +24,9 @@ The default output method for writing standard messages.
 
 ##### buffer
 
-The message to output.
+`string` \| `Uint8Array`\<`ArrayBufferLike`\>
 
-`string` | `Uint8Array`\<`ArrayBufferLike`\>
+The message to output.
 
 #### Returns
 
@@ -34,7 +34,7 @@ The message to output.
 
 ***
 
-### writeError() {#writeerror}
+### writeError {#writeerror}
 
 > `static` **writeError**: (`buffer`) => `void`
 
@@ -44,9 +44,9 @@ The default output method for writing error messages.
 
 ##### buffer
 
-The message to output.
+`string` \| `Uint8Array`\<`ArrayBufferLike`\>
 
-`string` | `Uint8Array`\<`ArrayBufferLike`\>
+The message to output.
 
 #### Returns
 
@@ -54,7 +54,7 @@ The message to output.
 
 ***
 
-### clearLine() {#clearline}
+### clearLine {#clearline}
 
 > `static` **clearLine**: () => `void`
 

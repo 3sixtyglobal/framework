@@ -20,9 +20,9 @@ The identifier for the namespace.
 
 ##### namespaceSpecific
 
-The specific part of the namespace.
+`string` \| `string`[]
 
-`string` | `string`[]
+The specific part of the namespace.
 
 #### Returns
 

@@ -284,9 +284,9 @@ The payload to sign.
 
 ##### key
 
-The optional key to sign with.
+[`JwkCryptoKey`](../type-aliases/JwkCryptoKey.md) \| `undefined`
 
-[`JwkCryptoKey`](../type-aliases/JwkCryptoKey.md) | `undefined`
+The optional key to sign with.
 
 #### Returns
 
@@ -322,9 +322,9 @@ The token to verify.
 
 ##### key
 
-The key to verify with.
+[`JwkCryptoKey`](../type-aliases/JwkCryptoKey.md) \| `undefined`
 
-[`JwkCryptoKey`](../type-aliases/JwkCryptoKey.md) | `undefined`
+The key to verify with.
 
 #### Returns
 

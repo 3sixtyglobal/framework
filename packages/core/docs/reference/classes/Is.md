@@ -872,9 +872,9 @@ The value to test.
 
 ##### format?
 
-The format of the UUIDv7 string.
+`"standard"` \| `"compact"`
 
-`"standard"` | `"compact"`
+The format of the UUIDv7 string.
 
 #### Returns
 

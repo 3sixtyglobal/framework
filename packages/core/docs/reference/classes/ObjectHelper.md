@@ -38,9 +38,9 @@ Convert an object to bytes.
 
 ##### obj
 
-The object to convert.
+`T` \| `undefined`
 
-`T` | `undefined`
+The object to convert.
 
 ##### format?
 
@@ -72,9 +72,9 @@ Convert a bytes to an object.
 
 ##### bytes
 
-The bytes to convert to an object.
+`Uint8Array`\<`ArrayBufferLike`\> \| `null` \| `undefined`
 
-`Uint8Array`\<`ArrayBufferLike`\> | `null` | `undefined`
+The bytes to convert to an object.
 
 #### Returns
 
@@ -312,9 +312,9 @@ The object to extract from.
 
 ##### propertyNames
 
-The possible names for the property.
+`string` \| `string`[]
 
-`string` | `string`[]
+The possible names for the property.
 
 ##### removeProperties?
 
@@ -346,9 +346,9 @@ Pick a subset of properties from an object.
 
 ##### obj
 
-The object to pick the properties from.
+`T` \| `undefined`
 
-`T` | `undefined`
+The object to pick the properties from.
 
 ##### keys?
 
@@ -380,9 +380,9 @@ Omit a subset of properties from an object.
 
 ##### obj
 
-The object to omit the properties from.
+`T` \| `undefined`
 
-`T` | `undefined`
+The object to omit the properties from.
 
 ##### keys?
 
@@ -414,9 +414,9 @@ Split an object into two with the specified keys.
 
 ##### obj
 
-The object to split.
+`T` \| `undefined`
 
-`T` | `undefined`
+The object to split.
 
 ##### keys?
 

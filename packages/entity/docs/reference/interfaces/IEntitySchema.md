@@ -20,7 +20,7 @@ The type of the entity.
 
 ### options? {#options}
 
-> `optional` **options**: [`IEntitySchemaOptions`](IEntitySchemaOptions.md)
+> `optional` **options?**: [`IEntitySchemaOptions`](IEntitySchemaOptions.md)
 
 The options for the entity.
 
@@ -28,6 +28,6 @@ The options for the entity.
 
 ### properties? {#properties}
 
-> `optional` **properties**: [`IEntitySchemaProperty`](IEntitySchemaProperty.md)\<`T`\>[]
+> `optional` **properties?**: [`IEntitySchemaProperty`](IEntitySchemaProperty.md)\<`T`\>[]
 
 The properties of the entity.

@@ -11,7 +11,7 @@ Options for rendering.
 
 ### cellSize? {#cellsize}
 
-> `optional` **cellSize**: `number`
+> `optional` **cellSize?**: `number`
 
 The cell size.
 
@@ -19,6 +19,6 @@ The cell size.
 
 ### marginSize? {#marginsize}
 
-> `optional` **marginSize**: `number`
+> `optional` **marginSize?**: `number`
 
 The margin size.
