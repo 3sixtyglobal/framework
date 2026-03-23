@@ -22,90 +22,95 @@ export class AsyncCache {
 		cacheFailures?: boolean
 	): Promise<T> | undefined {
 		const cacheEnabled = Is.integer(ttlMs) && ttlMs >= 0;
-		if (cacheEnabled) {
-			AsyncCache.cleanupExpired();
+		if (!cacheEnabled) {
+			// No caching, just execute the request method
+			return requestMethod();
+		}
 
-			const cache = AsyncCache.getSharedCache<T>();
+		AsyncCache.cleanupExpired();
 
-			// Do we have a cache entry for the key
-			if (cache[key]) {
-				if (!Is.empty(cache[key].result)) {
-					// If the cache has already resulted in a value, resolve it
-					return Promise.resolve(cache[key].result);
-				} else if (!Is.empty(cache[key].error)) {
-					// If the cache has already resulted in an error, reject it
-					return Promise.reject(cache[key].error);
-				}
+		const cache = AsyncCache.getSharedCache<T>();
 
-				// Otherwise create a promise to return and store the resolver
-				// and rejector in the cache entry, so that we can call then
-				// when the request is done
-
-				let storedResolve: ((value: T | PromiseLike<T>) => void) | undefined;
-				let storedReject: ((reason?: unknown) => void) | undefined;
-				const wait = new Promise<T>((resolve, reject) => {
-					storedResolve = resolve;
-					storedReject = reject;
-				});
-				if (!Is.empty(storedResolve) && !Is.empty(storedReject)) {
-					cache[key].promiseQueue.push({
-						requestMethod,
-						resolve: storedResolve,
-						reject: storedReject
-					});
-				}
-				return wait;
+		// Do we have a cache entry for the key
+		if (cache[key]) {
+			if (!Is.empty(cache[key].result)) {
+				// If the cache has already resulted in a value, resolve it
+				return Promise.resolve(cache[key].result);
+			} else if (!Is.empty(cache[key].error)) {
+				// If the cache has already resulted in an error, reject it
+				return Promise.reject(cache[key].error);
 			}
 
-			// If we don't have a cache entry, create a new one
-			cache[key] = {
-				promiseQueue: [],
-				expires: ttlMs === 0 ? 0 : Date.now() + ttlMs
-			};
+			// Otherwise create a promise to return and store the resolver
+			// and rejector in the cache entry, so that we can call then
+			// when the request is done
 
-			// Return a promise that wraps the original request method
-			// so that we can store any results or errors in the cache
-			return new Promise((resolve, reject) => {
-				// Call the request method and store the result
-				requestMethod()
-					// eslint-disable-next-line promise/prefer-await-to-then
-					.then(res => {
-						// If the request was successful, store the result
-						cache[key].result = res;
-
-						// and resolve both this promise and all the waiters
-						resolve(res);
-						for (const wait of cache[key].promiseQueue) {
-							wait.resolve(res);
-						}
-						return res;
-					})
-					// eslint-disable-next-line promise/prefer-await-to-then
-					.catch((err: Error) => {
-						// Reject the promise
-						reject(err);
-
-						// Handle the waiters based on the cacheFailures flag
-						if (cacheFailures ?? false) {
-							// If we are caching failures, store the error and reject the waiters
-							cache[key].error = err;
-							for (const wait of cache[key].promiseQueue) {
-								wait.reject(err);
-							}
-							// Clear the waiters so we don't call them again
-							cache[key].promiseQueue = [];
-						} else {
-							// If not caching failures for any queued requests we
-							// have no value to either resolve or reject, so we
-							// just resolve with the original request method
-							for (const wait of cache[key].promiseQueue) {
-								wait.resolve(wait.requestMethod());
-							}
-							delete cache[key];
-						}
-					});
+			let storedResolve: ((value: T | PromiseLike<T>) => void) | undefined;
+			let storedReject: ((reason?: unknown) => void) | undefined;
+			const wait = new Promise<T>((resolve, reject) => {
+				storedResolve = resolve;
+				storedReject = reject;
 			});
+			if (!Is.empty(storedResolve) && !Is.empty(storedReject)) {
+				cache[key].promiseQueue.push({
+					requestMethod,
+					resolve: storedResolve,
+					reject: storedReject
+				});
+			}
+			return wait;
 		}
+
+		// If we don't have a cache entry, create a new one
+		cache[key] = {
+			promiseQueue: [],
+			expires: ttlMs === 0 ? 0 : Date.now() + ttlMs
+		};
+
+		// Return a promise that wraps the original request method
+		// so that we can store any results or errors in the cache
+		return new Promise((resolve, reject) => {
+			// Call the request method and store the result
+			requestMethod()
+				// eslint-disable-next-line promise/prefer-await-to-then
+				.then(res => {
+					// If the request was successful, store the result
+					cache[key].result = res;
+
+					// and resolve both this promise and all the waiters
+					resolve(res);
+					for (const wait of cache[key].promiseQueue) {
+						wait.resolve(res);
+					}
+					cache[key].promiseQueue = [];
+					return res;
+				})
+				// eslint-disable-next-line promise/prefer-await-to-then
+				.catch((err: unknown) => {
+					// Reject the promise
+					reject(err);
+
+					// Handle the waiters based on the cacheFailures flag
+					if (cacheFailures ?? false) {
+						// If we are caching failures, store the error and reject the waiters
+						cache[key].error = err;
+						for (const wait of cache[key].promiseQueue) {
+							wait.reject(err);
+						}
+						// Clear the waiters so we don't call them again
+						cache[key].promiseQueue = [];
+					} else {
+						// If not caching failures for any queued requests we
+						// have no value to either resolve or reject, so we
+						// just resolve with the original request method
+						for (const wait of cache[key].promiseQueue) {
+							// eslint-disable-next-line @typescript-eslint/no-floating-promises
+							AsyncCache.resolveWaiter(wait.requestMethod, wait.resolve, wait.reject);
+						}
+						delete cache[key];
+					}
+				});
+		});
 	}
 
 	/**
@@ -115,12 +120,14 @@ export class AsyncCache {
 	 */
 	public static async get<T = unknown>(key: string): Promise<T | undefined> {
 		const cache = AsyncCache.getSharedCache<T>();
-		if (!Is.empty(cache[key].result)) {
+		if (!Is.empty(cache[key]?.result)) {
 			// If the cache has already resulted in a value, resolve it
 			return cache[key].result;
-		} else if (!Is.empty(cache[key].error)) {
+		}
+
+		if (!Is.empty(cache[key]?.error)) {
 			// If the cache has already resulted in an error, reject it
-			throw cache[key].error;
+			throw cache[key].error as Error;
 		}
 	}
 
@@ -186,7 +193,7 @@ export class AsyncCache {
 	private static getSharedCache<T = unknown>(): {
 		[url: string]: {
 			result?: T;
-			error?: Error;
+			error?: unknown;
 			promiseQueue: {
 				requestMethod: () => Promise<T>;
 				resolve: (value: T | PromiseLike<T>) => void;
@@ -198,7 +205,7 @@ export class AsyncCache {
 		let sharedCache = SharedStore.get<{
 			[url: string]: {
 				result?: T;
-				error?: Error;
+				error?: unknown;
 				promiseQueue: {
 					requestMethod: () => Promise<T>;
 					resolve: (value: T | PromiseLike<T>) => void;
@@ -214,5 +221,23 @@ export class AsyncCache {
 		}
 
 		return sharedCache;
+	}
+
+	/**
+	 * Resolve a waiter by re-running its request method safely.
+	 * @param requestMethod The method to execute.
+	 * @param resolve The resolver for the waiter.
+	 * @param reject The rejector for the waiter.
+	 */
+	private static async resolveWaiter<T>(
+		requestMethod: () => Promise<T>,
+		resolve: (value: T | PromiseLike<T>) => void,
+		reject: (reason?: unknown) => void
+	): Promise<void> {
+		try {
+			resolve(await requestMethod());
+		} catch (waitErr) {
+			reject(waitErr);
+		}
 	}
 }

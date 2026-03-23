@@ -20,10 +20,15 @@ describe("AsyncCache", () => {
 		counter = 0;
 	});
 
-	test("can not cache if the ttl is not set", () => {
+	test("can execute without caching if ttl is not set", async () => {
 		const res = AsyncCache.exec("key", undefined, counterIncrement);
-		expect(Is.promise(res)).toEqual(false);
-		expect(counter).toEqual(0);
+		expect(Is.promise(res)).toEqual(true);
+		expect(await res).toEqual(1);
+
+		const res2 = AsyncCache.exec("key", undefined, counterIncrement);
+		expect(Is.promise(res2)).toEqual(true);
+		expect(await res2).toEqual(2);
+		expect(counterIncrement).toHaveBeenCalledTimes(2);
 	});
 
 	test("can cache if the ttl is set", async () => {
@@ -153,5 +158,54 @@ describe("AsyncCache", () => {
 
 		const value = await AsyncCache.get("key");
 		expect(value).toEqual(1);
+	});
+
+	test("returns undefined for a missing key", async () => {
+		const value = await AsyncCache.get("missing");
+		expect(value).toBeUndefined();
+	});
+
+	test("can clear only entries matching a prefix", async () => {
+		await AsyncCache.set("api-a", 1, 100000);
+		await AsyncCache.set("api-b", 2, 100000);
+		await AsyncCache.set("other", 3, 100000);
+
+		AsyncCache.clearCache("api-");
+
+		expect(await AsyncCache.get("api-a")).toBeUndefined();
+		expect(await AsyncCache.get("api-b")).toBeUndefined();
+		expect(await AsyncCache.get("other")).toEqual(3);
+	});
+
+	test("set with ttl 0 expires immediately", async () => {
+		await AsyncCache.set("key", 1, 0);
+		await new Promise<void>(resolve => setTimeout(resolve, 2));
+
+		AsyncCache.cleanupExpired();
+		expect(await AsyncCache.get("key")).toBeUndefined();
+	});
+
+	test("queued retries reject if request method throws synchronously", async () => {
+		const res = AsyncCache.exec("key", 1, async () => {
+			throw new Error("initial failure");
+		});
+		expect(Is.promise(res)).toEqual(true);
+
+		const res2 = AsyncCache.exec("key", 1, () => {
+			throw new Error("sync failure");
+		});
+		expect(Is.promise(res2)).toEqual(true);
+
+		const settledResult = await Promise.allSettled([res, res2]);
+		expect(
+			settledResult[0].status === "rejected" &&
+				settledResult[0].reason instanceof Error &&
+				settledResult[0].reason.message === "initial failure"
+		).toEqual(true);
+		expect(
+			settledResult[1].status === "rejected" &&
+				settledResult[1].reason instanceof Error &&
+				settledResult[1].reason.message === "sync failure"
+		).toEqual(true);
 	});
 });
