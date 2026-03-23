@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.3-next.25](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.24...core-v0.0.3-next.25) (2026-03-23)
+
+
+### Bug Fixes
+
+* improve exception handling in asyncCache ([c81b29b](https://github.com/twinfoundation/framework/commit/c81b29b660b152d2f0757d323430287e6491bf59))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.24 to 0.0.3-next.25
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.24 to 0.0.3-next.25
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.24 to 0.0.3-next.25
+
 ## [0.0.3-next.24](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.23...core-v0.0.3-next.24) (2026-03-19)
 
 
