@@ -27,9 +27,16 @@ Alongside those libraries, the workspace includes applications that support oper
 
 ## Architecture
 
-- [Codebase Philosophy](docs/architecture/codebase-philosophy.md) - Why standardised patterns such as factories, transformers, and lint guard rails are used to keep behaviour consistent across packages.
-- [i18n Support](docs/architecture/i18n-support.md) - Internationalisation support model, locale conventions, and runtime usage patterns.
-- [TypeScript Transformers](docs/architecture/typescript-transformers.md) - Transformer pipeline, build integration, and runtime naming strategy.
+- [Codebase](docs/architecture/codebase.mdx) - Overview of the repository structure, package layering, and packaging model.
+- [Codebase Philosophy](docs/architecture/codebase-philosophy.mdx) - Why standardised patterns such as factories, transformers, and lint guard rails are - [Development Workflow](docs/architecture/development-workflow.mdx) - Workspace scripts, local development patterns, and sibling repository linking.
+- [TypeScript Transformers](docs/architecture/typescript-transformers.mdx) - Transformer pipeline, build integration, and runtime naming strategy.
+- [i18n Support](docs/architecture/i18n-support.mdx) - Internationalisation support model, locale conventions, and runtime usage patterns.
+- [Components](docs/architecture/components.mdx) - Domain component contracts, implementations, factories, and lifecycle behaviour.
+- [Connectors](docs/architecture/connectors.mdx) - Connector interfaces, capability types, factory composition, and runtime integration.
+- [Context IDs](docs/architecture/context-ids.mdx) - Context propagation, key derivation, short forms, and data partitioning rules.
+- [Data Validation](docs/architecture/data-validation.mdx) - Validation architecture across type handlers, JSON Schema, JSON-LD, and schema generation tooling.
+- [Engine](docs/architecture/engine.mdx) - Engine responsibilities, data model, initialisation pipeline, and lifecycle semantics.
+used to keep behaviour consistent across packages.
 
 ## Contributing
 

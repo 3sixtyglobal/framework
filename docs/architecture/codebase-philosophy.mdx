@@ -1,4 +1,8 @@
-# Codebase Philosophy: Standardised Patterns for Consistency
+---
+category: framework
+order: 2
+---
+# Codebase Philosophy
 
 This document explains why the framework prefers standardised implementation patterns, and how those patterns reduce maintenance cost as the number of packages and contributors grows.
 
@@ -70,7 +74,7 @@ This gives a deliberate balance:
 
 The result is fewer brittle string constants and fewer silent regressions during rename-heavy refactors.
 
-For full transformer mechanics, see [TypeScript Transformers](./typescript-transformers.md).
+For full transformer mechanics, see [TypeScript Transformers](./typescript-transformers.mdx).
 
 ## Lint Rules as Architectural Guard Rails
 
@@ -110,7 +114,7 @@ Because the platform is intended for international use, this consistency model d
 
 This consistency has practical impact during support and incident response. Teams can recognise failure classes and message shapes quickly, correlate behaviours across services, and avoid spending time translating package-specific wording conventions before they can debug the real issue.
 
-For details on locale and message architecture, see [i18n Support](./i18n-support.md).
+For details on locale and message architecture, see [i18n Support](./i18n-support.mdx).
 
 ## Tooling Uniformity Across Packages
 
@@ -143,8 +147,3 @@ In practice, this means:
 4. If you introduce a new cross-cutting pattern, codify it in linting, tests, and docs rather than relying on convention.
 
 The general principle is to make the preferred path the easiest path, and the unsafe path noisy.
-
-## Related
-
-- [TypeScript Transformers](./typescript-transformers.md)
-- [i18n Support](./i18n-support.md)
