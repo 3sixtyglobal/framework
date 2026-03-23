@@ -1,0 +1,150 @@
+# Codebase Philosophy: Standardised Patterns for Consistency
+
+This document explains why the framework prefers standardised implementation patterns, and how those patterns reduce maintenance cost as the number of packages and contributors grows.
+
+The short version is that we optimise for predictable behaviour across packages, not for localised cleverness. A package should feel familiar even when you have never opened it before.
+
+## Design Intent
+
+The architecture is built around a small set of repeated approaches: factories for runtime composition, transformers for compile-time guarantees, guard and error conventions for runtime safety, and strict linting for structural consistency. These patterns are deliberately reused in both library packages and applications so that operational behaviour, testing behaviour, and developer ergonomics remain aligned.
+
+This style has a practical goal. A shared workspace has many opportunities for drift: naming drift, API shape drift, error handling drift, and tooling drift. Standardised approaches are the mechanism used to limit that drift.
+
+## Why We Standardise
+
+When each package chooses its own approach to object construction, naming, validation, and build tooling, the hidden cost appears later in three places: onboarding time, production debugging, and cross-package refactoring. Standardisation lowers all three.
+
+The framework therefore values:
+
+- explicit constraints over implicit conventions,
+- predictable extension points over ad hoc composition,
+- compile-time safety where possible, and runtime guard rails where necessary,
+- repository-wide consistency over package-level style variation.
+
+## Reusing Standards and Established Patterns
+
+Where established standards already exist, the framework prefers adoption over invention. This principle applies both to semantic standards and to proven implementation patterns.
+
+Semantic standards provide shared understanding across the ecosystem. JSON-LD and JSON-Schema, for example, are used to structure and validate data in ways that are both human-readable and machine-processable. UNECE standards inform supply-chain messaging and entity classification. Decentralised identifiers (DID) provide a standard identity model that is portable across systems. Activity Streams conventions define how events and interactions flow through distributed networks.
+
+By adopting these standards rather than creating custom alternatives, the framework reduces friction for integrations downstream. Systems built on top can reason about data using documented vocabularies instead of learning bespoke conventions. Diagnostics, logging, and audit trails become more intelligible when they follow recognisable patterns.
+
+This is not about avoiding any original design. Rather, it is about recognising when a problem has already been solved well by the broader technological community. Reusing standards frees engineering effort to focus on domain-specific challenges while inheriting the maturity, tooling, and adoption that established specifications provide.
+
+The practical benefit is twofold. First, new contributors and integrators encounter fewer surprises because data shapes, error models, and identity conventions follow expected patterns. Second, when standards evolve or new versions are released, the framework can often adopt the improvements for free rather than having to redesign bespoke schemas from scratch.
+
+## Factories as Runtime Composition Points
+
+Factories are used as a stable composition boundary between interfaces and concrete implementations. The core `Factory` class provides a shared mechanism for registration, lookup, optional creation, lifecycle reset, and matching behaviour.
+
+The key architectural reason for this pattern is loose coupling. Callers depend on a contract and a registration key, not on a specific class constructor or import path. That means a package can consume capability without needing compile-time knowledge of every concrete implementation that might satisfy the contract.
+
+In practice, this reduces hard dependencies between modules. A package can publish an extension point and remain unaware of which implementation will be selected in a given runtime, environment, or test scenario. Implementations can therefore evolve, be replaced, or be selectively registered without forcing broad changes across consuming modules.
+
+Packages then expose typed factory instances, for example `ComponentFactory`, `ContextIdHandlerFactory`, and `EntitySchemaFactory`. This avoids scattering bespoke registries throughout the codebase.
+
+The philosophy behind this is simple: extension should follow one recognisable model. If developers know one factory-backed extension point, they can usually understand another with very little additional context. It also keeps coupling direction clean: consumers depend on shared abstractions, while implementations depend on registration conventions.
+
+This same model is valuable in tests, where loose coupling is most visible. Instead of constructing production classes directly inside tests, a test can register a mock or stub implementation under the same factory key used by runtime code. The unit under test remains unchanged because it still depends on the contract and registration key, while the test controls behaviour through the registered double.
+
+Using factories for mocks improves test quality in three ways. It avoids brittle constructor wiring in test setup, it keeps mocking strategy consistent across packages, and it makes replacement explicit at the extension boundary rather than hidden inside ad hoc monkey patching. It also supports mixed strategies, such as lightweight stubs for most tests and more realistic in-memory implementations for integration-style coverage, without changing consumer code.
+
+There are operational benefits as well:
+
+- shared factory state can be reset or cleared in test and runtime control paths,
+- failure modes are consistent (`noGet`, `noCreate`, `noUnregister`),
+- dependency wiring remains explicit and discoverable,
+- implementations can be swapped without rewriting consumers,
+- test doubles can be registered through the same mechanism as production implementations,
+- test setup and teardown can rely on shared factory reset and clear behaviour to avoid cross-test contamination.
+
+## Transformers as Compile-Time Enforcement
+
+TypeScript erases type metadata at runtime, but the codebase still relies on symbol-aware naming for errors, guards, and other diagnostics. The `nameof` transformer pipeline is used to preserve that intent by rewriting `nameof` expressions into runtime string literals during build and test transforms.
+
+This gives a deliberate balance:
+
+- authoring remains symbol-driven and refactor-safe,
+- runtime remains reflection-free and lightweight,
+- build and test behaviour can be aligned through shared transform configuration.
+
+The result is fewer brittle string constants and fewer silent regressions during rename-heavy refactors.
+
+For full transformer mechanics, see [TypeScript Transformers](./typescript-transformers.md).
+
+## Lint Rules as Architectural Guard Rails
+
+Linting is not treated as cosmetic formatting. The repository-level ESLint configuration encodes architecture constraints directly, including restricted syntax rules that prevent patterns known to cause drift or fragility.
+
+Examples include rules that disallow broad error construction styles, discourage fragile import forms, and enforce consistent TypeScript structure. These rules convert architectural intent into repeatable automated checks.
+
+This is important because architectural standards that only exist in prose are easy to bypass under delivery pressure. Rules in CI are much harder to bypass accidentally.
+
+## Runtime Safety and Validation
+
+The same philosophy appears in runtime primitives: `Guards` provides a consistent precondition model, `Is` provides low-level type predicates for branching and narrowing, and typed error classes centralise failure semantics.
+
+These are not isolated techniques. They are a coordinated system where naming, validation, error construction, and localisation support each other.
+
+`Guards` and `Is` are intentionally separate because they solve different problems.
+
+`Is` answers the question "what is this value?" and is primarily used for conditional flow. It is useful when behaviour can legitimately vary by type or shape, for example handling optional inputs, checking collection cardinality, or narrowing unknown data before mapping it.
+
+`Guards` answers the question "is this value acceptable here?" and is used to enforce function and method contracts. If the contract is violated, the call fails immediately and consistently, rather than allowing invalid state to propagate.
+
+In practical terms, this creates a clear pattern for runtime validation.
+
+1. Use `Guards` at boundaries where data enters a unit, such as public methods, constructor inputs, adapters, and IO-facing paths.
+2. Use `Is` inside implementation logic where branching is expected and valid.
+3. Use typed error classes for semantic failures once inputs have passed structural validation.
+
+This split has several benefits for long-term maintainability. First, failure points are easier to locate because boundary validation is explicit and consistent. Second, downstream code can assume stronger invariants, which reduces defensive noise and makes business logic easier to read. Third, test cases become more predictable because contract failures follow one model instead of many package-specific variants.
+
+The broader principle is that runtime validation is part of architecture, not just implementation detail. Using `Guards` and `Is` consistently keeps contracts explicit, narrows ambiguity early, and preserves a stable mental model for everyone working in the codebase.
+
+## Message Consistency
+
+Message consistency is treated as an architectural concern, not as presentation detail. Guard failures and typed errors flow through shared naming and localisation conventions, so operational logs and user-facing diagnostics remain coherent across packages.
+
+Because the platform is intended for international use, this consistency model depends on i18n being treated as critical infrastructure rather than optional polish.
+
+This consistency has practical impact during support and incident response. Teams can recognise failure classes and message shapes quickly, correlate behaviours across services, and avoid spending time translating package-specific wording conventions before they can debug the real issue.
+
+For details on locale and message architecture, see [i18n Support](./i18n-support.md).
+
+## Tooling Uniformity Across Packages
+
+Build and release workflows are also standardised. Workspace orchestration scripts execute common script names across packages, which keeps package-level operations coherent while still allowing package-local implementation detail.
+
+This approach is intentionally conservative. Uniform script contracts make automation, CI, and incident handling simpler because behaviour is predictable across all workspaces.
+
+## Trade-Offs and Why We Accept Them
+
+Standardisation always has cost. It can feel more restrictive than ad hoc package design, and it can require more up-front work when introducing new patterns.
+
+The framework accepts that trade-off because long-term maintainability is improved when:
+
+- extension points are explicit,
+- naming is transform-backed rather than string-backed,
+- guard rails are enforced automatically,
+- operational tooling works the same way everywhere.
+
+In other words, local flexibility is reduced in exchange for global reliability.
+
+## Guidance for New Contributions
+
+When adding a new capability, prefer extending an existing standard pattern before introducing a new one.
+
+In practice, this means:
+
+1. If you need pluggable runtime behaviour, start with a factory-backed extension point.
+2. If you need symbol-derived runtime names, use `nameof` patterns that flow through transformer tooling.
+3. If you need a one-off coding style exception, first consider whether the existing lint rule is guarding an architectural invariant.
+4. If you introduce a new cross-cutting pattern, codify it in linting, tests, and docs rather than relying on convention.
+
+The general principle is to make the preferred path the easiest path, and the unsafe path noisy.
+
+## Related
+
+- [TypeScript Transformers](./typescript-transformers.md)
+- [i18n Support](./i18n-support.md)

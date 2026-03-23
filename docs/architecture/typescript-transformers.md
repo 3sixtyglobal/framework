@@ -1,7 +1,12 @@
 # TypeScript Transformers and the `nameof` Operator
 
-This document explains how the framework uses TypeScript transformers to turn typed `nameof`
-expressions into string literals at build and test time.
+## What Are TypeScript Transformers
+
+TypeScript transformers are code generation plugins that run during the TypeScript compilation process. They can examine and rewrite the abstract syntax tree (AST) to transform code before it reaches the JavaScript output stage. Unlike runtime reflection which evaluates code after it executes, transformers work at compile time, enabling complex code generation and verification without runtime overhead or the need to keep type information alive in JavaScript.
+
+For the framework, transformers serve as a critical architecture enforcement mechanism. Type-safe refactoring and symbolic correctness are not just developer conveniences—they are reliability features. By encoding architectural invariants in compile-time transformations, we ensure that nominal relationships between code identifiers and their string representations cannot drift.
+
+This document explains how the framework uses TypeScript transformers to turn typed `nameof` expressions into string literals at build and test time, and the architectural guarantees this approach provides.
 
 ## Why We Use a Transformer
 
@@ -13,9 +18,7 @@ nameof<MyType>();
 
 cannot be resolved by normal JavaScript execution.
 
-In this repository, `@twin.org/nameof` exports placeholder functions that intentionally return an
-error-style fallback string when no transform is applied. The `@twin.org/nameof-transformer`
-package rewrites these calls during compilation so runtime code contains plain strings instead.
+In this repository, `@twin.org/nameof` exports placeholder functions that intentionally return an error-style fallback string when no transform is applied. The `@twin.org/nameof-transformer` package rewrites these calls during compilation so runtime code contains plain strings instead.
 
 ### Refactor Safety and Name Synchronisation
 
@@ -32,9 +35,7 @@ class CustomerProfile {
 const fieldName = 'givenName';
 ```
 
-If `givenName` is renamed to `firstName`, the string may stay unchanged and continue to compile,
-but behaviour can silently break at runtime (validation keys, serialisation maps, locale lookup
-keys, error paths, telemetry tags, and query field selection).
+If `givenName` is renamed to `firstName`, the string may stay unchanged and continue to compile, but behaviour can silently break at runtime (validation keys, serialisation maps, locale lookup keys, error paths, telemetry tags, and query field selection).
 
 Using `nameof` keeps the reference attached to real symbols:
 
@@ -46,17 +47,14 @@ class CustomerProfile {
 const fieldName = nameof(CustomerProfile.prototype.givenName);
 ```
 
-When refactoring, editor rename operations and normal TypeScript symbol updates keep these
-expressions in sync. The transformer then emits final static strings, so runtime still gets the
-literal values it needs without keeping runtime reflection.
+When refactoring, editor rename operations and normal TypeScript symbol updates keep these expressions in sync. The transformer then emits final static strings, so runtime still gets the literal values it needs without keeping runtime reflection.
 
 In practice this gives us both:
 
 - Refactor-safe authoring at development time.
 - Zero-reflection, string-literal output at runtime.
 
-This is especially useful in framework code where symbol names are reused across multiple layers,
-for example guards, error identifiers, localisation keys, and protocol payload property paths.
+This is especially useful in framework code where symbol names are reused across multiple layers, for example guards, error identifiers, localisation keys, and protocol payload property paths.
 
 ## Operator Variations
 
@@ -137,18 +135,13 @@ Most framework packages compile with:
 - `build`: `tspc`
 - `test:build`: `tspc -p ./tests/tsconfig.json --noEmit`
 
-`ts-patch` is included in package dev dependencies, and `tspc` is used as the transformer-aware
-compiler command for production and test compilation.
+`ts-patch` is included in package dev dependencies, and `tspc` is used as the transformer-aware compiler command for production and test compilation.
 
-At workspace level, scripts such as `npm run build` and `npm run dist` fan out into per-package
-scripts via `scripts/workspaces.mjs`, so transformer support is consistently applied through each
-package's own `tspc`-based build steps.
+At workspace level, scripts such as `npm run build` and `npm run dist` fan out into per-package scripts via `scripts/workspaces.mjs`, so transformer support is consistently applied through each package's own `tspc`-based build steps.
 
 ## Test Pipeline (Vitest)
 
-Vitest commonly uses esbuild transforms, which do not apply TypeScript transformer plugins from
-`tsconfig` by default. To keep behaviour aligned with build output, framework packages register the
-`@twin.org/nameof-vitest-plugin` plugin:
+Vitest commonly uses esbuild transforms, which do not apply TypeScript transformer plugins from `tsconfig` by default. To keep behaviour aligned with build output, framework packages register the `@twin.org/nameof-vitest-plugin` plugin:
 
 ```typescript
 import { NameOfPlugin } from '@twin.org/nameof-vitest-plugin';
@@ -158,13 +151,11 @@ export default defineConfig({
 });
 ```
 
-The plugin runs as a pre-transform and applies the same string rewriting logic using the manual
-transform helper.
+The plugin runs as a pre-transform and applies the same string rewriting logic using the manual transform helper.
 
 ## Additional Pipelines Using Manual Transform
 
-Some tooling flows process source-like strings outside normal TypeScript compilation. For those
-cases, the repository uses `manual(...)` from `@twin.org/nameof-transformer` directly.
+Some tooling flows process source-like strings outside normal TypeScript compilation. For those cases, the repository uses `manual(...)` from `@twin.org/nameof-transformer` directly.
 
 Example: locale validation command expansion in
 `apps/validate-locales/src/commands/validateLocales.ts`.
@@ -178,5 +169,3 @@ This keeps `nameof` expansion consistent even when code is handled as text fragm
   tsconfig.
 - Use `tspc` in build and type-check scripts where transformer behaviour is required.
 - Add `NameOfPlugin` to `vitest.config.ts` so test-time behaviour matches compiled output.
-- If you execute TypeScript-like templates as strings, use the `manual(...)` helper to expand
-  `nameof` expressions before further processing.

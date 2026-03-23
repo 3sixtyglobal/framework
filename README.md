@@ -27,6 +27,7 @@ Alongside those libraries, the workspace includes applications that support oper
 
 ## Architecture
 
+- [Codebase Philosophy](docs/architecture/codebase-philosophy.md) - Why standardised patterns such as factories, transformers, and lint guard rails are used to keep behaviour consistent across packages.
 - [i18n Support](docs/architecture/i18n-support.md) - Internationalisation support model, locale conventions, and runtime usage patterns.
 - [TypeScript Transformers](docs/architecture/typescript-transformers.md) - Transformer pipeline, build integration, and runtime naming strategy.
 

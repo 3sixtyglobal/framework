@@ -1,7 +1,18 @@
 # i18n Support Architecture
 
-This document explains how internationalisation works in the framework workspace, how locale
-assets are built, and how locale key quality is enforced in CI.
+This document explains how internationalisation works in the framework workspace, how locale assets are built, and how locale key quality is enforced in CI.
+
+## Why We Use i18n
+
+Internationalisation is treated as a core engineering concern, not a presentation afterthought. The primary goal is to keep messages stable, consistent, and operable across packages while still allowing locale-specific output for end users and operators.
+
+Because the platform is designed for international use, i18n is a critical architectural requirement rather than an optional enhancement.
+
+There are three practical reasons this matters in this codebase. First, many packages share runtime and operational pathways, so free-text messages created ad hoc in each package quickly drift in wording, key shape, and semantics. A key-based i18n model reduces that drift by requiring messages to be defined and validated through one consistent mechanism.
+
+Second, diagnostics are part of the product surface. Errors, warnings, and logs are consumed by humans and automation, so predictable keys and placeholder structures are important for debugging, support workflows, and incident response. Consistent i18n conventions make those outputs easier to search, correlate, and reason about across package boundaries.
+
+Third, i18n quality can be validated automatically. By treating locale keys as structured artefacts rather than free-form strings, the build can fail fast when keys are missing, placeholders are inconsistent, or messages are no longer referenced. This protects runtime behaviour and prevents localisation regressions from reaching release artefacts.
 
 ## Overview
 
@@ -48,9 +59,7 @@ The workspace uses namespace prefixes such as:
 
 This keeps message intent explicit and allows tooling to infer keys from code patterns.
 
-For class-scoped messages, the top-level segment also commonly uses the camelCase class name of
-the originating type. For example, `GeneralError` messages from `ValidateLocales` are expected to
-resolve under keys such as `error.validateLocales.validationFailed`.
+For class-scoped messages, the top-level segment also commonly uses the camelCase class name of the originating type. For example, `GeneralError` messages from `ValidateLocales` are expected to resolve under keys such as `error.validateLocales.validationFailed`.
 
 ## How Errors Are Constructed
 
@@ -58,8 +67,7 @@ Error construction and localisation are designed to avoid free-text literals in 
 
 ### Error Classes
 
-Framework code uses typed error classes such as `GeneralError`, `ValidationError`,
-`UnauthorizedError`, and others.
+Framework code uses typed error classes such as `GeneralError`, `ValidationError`, `UnauthorizedError`, and others.
 
 `GeneralError` extends `BaseError` and typically receives:
 
@@ -71,8 +79,7 @@ Framework code uses typed error classes such as `GeneralError`, `ValidationError
 
 `BaseError` applies a key normalisation rule:
 
-- If `message` is camelCase and has no dot, it is automatically prefixed with the camel-cased
-  source.
+- If `message` is camelCase and has no dot, it is automatically prefixed with the camel-cased source.
 
 Example:
 
