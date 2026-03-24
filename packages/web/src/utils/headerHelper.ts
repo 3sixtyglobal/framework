@@ -1,7 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { GeneralError, Guards, Is } from "@twin.org/core";
+import { ArrayHelper, GeneralError, Guards, Is } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import type { HttpLinkRelType } from "../models/httpLinkRelType.js";
+import type { IHttpLinkHeader } from "../models/IHttpLinkHeader.js";
 
 /**
  * Class to helper with header operations.
@@ -40,7 +42,7 @@ export class HeaderHelper {
 	}
 
 	/**
-	 * Extract the properties from a Link header for a specific relation type.
+	 * Extract the first occurrence of properties from a Link header for a specific relation type.
 	 * @param linkHeader The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
 	 * @param relation The relation type to extract.
 	 * @returns The extracted URL, rel and optional params or undefined if invalid/missing.
@@ -48,18 +50,28 @@ export class HeaderHelper {
 	 */
 	public static extractLinkHeaderRelation(
 		linkHeader: unknown,
-		relation: string
-	):
-		| {
-				url: string;
-				urlQueryParams?: { [id: string]: string };
-				rel: string;
-				params?: { [id: string]: string };
-		  }
-		| undefined {
+		relation: HttpLinkRelType | string | RegExp
+	): IHttpLinkHeader | undefined {
 		const headers = HeaderHelper.extractLinkHeaders(linkHeader);
 		if (Is.arrayValue(headers)) {
-			return headers.find(h => h.rel === relation);
+			return headers.find(h => HeaderHelper.matchesLinkHeaderRelation(h.rel, relation));
+		}
+	}
+
+	/**
+	 * Extract multiple properties from a Link header for a specific relation type.
+	 * @param linkHeader The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
+	 * @param relation The relation type to extract.
+	 * @returns The extracted URL, rel and optional params or undefined if invalid/missing.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
+	 */
+	public static extractLinkHeaderRelations(
+		linkHeader: unknown,
+		relation: HttpLinkRelType | string | RegExp
+	): IHttpLinkHeader[] | undefined {
+		const headers = HeaderHelper.extractLinkHeaders(linkHeader);
+		if (Is.arrayValue(headers)) {
+			return headers.filter(h => HeaderHelper.matchesLinkHeaderRelation(h.rel, relation));
 		}
 	}
 
@@ -69,29 +81,39 @@ export class HeaderHelper {
 	 * @returns The extracted possible array of URL, rel and optional params or undefined if invalid/missing.
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
 	 */
-	public static extractLinkHeaders(linkHeader: unknown):
-		| {
-				url: string;
-				urlQueryParams?: { [id: string]: string };
-				rel: string;
-				params?: { [id: string]: string };
-		  }[]
-		| undefined {
-		if (Is.stringValue(linkHeader)) {
-			const header = HeaderHelper.extractLinkHeader(linkHeader);
-			return header ? [header] : [];
-		}
-		if (Is.arrayValue<string>(linkHeader)) {
+	public static extractLinkHeaders(linkHeader: unknown): IHttpLinkHeader[] | undefined {
+		const linkHeaderArray = ArrayHelper.fromObjectOrArray<string>(linkHeader as string | string[]);
+		if (Is.arrayValue<string>(linkHeaderArray)) {
 			const results = [];
-			for (const singleLinkHeader of linkHeader) {
-				const header = HeaderHelper.extractLinkHeader(singleLinkHeader);
-				if (header) {
-					results.push(header);
-				}
+			for (const singleLinkHeader of linkHeaderArray) {
+				const segments = HeaderHelper.extractLinkHeaderSegments(singleLinkHeader);
+				results.push(
+					...segments.map(l => HeaderHelper.extractLinkHeader(l)).filter(h => !Is.empty(h))
+				);
 			}
 			return results;
 		}
 		return undefined;
+	}
+
+	/**
+	 * Split a combined Link header value into individual link-value segments, comma separated.
+	 * @param linkHeader Raw Link header string.
+	 * @returns Array of individual link-value segments.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
+	 */
+	public static extractLinkHeaderSegments(linkHeader: string): string[] {
+		if (!Is.stringValue(linkHeader)) {
+			return [];
+		}
+		const trimmed = linkHeader.trim();
+		if (Is.empty(trimmed)) {
+			return [];
+		}
+		return trimmed
+			.split(/,(?=\s*<)/)
+			.map(s => s.trim())
+			.filter(s => !Is.empty(s));
 	}
 
 	/**
@@ -100,14 +122,7 @@ export class HeaderHelper {
 	 * @returns The extracted URL, rel and optional params or undefined if invalid/missing.
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
 	 */
-	public static extractLinkHeader(linkHeader: string):
-		| {
-				url: string;
-				urlQueryParams?: { [id: string]: string };
-				rel: string;
-				params?: { [id: string]: string };
-		  }
-		| undefined {
+	public static extractLinkHeader(linkHeader: string): IHttpLinkHeader | undefined {
 		if (!Is.stringValue(linkHeader)) {
 			return undefined;
 		}
@@ -137,13 +152,13 @@ export class HeaderHelper {
 				}
 			}
 
-			let rel;
+			let rel: string[] | undefined;
 			const params: { [id: string]: string } = {};
 
 			for (let i = 1; i < parts.length; i++) {
 				const relMatch = /rel="([^"]+)"/.exec(parts[i].trim());
 				if (relMatch?.[1]) {
-					rel = relMatch[1];
+					rel = HeaderHelper.normalizeLinkHeaderRelations(relMatch[1]);
 				} else {
 					const paramMatch = /([^=]+)="([^"]+)"/.exec(parts[i].trim());
 					if (paramMatch?.[1] && paramMatch?.[2]) {
@@ -152,7 +167,7 @@ export class HeaderHelper {
 				}
 			}
 
-			if (Is.stringValue(url) && Is.stringValue(rel)) {
+			if (Is.stringValue(url) && Is.arrayValue(rel)) {
 				return {
 					url,
 					urlQueryParams,
@@ -177,17 +192,30 @@ export class HeaderHelper {
 	public static createLinkHeader(
 		url: string,
 		urlQueryParams: { [id: string]: string } | undefined,
-		rel: string,
+		rel: HttpLinkRelType | HttpLinkRelType[] | string | string[],
 		params?: { [id: string]: string }
 	): string {
 		Guards.stringValue(HeaderHelper.CLASS_NAME, nameof(url), url);
-		Guards.stringValue(HeaderHelper.CLASS_NAME, nameof(rel), rel);
+
+		const relationValues = Is.string(rel)
+			? HeaderHelper.normalizeLinkHeaderRelations(rel)
+			: ArrayHelper.fromObjectOrArray(rel);
+
+		Guards.arrayValue(HeaderHelper.CLASS_NAME, nameof(rel), relationValues);
 
 		if (url.includes(">")) {
 			throw new GeneralError(HeaderHelper.CLASS_NAME, "invalidLinkHeaderURL");
 		}
-		if (rel.includes('"')) {
-			throw new GeneralError(HeaderHelper.CLASS_NAME, "invalidLinkHeaderRel");
+
+		for (let i = 0; i < relationValues.length; i++) {
+			Guards.stringValue(
+				HeaderHelper.CLASS_NAME,
+				`${nameof(rel)}.${i.toString()}`,
+				relationValues[i]
+			);
+			if (relationValues[i].includes('"') || relationValues[i].includes(" ")) {
+				throw new GeneralError(HeaderHelper.CLASS_NAME, "invalidLinkHeaderRel");
+			}
 		}
 
 		if (Is.objectValue(urlQueryParams)) {
@@ -204,12 +232,43 @@ export class HeaderHelper {
 			}
 		}
 
-		return `<${url}>; rel="${rel}"${
+		return `<${url}>; rel="${relationValues.join(" ")}"${
 			params
 				? Object.entries(params)
 						.map(([key, value]) => `; ${key}="${value}"`)
 						.join("")
 				: ""
 		}`;
+	}
+
+	/**
+	 * Does the relation selector match any of the link header relations.
+	 * @param relations The relations from the header.
+	 * @param relation The relation selector to test.
+	 * @returns True if the selector matches any relation.
+	 * @internal
+	 */
+	private static matchesLinkHeaderRelation(
+		relations: (HttpLinkRelType | string)[],
+		relation: HttpLinkRelType | string | RegExp
+	): boolean {
+		if (Is.string(relation)) {
+			return relations.includes(relation);
+		}
+
+		return relations.some(relValue => relation.test(relValue));
+	}
+
+	/**
+	 * Normalize a relation string into tokens.
+	 * @param relation The relation string.
+	 * @returns The relation tokens.
+	 * @internal
+	 */
+	private static normalizeLinkHeaderRelations(relation: string): HttpLinkRelType[] {
+		return relation
+			.split(/\s+/)
+			.map(relValue => relValue.trim())
+			.filter(relValue => !Is.empty(relValue)) as HttpLinkRelType[];
 	}
 }

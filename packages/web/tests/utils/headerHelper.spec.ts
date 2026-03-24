@@ -56,13 +56,13 @@ describe("HeaderHelper", () => {
 			urlQueryParams: {
 				cursor: "abc123"
 			},
-			rel: "next"
+			rel: ["next"]
 		});
 	});
 
 	test("can extract URL from a Link header with different rel", async () => {
 		const url = HeaderHelper.extractLinkHeader('<https://example.com/prev>; rel="prev"');
-		expect(url).toEqual({ url: "https://example.com/prev", rel: "prev" });
+		expect(url).toEqual({ url: "https://example.com/prev", rel: ["prev"] });
 	});
 
 	test("can extract URL, rel and params from a Link header", async () => {
@@ -71,7 +71,7 @@ describe("HeaderHelper", () => {
 		);
 		expect(link).toEqual({
 			url: "/terms",
-			rel: "copyright",
+			rel: ["copyright"],
 			params: {
 				anchor: "#foo",
 				title: "Example Title"
@@ -81,17 +81,22 @@ describe("HeaderHelper", () => {
 
 	test("can extract URL from a Link header with rel as URL", async () => {
 		const link = HeaderHelper.extractLinkHeader('</>; rel="http://example.net/foo"');
-		expect(link).toEqual({ url: "/", rel: "http://example.net/foo" });
+		expect(link).toEqual({ url: "/", rel: ["http://example.net/foo"] });
 	});
 
 	test("can extract URL from a Link header with start rel", async () => {
 		const link = HeaderHelper.extractLinkHeader('<https://example.org/>; rel="start"');
-		expect(link).toEqual({ url: "https://example.org/", rel: "start" });
+		expect(link).toEqual({ url: "https://example.org/", rel: ["start"] });
 	});
 
 	test("can extract URL from a Link header with index rel", async () => {
 		const link = HeaderHelper.extractLinkHeader('<https://example.org/index>; rel="index"');
-		expect(link).toEqual({ url: "https://example.org/index", rel: "index" });
+		expect(link).toEqual({ url: "https://example.org/index", rel: ["index"] });
+	});
+
+	test("can extract multiple relations from a Link header", async () => {
+		const link = HeaderHelper.extractLinkHeader('<https://example.org/index>; rel="next prev"');
+		expect(link).toEqual({ url: "https://example.org/index", rel: ["next", "prev"] });
 	});
 
 	test("returns undefined from a Link header without rel", async () => {
@@ -127,7 +132,7 @@ describe("HeaderHelper", () => {
 		);
 		expect(link).toEqual({
 			url: "https://example.com/resource",
-			rel: "next",
+			rel: ["next"],
 			params: {
 				title: "Example Title"
 			}
@@ -143,7 +148,7 @@ describe("HeaderHelper", () => {
 			urlQueryParams: {
 				cursor: "abc123"
 			},
-			rel: "next",
+			rel: ["next"],
 			params: {
 				anchor: "#foo"
 			}
@@ -159,7 +164,7 @@ describe("HeaderHelper", () => {
 		const link = HeaderHelper.extractLinkHeader(
 			'<https://example.com/resource>; rel="next"; rel="prev"'
 		);
-		expect(link).toEqual({ url: "https://example.com/resource", rel: "prev" });
+		expect(link).toEqual({ url: "https://example.com/resource", rel: ["prev"] });
 	});
 
 	test("can extract link headers from a valid Link header string", async () => {
@@ -172,10 +177,85 @@ describe("HeaderHelper", () => {
 				urlQueryParams: {
 					cursor: "abc123"
 				},
-				rel: "next",
+				rel: ["next"],
 				params: {
 					title: "Example"
 				}
+			}
+		]);
+	});
+
+	test("can extract link headers from a comma separated Link header string", async () => {
+		const headers = HeaderHelper.extractLinkHeaders(
+			'<https://api.example.com/issues?page=2>; rel="prev", <https://api.example.com/issues?page=4>; rel="next", <https://api.example.com/issues?page=10>; rel="last", <https://api.example.com/issues?page=1>; rel="first"'
+		);
+
+		expect(headers).toEqual([
+			{
+				url: "https://api.example.com/issues?page=2",
+				urlQueryParams: {
+					page: "2"
+				},
+				rel: ["prev"]
+			},
+			{
+				url: "https://api.example.com/issues?page=4",
+				urlQueryParams: {
+					page: "4"
+				},
+				rel: ["next"]
+			},
+			{
+				url: "https://api.example.com/issues?page=10",
+				urlQueryParams: {
+					page: "10"
+				},
+				rel: ["last"]
+			},
+			{
+				url: "https://api.example.com/issues?page=1",
+				urlQueryParams: {
+					page: "1"
+				},
+				rel: ["first"]
+			}
+		]);
+	});
+
+	test("can extract link headers from an array containing comma separated Link header strings", async () => {
+		const headers = HeaderHelper.extractLinkHeaders([
+			'<https://api.example.com/issues?page=2>; rel="prev", <https://api.example.com/issues?page=4>; rel="next"',
+			'<https://api.example.com/issues?page=10>; rel="last", <https://api.example.com/issues?page=1>; rel="first"'
+		]);
+
+		expect(headers).toEqual([
+			{
+				url: "https://api.example.com/issues?page=2",
+				urlQueryParams: {
+					page: "2"
+				},
+				rel: ["prev"]
+			},
+			{
+				url: "https://api.example.com/issues?page=4",
+				urlQueryParams: {
+					page: "4"
+				},
+				rel: ["next"]
+			},
+			{
+				url: "https://api.example.com/issues?page=10",
+				urlQueryParams: {
+					page: "10"
+				},
+				rel: ["last"]
+			},
+			{
+				url: "https://api.example.com/issues?page=1",
+				urlQueryParams: {
+					page: "1"
+				},
+				rel: ["first"]
 			}
 		]);
 	});
@@ -203,14 +283,14 @@ describe("HeaderHelper", () => {
 				urlQueryParams: {
 					cursor: "abc123"
 				},
-				rel: "next"
+				rel: ["next"]
 			},
 			{
 				url: "https://example.com/api?page=2",
 				urlQueryParams: {
 					page: "2"
 				},
-				rel: "prev"
+				rel: ["prev"]
 			}
 		]);
 	});
@@ -223,7 +303,7 @@ describe("HeaderHelper", () => {
 			urlQueryParams: {
 				cursor: "abc123"
 			},
-			rel: "next"
+			rel: ["next"]
 		});
 	});
 
@@ -241,8 +321,64 @@ describe("HeaderHelper", () => {
 			urlQueryParams: {
 				page: "2"
 			},
-			rel: "prev"
+			rel: ["prev"]
 		});
+	});
+
+	test("can extract a specific relation from a header with multiple relations", async () => {
+		const header = HeaderHelper.extractLinkHeaderRelation(
+			'<https://example.com/api?page=2>; rel="next prev"',
+			"prev"
+		);
+
+		expect(header).toEqual({
+			url: "https://example.com/api?page=2",
+			urlQueryParams: {
+				page: "2"
+			},
+			rel: ["next", "prev"]
+		});
+	});
+
+	test("can extract matching relations from a comma separated Link header string", async () => {
+		const headers = HeaderHelper.extractLinkHeaderRelations(
+			'<https://api.example.com/issues?page=2>; rel="prev", <https://api.example.com/issues?page=4>; rel="next", <https://api.example.com/issues?page=10>; rel="last", <https://api.example.com/issues?page=1>; rel="first"',
+			"next"
+		);
+
+		expect(headers).toEqual([
+			{
+				url: "https://api.example.com/issues?page=4",
+				urlQueryParams: {
+					page: "4"
+				},
+				rel: ["next"]
+			}
+		]);
+	});
+
+	test("can extract matching relations with a regex from a comma separated Link header string", async () => {
+		const headers = HeaderHelper.extractLinkHeaderRelations(
+			'<https://api.example.com/issues?page=2>; rel="prev", <https://api.example.com/issues?page=4>; rel="next", <https://api.example.com/issues?page=10>; rel="last", <https://api.example.com/issues?page=1>; rel="first"',
+			/^(first|last)$/
+		);
+
+		expect(headers).toEqual([
+			{
+				url: "https://api.example.com/issues?page=10",
+				urlQueryParams: {
+					page: "10"
+				},
+				rel: ["last"]
+			},
+			{
+				url: "https://api.example.com/issues?page=1",
+				urlQueryParams: {
+					page: "1"
+				},
+				rel: ["first"]
+			}
+		]);
 	});
 
 	test("returns undefined when extractLinkHeaderRelation can't find the relation", async () => {
@@ -290,6 +426,23 @@ describe("HeaderHelper", () => {
 		expect(header).toEqual('<https://example.com/api?page=1>; rel="prev"');
 	});
 
+	test("can create a Link header with multiple relations from an array", async () => {
+		const header = HeaderHelper.createLinkHeader("https://example.com/api", { page: "1" }, [
+			"next",
+			"prev"
+		]);
+		expect(header).toEqual('<https://example.com/api?page=1>; rel="next prev"');
+	});
+
+	test("can create a Link header with multiple relations from a string", async () => {
+		const header = HeaderHelper.createLinkHeader(
+			"https://example.com/api",
+			{ page: "1" },
+			"next prev"
+		);
+		expect(header).toEqual('<https://example.com/api?page=1>; rel="next prev"');
+	});
+
 	test("can create a Link header with self rel", async () => {
 		const header = HeaderHelper.createLinkHeader("https://example.com/resource", undefined, "self");
 		expect(header).toEqual('<https://example.com/resource>; rel="self"');
@@ -333,7 +486,7 @@ describe("HeaderHelper", () => {
 				undefined,
 				undefined as unknown as string
 			)
-		).toThrow("guard.string");
+		).toThrow("guard.array");
 	});
 
 	test("throws error when creating Link header with empty rel", async () => {
@@ -346,5 +499,11 @@ describe("HeaderHelper", () => {
 		expect(() => HeaderHelper.createLinkHeader("https://example.com", undefined, 'n"ext')).toThrow(
 			"headerHelper.invalidLinkHeaderRel"
 		);
+	});
+
+	test("throws error when creating Link header with rel array entry containing spaces", async () => {
+		expect(() =>
+			HeaderHelper.createLinkHeader("https://example.com", undefined, ["next prev"])
+		).toThrow("headerHelper.invalidLinkHeaderRel");
 	});
 });

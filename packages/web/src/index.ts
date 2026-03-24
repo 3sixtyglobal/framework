@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0.
 export * from "./errors/fetchError.js";
 export * from "./models/headerTypes.js";
+export * from "./models/httpLinkRelType.js";
 export * from "./models/httpMethod.js";
 export * from "./models/httpStatusCode.js";
 export * from "./models/IFetchOptions.js";
 export * from "./models/IHttpHeaders.js";
+export * from "./models/IHttpLinkHeader.js";
 export * from "./models/IJwk.js";
 export * from "./models/IJwtHeader.js";
 export * from "./models/IJwtPayload.js";
