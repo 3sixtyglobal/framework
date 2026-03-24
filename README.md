@@ -36,7 +36,7 @@ Alongside those libraries, the workspace includes applications that support oper
 - [Context IDs](docs/architecture/context-ids.mdx) - Context propagation, key derivation, short forms, and data partitioning rules.
 - [Data Validation](docs/architecture/data-validation.mdx) - Validation architecture across type handlers, JSON Schema, JSON-LD, and schema generation tooling.
 - [Engine](docs/architecture/engine.mdx) - Engine responsibilities, data model, initialisation pipeline, and lifecycle semantics.
-used to keep behaviour consistent across packages.
+  used to keep behaviour consistent across packages.
 
 ## Contributing
 
