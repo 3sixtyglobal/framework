@@ -73,7 +73,7 @@ export const HttpLinkRelType = {
 	me: "me",
 
 	/**
-	 * Preemptively fetch a module and optionally its dependencies.
+	 * Pre-emptively fetch a module and optionally its dependencies.
 	 */
 	modulePreload: "modulepreload",
 
