@@ -52,14 +52,24 @@
 		"ttsc",
 		"ttypescript",
 		"UNECE",
-		"UVQT"
+		"UVQT",
+		"ODRL",
+		"CEFACT",
+		"Dataspace",
+		"TLIP",
+		"IPFS",
+		"GTSC",
+		"Firestore"
 	],
 	"ignoreRegExpList": [
 		"/from\\s+(['\"]).*\\1/",
 		"/eslint-disable.*/",
 		"/^```typescript[\\s\\S]*?```$/gm",
 		"/^```shell[\\s\\S]*?```$/gm",
-		"/^```json[\\s\\S]*?```$/gm"
+		"/^```json[\\s\\S]*?```$/gm",
+		"/<code\\b[^>]*>[\\s\\S]*?<\\/code>/g",
+		"/<M\\b[^>]*>[\\s\\S]*?<\\/M>/g",
+		"/`[^`\\r\\n]+`/g"
 	],
 	"ignoreWords": ["noopener", "noreferrer", "pingback"]
 }
