@@ -68,9 +68,9 @@ The extracted token if it exists.
 
 ### extractLinkHeaderRelation() {#extractlinkheaderrelation}
 
-> `static` **extractLinkHeaderRelation**(`linkHeader`, `relation`): \{ `url`: `string`; `urlQueryParams?`: \{\[`id`: `string`\]: `string`; \}; `rel`: `string`; `params?`: \{\[`id`: `string`\]: `string`; \}; \} \| `undefined`
+> `static` **extractLinkHeaderRelation**(`linkHeader`, `relation`): [`IHttpLinkHeader`](../interfaces/IHttpLinkHeader.md) \| `undefined`
 
-Extract the properties from a Link header for a specific relation type.
+Extract the first occurrence of properties from a Link header for a specific relation type.
 
 #### Parameters
 
@@ -82,13 +82,45 @@ The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
 
 ##### relation
 
-`string`
+`string` \| `RegExp`
 
 The relation type to extract.
 
 #### Returns
 
-\{ `url`: `string`; `urlQueryParams?`: \{\[`id`: `string`\]: `string`; \}; `rel`: `string`; `params?`: \{\[`id`: `string`\]: `string`; \}; \} \| `undefined`
+[`IHttpLinkHeader`](../interfaces/IHttpLinkHeader.md) \| `undefined`
+
+The extracted URL, rel and optional params or undefined if invalid/missing.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
+
+***
+
+### extractLinkHeaderRelations() {#extractlinkheaderrelations}
+
+> `static` **extractLinkHeaderRelations**(`linkHeader`, `relation`): [`IHttpLinkHeader`](../interfaces/IHttpLinkHeader.md)[] \| `undefined`
+
+Extract multiple properties from a Link header for a specific relation type.
+
+#### Parameters
+
+##### linkHeader
+
+`unknown`
+
+The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
+
+##### relation
+
+`string` \| `RegExp`
+
+The relation type to extract.
+
+#### Returns
+
+[`IHttpLinkHeader`](../interfaces/IHttpLinkHeader.md)[] \| `undefined`
 
 The extracted URL, rel and optional params or undefined if invalid/missing.
 
@@ -100,7 +132,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
 
 ### extractLinkHeaders() {#extractlinkheaders}
 
-> `static` **extractLinkHeaders**(`linkHeader`): `object`[] \| `undefined`
+> `static` **extractLinkHeaders**(`linkHeader`): [`IHttpLinkHeader`](../interfaces/IHttpLinkHeader.md)[] \| `undefined`
 
 Extract the link headers.
 
@@ -114,7 +146,7 @@ The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
 
 #### Returns
 
-`object`[] \| `undefined`
+[`IHttpLinkHeader`](../interfaces/IHttpLinkHeader.md)[] \| `undefined`
 
 The extracted possible array of URL, rel and optional params or undefined if invalid/missing.
 
@@ -124,9 +156,35 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
 
 ***
 
+### extractLinkHeaderSegments() {#extractlinkheadersegments}
+
+> `static` **extractLinkHeaderSegments**(`linkHeader`): `string`[]
+
+Split a combined Link header value into individual link-value segments, comma separated.
+
+#### Parameters
+
+##### linkHeader
+
+`string`
+
+Raw Link header string.
+
+#### Returns
+
+`string`[]
+
+Array of individual link-value segments.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
+
+***
+
 ### extractLinkHeader() {#extractlinkheader}
 
-> `static` **extractLinkHeader**(`linkHeader`): \{ `url`: `string`; `urlQueryParams?`: \{\[`id`: `string`\]: `string`; \}; `rel`: `string`; `params?`: \{\[`id`: `string`\]: `string`; \}; \} \| `undefined`
+> `static` **extractLinkHeader**(`linkHeader`): [`IHttpLinkHeader`](../interfaces/IHttpLinkHeader.md) \| `undefined`
 
 Extract the properties from a Link header.
 
@@ -140,7 +198,7 @@ The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
 
 #### Returns
 
-\{ `url`: `string`; `urlQueryParams?`: \{\[`id`: `string`\]: `string`; \}; `rel`: `string`; `params?`: \{\[`id`: `string`\]: `string`; \}; \} \| `undefined`
+[`IHttpLinkHeader`](../interfaces/IHttpLinkHeader.md) \| `undefined`
 
 The extracted URL, rel and optional params or undefined if invalid/missing.
 
@@ -172,7 +230,7 @@ Optional query parameters to include in the URL.
 
 ##### rel
 
-`string`
+`string` \| `string`[] \| [`HttpLinkRelType`](../type-aliases/HttpLinkRelType.md)[]
 
 The relation type (e.g., "next", "prev", "self").
 

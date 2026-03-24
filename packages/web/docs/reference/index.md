@@ -15,6 +15,7 @@
 
 - [IFetchOptions](interfaces/IFetchOptions.md)
 - [IHttpHeaders](interfaces/IHttpHeaders.md)
+- [IHttpLinkHeader](interfaces/IHttpLinkHeader.md)
 
 ## Type Aliases
 
@@ -22,6 +23,7 @@
 - [IJwtHeader](type-aliases/IJwtHeader.md)
 - [IJwtPayload](type-aliases/IJwtPayload.md)
 - [HeaderTypes](type-aliases/HeaderTypes.md)
+- [HttpLinkRelType](type-aliases/HttpLinkRelType.md)
 - [HttpMethod](type-aliases/HttpMethod.md)
 - [HttpStatusCode](type-aliases/HttpStatusCode.md)
 - [JwkCryptoKey](type-aliases/JwkCryptoKey.md)
@@ -30,6 +32,7 @@
 ## Variables
 
 - [HeaderTypes](variables/HeaderTypes.md)
+- [HttpLinkRelType](variables/HttpLinkRelType.md)
 - [HttpMethod](variables/HttpMethod.md)
 - [HttpStatusCode](variables/HttpStatusCode.md)
 - [MimeTypes](variables/MimeTypes.md)
