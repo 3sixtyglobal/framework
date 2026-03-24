@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.0.3-next.26](https://github.com/twinfoundation/framework/compare/entity-v0.0.3-next.25...entity-v0.0.3-next.26) (2026-03-24)
+
+
+### Miscellaneous Chores
+
+* **entity:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.25 to 0.0.3-next.26
+    * @twin.org/core bumped from 0.0.3-next.25 to 0.0.3-next.26
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.25 to 0.0.3-next.26
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.25 to 0.0.3-next.26
+    * @twin.org/validate-locales bumped from 0.0.3-next.25 to 0.0.3-next.26
+
 ## [0.0.3-next.25](https://github.com/twinfoundation/framework/compare/entity-v0.0.3-next.24...entity-v0.0.3-next.25) (2026-03-23)
 
 
