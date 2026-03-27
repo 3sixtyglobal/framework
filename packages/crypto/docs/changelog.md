@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.0.3-next.27](https://github.com/twinfoundation/framework/compare/crypto-v0.0.3-next.26...crypto-v0.0.3-next.27) (2026-03-27)
+
+
+### Features
+
+* add crypto argon2id ([#255](https://github.com/twinfoundation/framework/issues/255)) ([27fe3a7](https://github.com/twinfoundation/framework/commit/27fe3a72eeb0f398a278ebb3f1cb9c4dd459743c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.26 to 0.0.3-next.27
+    * @twin.org/nameof bumped from 0.0.3-next.26 to 0.0.3-next.27
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.26 to 0.0.3-next.27
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.26 to 0.0.3-next.27
+    * @twin.org/validate-locales bumped from 0.0.3-next.26 to 0.0.3-next.27
+
 ## [0.0.3-next.26](https://github.com/twinfoundation/framework/compare/crypto-v0.0.3-next.25...crypto-v0.0.3-next.26) (2026-03-24)
 
 
