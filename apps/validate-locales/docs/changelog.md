@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.0.3-next.28](https://github.com/twinfoundation/framework/compare/validate-locales-v0.0.3-next.27...validate-locales-v0.0.3-next.28) (2026-03-27)
+
+
+### Miscellaneous Chores
+
+* **validate-locales:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.0.3-next.27 to 0.0.3-next.28
+    * @twin.org/core bumped from 0.0.3-next.27 to 0.0.3-next.28
+    * @twin.org/nameof bumped from 0.0.3-next.27 to 0.0.3-next.28
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.27 to 0.0.3-next.28
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.0.3-next.27 to 0.0.3-next.28
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.27 to 0.0.3-next.28
+
 ## [0.0.3-next.27](https://github.com/twinfoundation/framework/compare/validate-locales-v0.0.3-next.26...validate-locales-v0.0.3-next.27) (2026-03-27)
 
 

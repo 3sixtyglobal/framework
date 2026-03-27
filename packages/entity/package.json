@@ -1,6 +1,6 @@
 {
 	"name": "@twin.org/entity",
-	"version": "0.0.3-next.27",
+	"version": "0.0.3-next.28",
 	"description": "Helpers for defining and working with entities",
 	"repository": {
 		"type": "git",
@@ -28,15 +28,15 @@
 		"dist:no-test": "npm run clean && npm run build && npm run test:build"
 	},
 	"dependencies": {
-		"@twin.org/nameof": "0.0.3-next.27",
-		"@twin.org/core": "0.0.3-next.27",
+		"@twin.org/nameof": "0.0.3-next.28",
+		"@twin.org/core": "0.0.3-next.28",
 		"reflect-metadata": "0.2.2",
 		"tslib": "2.8.1"
 	},
 	"devDependencies": {
-		"@twin.org/nameof-transformer": "0.0.3-next.27",
-		"@twin.org/nameof-vitest-plugin": "0.0.3-next.27",
-		"@twin.org/validate-locales": "0.0.3-next.27",
+		"@twin.org/nameof-transformer": "0.0.3-next.28",
+		"@twin.org/nameof-vitest-plugin": "0.0.3-next.28",
+		"@twin.org/validate-locales": "0.0.3-next.28",
 		"@vitest/coverage-v8": "4.1.1",
 		"copyfiles": "2.4.1",
 		"rimraf": "6.1.3",

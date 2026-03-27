@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.0.3-next.28](https://github.com/twinfoundation/framework/compare/entity-v0.0.3-next.27...entity-v0.0.3-next.28) (2026-03-27)
+
+
+### Bug Fixes
+
+* update copyright year ([#260](https://github.com/twinfoundation/framework/issues/260)) ([c4ad930](https://github.com/twinfoundation/framework/commit/c4ad930fcc84ba6b5447a8074574329870b4c3f5))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.27 to 0.0.3-next.28
+    * @twin.org/core bumped from 0.0.3-next.27 to 0.0.3-next.28
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.27 to 0.0.3-next.28
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.27 to 0.0.3-next.28
+    * @twin.org/validate-locales bumped from 0.0.3-next.27 to 0.0.3-next.28
+
 ## [0.0.3-next.27](https://github.com/twinfoundation/framework/compare/entity-v0.0.3-next.26...entity-v0.0.3-next.27) (2026-03-27)
 
 
