@@ -9,6 +9,7 @@
 - [Secp256k1](classes/Secp256k1.md)
 - [X25519](classes/X25519.md)
 - [Zip215](classes/Zip215.md)
+- [Argon2id](classes/Argon2id.md)
 - [Blake2b](classes/Blake2b.md)
 - [Blake3](classes/Blake3.md)
 - [HmacSha1](classes/HmacSha1.md)

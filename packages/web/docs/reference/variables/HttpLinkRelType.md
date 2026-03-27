@@ -88,7 +88,7 @@ Indicates the current document represents the linked identity.
 
 > `readonly` **modulePreload**: `"modulepreload"` = `"modulepreload"`
 
-Preemptively fetch a module and optionally its dependencies.
+Pre-emptively fetch a module and optionally its dependencies.
 
 ### next {#next}
 
