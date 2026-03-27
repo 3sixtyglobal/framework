@@ -7,6 +7,7 @@ export * from "./curves/ed25519.js";
 export * from "./curves/secp256k1.js";
 export * from "./curves/x25519.js";
 export * from "./curves/zip215.js";
+export * from "./hashes/argon2id.js";
 export * from "./hashes/blake2b.js";
 export * from "./hashes/blake3.js";
 export * from "./hashes/hmacSha1.js";
