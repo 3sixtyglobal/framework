@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.0.3-next.30](https://github.com/twinfoundation/framework/compare/validate-locales-v0.0.3-next.29...validate-locales-v0.0.3-next.30) (2026-04-14)
+
+
+### Features
+
+* additional error types in validate locales ([d0e87d6](https://github.com/twinfoundation/framework/commit/d0e87d6d9430e91417636d30dd4865fa6a31d825))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.0.3-next.29 to 0.0.3-next.30
+    * @twin.org/core bumped from 0.0.3-next.29 to 0.0.3-next.30
+    * @twin.org/nameof bumped from 0.0.3-next.29 to 0.0.3-next.30
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.29 to 0.0.3-next.30
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.0.3-next.29 to 0.0.3-next.30
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.29 to 0.0.3-next.30
+
 ## [0.0.3-next.29](https://github.com/twinfoundation/framework/compare/validate-locales-v0.0.3-next.28...validate-locales-v0.0.3-next.29) (2026-04-14)
 
 
