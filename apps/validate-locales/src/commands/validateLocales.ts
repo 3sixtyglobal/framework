@@ -21,7 +21,17 @@ const ERROR_TYPES = [
 	{ name: "UnauthorizedError", dynamicPropertyIndex: 2 },
 	{ name: "NotSupportedError", dynamicPropertyIndex: 3, inbuiltProperties: ["methodName"] },
 	{ name: "UnprocessableError", dynamicPropertyIndex: 2 },
-	{ name: "ConflictError", dynamicPropertyIndex: 4, inbuiltProperties: ["conflictId", "conflicts"] }
+	{
+		name: "ConflictError",
+		dynamicPropertyIndex: 4,
+		inbuiltProperties: ["conflictId", "conflicts"]
+	},
+	{
+		name: "TooManyRequestsError",
+		dynamicPropertyIndex: 4,
+		inbuiltProperties: ["requestCount", "nextRequestTime"]
+	},
+	{ name: "ForbiddenError", dynamicPropertyIndex: 2 }
 ];
 
 const SKIP_FILES = ["**/models/**/*.ts"];
