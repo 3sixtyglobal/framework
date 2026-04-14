@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.0.3-next.31](https://github.com/twinfoundation/framework/compare/crypto-cli-v0.0.3-next.30...crypto-cli-v0.0.3-next.31) (2026-04-14)
+
+
+### Miscellaneous Chores
+
+* **crypto-cli:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.0.3-next.30 to 0.0.3-next.31
+    * @twin.org/core bumped from 0.0.3-next.30 to 0.0.3-next.31
+    * @twin.org/crypto bumped from 0.0.3-next.30 to 0.0.3-next.31
+    * @twin.org/nameof bumped from 0.0.3-next.30 to 0.0.3-next.31
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.0.3-next.30 to 0.0.3-next.31
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.30 to 0.0.3-next.31
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.30 to 0.0.3-next.31
+    * @twin.org/validate-locales bumped from 0.0.3-next.30 to 0.0.3-next.31
+
 ## [0.0.3-next.30](https://github.com/twinfoundation/framework/compare/crypto-cli-v0.0.3-next.29...crypto-cli-v0.0.3-next.30) (2026-04-14)
 
 

@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.3-next.31](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.30...core-v0.0.3-next.31) (2026-04-14)
+
+
+### Features
+
+* improve async cache edge cases ([4e57a6e](https://github.com/twinfoundation/framework/commit/4e57a6ec4113533b0ea903eae7d469200fa1348c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.30 to 0.0.3-next.31
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.30 to 0.0.3-next.31
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.30 to 0.0.3-next.31
+
 ## [0.0.3-next.30](https://github.com/twinfoundation/framework/compare/core-v0.0.3-next.29...core-v0.0.3-next.30) (2026-04-14)
 
 
