@@ -66,6 +66,195 @@ The extracted token if it exists.
 
 ***
 
+### extractAcceptLanguage() {#extractacceptlanguage}
+
+> `static` **extractAcceptLanguage**(`headers?`): `object`[] \| `undefined`
+
+Extract parsed language preferences from the Accept-Language header.
+
+#### Parameters
+
+##### headers?
+
+[`IHttpHeaders`](../interfaces/IHttpHeaders.md)
+
+The HTTP request headers.
+
+#### Returns
+
+`object`[] \| `undefined`
+
+The parsed language preferences ordered by highest quality first, or undefined if missing or invalid.
+
+***
+
+### parseAcceptLanguage() {#parseacceptlanguage}
+
+> `static` **parseAcceptLanguage**(`acceptLanguage`): `object`[] \| `undefined`
+
+Parse one or more Accept-Language header values into language preferences.
+
+#### Parameters
+
+##### acceptLanguage
+
+`string` \| `string`[] \| `undefined`
+
+The Accept-Language header value or values.
+
+#### Returns
+
+`object`[] \| `undefined`
+
+The parsed language preferences ordered by highest quality first, or undefined if missing or if any entry is invalid.
+
+***
+
+### extractClientIps() {#extractclientips}
+
+> `static` **extractClientIps**(`headers?`): `string`[]
+
+Extract client IP addresses from HTTP request headers.
+Checks all `X-Forwarded-For` and `X-Real-IP` header values for proxied requests.
+
+#### Parameters
+
+##### headers?
+
+[`IHttpHeaders`](../interfaces/IHttpHeaders.md)
+
+The HTTP request headers.
+
+#### Returns
+
+`string`[]
+
+The extracted client IP addresses in header order.
+
+***
+
+### extractUserAgent() {#extractuseragent}
+
+> `static` **extractUserAgent**(`headers?`, `maxLength?`): `string` \| `undefined`
+
+Extract the User-Agent header from the HTTP request context.
+
+#### Parameters
+
+##### headers?
+
+[`IHttpHeaders`](../interfaces/IHttpHeaders.md)
+
+The HTTP request headers.
+
+##### maxLength?
+
+`number`
+
+Optional maximum length for the User-Agent string to prevent excessively long values.
+
+#### Returns
+
+`string` \| `undefined`
+
+The user agent string or undefined if not available.
+
+***
+
+### extractCorrelationId() {#extractcorrelationid}
+
+> `static` **extractCorrelationId**(`headers?`, `maxLength?`): `string` \| `undefined`
+
+Extract a correlation ID for request tracing from the X-Correlation-ID header.
+
+#### Parameters
+
+##### headers?
+
+[`IHttpHeaders`](../interfaces/IHttpHeaders.md)
+
+The HTTP request headers.
+
+##### maxLength?
+
+`number`
+
+Optional maximum length for the extracted correlation ID.
+
+#### Returns
+
+`string` \| `undefined`
+
+The correlation ID, or undefined if the header is missing or invalid.
+
+***
+
+### isIpAddress() {#isipaddress}
+
+> `static` **isIpAddress**(`ip`): `boolean`
+
+Validate if a string is a valid IP address (IPv4 or IPv6).
+
+#### Parameters
+
+##### ip
+
+`string`
+
+The IP address to validate.
+
+#### Returns
+
+`boolean`
+
+True if valid, false otherwise.
+
+***
+
+### isIpAddressV4() {#isipaddressv4}
+
+> `static` **isIpAddressV4**(`ip`): `boolean`
+
+Validate if a string is a valid IP address IPv4.
+
+#### Parameters
+
+##### ip
+
+`string`
+
+The IP address to validate.
+
+#### Returns
+
+`boolean`
+
+True if valid, false otherwise.
+
+***
+
+### isIpAddressV6() {#isipaddressv6}
+
+> `static` **isIpAddressV6**(`ip`): `boolean`
+
+Validate if a string is a valid IP address IPv6.
+
+#### Parameters
+
+##### ip
+
+`string`
+
+The IP address to validate.
+
+#### Returns
+
+`boolean`
+
+True if valid, false otherwise.
+
+***
+
 ### extractLinkHeaderRelation() {#extractlinkheaderrelation}
 
 > `static` **extractLinkHeaderRelation**(`linkHeader`, `relation`): [`IHttpLinkHeader`](../interfaces/IHttpLinkHeader.md) \| `undefined`
