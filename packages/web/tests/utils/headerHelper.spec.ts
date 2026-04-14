@@ -47,6 +47,283 @@ describe("HeaderHelper", () => {
 		const token = HeaderHelper.extractBearer("bearer my-token");
 		expect(token).toEqual("");
 	});
+
+	test("can parse accept-language header entries with quality values", async () => {
+		const locale = HeaderHelper.parseAcceptLanguage("fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5");
+
+		expect(locale).toEqual([
+			{ language: "fr-CH", quality: 1 },
+			{ language: "fr", quality: 0.9 },
+			{ language: "en", quality: 0.8 },
+			{ language: "de", quality: 0.7 },
+			{ language: "*", quality: 0.5 }
+		]);
+	});
+
+	test("can order parsed accept-language entries by highest quality first", async () => {
+		const locale = HeaderHelper.parseAcceptLanguage("de;q=0.7, fr-CH, *;q=0.5, en;q=0.8, fr;q=0.9");
+
+		expect(locale).toEqual([
+			{ language: "fr-CH", quality: 1 },
+			{ language: "fr", quality: 0.9 },
+			{ language: "en", quality: 0.8 },
+			{ language: "de", quality: 0.7 },
+			{ language: "*", quality: 0.5 }
+		]);
+	});
+
+	test("can parse a simple language code from an accept-language header", async () => {
+		const locale = HeaderHelper.parseAcceptLanguage("fr");
+
+		expect(locale).toEqual([{ language: "fr", quality: 1 }]);
+	});
+
+	test("can parse multiple accept-language header values", async () => {
+		const locale = HeaderHelper.parseAcceptLanguage([
+			"de;q=0.7, fr-CH",
+			"*;q=0.5, en;q=0.8, fr;q=0.9"
+		]);
+
+		expect(locale).toEqual([
+			{ language: "fr-CH", quality: 1 },
+			{ language: "fr", quality: 0.9 },
+			{ language: "en", quality: 0.8 },
+			{ language: "de", quality: 0.7 },
+			{ language: "*", quality: 0.5 }
+		]);
+	});
+
+	test("can parse common accept-language tags with script and numeric region subtags", async () => {
+		const locale = HeaderHelper.parseAcceptLanguage("zh-Hant-TW, es-419;q=0.9, en;q=0.8");
+
+		expect(locale).toEqual([
+			{ language: "zh-Hant-TW", quality: 1 },
+			{ language: "es-419", quality: 0.9 },
+			{ language: "en", quality: 0.8 }
+		]);
+	});
+
+	test("can ignore unknown accept-language parameters while still parsing q values", async () => {
+		const locale = HeaderHelper.parseAcceptLanguage(
+			"en-GB;foo=bar;baz=qux, fr;q=0.9;test=value, de;custom=true"
+		);
+
+		expect(locale).toEqual([
+			{ language: "en-GB", quality: 1 },
+			{ language: "de", quality: 1 },
+			{ language: "fr", quality: 0.9 }
+		]);
+	});
+
+	test("returns undefined for an invalid accept-language header", async () => {
+		const locale = HeaderHelper.parseAcceptLanguage("123-invalid");
+
+		expect(locale).toBeUndefined();
+	});
+
+	test("returns undefined when any accept-language entry is invalid", async () => {
+		const locale = HeaderHelper.parseAcceptLanguage("en-US, ***;q=0.5");
+
+		expect(locale).toBeUndefined();
+	});
+
+	test("returns undefined for an empty accept-language header", async () => {
+		const locale = HeaderHelper.parseAcceptLanguage(undefined);
+
+		expect(locale).toBeUndefined();
+	});
+
+	test("can extract parsed languages from request headers", async () => {
+		const locale = HeaderHelper.extractAcceptLanguage({
+			"accept-language": "de-CH,de;q=0.9,en;q=0.8"
+		});
+
+		expect(locale).toEqual([
+			{ language: "de-CH", quality: 1 },
+			{ language: "de", quality: 0.9 },
+			{ language: "en", quality: 0.8 }
+		]);
+	});
+
+	test("can extract parsed languages from all accept-language header values", async () => {
+		const locale = HeaderHelper.extractAcceptLanguage({
+			"accept-language": ["es-MX,es;q=0.9", "en-GB,en;q=0.8"]
+		});
+
+		expect(locale).toEqual([
+			{ language: "es-MX", quality: 1 },
+			{ language: "en-GB", quality: 1 },
+			{ language: "es", quality: 0.9 },
+			{ language: "en", quality: 0.8 }
+		]);
+	});
+
+	test("returns undefined when the request locale header is invalid", async () => {
+		const locale = HeaderHelper.extractAcceptLanguage({
+			"accept-language": "***"
+		});
+
+		expect(locale).toBeUndefined();
+	});
+
+	test("can validate a valid IPv4 address", async () => {
+		const isValid = HeaderHelper.isIpAddressV4("127.0.0.1");
+		expect(isValid).toBe(true);
+	});
+
+	test("can reject an invalid IPv4 address", async () => {
+		const isValid = HeaderHelper.isIpAddressV4("256.0.0.1");
+		expect(isValid).toBe(false);
+	});
+
+	test("can validate a valid IPv6 address", async () => {
+		const isValid = HeaderHelper.isIpAddressV6("2001:0db8:85a3:0000:0000:8a2e:0370:7334");
+		expect(isValid).toBe(true);
+	});
+
+	test("can reject an invalid IPv6 address", async () => {
+		const isValid = HeaderHelper.isIpAddressV6("2001:0db8:85a3:0000:0000:8a2e:0370:zzzz");
+		expect(isValid).toBe(false);
+	});
+
+	test("can validate IPv4 and IPv6 addresses using isIpAddress", async () => {
+		expect(HeaderHelper.isIpAddress("192.168.1.10")).toBe(true);
+		expect(HeaderHelper.isIpAddress("2001:0db8:85a3:0000:0000:8a2e:0370:7334")).toBe(true);
+		expect(HeaderHelper.isIpAddress("not-an-ip")).toBe(false);
+	});
+
+	test("can extract all valid client IPs from x-forwarded-for", async () => {
+		const clientIp = HeaderHelper.extractClientIps({
+			"x-forwarded-for": "203.0.113.10, 198.51.100.2",
+			"x-real-ip": "198.51.100.20"
+		});
+
+		expect(clientIp).toEqual(["203.0.113.10", "198.51.100.2", "198.51.100.20"]);
+	});
+
+	test("can fall back to x-real-ip when x-forwarded-for is invalid", async () => {
+		const clientIp = HeaderHelper.extractClientIps({
+			"x-forwarded-for": "unknown, 198.51.100.2",
+			"x-real-ip": ["198.51.100.20"]
+		});
+
+		expect(clientIp).toEqual(["198.51.100.2", "198.51.100.20"]);
+	});
+
+	test("can extract all valid client IPs across multiple forwarded-for header values", async () => {
+		const clientIp = HeaderHelper.extractClientIps({
+			"x-forwarded-for": ["unknown", "203.0.113.10, 198.51.100.2"],
+			"x-real-ip": "198.51.100.20"
+		});
+
+		expect(clientIp).toEqual(["203.0.113.10", "198.51.100.2", "198.51.100.20"]);
+	});
+
+	test("returns an empty array when no valid client IP headers are present", async () => {
+		const clientIp = HeaderHelper.extractClientIps({
+			"x-forwarded-for": "unknown",
+			"x-real-ip": "also-invalid"
+		});
+
+		expect(clientIp).toEqual([]);
+	});
+
+	test("can extract a user agent header", async () => {
+		const userAgent = HeaderHelper.extractUserAgent({
+			"user-agent": "Mozilla/5.0"
+		});
+
+		expect(userAgent).toBe("Mozilla/5.0");
+	});
+
+	test("can truncate a user agent header to the provided maximum length", async () => {
+		const userAgent = HeaderHelper.extractUserAgent(
+			{
+				"user-agent": "a".repeat(600)
+			},
+			512
+		);
+
+		expect(userAgent).toBe("a".repeat(512));
+	});
+
+	test("can return the full user agent header when no maximum length is provided", async () => {
+		const userAgent = HeaderHelper.extractUserAgent({
+			"user-agent": "a".repeat(600)
+		});
+
+		expect(userAgent).toBe("a".repeat(600));
+	});
+
+	test("can extract the first non-empty user agent from multiple header values", async () => {
+		const userAgent = HeaderHelper.extractUserAgent({
+			"user-agent": ["   ", "Mozilla/5.0"]
+		});
+
+		expect(userAgent).toBe("Mozilla/5.0");
+	});
+
+	test("returns undefined when the user agent header is missing", async () => {
+		const userAgent = HeaderHelper.extractUserAgent({});
+		expect(userAgent).toBeUndefined();
+	});
+
+	test("can extract a valid correlation ID", async () => {
+		const correlationId = HeaderHelper.extractCorrelationId({
+			"x-correlation-id": "request_123-abc"
+		});
+
+		expect(correlationId).toBe("request_123-abc");
+	});
+
+	test("can extract a correlation ID from the first header value", async () => {
+		const correlationId = HeaderHelper.extractCorrelationId({
+			"x-correlation-id": ["trace-001", "trace-002"]
+		});
+
+		expect(correlationId).toBe("trace-001");
+	});
+
+	test("returns undefined for an invalid correlation ID", async () => {
+		const correlationId = HeaderHelper.extractCorrelationId({
+			"x-correlation-id": "trace id"
+		});
+
+		expect(correlationId).toBeUndefined();
+	});
+
+	test("returns undefined when the correlation ID header is missing", async () => {
+		const correlationId = HeaderHelper.extractCorrelationId({});
+
+		expect(correlationId).toBeUndefined();
+	});
+
+	test("can extract the first valid correlation ID from multiple header values", async () => {
+		const correlationId = HeaderHelper.extractCorrelationId({
+			"x-correlation-id": ["trace id", "trace-002"]
+		});
+
+		expect(correlationId).toBe("trace-002");
+	});
+
+	test("can truncate a correlation ID to the provided maximum length", async () => {
+		const correlationId = HeaderHelper.extractCorrelationId(
+			{
+				"x-correlation-id": "a".repeat(65)
+			},
+			64
+		);
+
+		expect(correlationId).toBe("a".repeat(64));
+	});
+
+	test("can return the full correlation ID when no maximum length is provided", async () => {
+		const correlationId = HeaderHelper.extractCorrelationId({
+			"x-correlation-id": "a".repeat(65)
+		});
+
+		expect(correlationId).toBe("a".repeat(65));
+	});
 	test("can extract URL from a valid Link header", async () => {
 		const url = HeaderHelper.extractLinkHeader(
 			'<https://example.com/api?cursor=abc123>; rel="next"'
