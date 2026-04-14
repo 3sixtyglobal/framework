@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.0.3-next.29](https://github.com/twinfoundation/framework/compare/web-v0.0.3-next.28...web-v0.0.3-next.29) (2026-04-14)
+
+
+### Features
+
+* additional http header extraction ([#262](https://github.com/twinfoundation/framework/issues/262)) ([124fa3f](https://github.com/twinfoundation/framework/commit/124fa3fdd118ed17f973d4b46842f5b7f35365c2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.28 to 0.0.3-next.29
+    * @twin.org/crypto bumped from 0.0.3-next.28 to 0.0.3-next.29
+    * @twin.org/nameof bumped from 0.0.3-next.28 to 0.0.3-next.29
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.28 to 0.0.3-next.29
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.28 to 0.0.3-next.29
+    * @twin.org/validate-locales bumped from 0.0.3-next.28 to 0.0.3-next.29
+
 ## [0.0.3-next.28](https://github.com/twinfoundation/framework/compare/web-v0.0.3-next.27...web-v0.0.3-next.28) (2026-03-27)
 
 

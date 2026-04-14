@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3-next.29](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.3-next.28...nameof-transformer-v0.0.3-next.29) (2026-04-14)
+
+
+### Miscellaneous Chores
+
+* **nameof-transformer:** Synchronize repo versions
+
 ## [0.0.3-next.28](https://github.com/twinfoundation/framework/compare/nameof-transformer-v0.0.3-next.27...nameof-transformer-v0.0.3-next.28) (2026-03-27)
 
 
