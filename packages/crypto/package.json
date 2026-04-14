@@ -36,8 +36,7 @@
 		"@scure/base": "2.0.0",
 		"@scure/bip32": "2.0.1",
 		"@scure/bip39": "2.0.1",
-		"micro-key-producer": "0.8.5",
-		"crypto-browserify": "3.12.1"
+		"micro-key-producer": "0.8.5"
 	},
 	"devDependencies": {
 		"@twin.org/nameof-transformer": "0.0.3-next.30",
