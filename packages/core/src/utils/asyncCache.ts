@@ -21,7 +21,7 @@ export class AsyncCache {
 		requestMethod: () => Promise<T>,
 		cacheFailures?: boolean
 	): Promise<T> | undefined {
-		const cacheEnabled = Is.integer(ttlMs) && ttlMs >= 0;
+		const cacheEnabled = Is.integer(ttlMs) && ttlMs > 0;
 		if (!cacheEnabled) {
 			// No caching, just execute the request method
 			return requestMethod();
@@ -30,15 +30,16 @@ export class AsyncCache {
 		AsyncCache.cleanupExpired();
 
 		const cache = AsyncCache.getSharedCache<T>();
+		const cachedEntry = cache[key];
 
 		// Do we have a cache entry for the key
-		if (cache[key]) {
-			if (!Is.empty(cache[key].result)) {
+		if (cachedEntry) {
+			if (!Is.empty(cachedEntry.result)) {
 				// If the cache has already resulted in a value, resolve it
-				return Promise.resolve(cache[key].result);
-			} else if (!Is.empty(cache[key].error)) {
+				return Promise.resolve(cachedEntry.result);
+			} else if (!Is.empty(cachedEntry.error)) {
 				// If the cache has already resulted in an error, reject it
-				return Promise.reject(cache[key].error);
+				return Promise.reject(cachedEntry.error);
 			}
 
 			// Otherwise create a promise to return and store the resolver
@@ -52,7 +53,7 @@ export class AsyncCache {
 				storedReject = reject;
 			});
 			if (!Is.empty(storedResolve) && !Is.empty(storedReject)) {
-				cache[key].promiseQueue.push({
+				cachedEntry.promiseQueue.push({
 					requestMethod,
 					resolve: storedResolve,
 					reject: storedReject
@@ -62,10 +63,22 @@ export class AsyncCache {
 		}
 
 		// If we don't have a cache entry, create a new one
-		cache[key] = {
+		const cacheEntry: {
+			result?: T;
+			error?: unknown;
+			inProgress?: boolean;
+			promiseQueue: {
+				requestMethod: () => Promise<T>;
+				resolve: (value: T | PromiseLike<T>) => void;
+				reject: (reason?: unknown) => void;
+			}[];
+			expires: number;
+		} = {
+			inProgress: true,
 			promiseQueue: [],
-			expires: ttlMs === 0 ? 0 : Date.now() + ttlMs
+			expires: Date.now() + ttlMs
 		};
+		cache[key] = cacheEntry;
 
 		// Return a promise that wraps the original request method
 		// so that we can store any results or errors in the cache
@@ -75,39 +88,43 @@ export class AsyncCache {
 				// eslint-disable-next-line promise/prefer-await-to-then
 				.then(res => {
 					// If the request was successful, store the result
-					cache[key].result = res;
+					cacheEntry.inProgress = false;
+					cacheEntry.result = res;
 
 					// and resolve both this promise and all the waiters
 					resolve(res);
-					for (const wait of cache[key].promiseQueue) {
+					for (const wait of cacheEntry.promiseQueue) {
 						wait.resolve(res);
 					}
-					cache[key].promiseQueue = [];
+					cacheEntry.promiseQueue = [];
 					return res;
 				})
 				// eslint-disable-next-line promise/prefer-await-to-then
 				.catch((err: unknown) => {
 					// Reject the promise
 					reject(err);
+					cacheEntry.inProgress = false;
 
 					// Handle the waiters based on the cacheFailures flag
 					if (cacheFailures ?? false) {
 						// If we are caching failures, store the error and reject the waiters
-						cache[key].error = err;
-						for (const wait of cache[key].promiseQueue) {
+						cacheEntry.error = err;
+						for (const wait of cacheEntry.promiseQueue) {
 							wait.reject(err);
 						}
 						// Clear the waiters so we don't call them again
-						cache[key].promiseQueue = [];
+						cacheEntry.promiseQueue = [];
 					} else {
 						// If not caching failures for any queued requests we
 						// have no value to either resolve or reject, so we
 						// just resolve with the original request method
-						for (const wait of cache[key].promiseQueue) {
+						for (const wait of cacheEntry.promiseQueue) {
 							// eslint-disable-next-line @typescript-eslint/no-floating-promises
 							AsyncCache.resolveWaiter(wait.requestMethod, wait.resolve, wait.reject);
 						}
-						delete cache[key];
+						if (cache[key] === cacheEntry) {
+							delete cache[key];
+						}
 					}
 				});
 		});
@@ -179,7 +196,11 @@ export class AsyncCache {
 	public static cleanupExpired(): void {
 		const cache = AsyncCache.getSharedCache();
 		for (const entry in cache) {
-			if (cache[entry].expires > 0 && cache[entry].expires < Date.now()) {
+			if (
+				cache[entry].expires > 0 &&
+				cache[entry].expires < Date.now() &&
+				cache[entry].inProgress !== true
+			) {
 				delete cache[entry];
 			}
 		}
@@ -194,6 +215,7 @@ export class AsyncCache {
 		[url: string]: {
 			result?: T;
 			error?: unknown;
+			inProgress?: boolean;
 			promiseQueue: {
 				requestMethod: () => Promise<T>;
 				resolve: (value: T | PromiseLike<T>) => void;
@@ -206,6 +228,7 @@ export class AsyncCache {
 			[url: string]: {
 				result?: T;
 				error?: unknown;
+				inProgress?: boolean;
 				promiseQueue: {
 					requestMethod: () => Promise<T>;
 					resolve: (value: T | PromiseLike<T>) => void;
