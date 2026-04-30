@@ -1,6 +1,6 @@
 {
 	"name": "@twin.org/validate-locales",
-	"version": "0.0.3-next.31",
+	"version": "0.0.3-next.32",
 	"description": "Validate source files against the locales",
 	"repository": {
 		"type": "git",
@@ -29,17 +29,17 @@
 		"dist:no-test": "npm run clean && npm run build && npm run merge-locales"
 	},
 	"dependencies": {
-		"@twin.org/cli-core": "0.0.3-next.31",
-		"@twin.org/core": "0.0.3-next.31",
-		"@twin.org/nameof": "0.0.3-next.31",
-		"@twin.org/nameof-transformer": "0.0.3-next.31",
+		"@twin.org/cli-core": "0.0.3-next.32",
+		"@twin.org/core": "0.0.3-next.32",
+		"@twin.org/nameof": "0.0.3-next.32",
+		"@twin.org/nameof-transformer": "0.0.3-next.32",
 		"commander": "14.0.3",
 		"glob": "13.0.6",
 		"typescript": "5.9.3"
 	},
 	"devDependencies": {
-		"@twin.org/merge-locales": "0.0.3-next.31",
-		"@twin.org/nameof-vitest-plugin": "0.0.3-next.31",
+		"@twin.org/merge-locales": "0.0.3-next.32",
+		"@twin.org/nameof-vitest-plugin": "0.0.3-next.32",
 		"@types/node": "25.5.0",
 		"@vitest/coverage-v8": "4.1.1",
 		"copyfiles": "2.4.1",

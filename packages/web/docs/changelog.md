@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.0.3-next.32](https://github.com/twinfoundation/twin-framework/compare/web-v0.0.3-next.31...web-v0.0.3-next.32) (2026-04-30)
+
+
+### Features
+
+* use body on patch verb ([28627e5](https://github.com/twinfoundation/twin-framework/commit/28627e527d033d433acefe0e9fde52ba88c0d047))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.31 to 0.0.3-next.32
+    * @twin.org/crypto bumped from 0.0.3-next.31 to 0.0.3-next.32
+    * @twin.org/nameof bumped from 0.0.3-next.31 to 0.0.3-next.32
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.31 to 0.0.3-next.32
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.31 to 0.0.3-next.32
+    * @twin.org/validate-locales bumped from 0.0.3-next.31 to 0.0.3-next.32
+
 ## [0.0.3-next.31](https://github.com/iotaledger/twin-framework/compare/web-v0.0.3-next.30...web-v0.0.3-next.31) (2026-04-14)
 
 
