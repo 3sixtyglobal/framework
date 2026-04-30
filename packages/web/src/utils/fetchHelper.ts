@@ -102,7 +102,7 @@ export class FetchHelper {
 			}
 
 			let finalBody;
-			if (method === HttpMethod.POST || method === HttpMethod.PUT) {
+			if (method === HttpMethod.POST || method === HttpMethod.PUT || method === HttpMethod.PATCH) {
 				if (Is.string(body)) {
 					finalBody = body;
 				} else if (Is.uint8Array(body)) {
