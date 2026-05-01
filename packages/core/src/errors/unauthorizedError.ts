@@ -4,7 +4,7 @@ import { nameof } from "@twin.org/nameof";
 import { BaseError } from "./baseError.js";
 
 /**
- * Class to handle errors which are triggered by access not being unauthorized.
+ * Class to handle errors which are triggered by access not being authorized.
  */
 export class UnauthorizedError extends BaseError {
 	/**
@@ -15,7 +15,7 @@ export class UnauthorizedError extends BaseError {
 	/**
 	 * Create a new instance of UnauthorizedError.
 	 * @param source The source of the error.
-	 * @param message The message as a code.
+	 * @param message The message as an i18n key.
 	 * @param properties Any additional information for the error.
 	 * @param cause The cause of the error if we have wrapped another error.
 	 */

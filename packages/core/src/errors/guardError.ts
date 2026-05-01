@@ -16,7 +16,7 @@ export class GuardError extends BaseError {
 	/**
 	 * Create a new instance of GuardError.
 	 * @param source The source of the error.
-	 * @param message The message as a code.
+	 * @param message The message as an i18n key.
 	 * @param propertyName The property which triggered the guard error for the item.
 	 * @param propertyValue The property value which triggered the guard error for the item.
 	 * @param propertyOptions The property options which might be allowed.

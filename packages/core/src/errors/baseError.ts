@@ -27,7 +27,7 @@ export class BaseError extends Error implements IError {
 	 * Create a new instance of BaseError.
 	 * @param name The name of the error.
 	 * @param source The source of the error.
-	 * @param message The message as a code.
+	 * @param message The message as an i18n key.
 	 * @param properties Any additional information for the error.
 	 * @param cause The cause of error if we have wrapped another error.
 	 */

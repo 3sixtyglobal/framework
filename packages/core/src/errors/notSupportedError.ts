@@ -15,7 +15,7 @@ export class NotSupportedError extends BaseError {
 	/**
 	 * Create a new instance of NotSupportedError.
 	 * @param source The source of the error.
-	 * @param message The message as a code.
+	 * @param message The message as an i18n key.
 	 * @param properties Any additional information for the error.
 	 * @param cause The cause of the error if we have wrapped another error.
 	 */

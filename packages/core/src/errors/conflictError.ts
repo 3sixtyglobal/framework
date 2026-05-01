@@ -15,7 +15,7 @@ export class ConflictError extends BaseError {
 	/**
 	 * Create a new instance of ConflictError.
 	 * @param source The source of the error.
-	 * @param message The message as a code.
+	 * @param message The message as an i18n key.
 	 * @param conflictId The id that has conflicts.
 	 * @param conflicts The conflicts that occurred.
 	 * @param properties Any additional information for the error.
