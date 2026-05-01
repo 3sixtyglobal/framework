@@ -7,7 +7,7 @@ import type { IHttpHeaders } from "./IHttpHeaders.js";
  */
 export interface IFetchOptions {
 	/**
-	 * @param headers The headers for the request.
+	 * The headers for the request.
 	 */
 	headers?: IHttpHeaders;
 
