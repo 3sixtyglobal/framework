@@ -81,3 +81,17 @@ The node logging component type.
 `Promise`\<`void`\>
 
 Nothing.
+
+***
+
+### health()? {#health}
+
+> `optional` **health**(): `Promise`\<[`IHealth`](IHealth.md)[]\>
+
+Returns the health status of the component.
+
+#### Returns
+
+`Promise`\<[`IHealth`](IHealth.md)[]\>
+
+The health status of the component, can return multiple entries for elements within the component.

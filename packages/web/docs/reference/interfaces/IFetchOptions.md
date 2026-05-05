@@ -8,8 +8,6 @@ Options for call to the fetch helper.
 
 > `optional` **headers?**: [`IHttpHeaders`](IHttpHeaders.md)
 
-#### Param
-
 The headers for the request.
 
 ***

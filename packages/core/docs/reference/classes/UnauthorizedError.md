@@ -1,6 +1,6 @@
 # Class: UnauthorizedError
 
-Class to handle errors which are triggered by access not being unauthorized.
+Class to handle errors which are triggered by access not being authorized.
 
 ## Extends
 
@@ -26,7 +26,7 @@ The source of the error.
 
 `string`
 
-The message as a code.
+The message as an i18n key.
 
 ##### properties?
 

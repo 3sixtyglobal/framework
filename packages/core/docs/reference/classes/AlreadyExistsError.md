@@ -26,7 +26,7 @@ The source of the error.
 
 `string`
 
-The message as a code.
+The message as an i18n key.
 
 ##### existingId?
 

@@ -16,7 +16,7 @@ The name for the error.
 
 > **message**: `string`
 
-The message for the error.
+The message for the error as an i18n key.
 
 ***
 

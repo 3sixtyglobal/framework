@@ -1,6 +1,6 @@
 # Variable: version
 
-> `const` **version**: `"0.0.3-next.31"` = `"0.0.3-next.31"`
+> `const` **version**: `"0.0.3-next.32"` = `"0.0.3-next.32"`
 
 Exports the factory version.
 
