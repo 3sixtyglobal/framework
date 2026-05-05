@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.0.3-next.33](https://github.com/twinfoundation/twin-framework/compare/core-v0.0.3-next.32...core-v0.0.3-next.33) (2026-05-05)
+
+
+### Features
+
+* add health method to components ([a88016d](https://github.com/twinfoundation/twin-framework/commit/a88016d90d172413e5bc5238dc1b3e35f82fcc2c))
+
+
+### Bug Fixes
+
+* improve jsdoc comments ([f7c8e43](https://github.com/twinfoundation/twin-framework/commit/f7c8e43fab9803dffa6461950d5b9979e25bcd24))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.32 to 0.0.3-next.33
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.32 to 0.0.3-next.33
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.32 to 0.0.3-next.33
+
 ## [0.0.3-next.32](https://github.com/twinfoundation/twin-framework/compare/core-v0.0.3-next.31...core-v0.0.3-next.32) (2026-04-30)
 
 
