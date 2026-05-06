@@ -17,11 +17,6 @@ export interface IHealth {
 	description?: string;
 
 	/**
-	 * Whether this entry is a child of another entry, the parent entry will report the overall status of the component.
-	 */
-	isChild?: boolean;
-
-	/**
 	 * The overall status of the component, the entries can also report their own health.
 	 */
 	status: HealthStatus;
@@ -35,4 +30,9 @@ export interface IHealth {
 	 * Properties to substitute in the i18n key for the details.
 	 */
 	properties?: { [id: string]: unknown };
+
+	/**
+	 * The grouped child components, if any.
+	 */
+	grouped?: IHealth[];
 }
