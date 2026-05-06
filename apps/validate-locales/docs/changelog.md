@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.0.3-next.35](https://github.com/twinfoundation/twin-framework/compare/validate-locales-v0.0.3-next.34...validate-locales-v0.0.3-next.35) (2026-05-06)
+
+
+### Features
+
+* add support for health i18n validation ([7a286dd](https://github.com/twinfoundation/twin-framework/commit/7a286ddb0c1bfa498bf3a77126cd589042bad6de))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.0.3-next.34 to 0.0.3-next.35
+    * @twin.org/core bumped from 0.0.3-next.34 to 0.0.3-next.35
+    * @twin.org/nameof bumped from 0.0.3-next.34 to 0.0.3-next.35
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.34 to 0.0.3-next.35
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.0.3-next.34 to 0.0.3-next.35
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.34 to 0.0.3-next.35
+
 ## [0.0.3-next.34](https://github.com/twinfoundation/twin-framework/compare/validate-locales-v0.0.3-next.33...validate-locales-v0.0.3-next.34) (2026-05-06)
 
 
