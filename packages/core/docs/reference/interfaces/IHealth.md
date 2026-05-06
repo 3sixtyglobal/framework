@@ -20,14 +20,6 @@ The description of the component as an i18n key.
 
 ***
 
-### isChild? {#ischild}
-
-> `optional` **isChild?**: `boolean`
-
-Whether this entry is a child of another entry, the parent entry will report the overall status of the component.
-
-***
-
 ### status {#status}
 
 > **status**: [`HealthStatus`](../type-aliases/HealthStatus.md)
@@ -53,3 +45,11 @@ Properties to substitute in the i18n key for the details.
 #### Index Signature
 
 \[`id`: `string`\]: `unknown`
+
+***
+
+### grouped? {#grouped}
+
+> `optional` **grouped?**: `IHealth`[]
+
+The grouped child components, if any.
