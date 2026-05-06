@@ -1,11 +1,11 @@
 # Changelog
 
-## [0.0.3-next.35](https://github.com/twinfoundation/twin-framework/compare/core-v0.0.3-next.34...core-v0.0.3-next.35) (2026-05-06)
+## [0.0.3-next.35](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.34...core-v0.0.3-next.35) (2026-05-06)
 
 
 ### Features
 
-* add support for health i18n validation ([7a286dd](https://github.com/twinfoundation/twin-framework/commit/7a286ddb0c1bfa498bf3a77126cd589042bad6de))
+* add support for health i18n validation ([7a286dd](https://github.com/iotaledger/twin-framework/commit/7a286ddb0c1bfa498bf3a77126cd589042bad6de))
 
 
 ### Dependencies
@@ -17,12 +17,12 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.34 to 0.0.3-next.35
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.34 to 0.0.3-next.35
 
-## [0.0.3-next.34](https://github.com/twinfoundation/twin-framework/compare/core-v0.0.3-next.33...core-v0.0.3-next.34) (2026-05-06)
+## [0.0.3-next.34](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.33...core-v0.0.3-next.34) (2026-05-06)
 
 
 ### Features
 
-* health status grouping ([5007c29](https://github.com/twinfoundation/twin-framework/commit/5007c29fe4123fe56f754450b993dbe5dc32a057))
+* health status grouping ([5007c29](https://github.com/iotaledger/twin-framework/commit/5007c29fe4123fe56f754450b993dbe5dc32a057))
 
 
 ### Dependencies
@@ -34,17 +34,17 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.33 to 0.0.3-next.34
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.33 to 0.0.3-next.34
 
-## [0.0.3-next.33](https://github.com/twinfoundation/twin-framework/compare/core-v0.0.3-next.32...core-v0.0.3-next.33) (2026-05-05)
+## [0.0.3-next.33](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.32...core-v0.0.3-next.33) (2026-05-05)
 
 
 ### Features
 
-* add health method to components ([a88016d](https://github.com/twinfoundation/twin-framework/commit/a88016d90d172413e5bc5238dc1b3e35f82fcc2c))
+* add health method to components ([a88016d](https://github.com/iotaledger/twin-framework/commit/a88016d90d172413e5bc5238dc1b3e35f82fcc2c))
 
 
 ### Bug Fixes
 
-* improve jsdoc comments ([f7c8e43](https://github.com/twinfoundation/twin-framework/commit/f7c8e43fab9803dffa6461950d5b9979e25bcd24))
+* improve jsdoc comments ([f7c8e43](https://github.com/iotaledger/twin-framework/commit/f7c8e43fab9803dffa6461950d5b9979e25bcd24))
 
 
 ### Dependencies
@@ -56,7 +56,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.32 to 0.0.3-next.33
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.32 to 0.0.3-next.33
 
-## [0.0.3-next.32](https://github.com/twinfoundation/twin-framework/compare/core-v0.0.3-next.31...core-v0.0.3-next.32) (2026-04-30)
+## [0.0.3-next.32](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.31...core-v0.0.3-next.32) (2026-04-30)
 
 
 ### Miscellaneous Chores

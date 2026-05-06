@@ -25,7 +25,7 @@ jobs:
     steps:
       - name: Dispatch submodule change to workspace
         # Personal access token stored in each submodule repo secrets.
-        # Must have permission to dispatch events to twinfoundation/workspace.
+        # Must have permission to dispatch events to iotaledger/workspace.
         env:
           GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
         run: |
@@ -40,7 +40,7 @@ jobs:
             PR_NUMBER='null'
           fi
 
-          gh api repos/twinfoundation/twin-workspace/dispatches \
+          gh api repos/iotaledger/twin-workspace/dispatches \
             --method POST \
             --input - <<EOF
           {

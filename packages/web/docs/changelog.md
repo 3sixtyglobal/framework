@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.0.3-next.35](https://github.com/twinfoundation/twin-framework/compare/web-v0.0.3-next.34...web-v0.0.3-next.35) (2026-05-06)
+## [0.0.3-next.35](https://github.com/iotaledger/twin-framework/compare/web-v0.0.3-next.34...web-v0.0.3-next.35) (2026-05-06)
 
 
 ### Miscellaneous Chores
@@ -20,7 +20,7 @@
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.34 to 0.0.3-next.35
     * @twin.org/validate-locales bumped from 0.0.3-next.34 to 0.0.3-next.35
 
-## [0.0.3-next.34](https://github.com/twinfoundation/twin-framework/compare/web-v0.0.3-next.33...web-v0.0.3-next.34) (2026-05-06)
+## [0.0.3-next.34](https://github.com/iotaledger/twin-framework/compare/web-v0.0.3-next.33...web-v0.0.3-next.34) (2026-05-06)
 
 
 ### Miscellaneous Chores
@@ -40,7 +40,7 @@
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.33 to 0.0.3-next.34
     * @twin.org/validate-locales bumped from 0.0.3-next.33 to 0.0.3-next.34
 
-## [0.0.3-next.33](https://github.com/twinfoundation/twin-framework/compare/web-v0.0.3-next.32...web-v0.0.3-next.33) (2026-05-05)
+## [0.0.3-next.33](https://github.com/iotaledger/twin-framework/compare/web-v0.0.3-next.32...web-v0.0.3-next.33) (2026-05-05)
 
 
 ### Miscellaneous Chores
@@ -60,12 +60,12 @@
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.32 to 0.0.3-next.33
     * @twin.org/validate-locales bumped from 0.0.3-next.32 to 0.0.3-next.33
 
-## [0.0.3-next.32](https://github.com/twinfoundation/twin-framework/compare/web-v0.0.3-next.31...web-v0.0.3-next.32) (2026-04-30)
+## [0.0.3-next.32](https://github.com/iotaledger/twin-framework/compare/web-v0.0.3-next.31...web-v0.0.3-next.32) (2026-04-30)
 
 
 ### Features
 
-* use body on patch verb ([28627e5](https://github.com/twinfoundation/twin-framework/commit/28627e527d033d433acefe0e9fde52ba88c0d047))
+* use body on patch verb ([28627e5](https://github.com/iotaledger/twin-framework/commit/28627e527d033d433acefe0e9fde52ba88c0d047))
 
 
 ### Dependencies

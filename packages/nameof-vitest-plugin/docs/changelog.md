@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.0.3-next.35](https://github.com/twinfoundation/twin-framework/compare/nameof-vitest-plugin-v0.0.3-next.34...nameof-vitest-plugin-v0.0.3-next.35) (2026-05-06)
+## [0.0.3-next.35](https://github.com/iotaledger/twin-framework/compare/nameof-vitest-plugin-v0.0.3-next.34...nameof-vitest-plugin-v0.0.3-next.35) (2026-05-06)
 
 
 ### Miscellaneous Chores
@@ -14,7 +14,7 @@
   * dependencies
     * @twin.org/nameof-transformer bumped from 0.0.3-next.34 to 0.0.3-next.35
 
-## [0.0.3-next.34](https://github.com/twinfoundation/twin-framework/compare/nameof-vitest-plugin-v0.0.3-next.33...nameof-vitest-plugin-v0.0.3-next.34) (2026-05-06)
+## [0.0.3-next.34](https://github.com/iotaledger/twin-framework/compare/nameof-vitest-plugin-v0.0.3-next.33...nameof-vitest-plugin-v0.0.3-next.34) (2026-05-06)
 
 
 ### Miscellaneous Chores
@@ -28,7 +28,7 @@
   * dependencies
     * @twin.org/nameof-transformer bumped from 0.0.3-next.33 to 0.0.3-next.34
 
-## [0.0.3-next.33](https://github.com/twinfoundation/twin-framework/compare/nameof-vitest-plugin-v0.0.3-next.32...nameof-vitest-plugin-v0.0.3-next.33) (2026-05-05)
+## [0.0.3-next.33](https://github.com/iotaledger/twin-framework/compare/nameof-vitest-plugin-v0.0.3-next.32...nameof-vitest-plugin-v0.0.3-next.33) (2026-05-05)
 
 
 ### Miscellaneous Chores
@@ -42,7 +42,7 @@
   * dependencies
     * @twin.org/nameof-transformer bumped from 0.0.3-next.32 to 0.0.3-next.33
 
-## [0.0.3-next.32](https://github.com/twinfoundation/twin-framework/compare/nameof-vitest-plugin-v0.0.3-next.31...nameof-vitest-plugin-v0.0.3-next.32) (2026-04-30)
+## [0.0.3-next.32](https://github.com/iotaledger/twin-framework/compare/nameof-vitest-plugin-v0.0.3-next.31...nameof-vitest-plugin-v0.0.3-next.32) (2026-04-30)
 
 
 ### Miscellaneous Chores

@@ -4,7 +4,7 @@
 	"description": "Helper classes for loading and executing from modules",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/twinfoundation/framework.git",
+		"url": "git+https://github.com/iotaledger/framework.git",
 		"directory": "packages/modules"
 	},
 	"author": "martyn.janes@iota.org",
@@ -74,7 +74,7 @@
 		"utilities"
 	],
 	"bugs": {
-		"url": "git+https://github.com/twinfoundation/framework/issues"
+		"url": "git+https://github.com/iotaledger/framework/issues"
 	},
 	"homepage": "https://twindev.org"
 }

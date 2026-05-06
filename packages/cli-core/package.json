@@ -4,7 +4,7 @@
 	"description": "Core classes for building a CLI",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/twinfoundation/framework.git",
+		"url": "git+https://github.com/iotaledger/framework.git",
 		"directory": "packages/cli-core"
 	},
 	"author": "martyn.janes@iota.org",
@@ -76,7 +76,7 @@
 		"utilities"
 	],
 	"bugs": {
-		"url": "git+https://github.com/twinfoundation/framework/issues"
+		"url": "git+https://github.com/iotaledger/framework/issues"
 	},
 	"homepage": "https://twindev.org"
 }

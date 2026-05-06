@@ -1,11 +1,11 @@
 # Changelog
 
-## [0.0.3-next.35](https://github.com/twinfoundation/twin-framework/compare/validate-locales-v0.0.3-next.34...validate-locales-v0.0.3-next.35) (2026-05-06)
+## [0.0.3-next.35](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.0.3-next.34...validate-locales-v0.0.3-next.35) (2026-05-06)
 
 
 ### Features
 
-* add support for health i18n validation ([7a286dd](https://github.com/twinfoundation/twin-framework/commit/7a286ddb0c1bfa498bf3a77126cd589042bad6de))
+* add support for health i18n validation ([7a286dd](https://github.com/iotaledger/twin-framework/commit/7a286ddb0c1bfa498bf3a77126cd589042bad6de))
 
 
 ### Dependencies
@@ -20,7 +20,7 @@
     * @twin.org/merge-locales bumped from 0.0.3-next.34 to 0.0.3-next.35
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.34 to 0.0.3-next.35
 
-## [0.0.3-next.34](https://github.com/twinfoundation/twin-framework/compare/validate-locales-v0.0.3-next.33...validate-locales-v0.0.3-next.34) (2026-05-06)
+## [0.0.3-next.34](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.0.3-next.33...validate-locales-v0.0.3-next.34) (2026-05-06)
 
 
 ### Miscellaneous Chores
@@ -40,7 +40,7 @@
     * @twin.org/merge-locales bumped from 0.0.3-next.33 to 0.0.3-next.34
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.33 to 0.0.3-next.34
 
-## [0.0.3-next.33](https://github.com/twinfoundation/twin-framework/compare/validate-locales-v0.0.3-next.32...validate-locales-v0.0.3-next.33) (2026-05-05)
+## [0.0.3-next.33](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.0.3-next.32...validate-locales-v0.0.3-next.33) (2026-05-05)
 
 
 ### Miscellaneous Chores
@@ -60,7 +60,7 @@
     * @twin.org/merge-locales bumped from 0.0.3-next.32 to 0.0.3-next.33
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.32 to 0.0.3-next.33
 
-## [0.0.3-next.32](https://github.com/twinfoundation/twin-framework/compare/validate-locales-v0.0.3-next.31...validate-locales-v0.0.3-next.32) (2026-04-30)
+## [0.0.3-next.32](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.0.3-next.31...validate-locales-v0.0.3-next.32) (2026-04-30)
 
 
 ### Miscellaneous Chores
