@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.3-next.34](https://github.com/twinfoundation/twin-framework/compare/core-v0.0.3-next.33...core-v0.0.3-next.34) (2026-05-06)
+
+
+### Features
+
+* health status grouping ([5007c29](https://github.com/twinfoundation/twin-framework/commit/5007c29fe4123fe56f754450b993dbe5dc32a057))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.33 to 0.0.3-next.34
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.33 to 0.0.3-next.34
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.33 to 0.0.3-next.34
+
 ## [0.0.3-next.33](https://github.com/twinfoundation/twin-framework/compare/core-v0.0.3-next.32...core-v0.0.3-next.33) (2026-05-05)
 
 
