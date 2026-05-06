@@ -4,11 +4,11 @@ Provides health information for a component.
 
 ## Properties
 
-### name {#name}
+### source {#source}
 
-> **name**: `string`
+> **source**: `string`
 
-The name of the component.
+The source of the health information.
 
 ***
 
@@ -28,19 +28,19 @@ The overall status of the component, the entries can also report their own healt
 
 ***
 
-### details? {#details}
+### message? {#message}
 
-> `optional` **details?**: `string`
+> `optional` **message?**: `string`
 
-The details for the status if there are further details to provide as an i18n key.
+The message for the status if there are further details to provide as an i18n key.
 
 ***
 
-### properties? {#properties}
+### data? {#data}
 
-> `optional` **properties?**: `object`
+> `optional` **data?**: `object`
 
-Properties to substitute in the i18n key for the details.
+Data to substitute in the i18n key for the message.
 
 #### Index Signature
 
