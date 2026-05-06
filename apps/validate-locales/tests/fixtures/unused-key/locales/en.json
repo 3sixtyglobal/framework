@@ -1,0 +1,8 @@
+{
+	"error": {
+		"myClass": {
+			"usedKey": "A used key.",
+			"unusedKey": "An unused key that is never referenced in source."
+		}
+	}
+}

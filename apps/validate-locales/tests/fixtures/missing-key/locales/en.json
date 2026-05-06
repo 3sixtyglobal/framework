@@ -1,0 +1,7 @@
+{
+	"error": {
+		"myClass": {
+			"existingKey": "An existing key."
+		}
+	}
+}

@@ -7,9 +7,9 @@ import type { HealthStatus } from "./healthStatus.js";
  */
 export interface IHealth {
 	/**
-	 * The name of the component.
+	 * The source of the health information.
 	 */
-	name: string;
+	source: string;
 
 	/**
 	 * The description of the component as an i18n key.
@@ -22,14 +22,14 @@ export interface IHealth {
 	status: HealthStatus;
 
 	/**
-	 * The details for the status if there are further details to provide as an i18n key.
+	 * The message for the status if there are further details to provide as an i18n key.
 	 */
-	details?: string;
+	message?: string;
 
 	/**
-	 * Properties to substitute in the i18n key for the details.
+	 * Data to substitute in the i18n key for the message.
 	 */
-	properties?: { [id: string]: unknown };
+	data?: { [id: string]: unknown };
 
 	/**
 	 * The grouped child components, if any.

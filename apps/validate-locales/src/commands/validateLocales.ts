@@ -296,6 +296,8 @@ function visit(
 	} else if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) {
 		// Don't care about string in imports/exports
 		handled = true;
+	} else if (ts.isObjectLiteralExpression(node)) {
+		handled = processObjectLiteralExpression(sourceFile, node, localeEntries, failures);
 	} else if (ts.isPropertyAssignment(node)) {
 		handled = processPropertyAssignment(sourceFile, node, localeEntries, failures);
 	}
@@ -637,6 +639,96 @@ function processVariableDeclaration(
 		return true;
 	}
 	return false;
+}
+
+/**
+ * Process an object literal expression node.
+ * @param sourceFile The TypeScript source file for position calculations.
+ * @param node The node to process.
+ * @param localeEntries The locale entries.
+ * @param failures The failure entries.
+ * @returns True if processed, false otherwise.
+ */
+function processObjectLiteralExpression(
+	sourceFile: ts.SourceFile,
+	node: ts.ObjectLiteralExpression,
+	localeEntries: ILocaleDictionaryEntry[],
+	failures: ILocaleFailure[]
+): boolean {
+	let sourceNode: ts.Node | undefined;
+	let prefix: string | undefined;
+	let descriptionNode: ts.Node | undefined;
+	let messageNode: ts.Node | undefined;
+
+	for (const prop of node.properties) {
+		if (ts.isPropertyAssignment(prop) && ts.isIdentifier(prop.name)) {
+			switch (prop.name.text) {
+				case "source":
+					if (
+						ts.isPropertyAccessExpression(prop.initializer) &&
+						ts.isIdentifier(prop.initializer.expression)
+					) {
+						sourceNode = prop.initializer;
+					}
+					break;
+				case "status":
+					if (
+						ts.isPropertyAccessExpression(prop.initializer) &&
+						ts.isIdentifier(prop.initializer.expression) &&
+						prop.initializer.expression.text === "HealthStatus"
+					) {
+						prefix = "health";
+					}
+					break;
+				case "level":
+					if (!Is.stringValue(prefix)) {
+						const levelText = getExpandedText(prop.initializer);
+						if (Is.stringValue(levelText)) {
+							prefix = levelText;
+						}
+					}
+					break;
+				case "description":
+					descriptionNode = prop.initializer;
+					break;
+				case "message":
+					messageNode = prop.initializer;
+					break;
+			}
+		}
+	}
+
+	if (!sourceNode) {
+		return false;
+	}
+
+	if (Is.stringValue(prefix)) {
+		for (const fieldNode of [descriptionNode, messageNode].filter(
+			(n): n is ts.Node => n !== undefined
+		)) {
+			const localeKey = localeFromClassAndMessage(
+				sourceFile,
+				sourceNode,
+				fieldNode,
+				prefix,
+				failures
+			);
+
+			if (Is.stringValue(localeKey)) {
+				const localeEntry = findAndReferenceLocale(localeEntries, localeKey);
+				if (!Is.object(localeEntry)) {
+					failures.push({
+						type: "key",
+						key: localeKey,
+						source: path.resolve(sourceFile.fileName),
+						...getSourcePosition(sourceFile, fieldNode)
+					});
+				}
+			}
+		}
+	}
+
+	return true;
 }
 
 /**
