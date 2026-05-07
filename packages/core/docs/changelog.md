@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.3-next.37](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.36...core-v0.0.3-next.37) (2026-05-07)
+
+
+### Miscellaneous Chores
+
+* **core:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.36 to 0.0.3-next.37
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.36 to 0.0.3-next.37
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.36 to 0.0.3-next.37
+
 ## [0.0.3-next.36](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.35...core-v0.0.3-next.36) (2026-05-07)
 
 

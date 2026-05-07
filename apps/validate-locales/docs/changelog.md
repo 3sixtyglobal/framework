@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.0.3-next.37](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.0.3-next.36...validate-locales-v0.0.3-next.37) (2026-05-07)
+
+
+### Features
+
+* support templated strings in health check source ([14b8d1c](https://github.com/iotaledger/twin-framework/commit/14b8d1cefa8b63153b6c2833b8f487509a128b10))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.0.3-next.36 to 0.0.3-next.37
+    * @twin.org/core bumped from 0.0.3-next.36 to 0.0.3-next.37
+    * @twin.org/nameof bumped from 0.0.3-next.36 to 0.0.3-next.37
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.36 to 0.0.3-next.37
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.0.3-next.36 to 0.0.3-next.37
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.36 to 0.0.3-next.37
+
 ## [0.0.3-next.36](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.0.3-next.35...validate-locales-v0.0.3-next.36) (2026-05-07)
 
 
