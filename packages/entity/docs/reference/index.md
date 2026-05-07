@@ -12,6 +12,7 @@
 - [IComparator](interfaces/IComparator.md)
 - [IComparatorGroup](interfaces/IComparatorGroup.md)
 - [IEntitySchema](interfaces/IEntitySchema.md)
+- [IEntitySchemaDiff](interfaces/IEntitySchemaDiff.md)
 - [IEntitySchemaOptions](interfaces/IEntitySchemaOptions.md)
 - [IEntitySchemaProperty](interfaces/IEntitySchemaProperty.md)
 - [IEntitySort](interfaces/IEntitySort.md)
@@ -38,3 +39,5 @@
 
 - [entity](functions/entity.md)
 - [property](functions/property.md)
+- [entitySchemaDiff](functions/entitySchemaDiff.md)
+- [isEmptyDiff](functions/isEmptyDiff.md)
