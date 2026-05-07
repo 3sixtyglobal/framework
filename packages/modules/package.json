@@ -1,6 +1,6 @@
 {
 	"name": "@twin.org/modules",
-	"version": "0.0.3-next.35",
+	"version": "0.0.3-next.36",
 	"description": "Helper classes for loading and executing from modules",
 	"repository": {
 		"type": "git",
@@ -28,15 +28,15 @@
 		"dist:no-test": "npm run clean && npm run build && npm run test:build"
 	},
 	"dependencies": {
-		"@twin.org/core": "0.0.3-next.35",
-		"@twin.org/context": "0.0.3-next.35",
-		"@twin.org/nameof": "0.0.3-next.35"
+		"@twin.org/core": "0.0.3-next.36",
+		"@twin.org/context": "0.0.3-next.36",
+		"@twin.org/nameof": "0.0.3-next.36"
 	},
 	"devDependencies": {
 		"@types/node": "25.5.0",
-		"@twin.org/nameof-transformer": "0.0.3-next.35",
-		"@twin.org/nameof-vitest-plugin": "0.0.3-next.35",
-		"@twin.org/validate-locales": "0.0.3-next.35",
+		"@twin.org/nameof-transformer": "0.0.3-next.36",
+		"@twin.org/nameof-vitest-plugin": "0.0.3-next.36",
+		"@twin.org/validate-locales": "0.0.3-next.36",
 		"@vitest/coverage-v8": "4.1.1",
 		"copyfiles": "2.4.1",
 		"rimraf": "6.1.3",

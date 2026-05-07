@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.0.3-next.36](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.35...core-v0.0.3-next.36) (2026-05-07)
+
+
+### Features
+
+* add teardown to IComponent interface ([32c173c](https://github.com/iotaledger/twin-framework/commit/32c173cda115c20d3b4cee14b8a29cdc08e91555))
+* add teardown to IComponent interface ([98ce864](https://github.com/iotaledger/twin-framework/commit/98ce8648e709310c4435de334825b381fb4e32cb))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.35 to 0.0.3-next.36
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.35 to 0.0.3-next.36
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.35 to 0.0.3-next.36
+
 ## [0.0.3-next.35](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.34...core-v0.0.3-next.35) (2026-05-06)
 
 
