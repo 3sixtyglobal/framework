@@ -22,9 +22,9 @@ export interface IComponent {
 	/**
 	 * Teardown the component by releasing any resources it holds.
 	 * @param nodeLoggingComponentType The node logging component type.
-	 * @returns Nothing.
+	 * @returns True if the teardown process was successful.
 	 */
-	teardown?(nodeLoggingComponentType?: string): Promise<void>;
+	teardown?(nodeLoggingComponentType?: string): Promise<boolean>;
 
 	/**
 	 * The component needs to be started when the node is initialized.
