@@ -40,6 +40,28 @@ True if the bootstrapping process was successful.
 
 ***
 
+### teardown()? {#teardown}
+
+> `optional` **teardown**(`nodeLoggingComponentType?`): `Promise`\<`boolean`\>
+
+Teardown the component by releasing any resources it holds.
+
+#### Parameters
+
+##### nodeLoggingComponentType?
+
+`string`
+
+The node logging component type.
+
+#### Returns
+
+`Promise`\<`boolean`\>
+
+True if the teardown process was successful.
+
+***
+
 ### start()? {#start}
 
 > `optional` **start**(`nodeLoggingComponentType?`): `Promise`\<`void`\>
