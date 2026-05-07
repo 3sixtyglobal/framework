@@ -669,6 +669,11 @@ function processObjectLiteralExpression(
 						ts.isIdentifier(prop.initializer.expression)
 					) {
 						sourceNode = prop.initializer;
+					} else if (
+						ts.isStringLiteral(prop.initializer) ||
+						ts.isTemplateExpression(prop.initializer)
+					) {
+						sourceNode = prop.initializer;
 					}
 					break;
 				case "status":
@@ -1049,7 +1054,10 @@ function localeFromClassAndMessage(
 			} else {
 				const finalKeyParts = [];
 
-				const classNameExpanded = expandTemplatePart(classNameParam);
+				const classNameExpanded =
+					ts.isTemplateExpression(classNode) || ts.isStringLiteral(classNode)
+						? getExpandedText(classNode)
+						: expandTemplatePart(classNameParam);
 				const messageKeyParts = messageKey.split(".");
 
 				if (messageKeyParts.length === 2 && classNameExpanded === messageKeyParts[0]) {
