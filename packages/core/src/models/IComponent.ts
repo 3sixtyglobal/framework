@@ -20,6 +20,13 @@ export interface IComponent {
 	bootstrap?(nodeLoggingComponentType?: string): Promise<boolean>;
 
 	/**
+	 * Teardown the component by releasing any resources it holds.
+	 * @param nodeLoggingComponentType The node logging component type.
+	 * @returns Nothing.
+	 */
+	teardown?(nodeLoggingComponentType?: string): Promise<void>;
+
+	/**
 	 * The component needs to be started when the node is initialized.
 	 * @param nodeLoggingComponentType The node logging component type.
 	 * @returns Nothing.
