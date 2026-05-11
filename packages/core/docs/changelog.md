@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.3-next.38](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.37...core-v0.0.3-next.38) (2026-05-11)
+
+
+### Features
+
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.37 to 0.0.3-next.38
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.37 to 0.0.3-next.38
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.37 to 0.0.3-next.38
+
 ## [0.0.3-next.37](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.36...core-v0.0.3-next.37) (2026-05-07)
 
 
