@@ -40,6 +40,9 @@
 		"slip0010": {
 			"invalidSeed": "The seed is invalid \"{seed}\""
 		},
+		"pbkdf2": {
+			"keyLengthTooSmall": "The key length must be at least 1, it is \"{keyLength}\""
+		},
 		"validation": {
 			"minLengthRequired": "The value length should be at least {minLength}, it is {actualLength}",
 			"maxLengthRequired": "The value length should be at most {maxLength}, it is {actualLength}",

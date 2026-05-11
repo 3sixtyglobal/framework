@@ -308,7 +308,7 @@ export class ObjectHelper {
 			};
 		}
 
-		return { picked: obj as Partial<T>, omitted: undefined };
+		return { picked: obj, omitted: undefined };
 	}
 
 	/**

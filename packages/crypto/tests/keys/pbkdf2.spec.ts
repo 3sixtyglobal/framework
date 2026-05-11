@@ -10,9 +10,15 @@ describe("Pbkdf2", () => {
 		for (const test of testDataSha256) {
 			const passBytes = Converter.hexToBytes(test.pass);
 			const saltBytes = Converter.hexToBytes(test.salt);
-			expect(
-				Converter.bytesToHex(Pbkdf2.sha256(passBytes, saltBytes, test.iterations, test.keyLength))
-			).toEqual(test.key);
+			if (test.keyLength < 1) {
+				expect(() =>
+					Pbkdf2.sha256(passBytes, saltBytes, test.iterations, test.keyLength)
+				).toThrow();
+			} else {
+				expect(
+					Converter.bytesToHex(Pbkdf2.sha256(passBytes, saltBytes, test.iterations, test.keyLength))
+				).toEqual(test.key);
+			}
 		}
 	});
 

@@ -60,6 +60,10 @@ The length of the key to derive.
 
 The derived key.
 
+#### Throws
+
+GeneralError If the keyLength is less than 1.
+
 ***
 
 ### sha512() {#sha512}
@@ -99,3 +103,7 @@ The length of the key to derive.
 `Uint8Array`
 
 The derived key.
+
+#### Throws
+
+GeneralError If the keyLength is less than 1.

@@ -475,7 +475,7 @@ describe("EntitySchemaHelper", () => {
 	test("can fail to validate a schema with an object property", async () => {
 		expect(() =>
 			EntitySchemaHelper.validateEntity(
-				{ objectValue: 1n, nonOptionalString: "" } as unknown as ITestEntity,
+				{ objectValue: 1n, nonOptionalString: "" },
 				testEntitySchema
 			)
 		).toThrow(

@@ -69,7 +69,7 @@ export class JsonHelper {
 	 */
 	public static diff<T = unknown>(object1: T, object2: T): IPatchOperation[] {
 		const operations = createPatch(object1, object2);
-		return operations as IPatchOperation[];
+		return operations;
 	}
 
 	/**

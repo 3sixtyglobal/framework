@@ -237,7 +237,7 @@ export class I18n {
 				I18n.extractPropertiesFromAst(item, properties);
 			}
 		} else if (Is.object(node)) {
-			const obj = node as { [key: string]: unknown };
+			const obj = node;
 
 			// Check for elements that have property names
 			// Type 1 = ArgumentElement (simple placeholder like {name})

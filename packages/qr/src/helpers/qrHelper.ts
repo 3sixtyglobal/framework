@@ -173,8 +173,8 @@ export class QRHelper {
 		errorCorrectLevel: ErrorCorrectLevel
 	): number {
 		const t = typeNumber - 1;
-		let e = 0;
-		let m = 0;
+		let e;
+		let m;
 
 		switch (errorCorrectLevel) {
 			case ErrorCorrectLevel.L:

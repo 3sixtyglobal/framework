@@ -214,7 +214,7 @@ describe("Urn", () => {
 	});
 
 	test("can fail to add a prefix when input is not a string", () => {
-		expect(Urn.addPrefix(undefined as never)?.toString()).toEqual(undefined);
+		expect(Urn.addPrefix(undefined)?.toString()).toEqual(undefined);
 	});
 
 	test("can add a prefix when none exists", () => {
@@ -227,7 +227,7 @@ describe("Urn", () => {
 
 	test("can fail to validate if the item is not a string", () => {
 		const failures: IValidationFailure[] = [];
-		const res = Urn.validate("foo", undefined as never, failures);
+		const res = Urn.validate("foo", undefined, failures);
 		expect(res).toEqual(false);
 		expect(failures.length).toEqual(1);
 		expect(failures[0].reason).toEqual("validation.beNotEmpty");

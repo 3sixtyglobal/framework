@@ -299,7 +299,7 @@ describe("Guards", () => {
 
 		const addUnknown: unknown = addFn;
 		Guards.function<(a: number, b: number) => number>("source", "propName", addUnknown);
-		expect((addUnknown as (a: number, b: number) => number)(2, 3)).toEqual(5);
+		expect(addUnknown(2, 3)).toEqual(5);
 	});
 
 	test("function generic assertion works with async function", async () => {
@@ -309,7 +309,7 @@ describe("Guards", () => {
 
 		const asyncUnknown: unknown = multiplyFn;
 		Guards.function<(x: number) => Promise<number>>("source", "propName", asyncUnknown);
-		const out = await (asyncUnknown as (x: number) => Promise<number>)(7);
+		const out = await asyncUnknown(7);
 		expect(out).toEqual(14);
 	});
 
@@ -320,7 +320,7 @@ describe("Guards", () => {
 
 		const hofUnknown: unknown = hofFn;
 		Guards.function<(fn: (n: number) => number) => number>("source", "propName", hofUnknown);
-		const value = (hofUnknown as (fn: (n: number) => number) => number)(n => n + 1);
+		const value = hofUnknown(n => n + 1);
 		expect(value).toEqual(5);
 	});
 

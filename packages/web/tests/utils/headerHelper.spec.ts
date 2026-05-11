@@ -667,7 +667,7 @@ describe("HeaderHelper", () => {
 	});
 
 	test("returns undefined when extractLinkHeaderRelation input is invalid", async () => {
-		const header = HeaderHelper.extractLinkHeaderRelation({} as unknown, "next");
+		const header = HeaderHelper.extractLinkHeaderRelation({}, "next");
 		expect(header).toBeUndefined();
 	});
 

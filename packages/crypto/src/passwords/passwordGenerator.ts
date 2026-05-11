@@ -79,7 +79,7 @@ export class PasswordGenerator {
 	 * @internal
 	 */
 	private static getRandomChar(charSet: string): string {
-		let b = 0;
+		let b;
 		do {
 			b = RandomHelper.generate(1)[0];
 		} while (b >= charSet.length);
