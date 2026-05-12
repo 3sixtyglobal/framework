@@ -1,7 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Guards } from "@twin.org/core";
-import { describe, it, expect } from "vitest";
 import { ContextIdHandlerFactory } from "../../src/factories/contextIdHandlerFactory.js";
 import { ContextIdHelper } from "../../src/helpers/contextIdHelper.js";
 import type { IContextIdHandler } from "../../src/models/IContextIdHandler.js";
