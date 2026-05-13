@@ -261,8 +261,10 @@ export class ObjectHelper {
 	): T extends undefined ? undefined : Pick<T, K> {
 		if (Is.object(obj)) {
 			const result = {} as Pick<T, K>;
-			for (const key of keys) {
-				result[key] = obj[key];
+			if (Is.arrayValue(keys)) {
+				for (const key of keys) {
+					result[key] = obj[key];
+				}
 			}
 			return result as T extends undefined ? undefined : Pick<T, K>;
 		}
