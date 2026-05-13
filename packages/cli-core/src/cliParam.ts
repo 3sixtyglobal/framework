@@ -69,9 +69,9 @@ export class CLIParam {
 		validValues: T[],
 		allowEnvVar: boolean = true
 	): T {
-		const stringValue: string | undefined = CLIParam.env(optionName, optionValue, allowEnvVar);
-		Guards.arrayOneOf<T>("commands", optionName, stringValue as T, validValues);
-		return stringValue as T;
+		const stringValue = CLIParam.env(optionName, optionValue, allowEnvVar) as T;
+		Guards.arrayOneOf<T>("commands", optionName, stringValue, validValues);
+		return stringValue;
 	}
 
 	/**
