@@ -332,37 +332,85 @@ The property if available.
 
 ### pick() {#pick}
 
-> `static` **pick**\<`T`, `K`\>(`obj`, `keys`): `T` *extends* `undefined` ? `undefined` : `Pick`\<`T`, `K`\>
+Pick a subset of properties from an object.
+
+#### Param
+
+The object to pick the properties from.
+
+#### Param
+
+The property keys to pick.
+
+#### Call Signature
+
+> `static` **pick**\<`T`, `K`\>(`obj`, `keys?`): `Pick`\<`T`, `K`\>
 
 Pick a subset of properties from an object.
 
-#### Type Parameters
+##### Type Parameters
 
-##### T
+###### T
 
-`T` *extends* `object`
+`T`
 
-##### K
+###### K
 
 `K` *extends* `string` \| `number` \| `symbol`
 
-#### Parameters
+##### Parameters
 
-##### obj
+###### obj
+
+`T`
+
+The object to pick the properties from.
+
+###### keys?
+
+`K`[]
+
+The property keys to pick.
+
+##### Returns
+
+`Pick`\<`T`, `K`\>
+
+The picked object.
+
+#### Call Signature
+
+> `static` **pick**\<`T`, `K`\>(`obj`, `keys?`): `Pick`\<`T`, `K`\> \| `undefined`
+
+Pick a subset of properties from an object.
+
+##### Type Parameters
+
+###### T
+
+`T`
+
+###### K
+
+`K` *extends* `string` \| `number` \| `symbol`
+
+##### Parameters
+
+###### obj
 
 `T` \| `undefined`
 
 The object to pick the properties from.
 
-##### keys
+###### keys?
 
-readonly `K`[]
+`K`[]
 
 The property keys to pick.
 
-#### Returns
+##### Returns
 
-`T` *extends* `undefined` ? `undefined` : `Pick`\<`T`, `K`\>
+`Pick`\<`T`, `K`\> \| `undefined`
 
 The picked object, or undefined if the input was undefined.
 
@@ -370,37 +418,85 @@ The picked object, or undefined if the input was undefined.
 
 ### omit() {#omit}
 
-> `static` **omit**\<`T`, `K`\>(`obj`, `keys`): `T` *extends* `undefined` ? `undefined` : `Omit`\<`T`, `K`\>
+Omit a subset of properties from an object.
+
+#### Param
+
+The object to omit the properties from.
+
+#### Param
+
+The property keys to omit.
+
+#### Call Signature
+
+> `static` **omit**\<`T`, `K`\>(`obj`, `keys?`): `Omit`\<`T`, `K`\>
 
 Omit a subset of properties from an object.
 
-#### Type Parameters
+##### Type Parameters
 
-##### T
+###### T
 
 `T`
 
-##### K
+###### K
 
 `K` *extends* `string` \| `number` \| `symbol`
 
-#### Parameters
+##### Parameters
 
-##### obj
+###### obj
+
+`T`
+
+The object to omit the properties from.
+
+###### keys?
+
+`K`[]
+
+The property keys to omit.
+
+##### Returns
+
+`Omit`\<`T`, `K`\>
+
+The object without the omitted keys.
+
+#### Call Signature
+
+> `static` **omit**\<`T`, `K`\>(`obj`, `keys?`): `Omit`\<`T`, `K`\> \| `undefined`
+
+Omit a subset of properties from an object.
+
+##### Type Parameters
+
+###### T
+
+`T`
+
+###### K
+
+`K` *extends* `string` \| `number` \| `symbol`
+
+##### Parameters
+
+###### obj
 
 `T` \| `undefined`
 
 The object to omit the properties from.
 
-##### keys
+###### keys?
 
-readonly `K`[]
+`K`[]
 
 The property keys to omit.
 
-#### Returns
+##### Returns
 
-`T` *extends* `undefined` ? `undefined` : `Omit`\<`T`, `K`\>
+`Omit`\<`T`, `K`\> \| `undefined`
 
 The object without the omitted keys, or undefined if the input was undefined.
 
