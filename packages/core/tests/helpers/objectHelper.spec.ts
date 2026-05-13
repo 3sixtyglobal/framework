@@ -60,6 +60,18 @@ describe("ObjectHelper", () => {
 		expect(result.val1).toEqual(true);
 	});
 
+	test("pick can return an empty object when no keys are provided", () => {
+		const result = ObjectHelper.pick({ foo: "bar", val1: true }, []);
+
+		expect(result).toEqual({});
+	});
+
+	test("pick can return undefined when the input is undefined", () => {
+		const result = ObjectHelper.pick<{ foo: string }, "foo">(undefined, ["foo"]);
+
+		expect(result).toBeUndefined();
+	});
+
 	test("omit can return the original object with empty keys provided", () => {
 		const result = ObjectHelper.omit({ foo: "bar", val1: true }, []);
 

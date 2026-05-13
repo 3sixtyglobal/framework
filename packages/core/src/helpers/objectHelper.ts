@@ -253,64 +253,42 @@ export class ObjectHelper {
 	 * Pick a subset of properties from an object.
 	 * @param obj The object to pick the properties from.
 	 * @param keys The property keys to pick.
-	 * @returns The picked object.
-	 */
-	public static pick<T extends object, K extends keyof T>(obj: T, keys: readonly K[]): Pick<T, K>;
-	/**
-	 * Pick a subset of properties from an object.
-	 * @param obj The object to pick the properties from.
-	 * @param keys The property keys to pick.
 	 * @returns The picked object, or undefined if the input was undefined.
 	 */
-	public static pick<T, K extends keyof T>(obj: T | undefined, keys: readonly K[]): T | undefined;
-	/**
-	 * Pick a subset of properties from an object.
-	 * @param obj The object to pick the properties from.
-	 * @param keys The property keys to pick.
-	 * @returns The picked object, or undefined if the input was undefined.
-	 */
-	public static pick<T, K extends keyof T>(obj: T | undefined, keys: readonly K[]): T | undefined {
-		if (Is.object(obj) && Is.arrayValue(keys)) {
-			const result = {} as T;
+	public static pick<T extends object, K extends keyof T>(
+		obj: T | undefined,
+		keys: readonly K[]
+	): T extends undefined ? undefined : Pick<T, K> {
+		if (Is.object(obj)) {
+			const result = {} as Pick<T, K>;
 			for (const key of keys) {
 				result[key] = obj[key];
 			}
-			return result;
+			return result as T extends undefined ? undefined : Pick<T, K>;
 		}
 
-		return obj;
+		return undefined as T extends undefined ? undefined : Pick<T, K>;
 	}
 
 	/**
 	 * Omit a subset of properties from an object.
 	 * @param obj The object to omit the properties from.
 	 * @param keys The property keys to omit.
-	 * @returns The object without the omitted keys.
-	 */
-	public static omit<T extends object, K extends keyof T>(obj: T, keys: readonly K[]): Omit<T, K>;
-	/**
-	 * Omit a subset of properties from an object.
-	 * @param obj The object to omit the properties from.
-	 * @param keys The property keys to omit.
 	 * @returns The object without the omitted keys, or undefined if the input was undefined.
 	 */
-	public static omit<T, K extends keyof T>(obj: T | undefined, keys: readonly K[]): T | undefined;
-	/**
-	 * Omit a subset of properties from an object.
-	 * @param obj The object to omit the properties from.
-	 * @param keys The property keys to omit.
-	 * @returns The object without the omitted keys, or undefined if the input was undefined.
-	 */
-	public static omit<T, K extends keyof T>(obj: T | undefined, keys: readonly K[]): T | undefined {
+	public static omit<T, K extends keyof T>(
+		obj: T | undefined,
+		keys: readonly K[]
+	): T extends undefined ? undefined : Omit<T, K> {
 		if (Is.object(obj) && Is.arrayValue(keys)) {
 			const result = ObjectHelper.clone(obj);
 			for (const key of keys) {
 				delete result[key];
 			}
-			return result;
+			return result as T extends undefined ? undefined : Omit<T, K>;
 		}
 
-		return obj;
+		return obj as T extends undefined ? undefined : Omit<T, K>;
 	}
 
 	/**
