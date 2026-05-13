@@ -255,16 +255,23 @@ export class ObjectHelper {
 	 * @param keys The property keys to pick.
 	 * @returns The picked object.
 	 */
-	public static pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K>;
+	public static pick<T extends object, K extends keyof T>(obj: T, keys: readonly K[]): Pick<T, K>;
 	/**
 	 * Pick a subset of properties from an object.
 	 * @param obj The object to pick the properties from.
 	 * @param keys The property keys to pick.
 	 * @returns The picked object, or undefined if the input was undefined.
 	 */
-	public static pick<T, K extends keyof T>(obj: T | undefined, keys: K[]): Pick<T, K> | undefined {
+	public static pick<T, K extends keyof T>(obj: T | undefined, keys: readonly K[]): T | undefined;
+	/**
+	 * Pick a subset of properties from an object.
+	 * @param obj The object to pick the properties from.
+	 * @param keys The property keys to pick.
+	 * @returns The picked object, or undefined if the input was undefined.
+	 */
+	public static pick<T, K extends keyof T>(obj: T | undefined, keys: readonly K[]): T | undefined {
 		if (Is.object(obj) && Is.arrayValue(keys)) {
-			const result = {} as Pick<T, K>;
+			const result = {} as T;
 			for (const key of keys) {
 				result[key] = obj[key];
 			}
@@ -280,16 +287,23 @@ export class ObjectHelper {
 	 * @param keys The property keys to omit.
 	 * @returns The object without the omitted keys.
 	 */
-	public static omit<T, K extends keyof T>(obj: T, keys: K[]): Omit<T, K>;
+	public static omit<T extends object, K extends keyof T>(obj: T, keys: readonly K[]): Omit<T, K>;
 	/**
 	 * Omit a subset of properties from an object.
 	 * @param obj The object to omit the properties from.
 	 * @param keys The property keys to omit.
 	 * @returns The object without the omitted keys, or undefined if the input was undefined.
 	 */
-	public static omit<T, K extends keyof T>(obj: T | undefined, keys: K[]): Omit<T, K> | undefined {
+	public static omit<T, K extends keyof T>(obj: T | undefined, keys: readonly K[]): T | undefined;
+	/**
+	 * Omit a subset of properties from an object.
+	 * @param obj The object to omit the properties from.
+	 * @param keys The property keys to omit.
+	 * @returns The object without the omitted keys, or undefined if the input was undefined.
+	 */
+	public static omit<T, K extends keyof T>(obj: T | undefined, keys: readonly K[]): T | undefined {
 		if (Is.object(obj) && Is.arrayValue(keys)) {
-			const result = { ...obj };
+			const result = ObjectHelper.clone(obj);
 			for (const key of keys) {
 				delete result[key];
 			}
