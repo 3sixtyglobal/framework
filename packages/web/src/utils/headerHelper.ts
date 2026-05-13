@@ -257,7 +257,7 @@ export class HeaderHelper {
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
 	 */
 	public static extractLinkHeaderRelation(
-		linkHeader: unknown,
+		linkHeader: string | string[] | undefined,
 		relation: HttpLinkRelType | string | RegExp
 	): IHttpLinkHeader | undefined {
 		const headers = HeaderHelper.extractLinkHeaders(linkHeader);
@@ -274,7 +274,7 @@ export class HeaderHelper {
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
 	 */
 	public static extractLinkHeaderRelations(
-		linkHeader: unknown,
+		linkHeader: string | string[] | undefined,
 		relation: HttpLinkRelType | string | RegExp
 	): IHttpLinkHeader[] | undefined {
 		const headers = HeaderHelper.extractLinkHeaders(linkHeader);
@@ -289,8 +289,10 @@ export class HeaderHelper {
 	 * @returns The extracted possible array of URL, rel and optional params or undefined if invalid/missing.
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
 	 */
-	public static extractLinkHeaders(linkHeader: unknown): IHttpLinkHeader[] | undefined {
-		const linkHeaderArray = ArrayHelper.fromObjectOrArray<string>(linkHeader as string | string[]);
+	public static extractLinkHeaders(
+		linkHeader: string | string[] | undefined
+	): IHttpLinkHeader[] | undefined {
+		const linkHeaderArray = ArrayHelper.fromObjectOrArray<string>(linkHeader);
 		if (Is.arrayValue<string>(linkHeaderArray)) {
 			const results = [];
 			for (const singleLinkHeader of linkHeaderArray) {

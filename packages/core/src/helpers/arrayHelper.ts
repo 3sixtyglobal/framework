@@ -1,6 +1,5 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { ObjectOrArray } from "../types/objectOrArray.js";
 import { Is } from "../utils/is.js";
 
 /**
@@ -37,7 +36,7 @@ export class ArrayHelper {
 	 * @returns The array.
 	 */
 	public static fromObjectOrArray<T = unknown>(
-		value: ObjectOrArray<T> | undefined
+		value: T | T[] | undefined
 	): T extends undefined ? undefined : T[] {
 		if (Is.empty(value)) {
 			return undefined as T extends undefined ? undefined : T[];

@@ -55,7 +55,7 @@ export class IntegrityHelper {
 		Guards.arrayOneOf(
 			IntegrityHelper.CLASS_NAME,
 			nameof(type),
-			type as IntegrityAlgorithm,
+			type,
 			Object.values(IntegrityAlgorithm)
 		);
 		Guards.stringValue(IntegrityHelper.CLASS_NAME, nameof(hash), hash);
