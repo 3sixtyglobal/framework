@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.3-next.40](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.39...core-v0.0.3-next.40) (2026-05-13)
+
+
+### Bug Fixes
+
+* pick non iterable keys ([399399a](https://github.com/iotaledger/twin-framework/commit/399399abfb8947c4eb235df527532ffe186986b3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.39 to 0.0.3-next.40
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.39 to 0.0.3-next.40
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.39 to 0.0.3-next.40
+
 ## [0.0.3-next.39](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.38...core-v0.0.3-next.39) (2026-05-13)
 
 
