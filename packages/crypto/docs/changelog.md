@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.0.3-next.39](https://github.com/iotaledger/twin-framework/compare/crypto-v0.0.3-next.38...crypto-v0.0.3-next.39) (2026-05-13)
+
+
+### Features
+
+* improve signatures ([cdd24be](https://github.com/iotaledger/twin-framework/commit/cdd24be6fb898d33955b6f2f93c3ddbd73582269))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.38 to 0.0.3-next.39
+    * @twin.org/nameof bumped from 0.0.3-next.38 to 0.0.3-next.39
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.38 to 0.0.3-next.39
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.38 to 0.0.3-next.39
+    * @twin.org/validate-locales bumped from 0.0.3-next.38 to 0.0.3-next.39
+
 ## [0.0.3-next.38](https://github.com/iotaledger/twin-framework/compare/crypto-v0.0.3-next.37...crypto-v0.0.3-next.38) (2026-05-11)
 
 

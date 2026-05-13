@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.0.3-next.39](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.38...core-v0.0.3-next.39) (2026-05-13)
+
+
+### Features
+
+* improve signatures ([cdd24be](https://github.com/iotaledger/twin-framework/commit/cdd24be6fb898d33955b6f2f93c3ddbd73582269))
+* improve signatures ([2041ae2](https://github.com/iotaledger/twin-framework/commit/2041ae214cbd8d472d5e8be8d3403cd06a114040))
+* improve signatures ([d8a0ee1](https://github.com/iotaledger/twin-framework/commit/d8a0ee16542134a3f8b0653065239f42045125b4))
+* improve signatures ([1d084c5](https://github.com/iotaledger/twin-framework/commit/1d084c58c7eb41ae50b0ce80ce57e48a22dd3102))
+* improve signatures ([#287](https://github.com/iotaledger/twin-framework/issues/287)) ([c9f38f0](https://github.com/iotaledger/twin-framework/commit/c9f38f00e1cea8759e1105b41872a650c66c00f4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.38 to 0.0.3-next.39
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.38 to 0.0.3-next.39
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.38 to 0.0.3-next.39
+
 ## [0.0.3-next.38](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.37...core-v0.0.3-next.38) (2026-05-11)
 
 
