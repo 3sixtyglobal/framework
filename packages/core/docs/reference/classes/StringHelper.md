@@ -58,6 +58,28 @@ The trimmed string or the original.
 
 ***
 
+### trimLeadingAndTrailingSlashes() {#trimleadingandtrailingslashes}
+
+> `static` **trimLeadingAndTrailingSlashes**(`value`): `string`
+
+Trim both leading and trailing slashes from a string.
+
+#### Parameters
+
+##### value
+
+`string`
+
+The value to trim.
+
+#### Returns
+
+`string`
+
+The trimmed string or the original.
+
+***
+
 ### kebabCase() {#kebabcase}
 
 > `static` **kebabCase**(`input`, `stripInterfacePrefix?`): `string`

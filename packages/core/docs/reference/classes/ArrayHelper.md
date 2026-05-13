@@ -44,60 +44,26 @@ True if both arrays are empty of have the same values.
 
 ### fromObjectOrArray() {#fromobjectorarray}
 
-Convert an object or array to an array.
-
-#### Param
-
-The object or array to convert.
-
-#### Call Signature
-
-> `static` **fromObjectOrArray**\<`T`\>(`value`): `undefined`
+> `static` **fromObjectOrArray**\<`T`\>(`value`): `T` *extends* `undefined` ? `undefined` : `T`[]
 
 Convert an object or array to an array.
 
-##### Type Parameters
+#### Type Parameters
 
-###### T
+##### T
 
 `T` = `unknown`
 
-##### Parameters
+#### Parameters
 
-###### value
+##### value
 
-`undefined`
-
-The object or array to convert.
-
-##### Returns
-
-`undefined`
-
-The array.
-
-#### Call Signature
-
-> `static` **fromObjectOrArray**\<`T`\>(`value`): `T`[]
-
-Convert an object or array to an array.
-
-##### Type Parameters
-
-###### T
-
-`T` = `unknown`
-
-##### Parameters
-
-###### value
-
-[`ObjectOrArray`](../type-aliases/ObjectOrArray.md)\<`T`\>
+`T` \| `T`[] \| `undefined`
 
 The object or array to convert.
 
-##### Returns
+#### Returns
 
-`T`[]
+`T` *extends* `undefined` ? `undefined` : `T`[]
 
 The array.

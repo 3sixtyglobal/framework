@@ -276,13 +276,13 @@ Delete the property of an unknown object.
 
 `unknown`
 
-The object to set the property from.
+The object to delete the property from.
 
 ##### property
 
 `string`
 
-The property to set
+The property to delete.
 
 #### Returns
 
@@ -332,7 +332,7 @@ The property if available.
 
 ### pick() {#pick}
 
-> `static` **pick**\<`T`\>(`obj`, `keys?`): `Partial`\<`T`\>
+> `static` **pick**\<`T`, `K`\>(`obj`, `keys`): `T` *extends* `undefined` ? `undefined` : `Pick`\<`T`, `K`\>
 
 Pick a subset of properties from an object.
 
@@ -340,7 +340,11 @@ Pick a subset of properties from an object.
 
 ##### T
 
-`T`
+`T` *extends* `object`
+
+##### K
+
+`K` *extends* `string` \| `number` \| `symbol`
 
 #### Parameters
 
@@ -350,23 +354,23 @@ Pick a subset of properties from an object.
 
 The object to pick the properties from.
 
-##### keys?
+##### keys
 
-keyof `T`[]
+readonly `K`[]
 
 The property keys to pick.
 
 #### Returns
 
-`Partial`\<`T`\>
+`T` *extends* `undefined` ? `undefined` : `Pick`\<`T`, `K`\>
 
-The partial object.
+The picked object, or undefined if the input was undefined.
 
 ***
 
 ### omit() {#omit}
 
-> `static` **omit**\<`T`\>(`obj`, `keys?`): `Partial`\<`T`\>
+> `static` **omit**\<`T`, `K`\>(`obj`, `keys`): `T` *extends* `undefined` ? `undefined` : `Omit`\<`T`, `K`\>
 
 Omit a subset of properties from an object.
 
@@ -376,6 +380,10 @@ Omit a subset of properties from an object.
 
 `T`
 
+##### K
+
+`K` *extends* `string` \| `number` \| `symbol`
+
 #### Parameters
 
 ##### obj
@@ -384,59 +392,17 @@ Omit a subset of properties from an object.
 
 The object to omit the properties from.
 
-##### keys?
+##### keys
 
-keyof `T`[]
+readonly `K`[]
 
 The property keys to omit.
 
 #### Returns
 
-`Partial`\<`T`\>
+`T` *extends* `undefined` ? `undefined` : `Omit`\<`T`, `K`\>
 
-The partial object.
-
-***
-
-### split() {#split}
-
-> `static` **split**\<`T`\>(`obj`, `keys?`): `object`
-
-Split an object into two with the specified keys.
-
-#### Type Parameters
-
-##### T
-
-`T`
-
-#### Parameters
-
-##### obj
-
-`T` \| `undefined`
-
-The object to split.
-
-##### keys?
-
-keyof `T`[]
-
-The property keys to split.
-
-#### Returns
-
-`object`
-
-The two partial objects.
-
-##### picked
-
-> **picked**: `Partial`\<`T`\> \| `undefined`
-
-##### omitted
-
-> **omitted**: `Partial`\<`T`\> \| `undefined`
+The object without the omitted keys, or undefined if the input was undefined.
 
 ***
 
