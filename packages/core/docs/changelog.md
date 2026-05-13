@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.3-next.41](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.40...core-v0.0.3-next.41) (2026-05-13)
+
+
+### Features
+
+* improve signatures ([45a7d58](https://github.com/iotaledger/twin-framework/commit/45a7d58baa5b6abc8c0735656f393d402fabb4ad))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.40 to 0.0.3-next.41
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.40 to 0.0.3-next.41
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.40 to 0.0.3-next.41
+
 ## [0.0.3-next.40](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.39...core-v0.0.3-next.40) (2026-05-13)
 
 
