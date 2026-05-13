@@ -33,6 +33,18 @@ export class StringHelper {
 	}
 
 	/**
+	 * Trim both leading and trailing slashes from a string.
+	 * @param value The value to trim.
+	 * @returns The trimmed string or the original.
+	 */
+	public static trimLeadingAndTrailingSlashes(value: string): string {
+		if (Is.string(value)) {
+			return value.replace(/^\/+|\/+$/g, "");
+		}
+		return value;
+	}
+
+	/**
 	 * Convert the input string to kebab case.
 	 * @param input The input to convert.
 	 * @param stripInterfacePrefix Strip interface prefixes.

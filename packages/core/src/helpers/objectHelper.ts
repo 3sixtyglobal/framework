@@ -53,9 +53,15 @@ export class ObjectHelper {
 	 * @param obj The object to clone.
 	 * @returns The objects clone.
 	 */
-	public static clone<T>(obj: T): T {
+	public static clone<T>(obj: T): T;
+	/**
+	 * Make a deep clone of an object.
+	 * @param obj The object to clone.
+	 * @returns The objects clone, or undefined if the input was undefined.
+	 */
+	public static clone<T>(obj: T | undefined): T | undefined {
 		if (Is.undefined(obj)) {
-			return undefined as T;
+			return undefined;
 		}
 		return structuredClone(obj);
 	}
@@ -206,8 +212,8 @@ export class ObjectHelper {
 
 	/**
 	 * Delete the property of an unknown object.
-	 * @param obj The object to set the property from.
-	 * @param property The property to set
+	 * @param obj The object to delete the property from.
+	 * @param property The property to delete.
 	 */
 	public static propertyDelete(obj: unknown, property: string): void {
 		if (Is.object(obj)) {
@@ -247,27 +253,41 @@ export class ObjectHelper {
 	 * Pick a subset of properties from an object.
 	 * @param obj The object to pick the properties from.
 	 * @param keys The property keys to pick.
-	 * @returns The partial object.
+	 * @returns The picked object.
 	 */
-	public static pick<T>(obj: T | undefined, keys?: (keyof T)[]): Partial<T> {
+	public static pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K>;
+	/**
+	 * Pick a subset of properties from an object.
+	 * @param obj The object to pick the properties from.
+	 * @param keys The property keys to pick.
+	 * @returns The picked object, or undefined if the input was undefined.
+	 */
+	public static pick<T, K extends keyof T>(obj: T | undefined, keys: K[]): Pick<T, K> | undefined {
 		if (Is.object(obj) && Is.arrayValue(keys)) {
-			const result: Partial<T> = {};
+			const result = {} as Pick<T, K>;
 			for (const key of keys) {
 				result[key] = obj[key];
 			}
 			return result;
 		}
 
-		return obj as Partial<T>;
+		return obj;
 	}
 
 	/**
 	 * Omit a subset of properties from an object.
 	 * @param obj The object to omit the properties from.
 	 * @param keys The property keys to omit.
-	 * @returns The partial object.
+	 * @returns The object without the omitted keys.
 	 */
-	public static omit<T>(obj: T | undefined, keys?: (keyof T)[]): Partial<T> {
+	public static omit<T, K extends keyof T>(obj: T, keys: K[]): Omit<T, K>;
+	/**
+	 * Omit a subset of properties from an object.
+	 * @param obj The object to omit the properties from.
+	 * @param keys The property keys to omit.
+	 * @returns The object without the omitted keys, or undefined if the input was undefined.
+	 */
+	public static omit<T, K extends keyof T>(obj: T | undefined, keys: K[]): Omit<T, K> | undefined {
 		if (Is.object(obj) && Is.arrayValue(keys)) {
 			const result = { ...obj };
 			for (const key of keys) {
@@ -276,39 +296,7 @@ export class ObjectHelper {
 			return result;
 		}
 
-		return obj as Partial<T>;
-	}
-
-	/**
-	 * Split an object into two with the specified keys.
-	 * @param obj The object to split.
-	 * @param keys The property keys to split.
-	 * @returns The two partial objects.
-	 */
-	public static split<T>(
-		obj: T | undefined,
-		keys?: (keyof T)[]
-	): { picked: Partial<T> | undefined; omitted: Partial<T> | undefined } {
-		if (Is.object(obj) && Is.array(keys)) {
-			const picked: Partial<T> = {};
-			const omitted: Partial<T> = {};
-
-			const allKeys = Object.keys(obj) as (keyof T)[];
-			for (const key of allKeys) {
-				if (keys.includes(key)) {
-					picked[key] = obj[key];
-				} else {
-					omitted[key] = obj[key];
-				}
-			}
-
-			return {
-				picked: Object.keys(picked).length > 0 ? picked : undefined,
-				omitted: Object.keys(omitted).length > 0 ? omitted : undefined
-			};
-		}
-
-		return { picked: obj, omitted: undefined };
+		return obj;
 	}
 
 	/**

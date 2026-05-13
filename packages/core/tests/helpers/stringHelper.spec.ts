@@ -23,6 +23,38 @@ describe("StringHelper", () => {
 		expect(StringHelper.trimTrailingSlashes("abc////")).toEqual("abc");
 	});
 
+	test("can trim trailing and leading slashes for undefined string", () => {
+		expect(StringHelper.trimLeadingAndTrailingSlashes(undefined as never)).toEqual(undefined);
+	});
+
+	test("can trim trailing and leading slashes for empty string", () => {
+		expect(StringHelper.trimLeadingAndTrailingSlashes("")).toEqual("");
+	});
+
+	test("can trim trailing and leading slashes for string with no slashes", () => {
+		expect(StringHelper.trimLeadingAndTrailingSlashes("abc")).toEqual("abc");
+	});
+
+	test("can trim trailing and leading slashes for string with leading slash only", () => {
+		expect(StringHelper.trimLeadingAndTrailingSlashes("/abc")).toEqual("abc");
+	});
+
+	test("can trim trailing and leading slashes for string with trailing slash only", () => {
+		expect(StringHelper.trimLeadingAndTrailingSlashes("abc/")).toEqual("abc");
+	});
+
+	test("can trim trailing and leading slashes for string with both leading and trailing slashes", () => {
+		expect(StringHelper.trimLeadingAndTrailingSlashes("/abc/")).toEqual("abc");
+	});
+
+	test("can trim trailing and leading slashes for string with multiple leading and trailing slashes", () => {
+		expect(StringHelper.trimLeadingAndTrailingSlashes("////abc////")).toEqual("abc");
+	});
+
+	test("can trim trailing and leading slashes preserving slashes in the middle", () => {
+		expect(StringHelper.trimLeadingAndTrailingSlashes("/abc/def/")).toEqual("abc/def");
+	});
+
 	test("can split kebab case into words", () => {
 		expect(StringHelper.words("this-is-a-test")).toEqual(["this", "is", "a", "test"]);
 	});
