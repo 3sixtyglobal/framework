@@ -4,6 +4,7 @@
 
 - [DecoratorHelper](classes/DecoratorHelper.md)
 - [EntityConditions](classes/EntityConditions.md)
+- [EntitySchemaDiffHelper](classes/EntitySchemaDiffHelper.md)
 - [EntitySchemaHelper](classes/EntitySchemaHelper.md)
 - [EntitySorter](classes/EntitySorter.md)
 
@@ -39,5 +40,3 @@
 
 - [entity](functions/entity.md)
 - [property](functions/property.md)
-- [entitySchemaDiff](functions/entitySchemaDiff.md)
-- [isEmptyDiff](functions/isEmptyDiff.md)
