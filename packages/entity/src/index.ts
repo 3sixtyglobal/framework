@@ -18,6 +18,6 @@ export * from "./models/sortDirection.js";
 export * from "./utils/decoratorHelper.js";
 export * from "./utils/entityConditions.js";
 export * from "./utils/entitySchemaHelper.js";
-export * from "./utils/entitySchemaDiff.js";
+export * from "./utils/entitySchemaDiffHelper.js";
 export * from "./utils/entitySorter.js";
 export * from "./models/IEntitySchemaDiff.js";
