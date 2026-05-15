@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.0.3-next.42](https://github.com/iotaledger/twin-framework/compare/entity-v0.0.3-next.41...entity-v0.0.3-next.42) (2026-05-15)
+
+
+### Features
+
+* entity schema diff updates ([#294](https://github.com/iotaledger/twin-framework/issues/294)) ([7a7a94d](https://github.com/iotaledger/twin-framework/commit/7a7a94d14ea5e785dd68fd6de1c5a84941721d28))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.41 to 0.0.3-next.42
+    * @twin.org/core bumped from 0.0.3-next.41 to 0.0.3-next.42
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.41 to 0.0.3-next.42
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.41 to 0.0.3-next.42
+    * @twin.org/validate-locales bumped from 0.0.3-next.41 to 0.0.3-next.42
+
 ## [0.0.3-next.41](https://github.com/iotaledger/twin-framework/compare/entity-v0.0.3-next.40...entity-v0.0.3-next.41) (2026-05-13)
 
 
