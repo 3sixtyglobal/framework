@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.0.3-next.43](https://github.com/iotaledger/twin-framework/compare/entity-v0.0.3-next.42...entity-v0.0.3-next.43) (2026-05-18)
+
+
+### Features
+
+* add support for null in EntityConditions.compare ([922c4ba](https://github.com/iotaledger/twin-framework/commit/922c4ba8af578b4e7eaaf21b3c37a9d788941487))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.42 to 0.0.3-next.43
+    * @twin.org/core bumped from 0.0.3-next.42 to 0.0.3-next.43
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.42 to 0.0.3-next.43
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.42 to 0.0.3-next.43
+    * @twin.org/validate-locales bumped from 0.0.3-next.42 to 0.0.3-next.43
+
 ## [0.0.3-next.42](https://github.com/iotaledger/twin-framework/compare/entity-v0.0.3-next.41...entity-v0.0.3-next.42) (2026-05-15)
 
 
