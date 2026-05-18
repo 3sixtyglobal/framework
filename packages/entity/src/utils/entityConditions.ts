@@ -75,6 +75,14 @@ export class EntityConditions {
 				return true;
 			}
 			return false;
+		} else if (conditionValue === null) {
+			const valNull = val === null;
+			if (valNull && comparator.comparison === ComparisonOperator.Equals) {
+				return true;
+			} else if (!valNull && comparator.comparison === ComparisonOperator.NotEquals) {
+				return true;
+			}
+			return false;
 		} else if (Is.string(val)) {
 			if (Is.string(conditionValue)) {
 				if (
