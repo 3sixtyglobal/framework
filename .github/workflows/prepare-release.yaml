@@ -184,7 +184,7 @@ jobs:
             else if ('$SEMVER_TYPE' === 'minor') console.log(major + '.' + (minor + 1) + '.0');
             else console.log(major + '.' + minor + '.' + (patch + 1));
           ")
-          git commit -S --allow-empty -m "$(printf 'feat: release to production\n\nRELEASE AS: %s' "$NEXT_VERSION")"
+          git commit -S --allow-empty -m "$(printf 'chore: release to production\n\nRELEASE AS: %s' "$NEXT_VERSION")"
           git push origin main
 
       # Update the release-please configuration files based on the selected release type
