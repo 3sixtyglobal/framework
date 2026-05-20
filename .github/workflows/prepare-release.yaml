@@ -171,7 +171,7 @@ jobs:
       - name: Force release by adding commit
         if: steps.set-branch.outputs.branch == 'main'
         run: |
-          git commit -S --allow-empty -m "feat: release to production"
+          git commit -S --allow-empty -m "chore: release to production"
           git push origin main
 
       # Update the release-please configuration files based on the selected release type
