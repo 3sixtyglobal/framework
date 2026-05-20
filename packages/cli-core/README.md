@@ -1,6 +1,6 @@
 # TWIN CLI Core
 
-Core classes for building a CLI.
+This package is part of the framework workspace and provides core classes for building a CLI to support consistent development workflows across the ecosystem.
 
 ## Installation
 
@@ -10,7 +10,7 @@ npm install @twin.org/cli-core
 
 ## Examples
 
-Usage of the tool is shown in the examples [docs/examples.md](docs/examples.md)
+Usage of the APIs is shown in the examples [docs/examples.md](docs/examples.md)
 
 ## Reference
 

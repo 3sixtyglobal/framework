@@ -3,17 +3,17 @@
 /* eslint-disable no-bitwise */
 
 import { nameof } from "@twin.org/nameof";
-import { GeneralError } from "../errors/generalError";
+import { GeneralError } from "../errors/generalError.js";
+import { Guards } from "../utils/guards.js";
 
 /**
- * Class to help with base63 Encoding/Decoding.
+ * Class to help with base32 Encoding/Decoding.
  */
 export class Base32 {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Base32>();
+	public static readonly CLASS_NAME: string = nameof<Base32>();
 
 	/**
 	 * Alphabet table for encoding.
@@ -28,6 +28,8 @@ export class Base32 {
 	 * @throws If the input string contains a character not in the Base32 alphabet.
 	 */
 	public static decode(base32: string): Uint8Array {
+		Guards.string(Base32.CLASS_NAME, nameof(base32), base32);
+
 		let bits = 0;
 		let value = 0;
 
@@ -40,7 +42,7 @@ export class Base32 {
 			const idx = Base32._ALPHABET.indexOf(base32[i]);
 
 			if (idx === -1) {
-				throw new GeneralError(Base32._CLASS_NAME, "invalidCharacter", {
+				throw new GeneralError(Base32.CLASS_NAME, "invalidCharacter", {
 					invalidCharacter: base32[i]
 				});
 			}
@@ -62,6 +64,8 @@ export class Base32 {
 	 * @returns The data as base32 string.
 	 */
 	public static encode(bytes: Uint8Array): string {
+		Guards.uint8Array(Base32.CLASS_NAME, nameof(bytes), bytes);
+
 		let bits = 0;
 		let value = 0;
 		let output = "";

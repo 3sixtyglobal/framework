@@ -1,6 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Is } from "../../src/utils/is";
+import { RandomHelper } from "../../src/helpers/randomHelper.js";
+import { Is } from "../../src/utils/is.js";
 
 describe("Is", () => {
 	test("undefined can succeed if value is undefined", () => {
@@ -391,6 +392,23 @@ describe("Is", () => {
 		expect(Is.function(() => {})).toEqual(true);
 	});
 
+	test("function can succeed when the signature matches", () => {
+		const fn: (a: number, b: string) => number = (a: number, b: string) => a;
+		expect(Is.function(fn)).toEqual(true);
+		if (Is.function(fn)) {
+			fn(1, "test");
+		}
+	});
+
+	test("function can fail when the signature does not match", () => {
+		const fn: (a: number, b: string) => number = (a: number, b: string) => a;
+		expect(Is.function<(a: number, b: string) => number>(fn)).toEqual(true);
+		if (Is.function<(a: number, b: string) => number>(fn)) {
+			// @ts-expect-error The following call is expected to fail because the signature does not match.
+			fn(1, 2);
+		}
+	});
+
 	test("email can fail if value if the value is empty", () => {
 		expect(Is.email("")).toEqual(false);
 	});
@@ -422,5 +440,101 @@ describe("Is", () => {
 	test("regexp can succeed if value is a valid regexp", () => {
 		// eslint-disable-next-line prefer-regex-literals
 		expect(Is.regexp(new RegExp(""))).toEqual(true);
+	});
+
+	test("should return true for ES6 classes", () => {
+		/**
+		 * MyClass is a simple ES6 class.
+		 */
+		class MyClass {}
+		expect(Is.class(MyClass)).toBe(true);
+	});
+
+	test("should return false for regular functions", () => {
+		/**
+		 * MyFunc is a regular function.
+		 */
+
+		function MyFunc(): void {}
+		expect(Is.class(MyFunc)).toBe(false);
+	});
+
+	test("should return false for arrow functions", () => {
+		const arrow = (): void => {};
+		expect(Is.class(arrow)).toBe(false);
+	});
+
+	test("should return false for objects", () => {
+		expect(Is.class({})).toBe(false);
+	});
+
+	test("should return false for primitives", () => {
+		expect(Is.class(123)).toBe(false);
+		expect(Is.class("string")).toBe(false);
+		expect(Is.class(null)).toBe(false);
+		expect(Is.class(undefined)).toBe(false);
+	});
+
+	test("should allow instantiation with new when true", () => {
+		/**
+		 * TestClass is a test class for instantiation.
+		 */
+		class TestClass {
+			// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility, no-restricted-syntax
+			value = 42;
+		}
+		if (Is.class(TestClass)) {
+			const instance = new TestClass();
+			expect(instance.value).toBe(42);
+		} else {
+			throw new Error("Is.class failed to detect class");
+		}
+	});
+
+	test("uuidV7 can fail if value is undefined", () => {
+		expect(Is.uuidV7(undefined)).toEqual(false);
+	});
+
+	test("uuidV7 can fail if value is null", () => {
+		expect(Is.uuidV7(null)).toEqual(false);
+	});
+
+	test("uuidV7 can fail if value is empty", () => {
+		expect(Is.uuidV7("")).toEqual(false);
+	});
+
+	test("uuidV7 can succeed for a generated UUIDv7", () => {
+		const uuid = RandomHelper.generateUuidV7();
+		expect(Is.uuidV7(uuid)).toEqual(true);
+	});
+
+	test("uuidV7 can fail for a generated UUIDv7 in generated compact mode", () => {
+		const uuid = RandomHelper.generateUuidV7("compact");
+		expect(Is.uuidV7(uuid)).toEqual(false);
+	});
+
+	test("uuidV7 can fail for a generated UUIDv7 in test compact mode", () => {
+		const uuid = RandomHelper.generateUuidV7();
+		expect(Is.uuidV7(uuid, "compact")).toEqual(false);
+	});
+
+	test("uuidV7 can succeed for a generated UUIDv7 with both in compact mode", () => {
+		const uuid = RandomHelper.generateUuidV7("compact");
+		expect(Is.uuidV7(uuid, "compact")).toEqual(true);
+	});
+
+	test("uuidV7 can fail if the version is not 7", () => {
+		const uuid = RandomHelper.generateUuidV7();
+		// UUID format: xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx
+		// The version is the first nibble of the 3rd group (index 14 in the string)
+		const notV7 = `${uuid.slice(0, 14)}4${uuid.slice(15)}`;
+		expect(Is.uuidV7(notV7)).toEqual(false);
+	});
+
+	test("uuidV7 can fail if the variant is not RFC 9562 v2 variant", () => {
+		const uuid = RandomHelper.generateUuidV7();
+		// The variant is the first nibble of the 4th group (index 19 in the string)
+		const badVariant = `${uuid.slice(0, 19)}0${uuid.slice(20)}`;
+		expect(Is.uuidV7(badVariant)).toEqual(false);
 	});
 });

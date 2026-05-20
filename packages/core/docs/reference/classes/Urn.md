@@ -20,17 +20,25 @@ The identifier for the namespace.
 
 ##### namespaceSpecific
 
-The specific part of the namespace.
+`string` \| `string`[]
 
-`string` | `string`[]
+The specific part of the namespace.
 
 #### Returns
 
 `Urn`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### generateRandom()
+### generateRandom() {#generaterandom}
 
 > `static` **generateRandom**(`namespace`): `Urn`
 
@@ -52,7 +60,7 @@ A new Id in URN format.
 
 ***
 
-### hasNamespace()
+### hasNamespace() {#hasnamespace}
 
 > `static` **hasNamespace**(`urn`, `namespace`): `boolean`
 
@@ -80,9 +88,9 @@ True if the namespace matches.
 
 ***
 
-### tryParseExact()
+### tryParseExact() {#tryparseexact}
 
-> `static` **tryParseExact**(`urn`): `undefined` \| `Urn`
+> `static` **tryParseExact**(`urn`): `Urn` \| `undefined`
 
 Try and parse a string into the urn parts.
 
@@ -96,13 +104,13 @@ The urn to parse.
 
 #### Returns
 
-`undefined` \| `Urn`
+`Urn` \| `undefined`
 
 The formatted urn or undefined if the value is not a urn.
 
 ***
 
-### fromValidString()
+### fromValidString() {#fromvalidstring}
 
 > `static` **fromValidString**(`urn`): `Urn`
 
@@ -124,9 +132,9 @@ The formatted urn.
 
 ***
 
-### addPrefix()
+### addPrefix() {#addprefix}
 
-> `static` **addPrefix**(`urn`): `undefined` \| `string`
+> `static` **addPrefix**(`urn`): `string` \| `undefined`
 
 Add a urn: prefix if there isn't one already.
 
@@ -140,13 +148,13 @@ The urn string to add a prefix to.
 
 #### Returns
 
-`undefined` \| `string`
+`string` \| `undefined`
 
 The urn with a prefix.
 
 ***
 
-### guard()
+### guard() {#guard}
 
 > `static` **guard**(`source`, `property`, `value`): `asserts value is string`
 
@@ -182,9 +190,9 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### validate()
+### validate() {#validate}
 
-> `static` **validate**(`property`, `value`, `failures`): `value is string`
+> `static` **validate**(`property`, `value`, `failures`, `fieldNameResource?`): `value is string`
 
 Validate a string as a Urn.
 
@@ -208,6 +216,12 @@ The urn to parse.
 
 The list of failures to add to.
 
+##### fieldNameResource?
+
+`string`
+
+The optional human readable name for the field as an i18 resource.
+
 #### Returns
 
 `value is string`
@@ -216,15 +230,15 @@ The formatted urn.
 
 ***
 
-### parts()
+### parts() {#parts}
 
-> **parts**(`startIndex`): `string`[]
+> **parts**(`startIndex?`): `string`[]
 
 Get the parts.
 
 #### Parameters
 
-##### startIndex
+##### startIndex?
 
 `number` = `0`
 
@@ -238,7 +252,7 @@ The parts.
 
 ***
 
-### namespaceIdentifier()
+### namespaceIdentifier() {#namespaceidentifier}
 
 > **namespaceIdentifier**(): `string`
 
@@ -252,7 +266,7 @@ The namespace identifier.
 
 ***
 
-### namespaceMethod()
+### namespaceMethod() {#namespacemethod}
 
 > **namespaceMethod**(): `string`
 
@@ -266,15 +280,15 @@ The namespace method.
 
 ***
 
-### namespaceSpecificParts()
+### namespaceSpecificParts() {#namespacespecificparts}
 
-> **namespaceSpecificParts**(`startIndex`): `string`[]
+> **namespaceSpecificParts**(`startIndex?`): `string`[]
 
 Get the namespace specific parts.
 
 #### Parameters
 
-##### startIndex
+##### startIndex?
 
 `number` = `0`
 
@@ -288,15 +302,15 @@ The namespace specific parts.
 
 ***
 
-### namespaceSpecific()
+### namespaceSpecific() {#namespacespecific}
 
-> **namespaceSpecific**(`startIndex`): `string`
+> **namespaceSpecific**(`startIndex?`): `string`
 
 Get the namespace specific.
 
 #### Parameters
 
-##### startIndex
+##### startIndex?
 
 `number` = `0`
 
@@ -310,15 +324,15 @@ The namespace specific.
 
 ***
 
-### toString()
+### toString() {#tostring}
 
-> **toString**(`omitPrefix`): `string`
+> **toString**(`omitPrefix?`): `string`
 
 Convert the parts in to a full string.
 
 #### Parameters
 
-##### omitPrefix
+##### omitPrefix?
 
 `boolean` = `true`
 

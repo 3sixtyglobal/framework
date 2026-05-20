@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { ObjectHelper } from "./objectHelper";
-import { StringHelper } from "./stringHelper";
-import { Is } from "../utils/is";
+import { ObjectHelper } from "./objectHelper.js";
+import { StringHelper } from "./stringHelper.js";
+import { Is } from "../utils/is.js";
 
 /**
  * Environment variable helper.

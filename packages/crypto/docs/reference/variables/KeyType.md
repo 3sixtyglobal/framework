@@ -4,15 +4,15 @@
 
 The names of the key types.
 
-## Type declaration
+## Type Declaration
 
-### Ed25519
+### Ed25519 {#ed25519}
 
 > `readonly` **Ed25519**: `0` = `0`
 
 Ed25519.
 
-### Secp256k1
+### Secp256k1 {#secp256k1}
 
 > `readonly` **Secp256k1**: `1` = `1`
 

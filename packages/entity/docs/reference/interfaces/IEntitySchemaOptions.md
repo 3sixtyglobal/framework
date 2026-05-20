@@ -4,8 +4,8 @@ Definition for an entity schema options.
 
 ## Properties
 
-### description?
+### description? {#description}
 
-> `optional` **description**: `string`
+> `optional` **description?**: `string`
 
 Description of the object.

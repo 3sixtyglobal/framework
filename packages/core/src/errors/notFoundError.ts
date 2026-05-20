@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@twin.org/nameof";
-import { BaseError } from "./baseError";
+import { BaseError } from "./baseError.js";
 
 /**
  * Class to handle errors which are triggered by data not being found.
@@ -15,11 +15,18 @@ export class NotFoundError extends BaseError {
 	/**
 	 * Create a new instance of NotFoundError.
 	 * @param source The source of the error.
-	 * @param message The message as a code.
+	 * @param message The message as an i18n key.
 	 * @param notFoundId The id for the item.
-	 * @param inner The inner error if we have wrapped another error.
+	 * @param properties Any additional information for the error.
+	 * @param cause The cause of the error if we have wrapped another error.
 	 */
-	constructor(source: string, message: string, notFoundId?: string, inner?: unknown) {
-		super(NotFoundError.CLASS_NAME, source, message, { notFoundId }, inner);
+	constructor(
+		source: string,
+		message: string,
+		notFoundId?: string,
+		properties?: { [id: string]: unknown },
+		cause?: unknown
+	) {
+		super(NotFoundError.CLASS_NAME, source, message, { notFoundId, ...properties }, cause);
 	}
 }

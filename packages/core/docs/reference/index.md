@@ -24,6 +24,7 @@
 - [FilenameHelper](classes/FilenameHelper.md)
 - [HexHelper](classes/HexHelper.md)
 - [JsonHelper](classes/JsonHelper.md)
+- [NumberHelper](classes/NumberHelper.md)
 - [ObjectHelper](classes/ObjectHelper.md)
 - [RandomHelper](classes/RandomHelper.md)
 - [StringHelper](classes/StringHelper.md)
@@ -45,6 +46,7 @@
 
 - [IComponent](interfaces/IComponent.md)
 - [IError](interfaces/IError.md)
+- [IHealth](interfaces/IHealth.md)
 - [II18nShared](interfaces/II18nShared.md)
 - [IKeyValue](interfaces/IKeyValue.md)
 - [ILabelledValue](interfaces/ILabelledValue.md)
@@ -59,10 +61,14 @@
 
 - [CoerceType](type-aliases/CoerceType.md)
 - [CompressionType](type-aliases/CompressionType.md)
+- [HealthStatus](type-aliases/HealthStatus.md)
 - [ObjectOrArray](type-aliases/ObjectOrArray.md)
+- [SingleOccurrenceArrayDepthHelper](type-aliases/SingleOccurrenceArrayDepthHelper.md)
+- [SingleOccurrenceArray](type-aliases/SingleOccurrenceArray.md)
 
 ## Variables
 
 - [ComponentFactory](variables/ComponentFactory.md)
 - [CoerceType](variables/CoerceType.md)
 - [CompressionType](variables/CompressionType.md)
+- [HealthStatus](variables/HealthStatus.md)

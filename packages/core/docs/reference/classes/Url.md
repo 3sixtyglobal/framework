@@ -22,11 +22,19 @@ The url string.
 
 `Url`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### tryParseExact()
+### tryParseExact() {#tryparseexact}
 
-> `static` **tryParseExact**(`url`): `undefined` \| `Url`
+> `static` **tryParseExact**(`url`): `Url` \| `undefined`
 
 Try and parse a string into the url parts.
 
@@ -40,13 +48,13 @@ The url to parse.
 
 #### Returns
 
-`undefined` \| `Url`
+`Url` \| `undefined`
 
 The formatted url or undefined if the value is not a url.
 
 ***
 
-### guard()
+### guard() {#guard}
 
 > `static` **guard**(`source`, `property`, `value`): `asserts value is string`
 
@@ -82,9 +90,9 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### validate()
+### validate() {#validate}
 
-> `static` **validate**(`property`, `value`, `failures`): `value is Url`
+> `static` **validate**(`property`, `value`, `failures`, `fieldNameResource?`): `value is Url`
 
 Validate a string as a Url.
 
@@ -108,6 +116,12 @@ The url to parse.
 
 The list of failures to add to.
 
+##### fieldNameResource?
+
+`string`
+
+The optional human readable name for the field as an i18 resource.
+
 #### Returns
 
 `value is Url`
@@ -116,7 +130,7 @@ The formatted url.
 
 ***
 
-### fromURLToParts()
+### fromURLToParts() {#fromurltoparts}
 
 > `static` **fromURLToParts**(`url`): [`IUrlParts`](../interfaces/IUrlParts.md)
 
@@ -138,7 +152,7 @@ The formatted url.
 
 ***
 
-### fromParts()
+### fromParts() {#fromparts}
 
 > `static` **fromParts**(`urlParts`): `Url`
 
@@ -160,7 +174,7 @@ The formatted url.
 
 ***
 
-### parts()
+### parts() {#parts}
 
 > **parts**(): [`IUrlParts`](../interfaces/IUrlParts.md)
 
@@ -174,7 +188,7 @@ The parts of the url.
 
 ***
 
-### toString()
+### toString() {#tostring}
 
 > **toString**(): `string`
 

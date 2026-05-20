@@ -1,0 +1,11 @@
+{
+	"error": {
+		"contextIdHelper": {
+			"contextIdMissing": "The context ID \"{key}\" is missing from the provided context IDs",
+			"contextIdSplitMismatch": "The context ID split parts length \"{actual}\" does not match the provided keys length \"{expected}\""
+		},
+		"contextIdStore": {
+			"asyncHooksNotAvailable": "Async Hooks are not available in this environment, please ensure you are running in Node.js"
+		}
+	}
+}

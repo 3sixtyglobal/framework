@@ -1,6 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Base64 } from "./base64";
+import { nameof } from "@twin.org/nameof";
+import { Base64 } from "./base64.js";
+import { Guards } from "../utils/guards.js";
 
 /**
  * Class to help with base64 URL Encoding/Decoding.
@@ -8,11 +10,18 @@ import { Base64 } from "./base64";
  */
 export class Base64Url {
 	/**
+	 * Runtime name for the class.
+	 */
+	public static readonly CLASS_NAME: string = nameof<Base64>();
+
+	/**
 	 * Convert the base 64 string to a byte array.
 	 * @param base64Url The base64 url string to convert.
 	 * @returns The byte array.
 	 */
 	public static decode(base64Url: string): Uint8Array {
+		Guards.string(Base64Url.CLASS_NAME, nameof(base64Url), base64Url);
+
 		let base64 = base64Url;
 
 		// Base 64 url can have padding removed, so add it back if it is missing.
@@ -33,6 +42,8 @@ export class Base64Url {
 	 * @returns The data as base64 url string.
 	 */
 	public static encode(bytes: Uint8Array): string {
+		Guards.uint8Array(Base64Url.CLASS_NAME, nameof(bytes), bytes);
+
 		const base64 = Base64.encode(bytes);
 		// Base 64 url can have padding removed, so remove it.
 		return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");

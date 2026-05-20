@@ -13,9 +13,17 @@ Sourced from https://github.com/beatgammit/base64-js.
 
 `Base64`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### byteLength()
+### byteLength() {#bytelength}
 
 > `static` **byteLength**(`base64`): `number`
 
@@ -37,7 +45,7 @@ The byte length of the data.
 
 ***
 
-### decode()
+### decode() {#decode}
 
 > `static` **decode**(`base64`): `Uint8Array`
 
@@ -59,7 +67,7 @@ The byte array.
 
 ***
 
-### encode()
+### encode() {#encode}
 
 > `static` **encode**(`bytes`): `string`
 

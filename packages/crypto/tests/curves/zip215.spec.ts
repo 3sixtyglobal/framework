@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Converter } from "@twin.org/core";
-import testData from "./zip215.json";
-import { Zip215 } from "../../src/curves/zip215";
+import testData from "./zip215.json" with { type: "json" };
+import { Zip215 } from "../../src/curves/zip215.js";
 
 // https://github.com/hdevalence/ed25519consensus/blob/main/zip215_test.go
 describe("Zip215", () => {

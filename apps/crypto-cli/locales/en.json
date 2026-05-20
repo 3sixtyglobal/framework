@@ -1,13 +1,4 @@
 {
-	"error": {
-		"commands": {
-			"address": {
-				"seedMissingEnv": "The seed does not appear to be hex or base64, assuming it is an environment variable, but there is no environment variable with the name \"{env}\" set.",
-				"seedInvalidEnv": "The seed does not appear to be hex or base64, assuming it is an environment variable, but there the environment variable is neither hex or base64. \"{envValue}\"",
-				"seedInvalidFormat": "The seed does not appear to be hex, base64 or an environment variable. \"{seed}\""
-			}
-		}
-	},
 	"commands": {
 		"mnemonic": {
 			"summary": "Create a mnemonic.",
@@ -21,26 +12,10 @@
 					"param": "--seed-format '<'format'>'",
 					"description": "The format to output the seed."
 				},
-				"no-console": {
-					"param": "--no-console",
-					"description": "Hides the mnemonic and seed in the console."
-				},
-				"json": {
-					"param": "--json '<'filename'>'",
-					"description": "Creates a JSON file containing the mnemonic and seed."
-				},
-				"env": {
-					"param": "--env '<'filename'>'",
-					"description": "Creates an env file containing the mnemonic and seed."
-				},
 				"env-prefix": {
 					"param": "--env-prefix '<'prefix'>'",
 					"description": "Prefixes the env variables with the value."
 				}
-			},
-			"progress": {
-				"writingJsonFile": "Writing JSON file",
-				"writingEnvFile": "Writing env file"
 			},
 			"labels": {
 				"mnemonic": "Mnemonic",

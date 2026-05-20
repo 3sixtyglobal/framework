@@ -1,14 +1,6 @@
 # TWIN Framework Core
 
-This package contains helper methods and classes which implement some of the fundamental features required for a framework.
-
-- Guards
-- Type Checking
-- Error Handling
-- Validation
-- Encoding
-- Conversion
-- Localisation
+This package is part of the framework workspace and provides helper methods/classes for data type checking/validation/guarding/error handling to support consistent development workflows across the ecosystem.
 
 ## Installation
 

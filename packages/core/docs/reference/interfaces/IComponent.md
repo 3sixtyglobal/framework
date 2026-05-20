@@ -2,33 +2,35 @@
 
 Interface describing a component which can be bootstrapped, started and stopped.
 
-## Properties
-
-### CLASS\_NAME
-
-> `readonly` **CLASS\_NAME**: `string`
-
-The name of the component.
-
 ## Methods
 
-### bootstrap()?
+### className() {#classname}
 
-> `optional` **bootstrap**(`nodeLoggingConnectorType`, `componentState?`): `Promise`\<`boolean`\>
+> **className**(): `string`
+
+Returns the class name of the component.
+
+#### Returns
+
+`string`
+
+The class name of the component.
+
+***
+
+### bootstrap()? {#bootstrap}
+
+> `optional` **bootstrap**(`nodeLoggingComponentType?`): `Promise`\<`boolean`\>
 
 Bootstrap the component by creating and initializing any resources it needs.
 
 #### Parameters
 
-##### nodeLoggingConnectorType
+##### nodeLoggingComponentType?
 
-The node logging connector type, defaults to "node-logging".
+`string`
 
-`undefined` | `string`
-
-##### componentState?
-
-A persistent state which can be modified by the method.
+The node logging component type.
 
 #### Returns
 
@@ -38,29 +40,41 @@ True if the bootstrapping process was successful.
 
 ***
 
-### start()?
+### teardown()? {#teardown}
 
-> `optional` **start**(`nodeIdentity`, `nodeLoggingConnectorType`, `componentState?`): `Promise`\<`void`\>
+> `optional` **teardown**(`nodeLoggingComponentType?`): `Promise`\<`boolean`\>
+
+Teardown the component by releasing any resources it holds.
+
+#### Parameters
+
+##### nodeLoggingComponentType?
+
+`string`
+
+The node logging component type.
+
+#### Returns
+
+`Promise`\<`boolean`\>
+
+True if the teardown process was successful.
+
+***
+
+### start()? {#start}
+
+> `optional` **start**(`nodeLoggingComponentType?`): `Promise`\<`void`\>
 
 The component needs to be started when the node is initialized.
 
 #### Parameters
 
-##### nodeIdentity
+##### nodeLoggingComponentType?
 
 `string`
 
-The identity of the node starting the component.
-
-##### nodeLoggingConnectorType
-
-The node logging connector type, defaults to "node-logging".
-
-`undefined` | `string`
-
-##### componentState?
-
-A persistent state which can be modified by the method.
+The node logging component type.
 
 #### Returns
 
@@ -70,32 +84,36 @@ Nothing.
 
 ***
 
-### stop()?
+### stop()? {#stop}
 
-> `optional` **stop**(`nodeIdentity`, `nodeLoggingConnectorType`, `componentState?`): `Promise`\<`void`\>
+> `optional` **stop**(`nodeLoggingComponentType?`): `Promise`\<`void`\>
 
 The component needs to be stopped when the node is closed.
 
 #### Parameters
 
-##### nodeIdentity
+##### nodeLoggingComponentType?
 
 `string`
 
-The identity of the node stopping the component.
-
-##### nodeLoggingConnectorType
-
-The node logging connector type, defaults to "node-logging".
-
-`undefined` | `string`
-
-##### componentState?
-
-A persistent state which can be modified by the method.
+The node logging component type.
 
 #### Returns
 
 `Promise`\<`void`\>
 
 Nothing.
+
+***
+
+### health()? {#health}
+
+> `optional` **health**(): `Promise`\<[`IHealth`](IHealth.md)[]\>
+
+Returns the health status of the component.
+
+#### Returns
+
+`Promise`\<[`IHealth`](IHealth.md)[]\>
+
+The health status of the component, can return multiple entries for elements within the component.

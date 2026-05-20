@@ -40,9 +40,17 @@ The blue element of the color.
 
 `Color`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### fromHex()
+### fromHex() {#fromhex}
 
 > `static` **fromHex**(`hex`): `Color`
 
@@ -68,9 +76,9 @@ Error if the format is incorrect.
 
 ***
 
-### coerce()
+### coerce() {#coerce}
 
-> `static` **coerce**(`value`): `undefined` \| `Color`
+> `static` **coerce**(`value`): `Color` \| `undefined`
 
 Coerce an unknown type to a color.
 
@@ -84,13 +92,13 @@ The value to try and convert.
 
 #### Returns
 
-`undefined` \| `Color`
+`Color` \| `undefined`
 
 The color if one can be created.
 
 ***
 
-### alpha()
+### alpha() {#alpha}
 
 > **alpha**(): `number`
 
@@ -104,7 +112,7 @@ The alpha element.
 
 ***
 
-### red()
+### red() {#red}
 
 > **red**(): `number`
 
@@ -118,7 +126,7 @@ The red element.
 
 ***
 
-### green()
+### green() {#green}
 
 > **green**(): `number`
 
@@ -132,7 +140,7 @@ The green element.
 
 ***
 
-### blue()
+### blue() {#blue}
 
 > **blue**(): `number`
 
@@ -146,7 +154,7 @@ The blue element.
 
 ***
 
-### argb()
+### argb() {#argb}
 
 > **argb**(): `number`
 
@@ -160,7 +168,7 @@ The color as argb.
 
 ***
 
-### rgba()
+### rgba() {#rgba}
 
 > **rgba**(): `number`
 
@@ -174,7 +182,7 @@ The color as rgba.
 
 ***
 
-### rgbText()
+### rgbText() {#rgbtext}
 
 > **rgbText**(): `string`
 
@@ -188,7 +196,7 @@ The color as rgb.
 
 ***
 
-### rgbaText()
+### rgbaText() {#rgbatext}
 
 > **rgbaText**(): `string`
 
@@ -202,7 +210,7 @@ The color as rgba.
 
 ***
 
-### hex()
+### hex() {#hex}
 
 > **hex**(): `string`
 
@@ -216,7 +224,7 @@ The color as hex with no alpha component.
 
 ***
 
-### hexWithAlpha()
+### hexWithAlpha() {#hexwithalpha}
 
 > **hexWithAlpha**(): `string`
 

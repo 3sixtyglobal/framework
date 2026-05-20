@@ -3,20 +3,19 @@
 /* eslint-disable no-bitwise */
 /* eslint-disable no-continue */
 /* eslint-disable no-mixed-operators */
-/* eslint-disable unicorn/prefer-math-trunc */
 import { GeneralError, Is } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
-import { QRAlphaNumeric } from "./data/qrAlphaNumeric";
-import { QRByte8 } from "./data/qrByte8";
-import { QRNumber } from "./data/qrNumber";
-import { BitBuffer } from "./helpers/bitBuffer";
-import { MathHelper } from "./helpers/mathHelper";
-import { Polynomial } from "./helpers/polynomial";
-import { QRHelper } from "./helpers/qrHelper";
-import { RSBlock } from "./helpers/rsBlock";
-import { ErrorCorrectLevel } from "./models/errorCorrectLevel";
-import type { QRCellData } from "./models/qrCellData";
-import type { QRDataBase } from "./models/qrDataBase";
+import { QRAlphaNumeric } from "./data/qrAlphaNumeric.js";
+import { QRByte8 } from "./data/qrByte8.js";
+import type { QRDataBase } from "./data/qrDataBase.js";
+import { QRNumber } from "./data/qrNumber.js";
+import { BitBuffer } from "./helpers/bitBuffer.js";
+import { MathHelper } from "./helpers/mathHelper.js";
+import { Polynomial } from "./helpers/polynomial.js";
+import { QRHelper } from "./helpers/qrHelper.js";
+import { RSBlock } from "./helpers/rsBlock.js";
+import { ErrorCorrectLevel } from "./models/errorCorrectLevel.js";
+import type { QRCellData } from "./models/qrCellData.js";
 
 /**
  * Class to generates QR codes from data.
@@ -25,9 +24,8 @@ import type { QRDataBase } from "./models/qrDataBase";
 export class QR {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<QR>();
+	public static readonly CLASS_NAME: string = nameof<QR>();
 
 	/**
 	 * @internal
@@ -72,7 +70,7 @@ export class QR {
 	 */
 	constructor(typeNumber: number = 6, errorCorrectLevel: ErrorCorrectLevel = ErrorCorrectLevel.L) {
 		if (!Is.integer(typeNumber) || typeNumber < 0 || typeNumber > 40) {
-			throw new GeneralError(QR._CLASS_NAME, "typeNumberRange", { typeNumber });
+			throw new GeneralError(QR.CLASS_NAME, "typeNumberRange", { typeNumber });
 		}
 		this._typeNumber = typeNumber;
 		this._errorCorrectLevel = errorCorrectLevel;
@@ -506,7 +504,7 @@ export class QR {
 		}
 
 		if (buffer.getLengthInBits() > totalDataCount * 8) {
-			throw new GeneralError(QR._CLASS_NAME, "dataOverflow", {
+			throw new GeneralError(QR.CLASS_NAME, "dataOverflow", {
 				lengthInBits: buffer.getLengthInBits(),
 				totalDataCount,
 				typeNumber: this._typeNumber
@@ -648,7 +646,7 @@ export class QR {
 				}
 
 				if (typeNumber === 40) {
-					throw new GeneralError(QR._CLASS_NAME, "typeNumberOverflow", {
+					throw new GeneralError(QR.CLASS_NAME, "typeNumberOverflow", {
 						lengthInBits: buffer.getLengthInBits(),
 						totalDataCount
 					});

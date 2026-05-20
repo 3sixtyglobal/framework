@@ -1,7 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Coerce, Converter, GeneralError, Guards, Is, Url } from "@twin.org/core";
-import { Bech32 } from "@twin.org/crypto";
 
 /**
  * Parameter utilities for the CLI.
@@ -22,6 +21,8 @@ export class CLIParam {
 	): string | undefined {
 		if (allowEnvVar && optionValue?.startsWith("!")) {
 			const envValueName = optionValue.slice(1);
+			// This is reading from an env var so it really has no choice
+			// eslint-disable-next-line no-restricted-syntax
 			const envValue = process.env[envValueName];
 			if (Is.empty(envValue)) {
 				throw new GeneralError("commands", "commands.common.missingEnv", {
@@ -51,6 +52,26 @@ export class CLIParam {
 		optionValue = CLIParam.env(optionName, optionValue, allowEnvVar);
 		Guards.stringValue("commands", optionName, optionValue);
 		return optionValue;
+	}
+
+	/**
+	 * Check the option to see if the value exists in the specific array.
+	 * @param optionName The name of the option.
+	 * @param optionValue The option value.
+	 * @param validValues The valid values.
+	 * @param allowEnvVar Allow the option to be read from an env var.
+	 * @returns The final option value.
+	 * @throws An error if the option is invalid.
+	 */
+	public static arrayOneOf<T = string>(
+		optionName: string,
+		optionValue: string | undefined,
+		validValues: T[],
+		allowEnvVar: boolean = true
+	): T {
+		const stringValue = CLIParam.env(optionName, optionValue, allowEnvVar) as T;
+		Guards.arrayOneOf<T>("commands", optionName, stringValue, validValues);
+		return stringValue;
 	}
 
 	/**
@@ -279,30 +300,6 @@ export class CLIParam {
 			return Converter.base64ToBytes(optionValue);
 		}
 		throw new GeneralError("commands", "commands.common.optionInvalidHexBase64", {
-			option: optionName,
-			value: optionValue
-		});
-	}
-
-	/**
-	 * Check the option to see if it exists and is bech32.
-	 * @param optionName The name of the option.
-	 * @param optionValue The option value.
-	 * @param allowEnvVar Allow the option to be read from an env var.
-	 * @returns The final option value.
-	 * @throws An error if the option is invalid.
-	 */
-	public static bech32(
-		optionName: string,
-		optionValue: string | undefined,
-		allowEnvVar: boolean = true
-	): string {
-		optionValue = CLIParam.env(optionName, optionValue, allowEnvVar);
-
-		if (Bech32.isBech32(optionValue)) {
-			return optionValue;
-		}
-		throw new GeneralError("commands", "commands.common.optionInvalidBech32", {
 			option: optionName,
 			value: optionValue
 		});

@@ -12,9 +12,17 @@ Implementation of Bip44 for address generation.
 
 `Bip44`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### keyPair()
+### keyPair() {#keypair}
 
 > `static` **keyPair**(`seed`, `keyType`, `coinType`, `accountIndex`, `isInternal`, `addressIndex`): `object`
 
@@ -78,7 +86,7 @@ Error if the address type is not supported.
 
 ***
 
-### path()
+### path() {#path}
 
 > `static` **path**(`coinType`, `accountIndex`, `isInternal`, `addressIndex`): [`Bip32Path`](Bip32Path.md)
 
@@ -118,7 +126,7 @@ The generated path.
 
 ***
 
-### basePath()
+### basePath() {#basepath}
 
 > `static` **basePath**(`coinType`): `string`
 
@@ -140,7 +148,7 @@ The bip44 address base path.
 
 ***
 
-### address()
+### address() {#address}
 
 > `static` **address**(`seed`, `keyType`, `coinType`, `accountIndex`, `isInternal`, `addressIndex`): `object`
 
@@ -204,7 +212,7 @@ The generated path and the associated keypair.
 
 ***
 
-### addressBech32()
+### addressBech32() {#addressbech32}
 
 > `static` **addressBech32**(`seed`, `keyType`, `hrp`, `coinType`, `accountIndex`, `isInternal`, `addressIndex`): `object`
 

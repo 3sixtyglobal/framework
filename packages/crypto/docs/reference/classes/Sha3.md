@@ -6,13 +6,13 @@ Perform a SHA-3 hash on the block.
 
 ### Constructor
 
-> **new Sha3**(`bits`): `Sha3`
+> **new Sha3**(`bits?`): `Sha3`
 
 Create a new instance of Sha3.
 
 #### Parameters
 
-##### bits
+##### bits?
 
 `number` = `Sha3.SIZE_256`
 
@@ -24,7 +24,7 @@ The number of bits.
 
 ## Properties
 
-### SIZE\_224
+### SIZE\_224 {#size_224}
 
 > `readonly` `static` **SIZE\_224**: `number` = `224`
 
@@ -32,7 +32,7 @@ Sha3 224.
 
 ***
 
-### SIZE\_256
+### SIZE\_256 {#size_256}
 
 > `readonly` `static` **SIZE\_256**: `number` = `256`
 
@@ -40,7 +40,7 @@ Sha3 256.
 
 ***
 
-### SIZE\_384
+### SIZE\_384 {#size_384}
 
 > `readonly` `static` **SIZE\_384**: `number` = `384`
 
@@ -48,15 +48,23 @@ Sha3 384.
 
 ***
 
-### SIZE\_512
+### SIZE\_512 {#size_512}
 
 > `readonly` `static` **SIZE\_512**: `number` = `512`
 
 Sha3 512.
 
+***
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### sum256()
+### sum256() {#sum256}
 
 > `static` **sum256**(`block`): `Uint8Array`
 
@@ -78,7 +86,7 @@ The sum 256 of the block.
 
 ***
 
-### sum224()
+### sum224() {#sum224}
 
 > `static` **sum224**(`block`): `Uint8Array`
 
@@ -100,7 +108,7 @@ The sum 224 of the block.
 
 ***
 
-### sum384()
+### sum384() {#sum384}
 
 > `static` **sum384**(`block`): `Uint8Array`
 
@@ -122,7 +130,7 @@ The sum 384 of the block.
 
 ***
 
-### sum512()
+### sum512() {#sum512}
 
 > `static` **sum512**(`block`): `Uint8Array`
 
@@ -144,7 +152,7 @@ The sum 512 of the block.
 
 ***
 
-### update()
+### update() {#update}
 
 > **update**(`block`): `Sha3`
 
@@ -166,7 +174,7 @@ The instance for chaining.
 
 ***
 
-### digest()
+### digest() {#digest}
 
 > **digest**(): `Uint8Array`
 

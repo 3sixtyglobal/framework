@@ -1,15 +1,13 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-/* eslint-disable no-bitwise */
-
 import { HDKey as HDKeySecp256k1 } from "@scure/bip32";
 import { Converter, GeneralError } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 import { HDKey as HDKeyEd25519 } from "micro-key-producer/slip10.js";
-import type { Bip32Path } from "./bip32Path";
-import { Ed25519 } from "../curves/ed25519";
-import { Secp256k1 } from "../curves/secp256k1";
-import { KeyType } from "../models/keyType";
+import type { Bip32Path } from "./bip32Path.js";
+import { Ed25519 } from "../curves/ed25519.js";
+import { Secp256k1 } from "../curves/secp256k1.js";
+import { KeyType } from "../models/keyType.js";
 
 /**
  * Class to help with slip0010 key derivation
@@ -18,9 +16,8 @@ import { KeyType } from "../models/keyType";
 export class Slip0010 {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Slip0010>();
+	public static readonly CLASS_NAME: string = nameof<Slip0010>();
 
 	/**
 	 * Get the master key from the seed.
@@ -48,7 +45,7 @@ export class Slip0010 {
 			};
 		} catch (error) {
 			throw new GeneralError(
-				Slip0010._CLASS_NAME,
+				Slip0010.CLASS_NAME,
 				"invalidSeed",
 				{ seed: Converter.bytesToUtf8(seed) },
 				error

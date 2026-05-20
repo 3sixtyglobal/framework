@@ -9,16 +9,16 @@ Options for rendering.
 
 ## Properties
 
-### cellSize?
+### cellSize? {#cellsize}
 
-> `optional` **cellSize**: `number`
+> `optional` **cellSize?**: `number`
 
 The cell size.
 
 ***
 
-### marginSize?
+### marginSize? {#marginsize}
 
-> `optional` **marginSize**: `number`
+> `optional` **marginSize?**: `number`
 
 The margin size.

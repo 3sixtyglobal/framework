@@ -1,0 +1,69 @@
+[
+	{
+		"name": "default options",
+		"password": "password",
+		"salt": "saltsalt",
+		"expected": "78f1d7ead7a95d6bac7fa6fa307f5327e4951ad79ddd1fc5b42931abf5f9515a"
+	},
+	{
+		"name": "custom options",
+		"password": "hello world",
+		"salt": "12345678",
+		"options": {
+			"t": 2,
+			"m": 32,
+			"p": 1,
+			"dkLen": 16
+		},
+		"expected": "12b65ad2dd965289f15d57be51dcbf99"
+	},
+	{
+		"name": "higher iteration and memory cost",
+		"password": "password",
+		"salt": "saltsalt",
+		"options": {
+			"t": 3,
+			"m": 16,
+			"p": 1,
+			"dkLen": 32
+		},
+		"expected": "bf2675b4aecff1c6eb629fe3881eff523a792d819be27d9653a1fd4c9d9a3cf8"
+	},
+	{
+		"name": "parallelism and shorter derived key",
+		"password": "password",
+		"salt": "saltsalt",
+		"options": {
+			"t": 2,
+			"m": 32,
+			"p": 2,
+			"dkLen": 24
+		},
+		"expected": "4ffc451303419b20a159be8aad88ca300ac8d5975f20e6fc"
+	},
+	{
+		"name": "longer derived key",
+		"password": "hello world",
+		"salt": "12345678",
+		"options": {
+			"t": 1,
+			"m": 8,
+			"p": 1,
+			"dkLen": 64
+		},
+		"expected": "117cb07b89be9d29c7cd62d0165d3a518be0d12fcb007225d332f08efccb8cb5ccd66fb3fb116866428ebac8f14fdccad9bf7156710b5fe757abf0ae40d6f2ef"
+	},
+	{
+		"name": "explicit max memory limit",
+		"password": "hello world",
+		"salt": "12345678",
+		"options": {
+			"t": 2,
+			"m": 32,
+			"p": 1,
+			"dkLen": 16,
+			"maxmem": 1048576
+		},
+		"expected": "12b65ad2dd965289f15d57be51dcbf99"
+	}
+]

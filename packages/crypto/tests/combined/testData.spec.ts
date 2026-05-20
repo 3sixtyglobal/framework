@@ -1,12 +1,12 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Converter } from "@twin.org/core";
-import testData from "./testData.json";
-import { Ed25519 } from "../../src/curves/ed25519";
-import { Zip215 } from "../../src/curves/zip215";
-import { Blake2b } from "../../src/hashes/blake2b";
-import { HmacSha512 } from "../../src/hashes/hmacSha512";
-import { Sha512 } from "../../src/hashes/sha512";
+import testData from "./testData.json" with { type: "json" };
+import { Ed25519 } from "../../src/curves/ed25519.js";
+import { Zip215 } from "../../src/curves/zip215.js";
+import { Blake2b } from "../../src/hashes/blake2b.js";
+import { HmacSha512 } from "../../src/hashes/hmacSha512.js";
+import { Sha512 } from "../../src/hashes/sha512.js";
 
 describe("Test Data", () => {
 	test("Can validate data set", () => {

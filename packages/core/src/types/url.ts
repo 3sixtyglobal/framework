@@ -1,12 +1,12 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@twin.org/nameof";
-import { GuardError } from "../errors/guardError";
-import type { IUrlParts } from "../models/IUrlParts";
-import type { IValidationFailure } from "../models/IValidationFailure";
-import { Coerce } from "../utils/coerce";
-import { Guards } from "../utils/guards";
-import { Is } from "../utils/is";
+import { GuardError } from "../errors/guardError.js";
+import type { IUrlParts } from "../models/IUrlParts.js";
+import type { IValidationFailure } from "../models/IValidationFailure.js";
+import { Coerce } from "../utils/coerce.js";
+import { Guards } from "../utils/guards.js";
+import { Is } from "../utils/is.js";
 
 /**
  * Class to help with urls.
@@ -14,9 +14,8 @@ import { Is } from "../utils/is";
 export class Url {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Url>();
+	public static readonly CLASS_NAME: string = nameof<Url>();
 
 	/**
 	 * The internal representation of the url.
@@ -29,13 +28,13 @@ export class Url {
 	 * @param url The url string.
 	 */
 	constructor(url: string) {
-		Guards.stringValue(Url._CLASS_NAME, nameof(url), url);
+		Guards.stringValue(Url.CLASS_NAME, nameof(url), url);
 
 		try {
 			const u = new URL(url);
 			this._urlParts = Url.fromURLToParts(u);
 		} catch {
-			throw new GuardError(Url._CLASS_NAME, "guard.url", "url", url);
+			throw new GuardError(Url.CLASS_NAME, "guard.url", "url", url);
 		}
 	}
 
@@ -79,17 +78,20 @@ export class Url {
 	 * @param property Throw an exception if the url property is invalid.
 	 * @param value The url to parse.
 	 * @param failures The list of failures to add to.
+	 * @param fieldNameResource The optional human readable name for the field as an i18 resource.
 	 * @returns The formatted url.
 	 */
 	public static validate(
 		property: string,
 		value: unknown,
-		failures: IValidationFailure[]
+		failures: IValidationFailure[],
+		fieldNameResource?: string
 	): value is Url {
 		if (!Is.stringValue(value)) {
 			failures.push({
 				property,
-				reason: "validation.notEmpty"
+				reason: "validation.beNotEmpty",
+				properties: { fieldName: fieldNameResource ?? "validation.defaultFieldName", value }
 			});
 
 			return false;
@@ -100,7 +102,8 @@ export class Url {
 		if (Is.undefined(result)) {
 			failures.push({
 				property,
-				reason: "validation.beUrl"
+				reason: "validation.beUrl",
+				properties: { fieldName: fieldNameResource ?? "validation.defaultFieldName", value }
 			});
 
 			return false;

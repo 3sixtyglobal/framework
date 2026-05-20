@@ -15,9 +15,9 @@ Implementation of https://datatracker.ietf.org/doc/html/rfc4226 .
 
 ## Methods
 
-### generate()
+### generate() {#generate}
 
-> `static` **generate**(`key`, `interval`, `timestamp`): `string`
+> `static` **generate**(`key`, `interval?`, `timestamp?`): `string`
 
 Generate a time based One Time Password.
 
@@ -29,13 +29,13 @@ Generate a time based One Time Password.
 
 Key for the one time password.
 
-##### interval
+##### interval?
 
 `number` = `30`
 
 The time step of the counter.
 
-##### timestamp
+##### timestamp?
 
 `number` = `...`
 
@@ -49,9 +49,9 @@ The one time password.
 
 ***
 
-### verify()
+### verify() {#verify}
 
-> `static` **verify**(`token`, `key`, `window`, `interval`, `timestamp`): `undefined` \| `number`
+> `static` **verify**(`token`, `key`, `window?`, `interval?`, `timestamp?`): `number` \| `undefined`
 
 Check a One Time Password based on a timer.
 
@@ -70,19 +70,19 @@ Passcode to validate.
 Key for the one time password. This should be unique and secret for
 every user as it is the seed used to calculate the HMAC.
 
-##### window
+##### window?
 
 `number` = `2`
 
 The allowable margin for the counter.
 
-##### interval
+##### interval?
 
 `number` = `30`
 
 The time step of the counter.
 
-##### timestamp
+##### timestamp?
 
 `number` = `...`
 
@@ -90,13 +90,13 @@ The timestamp now.
 
 #### Returns
 
-`undefined` \| `number`
+`number` \| `undefined`
 
 Undefined if failure, delta on success
 
 ***
 
-### generateSecret()
+### generateSecret() {#generatesecret}
 
 > `static` **generateSecret**(`length`): `string`
 
@@ -118,7 +118,7 @@ The secret encoded as base32.
 
 ***
 
-### secretToBytes()
+### secretToBytes() {#secrettobytes}
 
 > `static` **secretToBytes**(`secretBase32`): `Uint8Array`
 
@@ -140,7 +140,7 @@ The bytes of the secret.
 
 ***
 
-### generateAuthUrl()
+### generateAuthUrl() {#generateauthurl}
 
 > `static` **generateAuthUrl**(`issuer`, `label`, `secretBase32`): `string`
 

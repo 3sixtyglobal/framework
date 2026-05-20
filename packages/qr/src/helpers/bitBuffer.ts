@@ -1,7 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable no-bitwise */
-/* eslint-disable unicorn/prefer-math-trunc */
 /**
  * Class for maintaining data bits.
  * Based on https://github.com/kazuhikoarase/qrcode-generator/ .
@@ -61,7 +60,7 @@ export class BitBuffer {
 			this._buffer.push(0);
 		}
 		if (bit) {
-			this._buffer[~~(this._length / 8)] |= 0x80 >>> this._length % 8;
+			this._buffer[~~(this._length / 8)] |= 0x80 >>> (this._length % 8);
 		}
 		this._length++;
 	}

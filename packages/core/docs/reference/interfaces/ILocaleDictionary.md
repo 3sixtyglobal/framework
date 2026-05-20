@@ -4,4 +4,4 @@ Type for the JSON locale dictionary files.
 
 ## Indexable
 
-\[`key`: `string`\]: `string` \| `ILocaleDictionary`
+> \[`key`: `string`\]: `string` \| `ILocaleDictionary`

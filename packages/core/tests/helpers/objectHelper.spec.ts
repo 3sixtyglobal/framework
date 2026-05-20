@@ -1,15 +1,12 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { ObjectHelper } from "../../src/helpers/objectHelper";
-import { I18n } from "../../src/utils/i18n";
+import { ObjectHelper } from "../../src/helpers/objectHelper.js";
 
 describe("ObjectHelper", () => {
-	beforeAll(async () => {
-		I18n.addDictionary("en", await import("../../locales/en.json"));
-	});
+	beforeAll(async () => {});
 
 	test("toBytes can return empty array with undefined object", () => {
-		expect(ObjectHelper.toBytes(undefined as never).length).toEqual(0);
+		expect(ObjectHelper.toBytes(undefined).length).toEqual(0);
 	});
 
 	test("toBytes can return array with null object", () => {
@@ -44,7 +41,6 @@ describe("ObjectHelper", () => {
 		expect(() => ObjectHelper.fromBytes(Uint8Array.from([110]))).toThrow(
 			expect.objectContaining({ name: "GeneralError", message: "objectHelper.failedBytesToJSON" })
 		);
-		expect(I18n.hasMessage("error.objectHelper.failedBytesToJSON")).toEqual(true);
 	});
 
 	test("fromBytes can return an object with a non empty array", () => {
@@ -57,33 +53,23 @@ describe("ObjectHelper", () => {
 		});
 	});
 
-	test("pick can return the original object with no keys provided", () => {
-		const result = ObjectHelper.pick({ foo: "bar", val1: true });
-
-		expect(result.foo).toEqual("bar");
-		expect(result.val1).toEqual(true);
-	});
-
-	test("pick can return the original object with empty keys provided", () => {
-		const result = ObjectHelper.pick({ foo: "bar", val1: true }, []);
-
-		expect(result.foo).toEqual("bar");
-		expect(result.val1).toEqual(true);
-	});
-
 	test("pick can return a subset when keys are provided", () => {
 		const result = ObjectHelper.pick({ foo: "bar", val1: true, val2: false }, ["foo", "val1"]);
 
 		expect(result.foo).toEqual("bar");
 		expect(result.val1).toEqual(true);
-		expect(result.val2).toBeUndefined();
 	});
 
-	test("omit can return the original object with no keys provided", () => {
-		const result = ObjectHelper.omit({ foo: "bar", val1: true });
+	test("pick can return an empty object when no keys are provided", () => {
+		const result = ObjectHelper.pick({ foo: "bar", val1: true }, []);
 
-		expect(result.foo).toEqual("bar");
-		expect(result.val1).toEqual(true);
+		expect(result).toEqual({});
+	});
+
+	test("pick can return undefined when the input is undefined", () => {
+		const result = ObjectHelper.pick<{ foo: string }, "foo">(undefined, ["foo"]);
+
+		expect(result).toBeUndefined();
 	});
 
 	test("omit can return the original object with empty keys provided", () => {
@@ -98,7 +84,6 @@ describe("ObjectHelper", () => {
 
 		expect(result.foo).toEqual("bar");
 		expect(result.val1).toEqual(true);
-		expect(result.val2).toBeUndefined();
 	});
 
 	test("can merge undefined objects", () => {

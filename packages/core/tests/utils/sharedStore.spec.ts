@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { SharedStore } from "../../src/utils/sharedStore";
+import { SharedStore } from "../../src/utils/sharedStore.js";
 
 describe("SharedStore", () => {
 	test("can not get an object in the shared store", async () => {

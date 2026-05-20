@@ -14,9 +14,9 @@ Cache the results from asynchronous requests.
 
 ## Methods
 
-### exec()
+### exec() {#exec}
 
-> `static` **exec**\<`T`\>(`key`, `ttlMs`, `requestMethod`, `cacheFailures?`): `undefined` \| `Promise`\<`T`\>
+> `static` **exec**\<`T`\>(`key`, `ttlMs`, `requestMethod`, `cacheFailures?`): `Promise`\<`T`\> \| `undefined`
 
 Execute an async request and cache the result.
 
@@ -36,9 +36,9 @@ The key for the entry in the cache.
 
 ##### ttlMs
 
-The TTL of the entry in the cache.
+`number` \| `undefined`
 
-`undefined` | `number`
+The TTL of the entry in the cache.
 
 ##### requestMethod
 
@@ -54,15 +54,15 @@ Cache failure results, defaults to false.
 
 #### Returns
 
-`undefined` \| `Promise`\<`T`\>
+`Promise`\<`T`\> \| `undefined`
 
 The response.
 
 ***
 
-### get()
+### get() {#get}
 
-> `static` **get**\<`T`\>(`key`): `Promise`\<`undefined` \| `T`\>
+> `static` **get**\<`T`\>(`key`): `Promise`\<`T` \| `undefined`\>
 
 Get an entry from the cache.
 
@@ -82,13 +82,13 @@ The key to get from the cache.
 
 #### Returns
 
-`Promise`\<`undefined` \| `T`\>
+`Promise`\<`T` \| `undefined`\>
 
 The item from the cache if it exists.
 
 ***
 
-### set()
+### set() {#set}
 
 > `static` **set**\<`T`\>(`key`, `value`, `ttlMs?`): `Promise`\<`void`\>
 
@@ -128,7 +128,7 @@ Nothing.
 
 ***
 
-### remove()
+### remove() {#remove}
 
 > `static` **remove**(`key`): `void`
 
@@ -148,7 +148,7 @@ The key to remove from the cache.
 
 ***
 
-### clearCache()
+### clearCache() {#clearcache}
 
 > `static` **clearCache**(`prefix?`): `void`
 
@@ -168,7 +168,7 @@ Optional prefix to clear only entries with that prefix.
 
 ***
 
-### cleanupExpired()
+### cleanupExpired() {#cleanupexpired}
 
 > `static` **cleanupExpired**(): `void`
 

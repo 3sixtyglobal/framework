@@ -4,15 +4,15 @@ Options for the CLI Output for env.
 
 ## Properties
 
-### env?
+### env? {#env}
 
-> `optional` **env**: `string`
+> `optional` **env?**: `string`
 
 Output the data to an environment file.
 
 ***
 
-### mergeEnv
+### mergeEnv {#mergeenv}
 
 > **mergeEnv**: `boolean`
 

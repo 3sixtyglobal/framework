@@ -1,49 +1,48 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+import type { IHealth } from "./IHealth.js";
 
 /**
  * Interface describing a component which can be bootstrapped, started and stopped.
  */
 export interface IComponent {
 	/**
-	 * The name of the component.
+	 * Returns the class name of the component.
+	 * @returns The class name of the component.
 	 */
-	readonly CLASS_NAME: string;
+	className(): string;
 
 	/**
 	 * Bootstrap the component by creating and initializing any resources it needs.
-	 * @param nodeLoggingConnectorType The node logging connector type, defaults to "node-logging".
-	 * @param componentState A persistent state which can be modified by the method.
+	 * @param nodeLoggingComponentType The node logging component type.
 	 * @returns True if the bootstrapping process was successful.
 	 */
-	bootstrap?(
-		nodeLoggingConnectorType: string | undefined,
-		componentState?: { [id: string]: unknown }
-	): Promise<boolean>;
+	bootstrap?(nodeLoggingComponentType?: string): Promise<boolean>;
+
+	/**
+	 * Teardown the component by releasing any resources it holds.
+	 * @param nodeLoggingComponentType The node logging component type.
+	 * @returns True if the teardown process was successful.
+	 */
+	teardown?(nodeLoggingComponentType?: string): Promise<boolean>;
 
 	/**
 	 * The component needs to be started when the node is initialized.
-	 * @param nodeIdentity The identity of the node starting the component.
-	 * @param nodeLoggingConnectorType The node logging connector type, defaults to "node-logging".
-	 * @param componentState A persistent state which can be modified by the method.
+	 * @param nodeLoggingComponentType The node logging component type.
 	 * @returns Nothing.
 	 */
-	start?(
-		nodeIdentity: string,
-		nodeLoggingConnectorType: string | undefined,
-		componentState?: { [id: string]: unknown }
-	): Promise<void>;
+	start?(nodeLoggingComponentType?: string): Promise<void>;
 
 	/**
 	 * The component needs to be stopped when the node is closed.
-	 * @param nodeIdentity The identity of the node stopping the component.
-	 * @param nodeLoggingConnectorType The node logging connector type, defaults to "node-logging".
-	 * @param componentState A persistent state which can be modified by the method.
+	 * @param nodeLoggingComponentType The node logging component type.
 	 * @returns Nothing.
 	 */
-	stop?(
-		nodeIdentity: string,
-		nodeLoggingConnectorType: string | undefined,
-		componentState?: { [id: string]: unknown }
-	): Promise<void>;
+	stop?(nodeLoggingComponentType?: string): Promise<void>;
+
+	/**
+	 * Returns the health status of the component.
+	 * @returns The health status of the component, can return multiple entries for elements within the component.
+	 */
+	health?(): Promise<IHealth[]>;
 }

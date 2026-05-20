@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Ed25519 } from "@twin.org/crypto";
-import { Jwk } from "../../src/utils/jwk";
-import { Jws } from "../../src/utils/jws";
+import { Jwk } from "../../src/utils/jwk.js";
+import { Jws } from "../../src/utils/jws.js";
 
 describe("Jws", () => {
 	test("can create a signature", async () => {

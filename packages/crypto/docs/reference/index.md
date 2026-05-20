@@ -9,6 +9,7 @@
 - [Secp256k1](classes/Secp256k1.md)
 - [X25519](classes/X25519.md)
 - [Zip215](classes/Zip215.md)
+- [Argon2id](classes/Argon2id.md)
 - [Blake2b](classes/Blake2b.md)
 - [Blake3](classes/Blake3.md)
 - [HmacSha1](classes/HmacSha1.md)
@@ -19,6 +20,8 @@
 - [Sha256](classes/Sha256.md)
 - [Sha3](classes/Sha3.md)
 - [Sha512](classes/Sha512.md)
+- [IntegrityHelper](classes/IntegrityHelper.md)
+- [PemHelper](classes/PemHelper.md)
 - [Bip32Path](classes/Bip32Path.md)
 - [Bip39](classes/Bip39.md)
 - [Slip0010](classes/Slip0010.md)
@@ -29,8 +32,10 @@
 
 ## Type Aliases
 
+- [IntegrityAlgorithm](type-aliases/IntegrityAlgorithm.md)
 - [KeyType](type-aliases/KeyType.md)
 
 ## Variables
 
+- [IntegrityAlgorithm](variables/IntegrityAlgorithm.md)
 - [KeyType](variables/KeyType.md)

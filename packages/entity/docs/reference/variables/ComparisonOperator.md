@@ -4,45 +4,45 @@
 
 The types of comparisons.
 
-## Type declaration
+## Type Declaration
 
-### Equals
+### Equals {#equals}
 
 > `readonly` **Equals**: `"equals"` = `"equals"`
 
 Equals.
 
-### NotEquals
+### NotEquals {#notequals}
 
 > `readonly` **NotEquals**: `"not-equals"` = `"not-equals"`
 
 Not Equals.
 
-### GreaterThan
+### GreaterThan {#greaterthan}
 
 > `readonly` **GreaterThan**: `"greater-than"` = `"greater-than"`
 
 Greater Than.
 
-### GreaterThanOrEqual
+### GreaterThanOrEqual {#greaterthanorequal}
 
 > `readonly` **GreaterThanOrEqual**: `"greater-than-or-equal"` = `"greater-than-or-equal"`
 
 Greater Than Or Equal.
 
-### LessThan
+### LessThan {#lessthan}
 
 > `readonly` **LessThan**: `"less-than"` = `"less-than"`
 
 Less Than.
 
-### LessThanOrEqual
+### LessThanOrEqual {#lessthanorequal}
 
 > `readonly` **LessThanOrEqual**: `"less-than-or-equal"` = `"less-than-or-equal"`
 
 Less Than Or Equal.
 
-### Includes
+### Includes {#includes}
 
 > `readonly` **Includes**: `"includes"` = `"includes"`
 
@@ -51,7 +51,7 @@ A string in a substring.
 A set contains an element.
 A list contains an element.
 
-### NotIncludes
+### NotIncludes {#notincludes}
 
 > `readonly` **NotIncludes**: `"not-includes"` = `"not-includes"`
 
@@ -60,7 +60,7 @@ A string not in a substring.
 A set does not contain an element.
 A list does not contain an element.
 
-### In
+### In {#in}
 
 > `readonly` **In**: `"in"` = `"in"`
 

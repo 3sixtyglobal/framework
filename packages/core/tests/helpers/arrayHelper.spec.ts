@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { ArrayHelper } from "../../src/helpers/arrayHelper";
+import { ArrayHelper } from "../../src/helpers/arrayHelper.js";
 
 describe("ArrayHelper", () => {
 	test("can match when both empty", () => {

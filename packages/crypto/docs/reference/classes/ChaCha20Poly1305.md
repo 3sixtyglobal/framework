@@ -34,9 +34,17 @@ The additional authenticated data.
 
 `ChaCha20Poly1305`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### encrypt()
+### encrypt() {#encrypt}
 
 > **encrypt**(`block`): `Uint8Array`
 
@@ -58,7 +66,7 @@ The block encrypted.
 
 ***
 
-### decrypt()
+### decrypt() {#decrypt}
 
 > **decrypt**(`block`): `Uint8Array`
 

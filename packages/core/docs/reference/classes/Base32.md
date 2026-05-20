@@ -1,6 +1,6 @@
 # Class: Base32
 
-Class to help with base63 Encoding/Decoding.
+Class to help with base32 Encoding/Decoding.
 
 ## Constructors
 
@@ -12,9 +12,17 @@ Class to help with base63 Encoding/Decoding.
 
 `Base32`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### decode()
+### decode() {#decode}
 
 > `static` **decode**(`base32`): `Uint8Array`
 
@@ -40,7 +48,7 @@ If the input string contains a character not in the Base32 alphabet.
 
 ***
 
-### encode()
+### encode() {#encode}
 
 > `static` **encode**(`bytes`): `string`
 

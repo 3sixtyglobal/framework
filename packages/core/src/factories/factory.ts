@@ -1,10 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@twin.org/nameof";
-import { GeneralError } from "../errors/generalError";
-import { Guards } from "../utils/guards";
-import { Is } from "../utils/is";
-import { SharedStore } from "../utils/sharedStore";
+import { GeneralError } from "../errors/generalError.js";
+import { Guards } from "../utils/guards.js";
+import { Is } from "../utils/is.js";
+import { SharedStore } from "../utils/sharedStore.js";
 
 /**
  * Factory for creating implementation of generic types.
@@ -12,9 +12,8 @@ import { SharedStore } from "../utils/sharedStore";
 export class Factory<T> {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Factory<unknown>>();
+	public static readonly CLASS_NAME: string = nameof<Factory<unknown>>();
 
 	/**
 	 * Type name for the instances.
@@ -28,7 +27,7 @@ export class Factory<T> {
 	 */
 	private _generators: {
 		[name: string]: {
-			generator: () => T;
+			generator: (args?: unknown) => T;
 			order: number;
 		};
 	};
@@ -137,17 +136,26 @@ export class Factory<T> {
 	}
 
 	/**
+	 * Get the type name of the factory.
+	 * @returns The type name of the factory.
+	 */
+	public typeName(): string {
+		return this._typeName;
+	}
+
+	/**
 	 * Register a new generator.
 	 * @param name The name of the generator.
 	 * @param generator The function to create an instance.
 	 */
-	public register<U extends T>(name: string, generator: () => U): void {
-		Guards.stringValue(Factory._CLASS_NAME, nameof(name), name);
-		Guards.function(Factory._CLASS_NAME, nameof(generator), generator);
+	public register<U extends T>(name: string, generator: (args?: unknown) => U): void {
+		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
+		Guards.function(Factory.CLASS_NAME, nameof(generator), generator);
 		this._generators[name] = {
 			generator,
 			order: this._orderCounter++
 		};
+
 		// Remove any existing instance
 		this.removeInstance(name);
 		if (this._autoInstance) {
@@ -162,9 +170,9 @@ export class Factory<T> {
 	 * @throws GeneralError if no generator exists.
 	 */
 	public unregister(name: string): void {
-		Guards.stringValue(Factory._CLASS_NAME, nameof(name), name);
+		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
 		if (!this._generators[name]) {
-			throw new GeneralError(Factory._CLASS_NAME, "noUnregister", {
+			throw new GeneralError(Factory.CLASS_NAME, "noUnregister", {
 				typeName: this._typeName,
 				name
 			});
@@ -182,9 +190,10 @@ export class Factory<T> {
 	 * @throws GeneralError if no item exists to get.
 	 */
 	public get<U extends T>(name: string): U {
+		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
 		const instance = this.getIfExists(name);
 		if (!instance) {
-			throw new GeneralError(Factory._CLASS_NAME, "noGet", {
+			throw new GeneralError(Factory.CLASS_NAME, "noGet", {
 				typeName: this._typeName,
 				name
 			});
@@ -197,8 +206,11 @@ export class Factory<T> {
 	 * @param name The name of the instance to generate.
 	 * @returns An instance of the item or undefined if it does not exist.
 	 */
-	public getIfExists<U extends T>(name: string): U | undefined {
-		Guards.stringValue(Factory._CLASS_NAME, nameof(name), name);
+	public getIfExists<U extends T>(name?: string): U | undefined {
+		if (Is.empty(name)) {
+			return;
+		}
+		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
 
 		const matchName = this._matcher(Object.keys(this._generators), name);
 
@@ -209,6 +221,43 @@ export class Factory<T> {
 			if (this._instances[matchName]) {
 				return this._instances[matchName] as U;
 			}
+		}
+	}
+
+	/**
+	 * Create a new instance without caching it.
+	 * @param name The name of the instance to generate.
+	 * @param args The arguments to pass to the generator.
+	 * @returns A new instance of the item.
+	 * @throws GuardError if the parameters are invalid.
+	 * @throws GeneralError if no item exists to create.
+	 */
+	public create<U extends T>(name: string, args?: unknown): U {
+		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
+		const instance = this.createIfExists(name, args);
+		if (!instance) {
+			throw new GeneralError(Factory.CLASS_NAME, "noCreate", {
+				typeName: this._typeName,
+				name,
+				args: Is.undefined(args) ? "" : JSON.stringify(args)
+			});
+		}
+		return instance as U;
+	}
+
+	/**
+	 * Create a new instance without caching it if it exists.
+	 * @param name The name of the instance to generate.
+	 * @param args The arguments to pass to the generator.
+	 * @returns A new instance of the item if it exists.
+	 * @throws GuardError if the parameters are invalid.
+	 */
+	public createIfExists<U extends T>(name: string, args?: unknown): U | undefined {
+		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
+		const matchName = this._matcher(Object.keys(this._generators), name);
+
+		if (Is.stringValue(matchName) && this._generators[matchName]) {
+			return this._generators[matchName].generator(args) as U;
 		}
 	}
 
@@ -275,7 +324,7 @@ export class Factory<T> {
 	 * @returns True if the factory has a matching name.
 	 */
 	public hasName(name: string): boolean {
-		Guards.stringValue(Factory._CLASS_NAME, nameof(name), name);
+		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
 		return Is.stringValue(this._matcher(Object.keys(this._generators), name));
 	}
 

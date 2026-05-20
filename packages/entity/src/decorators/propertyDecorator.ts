@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import "reflect-metadata";
-import type { IEntitySchemaProperty } from "../models/IEntitySchemaProperty";
-import { DecoratorHelper } from "../utils/decoratorHelper";
+import "tslib";
+import type { IEntitySchemaProperty } from "../models/IEntitySchemaProperty.js";
+import { DecoratorHelper } from "../utils/decoratorHelper.js";
 
 /**
  * Decorator to produce schema property data for entities.

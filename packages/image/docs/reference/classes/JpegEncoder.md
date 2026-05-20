@@ -15,9 +15,17 @@ Create a new instance of JpegEncoder.
 
 `JpegEncoder`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### encode()
+### encode() {#encode}
 
 > **encode**(`width`, `height`, `imageData`, `quality`): `Uint8Array`
 

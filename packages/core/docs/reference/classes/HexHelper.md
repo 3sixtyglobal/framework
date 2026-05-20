@@ -14,7 +14,7 @@ Helper methods for hex conversions.
 
 ## Methods
 
-### stripPrefix()
+### stripPrefix() {#stripprefix}
 
 > `static` **stripPrefix**(`hex`): `string`
 
@@ -36,7 +36,7 @@ The stripped hex without the prefix.
 
 ***
 
-### addPrefix()
+### addPrefix() {#addprefix}
 
 > `static` **addPrefix**(`hex`): `string`
 
@@ -58,7 +58,7 @@ The hex with the prefix.
 
 ***
 
-### hasPrefix()
+### hasPrefix() {#hasprefix}
 
 > `static` **hasPrefix**(`hex`): `boolean`
 
@@ -80,9 +80,9 @@ True if the hex string has the prefix.
 
 ***
 
-### isHex()
+### isHex() {#ishex}
 
-> `static` **isHex**(`value`, `allowPrefix`): `boolean`
+> `static` **isHex**(`value`, `allowPrefix?`): `boolean`
 
 Is the data hex format.
 
@@ -94,7 +94,7 @@ Is the data hex format.
 
 The value to test.
 
-##### allowPrefix
+##### allowPrefix?
 
 `boolean` = `false`
 

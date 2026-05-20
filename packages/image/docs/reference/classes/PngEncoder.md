@@ -15,7 +15,7 @@ Based on https://github.com/photopea/UPNG.js.
 
 ## Methods
 
-### encode()
+### encode() {#encode}
 
 > **encode**(`buffers`, `w`, `h`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 

@@ -12,9 +12,17 @@ Class to helper with fetch operations.
 
 `FetchHelper`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### fetch()
+### fetch() {#fetch}
 
 > `static` **fetch**(`source`, `url`, `method`, `body?`, `options?`): `Promise`\<`Response`\>
 
@@ -42,9 +50,9 @@ The http method.
 
 ##### body?
 
-Request to send to the endpoint.
+`string` \| `Uint8Array`\<`ArrayBufferLike`\>
 
-`string` | `Uint8Array`\<`ArrayBufferLike`\>
+Request to send to the endpoint.
 
 ##### options?
 
@@ -60,7 +68,7 @@ The response.
 
 ***
 
-### fetchJson()
+### fetchJson() {#fetchjson}
 
 > `static` **fetchJson**\<`T`, `U`\>(`source`, `url`, `method`, `requestData?`, `options?`): `Promise`\<`U`\>
 
@@ -116,7 +124,7 @@ The response.
 
 ***
 
-### fetchBinary()
+### fetchBinary() {#fetchbinary}
 
 > `static` **fetchBinary**\<`T`\>(`source`, `url`, `method`, `requestData?`, `options?`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\> \| `T`\>
 
@@ -144,9 +152,9 @@ The url for the request.
 
 ##### method
 
-The http method.
+`"GET"` \| `"POST"`
 
-`"GET"` | `"POST"`
+The http method.
 
 ##### requestData?
 
@@ -168,7 +176,7 @@ The response.
 
 ***
 
-### clearCache()
+### clearCache() {#clearcache}
 
 > `static` **clearCache**(): `void`
 
@@ -180,9 +188,9 @@ Clears the cache.
 
 ***
 
-### getCacheEntry()
+### getCacheEntry() {#getcacheentry}
 
-> `static` **getCacheEntry**\<`T`\>(`url`): `Promise`\<`undefined` \| `T`\>
+> `static` **getCacheEntry**\<`T`\>(`url`): `Promise`\<`T` \| `undefined`\>
 
 Get a cache entry.
 
@@ -202,13 +210,13 @@ The url for the request.
 
 #### Returns
 
-`Promise`\<`undefined` \| `T`\>
+`Promise`\<`T` \| `undefined`\>
 
 The cache entry if it exists.
 
 ***
 
-### setCacheEntry()
+### setCacheEntry() {#setcacheentry}
 
 > `static` **setCacheEntry**\<`T`\>(`url`, `value`): `Promise`\<`void`\>
 
@@ -242,7 +250,7 @@ The cache entry if it exists.
 
 ***
 
-### removeCacheEntry()
+### removeCacheEntry() {#removecacheentry}
 
 > `static` **removeCacheEntry**(`url`): `void`
 

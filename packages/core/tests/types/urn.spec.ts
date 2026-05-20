@@ -1,13 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { IValidationFailure } from "../../src/models/IValidationFailure";
-import { Urn } from "../../src/types/urn";
-import { I18n } from "../../src/utils/i18n";
+import type { IValidationFailure } from "../../src/models/IValidationFailure.js";
+import { Urn } from "../../src/types/urn.js";
 
 describe("Urn", () => {
-	beforeAll(async () => {
-		I18n.addDictionary("en", await import("../../locales/en.json"));
-	});
+	beforeAll(async () => {});
 
 	test("can generate an internal id", () => {
 		const id = Urn.generateRandom("twin-ilt");
@@ -16,7 +13,7 @@ describe("Urn", () => {
 
 		expect(urn[0]).toEqual("urn");
 		expect(urn[1]).toEqual("twin-ilt");
-		expect(urn[2].length).toEqual(64);
+		expect(urn[2].length).toEqual(32);
 	});
 
 	test("can fail to construct an id with no namespace id", () => {
@@ -123,7 +120,6 @@ describe("Urn", () => {
 				properties: { property: "foo", value: "urn:" }
 			})
 		);
-		expect(I18n.hasMessage("error.guard.urn")).toEqual(true);
 	});
 
 	test("can success to guard a valid urn", () => {
@@ -218,7 +214,7 @@ describe("Urn", () => {
 	});
 
 	test("can fail to add a prefix when input is not a string", () => {
-		expect(Urn.addPrefix(undefined as never)?.toString()).toEqual(undefined);
+		expect(Urn.addPrefix(undefined)?.toString()).toEqual(undefined);
 	});
 
 	test("can add a prefix when none exists", () => {
@@ -231,10 +227,10 @@ describe("Urn", () => {
 
 	test("can fail to validate if the item is not a string", () => {
 		const failures: IValidationFailure[] = [];
-		const res = Urn.validate("foo", undefined as never, failures);
+		const res = Urn.validate("foo", undefined, failures);
 		expect(res).toEqual(false);
 		expect(failures.length).toEqual(1);
-		expect(failures[0].reason).toEqual("validation.notEmpty");
+		expect(failures[0].reason).toEqual("validation.beNotEmpty");
 	});
 
 	test("can fail to validate if the item is not a urn", () => {

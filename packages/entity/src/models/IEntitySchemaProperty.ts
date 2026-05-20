@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { EntitySchemaPropertyFormat } from "./entitySchemaPropertyFormat";
-import type { EntitySchemaPropertyType } from "./entitySchemaPropertyType";
-import type { SortDirection } from "./sortDirection";
+import type { EntitySchemaPropertyFormat } from "./entitySchemaPropertyFormat.js";
+import type { EntitySchemaPropertyType } from "./entitySchemaPropertyType.js";
+import type { SortDirection } from "./sortDirection.js";
 
 /**
  * Definition for an entity schema property.

@@ -14,7 +14,7 @@ Utilities for getting standard options.
 
 ## Methods
 
-### output()
+### output() {#output}
 
 > `static` **output**(`command`, `opts`): `void`
 

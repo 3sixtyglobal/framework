@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0.
 import path from "node:path";
 import chalk from "chalk";
-import { CLIBase } from "../src/cliBase";
-import { CLIDisplay } from "../src/cliDisplay";
+import { CLIBase } from "../src/cliBase.js";
+import { CLIDisplay } from "../src/cliDisplay.js";
 
 /**
  * Test CLI.

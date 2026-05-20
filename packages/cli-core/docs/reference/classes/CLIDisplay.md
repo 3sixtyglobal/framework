@@ -14,7 +14,7 @@ Display utilities for the CLI.
 
 ## Properties
 
-### write()
+### write {#write}
 
 > `static` **write**: (`buffer`) => `void`
 
@@ -24,9 +24,9 @@ The default output method for writing standard messages.
 
 ##### buffer
 
-The message to output.
+`string` \| `Uint8Array`\<`ArrayBufferLike`\>
 
-`string` | `Uint8Array`\<`ArrayBufferLike`\>
+The message to output.
 
 #### Returns
 
@@ -34,7 +34,7 @@ The message to output.
 
 ***
 
-### writeError()
+### writeError {#writeerror}
 
 > `static` **writeError**: (`buffer`) => `void`
 
@@ -44,9 +44,9 @@ The default output method for writing error messages.
 
 ##### buffer
 
-The message to output.
+`string` \| `Uint8Array`\<`ArrayBufferLike`\>
 
-`string` | `Uint8Array`\<`ArrayBufferLike`\>
+The message to output.
 
 #### Returns
 
@@ -54,7 +54,7 @@ The message to output.
 
 ***
 
-### clearLine()
+### clearLine {#clearline}
 
 > `static` **clearLine**: () => `void`
 
@@ -66,7 +66,7 @@ The default output method for clearing the current line.
 
 ## Methods
 
-### header()
+### header() {#header}
 
 > `static` **header**(`title`, `version`, `icon`): `void`
 
@@ -98,9 +98,9 @@ The icon for the CLI.
 
 ***
 
-### error()
+### error() {#error}
 
-> `static` **error**(`error`, `lineBreaks`): `void`
+> `static` **error**(`error`, `lineBreaks?`): `void`
 
 Display an error message.
 
@@ -112,7 +112,7 @@ Display an error message.
 
 The error to display.
 
-##### lineBreaks
+##### lineBreaks?
 
 `boolean` = `true`
 
@@ -124,7 +124,27 @@ Whether to add a line break after the error.
 
 ***
 
-### section()
+### errorMessage() {#errormessage}
+
+> `static` **errorMessage**(`error`): `void`
+
+Display an error message in simple form.
+
+#### Parameters
+
+##### error
+
+`string`
+
+The error to display.
+
+#### Returns
+
+`void`
+
+***
+
+### section() {#section}
 
 > `static` **section**(`label`): `void`
 
@@ -144,9 +164,9 @@ The label for the section.
 
 ***
 
-### value()
+### value() {#value}
 
-> `static` **value**(`label`, `value`, `indentLevel`): `void`
+> `static` **value**(`label`, `value`, `indentLevel?`): `void`
 
 Display a value with a label.
 
@@ -164,7 +184,7 @@ The label for the value.
 
 The value to display.
 
-##### indentLevel
+##### indentLevel?
 
 `number` = `0`
 
@@ -176,7 +196,7 @@ The level of indentation.
 
 ***
 
-### task()
+### task() {#task}
 
 > `static` **task**(`label`, `task?`): `void`
 
@@ -202,7 +222,7 @@ The task to display.
 
 ***
 
-### break()
+### break() {#break}
 
 > `static` **break**(): `void`
 
@@ -214,7 +234,7 @@ Display a break.
 
 ***
 
-### json()
+### json() {#json}
 
 > `static` **json**(`obj`): `void`
 
@@ -234,7 +254,27 @@ The object to display.
 
 ***
 
-### done()
+### warning() {#warning}
+
+> `static` **warning**(`label`): `void`
+
+Display a warning.
+
+#### Parameters
+
+##### label
+
+`string`
+
+The label for the warning.
+
+#### Returns
+
+`void`
+
+***
+
+### done() {#done}
 
 > `static` **done**(): `void`
 
@@ -246,27 +286,27 @@ Display the processing is done.
 
 ***
 
-### spinnerStart()
+### spinnerStart() {#spinnerstart}
 
-> `static` **spinnerStart**(`i18nMessage`, `spinnerCharacters`, `interval`): `void`
+> `static` **spinnerStart**(`i18nMessage?`, `spinnerCharacters?`, `interval?`): `void`
 
 Start the spinner.
 
 #### Parameters
 
-##### i18nMessage
+##### i18nMessage?
 
 `string` = `"cli.progress.pleaseWait"`
 
 The message to display with the spinner.
 
-##### spinnerCharacters
+##### spinnerCharacters?
 
 `string`[] = `...`
 
 The characters to use in the spinner.
 
-##### interval
+##### interval?
 
 `number` = `100`
 
@@ -278,7 +318,7 @@ The interval for the spinner.
 
 ***
 
-### spinnerStop()
+### spinnerStop() {#spinnerstop}
 
 > `static` **spinnerStop**(): `void`
 

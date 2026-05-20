@@ -4,9 +4,9 @@
 import { GeneralError, Guards } from "@twin.org/core";
 import { Color, PngEncoder } from "@twin.org/image";
 import { nameof } from "@twin.org/nameof";
-import type { IBitmapRendererOptions } from "../models/IBitmapRendererOptions";
-import type { IRendererOptions } from "../models/IRendererOptions";
-import type { QRCellData } from "../models/qrCellData";
+import type { IBitmapRendererOptions } from "../models/IBitmapRendererOptions.js";
+import type { IRendererOptions } from "../models/IRendererOptions.js";
+import type { QRCellData } from "../models/qrCellData.js";
 
 /**
  * Class to render qr data as png.
@@ -14,9 +14,8 @@ import type { QRCellData } from "../models/qrCellData";
 export class PngRenderer {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<PngRenderer>();
+	public static readonly CLASS_NAME: string = nameof<PngRenderer>();
 
 	/**
 	 * Render the QR code data as a bitmap.
@@ -28,7 +27,7 @@ export class PngRenderer {
 		cellData: QRCellData,
 		options?: IBitmapRendererOptions
 	): Promise<Uint8Array> {
-		Guards.array(PngRenderer._CLASS_NAME, nameof(cellData), cellData);
+		Guards.array(PngRenderer.CLASS_NAME, nameof(cellData), cellData);
 
 		options = options ?? {};
 		options.cellSize = options.cellSize ?? 5;

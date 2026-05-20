@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { SortDirection } from "../../src/models/sortDirection";
-import { EntitySorter } from "../../src/utils/entitySorter";
+import { SortDirection } from "../../src/models/sortDirection.js";
+import { EntitySorter } from "../../src/utils/entitySorter.js";
 
 /**
  * Test item.

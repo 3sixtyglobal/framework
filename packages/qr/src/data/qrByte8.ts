@@ -1,10 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable no-bitwise */
-import { nameof } from "@twin.org/nameof";
-import type { BitBuffer } from "../helpers/bitBuffer";
-import { QRDataBase } from "../models/qrDataBase";
-import { QRDataMode } from "../models/qrDataMode";
+import { QRDataBase } from "./qrDataBase.js";
+import type { BitBuffer } from "../helpers/bitBuffer.js";
+import { QRDataMode } from "../models/qrDataMode.js";
 
 /**
  * QR Data for representing a 8 bit data.
@@ -12,17 +11,11 @@ import { QRDataMode } from "../models/qrDataMode";
  */
 export class QRByte8 extends QRDataBase {
 	/**
-	 * Runtime name for the class.
-	 * @internal
-	 */
-	private static readonly _CLASS_NAME: string = nameof<QRByte8>();
-
-	/**
 	 * Create a new instance of QRByte8.
 	 * @param data The data for the qr 8 bit data.
 	 */
 	constructor(data: string) {
-		super(QRByte8._CLASS_NAME, QRDataMode.Byte8, data);
+		super(QRDataMode.Byte8, data);
 	}
 
 	/**

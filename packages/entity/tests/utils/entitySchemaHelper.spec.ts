@@ -1,11 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { I18n } from "@twin.org/core";
-import { entity } from "../../src/decorators/entityDecorator";
-import { property } from "../../src/decorators/propertyDecorator";
-import type { IEntitySchema } from "../../src/models/IEntitySchema";
-import { SortDirection } from "../../src/models/sortDirection";
-import { EntitySchemaHelper } from "../../src/utils/entitySchemaHelper";
+import { entity } from "../../src/decorators/entityDecorator.js";
+import { property } from "../../src/decorators/propertyDecorator.js";
+import type { IEntitySchema } from "../../src/models/IEntitySchema.js";
+import { SortDirection } from "../../src/models/sortDirection.js";
+import { EntitySchemaHelper } from "../../src/utils/entitySchemaHelper.js";
 
 /**
  * Test interface for validation.
@@ -93,9 +92,7 @@ interface ITestEntity {
 const testEntitySchema: IEntitySchema<ITestEntity> = EntitySchemaHelper.getSchema(TestEntity);
 
 describe("EntitySchemaHelper", () => {
-	beforeAll(async () => {
-		I18n.addDictionary("en", await import("../../locales/en.json"));
-	});
+	beforeAll(async () => {});
 
 	test("can fail to get primary keys if there is no schema", async () => {
 		expect(() => EntitySchemaHelper.getPrimaryKey(undefined as unknown as IEntitySchema)).toThrow(
@@ -124,7 +121,6 @@ describe("EntitySchemaHelper", () => {
 				message: "entitySchemaHelper.noIsPrimary"
 			})
 		);
-		expect(I18n.hasMessage("error.entitySchemaHelper.noIsPrimary")).toEqual(true);
 	});
 
 	test("can fail to get primary keys if there is are multiple", async () => {
@@ -150,7 +146,6 @@ describe("EntitySchemaHelper", () => {
 				message: "entitySchemaHelper.multipleIsPrimary"
 			})
 		);
-		expect(I18n.hasMessage("error.entitySchemaHelper.multipleIsPrimary")).toEqual(true);
 	});
 
 	test("can get primary keys if there is is only one", async () => {
@@ -480,7 +475,7 @@ describe("EntitySchemaHelper", () => {
 	test("can fail to validate a schema with an object property", async () => {
 		expect(() =>
 			EntitySchemaHelper.validateEntity(
-				{ objectValue: 1n, nonOptionalString: "" } as unknown as ITestEntity,
+				{ objectValue: 1n, nonOptionalString: "" },
 				testEntitySchema
 			)
 		).toThrow(

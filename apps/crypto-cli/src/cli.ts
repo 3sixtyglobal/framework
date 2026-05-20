@@ -4,8 +4,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { CLIBase } from "@twin.org/cli-core";
 import type { Command } from "commander";
-import { buildCommandAddress } from "./commands/address";
-import { buildCommandMnemonic } from "./commands/mnemonic";
+import { buildCommandAddress } from "./commands/address.js";
+import { buildCommandMnemonic } from "./commands/mnemonic.js";
 
 /**
  * The main entry point for the CLI.
@@ -28,10 +28,11 @@ export class CLI extends CLIBase {
 			{
 				title: "TWIN Crypto",
 				appName: "twin-crypto",
-				version: "0.0.1", // x-release-please-version
-				icon: "🌍",
+				version: "0.0.3-next.44", // x-release-please-version
+				icon: "🔒",
 				supportsEnvFiles: true,
-				overrideOutputWidth: options?.overrideOutputWidth
+				overrideOutputWidth: options?.overrideOutputWidth,
+				showDevToolWarning: true
 			},
 			localesDirectory ?? path.join(path.dirname(fileURLToPath(import.meta.url)), "../locales"),
 			argv

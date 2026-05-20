@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Is } from "./is";
+import { Is } from "./is.js";
 
 /**
  * Provide a store for shared objects which can be accesses through multiple

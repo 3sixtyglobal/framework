@@ -1,16 +1,20 @@
 # TWIN Nameof Vitest Plugin
 
-The regular TypeScript transformer cannot be used with ESBuild, so this plugin for Vitest performs the same transformation in a plugin.
+This package is part of the framework workspace and provides vitest plugin which perform the nameof transformation to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install @twin.org/nameof-vitest-plugin -D
+npm install -D @twin.org/nameof-vitest-plugin
 ```
 
 ## Configuration
 
-Configuration of the package is shown in [docs/configuration.md](docs/configuration.md)
+Configuration options are documented in [docs/configuration.md](docs/configuration.md)
+
+## Examples
+
+Usage of the APIs is shown in the examples [docs/examples.md](docs/examples.md)
 
 ## Reference
 

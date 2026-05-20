@@ -12,9 +12,17 @@ Helpers methods for JSON objects.
 
 `JsonHelper`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### canonicalize()
+### canonicalize() {#canonicalize}
 
 > `static` **canonicalize**(`object`): `string`
 
@@ -37,7 +45,7 @@ The serialized object.
 
 ***
 
-### diff()
+### diff() {#diff}
 
 > `static` **diff**\<`T`\>(`object1`, `object2`): [`IPatchOperation`](../interfaces/IPatchOperation.md)[]
 
@@ -72,7 +80,7 @@ The list of patches.
 
 ***
 
-### patch()
+### patch() {#patch}
 
 > `static` **patch**\<`T`\>(`object`, `patches`): `T`
 
@@ -111,7 +119,7 @@ GeneralError if the patch fails.
 
 ***
 
-### stringifyEx()
+### stringifyEx() {#stringifyex}
 
 > `static` **stringifyEx**(`object`, `space?`): `string`
 
@@ -127,9 +135,9 @@ The object to stringify.
 
 ##### space?
 
-Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
+`string` \| `number`
 
-`string` | `number`
+Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
 
 #### Returns
 
@@ -139,7 +147,7 @@ The stringified object.
 
 ***
 
-### parseEx()
+### parseEx() {#parseex}
 
 > `static` **parseEx**(`json`): `any`
 
@@ -161,7 +169,7 @@ The object.
 
 ***
 
-### stringifyExReplacer()
+### stringifyExReplacer() {#stringifyexreplacer}
 
 > `static` **stringifyExReplacer**(`this`, `key`, `value`): `unknown`
 
@@ -195,7 +203,7 @@ The value.
 
 ***
 
-### parseExReviver()
+### parseExReviver() {#parseexreviver}
 
 > `static` **parseExReviver**(`this`, `key`, `value`): `unknown`
 

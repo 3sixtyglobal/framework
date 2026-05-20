@@ -1,16 +1,16 @@
 # TWIN Merge Locales
 
-This tool will read the locale files from all the dependencies and create a combined one.
+This application is part of the framework workspace and provides merge locale files from all dependencies to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install @twin.org/merge-locales
+npm install -D @twin.org/merge-locales
 ```
 
-## Examples
+## Usage
 
-Usage of the tool is shown in the examples [docs/examples.md](docs/examples.md)
+Usage of the tool is shown in the examples [docs/usage.md](docs/usage.md)
 
 ## Reference
 

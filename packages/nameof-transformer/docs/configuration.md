@@ -1,4 +1,4 @@
-# @twin.org/nameof-transformer - Configuration
+# Configuration
 
 The TypeScript compilation process reads the code from the .ts files and generates JavaScript .js from them.
 

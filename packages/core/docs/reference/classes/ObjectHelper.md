@@ -12,11 +12,19 @@ Class to help with objects.
 
 `ObjectHelper`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### toBytes()
+### toBytes() {#tobytes}
 
-> `static` **toBytes**\<`T`\>(`obj`, `format`): `Uint8Array`
+> `static` **toBytes**\<`T`\>(`obj`, `format?`): `Uint8Array`
 
 Convert an object to bytes.
 
@@ -30,11 +38,11 @@ Convert an object to bytes.
 
 ##### obj
 
+`T` \| `undefined`
+
 The object to convert.
 
-`undefined` | `T`
-
-##### format
+##### format?
 
 `boolean` = `false`
 
@@ -48,7 +56,7 @@ The object as bytes.
 
 ***
 
-### fromBytes()
+### fromBytes() {#frombytes}
 
 > `static` **fromBytes**\<`T`\>(`bytes`): `T`
 
@@ -64,9 +72,9 @@ Convert a bytes to an object.
 
 ##### bytes
 
-The bytes to convert to an object.
+`Uint8Array`\<`ArrayBufferLike`\> \| `null` \| `undefined`
 
-`undefined` | `null` | `Uint8Array`\<`ArrayBufferLike`\>
+The bytes to convert to an object.
 
 #### Returns
 
@@ -80,7 +88,7 @@ GeneralError if there was an error parsing the JSON.
 
 ***
 
-### clone()
+### clone() {#clone}
 
 > `static` **clone**\<`T`\>(`obj`): `T`
 
@@ -108,7 +116,7 @@ The objects clone.
 
 ***
 
-### merge()
+### merge() {#merge}
 
 > `static` **merge**\<`T`, `U`\>(`obj1`, `obj2`): `T` & `U`
 
@@ -146,7 +154,7 @@ The combined deep merge of the objects.
 
 ***
 
-### equal()
+### equal() {#equal}
 
 > `static` **equal**\<`T`\>(`obj1`, `obj2`, `strictPropertyOrder?`): `boolean`
 
@@ -186,9 +194,9 @@ True is the objects are equal.
 
 ***
 
-### propertyGet()
+### propertyGet() {#propertyget}
 
-> `static` **propertyGet**\<`T`\>(`obj`, `property`): `undefined` \| `T`
+> `static` **propertyGet**\<`T`\>(`obj`, `property`): `T` \| `undefined`
 
 Get the property of an unknown object.
 
@@ -214,13 +222,13 @@ The property to get, can be separated by dots for nested path.
 
 #### Returns
 
-`undefined` \| `T`
+`T` \| `undefined`
 
 The property.
 
 ***
 
-### propertySet()
+### propertySet() {#propertyset}
 
 > `static` **propertySet**(`obj`, `property`, `value`): `void`
 
@@ -256,7 +264,7 @@ GeneralError if the property target is not an object.
 
 ***
 
-### propertyDelete()
+### propertyDelete() {#propertydelete}
 
 > `static` **propertyDelete**(`obj`, `property`): `void`
 
@@ -268,13 +276,13 @@ Delete the property of an unknown object.
 
 `unknown`
 
-The object to set the property from.
+The object to delete the property from.
 
 ##### property
 
 `string`
 
-The property to set
+The property to delete.
 
 #### Returns
 
@@ -282,9 +290,9 @@ The property to set
 
 ***
 
-### extractProperty()
+### extractProperty() {#extractproperty}
 
-> `static` **extractProperty**\<`T`\>(`obj`, `propertyNames`, `removeProperties`): `undefined` \| `T`
+> `static` **extractProperty**\<`T`\>(`obj`, `propertyNames`, `removeProperties?`): `T` \| `undefined`
 
 Extract a property from the object, providing alternative names.
 
@@ -304,11 +312,11 @@ The object to extract from.
 
 ##### propertyNames
 
+`string` \| `string`[]
+
 The possible names for the property.
 
-`string` | `string`[]
-
-##### removeProperties
+##### removeProperties?
 
 `boolean` = `true`
 
@@ -316,81 +324,185 @@ Remove the properties from the object, defaults to true.
 
 #### Returns
 
-`undefined` \| `T`
+`T` \| `undefined`
 
 The property if available.
 
 ***
 
-### pick()
-
-> `static` **pick**\<`T`\>(`obj`, `keys?`): `Partial`\<`T`\>
+### pick() {#pick}
 
 Pick a subset of properties from an object.
 
-#### Type Parameters
-
-##### T
-
-`T`
-
-#### Parameters
-
-##### obj
+#### Param
 
 The object to pick the properties from.
 
-`undefined` | `T`
-
-##### keys?
-
-keyof `T`[]
+#### Param
 
 The property keys to pick.
 
-#### Returns
+#### Call Signature
 
-`Partial`\<`T`\>
+> `static` **pick**\<`T`, `K`\>(`obj`, `keys?`): `Pick`\<`T`, `K`\>
 
-The partial object.
+Pick a subset of properties from an object.
 
-***
+##### Type Parameters
 
-### omit()
-
-> `static` **omit**\<`T`\>(`obj`, `keys?`): `Partial`\<`T`\>
-
-Omit a subset of properties from an object.
-
-#### Type Parameters
-
-##### T
+###### T
 
 `T`
 
-#### Parameters
+###### K
 
-##### obj
+`K` *extends* `string` \| `number` \| `symbol`
 
-The object to omit the properties from.
+##### Parameters
 
-`undefined` | `T`
+###### obj
 
-##### keys?
+`T`
 
-keyof `T`[]
+The object to pick the properties from.
 
-The property keys to omit.
+###### keys?
 
-#### Returns
+`K`[]
 
-`Partial`\<`T`\>
+The property keys to pick.
 
-The partial object.
+##### Returns
+
+`Pick`\<`T`, `K`\>
+
+The picked object.
+
+#### Call Signature
+
+> `static` **pick**\<`T`, `K`\>(`obj`, `keys?`): `Pick`\<`T`, `K`\> \| `undefined`
+
+Pick a subset of properties from an object.
+
+##### Type Parameters
+
+###### T
+
+`T`
+
+###### K
+
+`K` *extends* `string` \| `number` \| `symbol`
+
+##### Parameters
+
+###### obj
+
+`T` \| `undefined`
+
+The object to pick the properties from.
+
+###### keys?
+
+`K`[]
+
+The property keys to pick.
+
+##### Returns
+
+`Pick`\<`T`, `K`\> \| `undefined`
+
+The picked object, or undefined if the input was undefined.
 
 ***
 
-### toExtended()
+### omit() {#omit}
+
+Omit a subset of properties from an object.
+
+#### Param
+
+The object to omit the properties from.
+
+#### Param
+
+The property keys to omit.
+
+#### Call Signature
+
+> `static` **omit**\<`T`, `K`\>(`obj`, `keys?`): `Omit`\<`T`, `K`\>
+
+Omit a subset of properties from an object.
+
+##### Type Parameters
+
+###### T
+
+`T`
+
+###### K
+
+`K` *extends* `string` \| `number` \| `symbol`
+
+##### Parameters
+
+###### obj
+
+`T`
+
+The object to omit the properties from.
+
+###### keys?
+
+`K`[]
+
+The property keys to omit.
+
+##### Returns
+
+`Omit`\<`T`, `K`\>
+
+The object without the omitted keys.
+
+#### Call Signature
+
+> `static` **omit**\<`T`, `K`\>(`obj`, `keys?`): `Omit`\<`T`, `K`\> \| `undefined`
+
+Omit a subset of properties from an object.
+
+##### Type Parameters
+
+###### T
+
+`T`
+
+###### K
+
+`K` *extends* `string` \| `number` \| `symbol`
+
+##### Parameters
+
+###### obj
+
+`T` \| `undefined`
+
+The object to omit the properties from.
+
+###### keys?
+
+`K`[]
+
+The property keys to omit.
+
+##### Returns
+
+`Omit`\<`T`, `K`\> \| `undefined`
+
+The object without the omitted keys, or undefined if the input was undefined.
+
+***
+
+### toExtended() {#toextended}
 
 > `static` **toExtended**(`obj`): `any`
 
@@ -412,7 +524,7 @@ The object with extended properties.
 
 ***
 
-### fromExtended()
+### fromExtended() {#fromextended}
 
 > `static` **fromExtended**(`obj`): `any`
 
@@ -434,7 +546,7 @@ The object with regular properties.
 
 ***
 
-### removeEmptyProperties()
+### removeEmptyProperties() {#removeemptyproperties}
 
 > `static` **removeEmptyProperties**\<`T`\>(`obj`, `options?`): `T`
 

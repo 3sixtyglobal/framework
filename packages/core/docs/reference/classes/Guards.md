@@ -14,7 +14,7 @@ Class to handle guard operations for parameters.
 
 ## Methods
 
-### defined()
+### defined() {#defined}
 
 > `static` **defined**(`source`, `property`, `value`): `asserts value`
 
@@ -50,7 +50,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### string()
+### string() {#string}
 
 > `static` **string**(`source`, `property`, `value`): `asserts value is string`
 
@@ -86,7 +86,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### stringValue()
+### stringValue() {#stringvalue}
 
 > `static` **stringValue**(`source`, `property`, `value`): `asserts value is string`
 
@@ -122,7 +122,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### json()
+### json() {#json}
 
 > `static` **json**(`source`, `property`, `value`): `asserts value is string`
 
@@ -158,7 +158,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### stringBase64()
+### stringBase64() {#stringbase64}
 
 > `static` **stringBase64**(`source`, `property`, `value`): `asserts value is string`
 
@@ -194,7 +194,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### stringBase64Url()
+### stringBase64Url() {#stringbase64url}
 
 > `static` **stringBase64Url**(`source`, `property`, `value`): `asserts value is string`
 
@@ -230,7 +230,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### stringBase58()
+### stringBase58() {#stringbase58}
 
 > `static` **stringBase58**(`source`, `property`, `value`): `asserts value is string`
 
@@ -266,9 +266,9 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### stringHex()
+### stringHex() {#stringhex}
 
-> `static` **stringHex**(`source`, `property`, `value`, `allowPrefix`): `asserts value is string`
+> `static` **stringHex**(`source`, `property`, `value`, `allowPrefix?`): `asserts value is string`
 
 Is the property a string with a hex value.
 
@@ -292,7 +292,7 @@ The name of the property.
 
 The value to test.
 
-##### allowPrefix
+##### allowPrefix?
 
 `boolean` = `false`
 
@@ -308,9 +308,9 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### stringHexLength()
+### stringHexLength() {#stringhexlength}
 
-> `static` **stringHexLength**(`source`, `property`, `value`, `length`, `allowPrefix`): `asserts value is string`
+> `static` **stringHexLength**(`source`, `property`, `value`, `length`, `allowPrefix?`): `asserts value is string`
 
 Is the property a string with a hex value with fixed length.
 
@@ -340,7 +340,7 @@ The value to test.
 
 The length of the string to match.
 
-##### allowPrefix
+##### allowPrefix?
 
 `boolean` = `false`
 
@@ -356,7 +356,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### number()
+### number() {#number}
 
 > `static` **number**(`source`, `property`, `value`): `asserts value is number`
 
@@ -392,7 +392,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### integer()
+### integer() {#integer}
 
 > `static` **integer**(`source`, `property`, `value`): `asserts value is number`
 
@@ -428,7 +428,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### bigint()
+### bigint() {#bigint}
 
 > `static` **bigint**(`source`, `property`, `value`): `asserts value is bigint`
 
@@ -464,7 +464,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### boolean()
+### boolean() {#boolean}
 
 > `static` **boolean**(`source`, `property`, `value`): `asserts value is boolean`
 
@@ -500,7 +500,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### date()
+### date() {#date}
 
 > `static` **date**(`source`, `property`, `value`): `asserts value is Date`
 
@@ -536,7 +536,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### timestampMilliseconds()
+### timestampMilliseconds() {#timestampmilliseconds}
 
 > `static` **timestampMilliseconds**(`source`, `property`, `value`): `asserts value is number`
 
@@ -572,7 +572,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### timestampSeconds()
+### timestampSeconds() {#timestampseconds}
 
 > `static` **timestampSeconds**(`source`, `property`, `value`): `asserts value is number`
 
@@ -608,7 +608,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### object()
+### object() {#object}
 
 > `static` **object**\<`T`\>(`source`, `property`, `value`): `asserts value is T`
 
@@ -618,7 +618,7 @@ Is the property an object.
 
 ##### T
 
-`T` = \{[`id`: `string`]: `unknown`; \}
+`T` = \{\[`id`: `string`\]: `unknown`; \}
 
 #### Parameters
 
@@ -650,7 +650,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### objectValue()
+### objectValue() {#objectvalue}
 
 > `static` **objectValue**\<`T`\>(`source`, `property`, `value`): `asserts value is T`
 
@@ -660,7 +660,7 @@ Is the property is an object with at least one property.
 
 ##### T
 
-`T` = \{[`id`: `string`]: `unknown`; \}
+`T` = \{\[`id`: `string`\]: `unknown`; \}
 
 #### Parameters
 
@@ -692,7 +692,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### array()
+### array() {#array}
 
 > `static` **array**\<`T`\>(`source`, `property`, `value`): `asserts value is T[]`
 
@@ -734,7 +734,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### arrayValue()
+### arrayValue() {#arrayvalue}
 
 > `static` **arrayValue**\<`T`\>(`source`, `property`, `value`): `asserts value is T[]`
 
@@ -776,7 +776,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### arrayOneOf()
+### arrayOneOf() {#arrayoneof}
 
 > `static` **arrayOneOf**\<`T`\>(`source`, `property`, `value`, `options`): `asserts value is T`
 
@@ -824,7 +824,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### arrayStartsWith()
+### arrayStartsWith() {#arraystartswith}
 
 > `static` **arrayStartsWith**\<`T`\>(`source`, `property`, `value`, `startValues`): `asserts value is T[]`
 
@@ -872,7 +872,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### arrayEndsWith()
+### arrayEndsWith() {#arrayendswith}
 
 > `static` **arrayEndsWith**\<`T`\>(`source`, `property`, `value`, `endValues`): `asserts value is T[]`
 
@@ -920,7 +920,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### uint8Array()
+### uint8Array() {#uint8array}
 
 > `static` **uint8Array**(`source`, `property`, `value`): `asserts value is Uint8Array<ArrayBufferLike>`
 
@@ -956,11 +956,17 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### function()
+### function() {#function}
 
-> `static` **function**(`source`, `property`, `value`): `boolean`
+> `static` **function**\<`T`\>(`source`, `property`, `value`): `asserts value is T`
 
 Is the property a function.
+
+#### Type Parameters
+
+##### T
+
+`T` *extends* (...`args`) => `any` = (...`args`) => `any`
 
 #### Parameters
 
@@ -984,9 +990,7 @@ The value to test.
 
 #### Returns
 
-`boolean`
-
-True if the value is a function.
+`asserts value is T`
 
 #### Throws
 
@@ -994,7 +998,7 @@ GuardError If the value does not match the assertion.
 
 ***
 
-### email()
+### email() {#email}
 
 > `static` **email**(`source`, `property`, `value`): `asserts value is string`
 
@@ -1019,6 +1023,48 @@ The name of the property.
 `unknown`
 
 The value to test.
+
+#### Returns
+
+`asserts value is string`
+
+#### Throws
+
+GuardError If the value does not match the assertion.
+
+***
+
+### uuidV7() {#uuidv7}
+
+> `static` **uuidV7**(`source`, `property`, `value`, `format?`): `asserts value is string`
+
+Is the property a string containing uuidV7.
+
+#### Parameters
+
+##### source
+
+`string`
+
+The source of the error.
+
+##### property
+
+`string`
+
+The name of the property.
+
+##### value
+
+`unknown`
+
+The value to test.
+
+##### format?
+
+`"standard"` \| `"compact"`
+
+The format of the uuidV7, either standard or compact.
 
 #### Returns
 

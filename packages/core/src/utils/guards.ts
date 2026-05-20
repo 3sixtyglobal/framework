@@ -1,10 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Is } from "./is";
-import { GuardError } from "../errors/guardError";
-import { ArrayHelper } from "../helpers/arrayHelper";
-import { HexHelper } from "../helpers/hexHelper";
-import type { ObjectOrArray } from "../models/objectOrArray";
+import { Is } from "./is.js";
+import { GuardError } from "../errors/guardError.js";
+import { ArrayHelper } from "../helpers/arrayHelper.js";
+import { HexHelper } from "../helpers/hexHelper.js";
+import type { ObjectOrArray } from "../types/objectOrArray.js";
 
 /**
  * Class to handle guard operations for parameters.
@@ -82,7 +82,7 @@ export class Guards {
 		value: unknown
 	): asserts value is string {
 		if (!Is.stringBase64(value)) {
-			throw new GuardError(source, "guard.base64", property, value);
+			throw new GuardError(source, "guard.stringBase64", property, value);
 		}
 	}
 
@@ -99,7 +99,7 @@ export class Guards {
 		value: unknown
 	): asserts value is string {
 		if (!Is.stringBase64Url(value)) {
-			throw new GuardError(source, "guard.base64Url", property, value);
+			throw new GuardError(source, "guard.stringBase64Url", property, value);
 		}
 	}
 
@@ -116,7 +116,7 @@ export class Guards {
 		value: unknown
 	): asserts value is string {
 		if (!Is.stringBase58(value)) {
-			throw new GuardError(source, "guard.base58", property, value);
+			throw new GuardError(source, "guard.stringBase58", property, value);
 		}
 	}
 
@@ -465,14 +465,17 @@ export class Guards {
 	 * @param source The source of the error.
 	 * @param property The name of the property.
 	 * @param value The value to test.
-	 * @returns True if the value is a function.
 	 * @throws GuardError If the value does not match the assertion.
 	 */
-	public static function(source: string, property: string, value: unknown): boolean {
-		if (!Is.function(value)) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public static function<T extends (...args: any[]) => any = (...args: any[]) => any>(
+		source: string,
+		property: string,
+		value: unknown
+	): asserts value is T {
+		if (!Is.function<T>(value)) {
 			throw new GuardError(source, "guard.function", property, value);
 		}
-		return true;
 	}
 
 	/**
@@ -485,6 +488,28 @@ export class Guards {
 	public static email(source: string, property: string, value: unknown): asserts value is string {
 		if (!Is.email(value)) {
 			throw new GuardError(source, "guard.email", property, value);
+		}
+	}
+
+	/**
+	 * Is the property a string containing uuidV7.
+	 * @param source The source of the error.
+	 * @param property The name of the property.
+	 * @param value The value to test.
+	 * @param format The format of the uuidV7, either standard or compact.
+	 * @throws GuardError If the value does not match the assertion.
+	 */
+	public static uuidV7(
+		source: string,
+		property: string,
+		value: unknown,
+		format?: "standard" | "compact"
+	): asserts value is string {
+		if (!Is.uuidV7(value, format)) {
+			if (format === "compact") {
+				throw new GuardError(source, "guard.uuidV7Compact", property, value);
+			}
+			throw new GuardError(source, "guard.uuidV7", property, value);
 		}
 	}
 }

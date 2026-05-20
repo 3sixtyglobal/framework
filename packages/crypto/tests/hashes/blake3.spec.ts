@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Converter } from "@twin.org/core";
-import testData from "./blake3.json";
-import { Blake3 } from "../../src/hashes/blake3";
+import testData from "./blake3.json" with { type: "json" };
+import { Blake3 } from "../../src/hashes/blake3.js";
 
 describe("Blake3", () => {
 	test("Can perform a sum512 on short text", () => {

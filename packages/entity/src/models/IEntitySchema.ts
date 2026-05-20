@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { IEntitySchemaOptions } from "./IEntitySchemaOptions";
-import type { IEntitySchemaProperty } from "./IEntitySchemaProperty";
+import type { IEntitySchemaOptions } from "./IEntitySchemaOptions.js";
+import type { IEntitySchemaProperty } from "./IEntitySchemaProperty.js";
 
 /**
  * Definition for an entity schema.

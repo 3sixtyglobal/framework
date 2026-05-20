@@ -4,7 +4,8 @@
 /* eslint-disable no-mixed-operators */
 
 import { nameof } from "@twin.org/nameof";
-import { GeneralError } from "../errors/generalError";
+import { GeneralError } from "../errors/generalError.js";
+import { Guards } from "../utils/guards.js";
 
 /**
  * Class to help with base64 Encoding/Decoding.
@@ -13,9 +14,8 @@ import { GeneralError } from "../errors/generalError";
 export class Base64 {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Base64>();
+	public static readonly CLASS_NAME: string = nameof<Base64>();
 
 	/**
 	 * Alphabet table for encoding.
@@ -113,6 +113,8 @@ export class Base64 {
 	 * @returns The byte array.
 	 */
 	public static decode(base64: string): Uint8Array {
+		Guards.string(Base64.CLASS_NAME, nameof(base64), base64);
+
 		let tmp;
 		const lens = Base64.getLengths(base64);
 		const validLen = lens[0];
@@ -150,7 +152,7 @@ export class Base64 {
 				(Base64._REVERSE_LOOKUP[base64.charCodeAt(i + 1)] << 4) |
 				(Base64._REVERSE_LOOKUP[base64.charCodeAt(i + 2)] >> 2);
 			arr[curByte++] = (tmp >> 8) & 0xff;
-			arr[curByte++] = tmp & 0xff;
+			arr[curByte] = tmp & 0xff;
 		}
 
 		return arr;
@@ -162,6 +164,8 @@ export class Base64 {
 	 * @returns The data as base64 string.
 	 */
 	public static encode(bytes: Uint8Array): string {
+		Guards.uint8Array(Base64.CLASS_NAME, nameof(bytes), bytes);
+
 		let tmp;
 		const len = bytes.length;
 		const extraBytes = len % 3; // if we have 1 byte left, pad 2 bytes
@@ -208,7 +212,7 @@ export class Base64 {
 		const len = base64.length;
 
 		if (len % 4 > 0) {
-			throw new GeneralError(Base64._CLASS_NAME, "length4Multiple", { value: len });
+			throw new GeneralError(Base64.CLASS_NAME, "length4Multiple", { value: len });
 		}
 
 		// Trim off extra bytes after placeholder bytes are found

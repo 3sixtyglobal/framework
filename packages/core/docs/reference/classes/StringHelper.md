@@ -14,53 +14,75 @@ Class to help with string.
 
 ## Methods
 
-### trimTrailingSlashes()
+### trimTrailingSlashes() {#trimtrailingslashes}
 
 > `static` **trimTrailingSlashes**(`value`): `string`
 
-Trim trailing slashes from a string.
+Implementation signature for trimTrailingSlashes.
 
 #### Parameters
 
 ##### value
 
-The value to trim.
+`string`
 
-`undefined` | `string`
+The value to trim.
 
 #### Returns
 
 `string`
 
-The trimmed value.
+The trimmed string or the original.
 
 ***
 
-### trimLeadingSlashes()
+### trimLeadingSlashes() {#trimleadingslashes}
 
 > `static` **trimLeadingSlashes**(`value`): `string`
 
-Trim leading slashes from a string.
+Implementation signature for trimLeadingSlashes.
 
 #### Parameters
 
 ##### value
 
-The value to trim.
+`string`
 
-`undefined` | `string`
+The value to trim.
 
 #### Returns
 
 `string`
 
-The trimmed value.
+The trimmed string or the original.
 
 ***
 
-### kebabCase()
+### trimLeadingAndTrailingSlashes() {#trimleadingandtrailingslashes}
 
-> `static` **kebabCase**(`input`, `stripInterfacePrefix`): `string`
+> `static` **trimLeadingAndTrailingSlashes**(`value`): `string`
+
+Trim both leading and trailing slashes from a string.
+
+#### Parameters
+
+##### value
+
+`string`
+
+The value to trim.
+
+#### Returns
+
+`string`
+
+The trimmed string or the original.
+
+***
+
+### kebabCase() {#kebabcase}
+
+> `static` **kebabCase**(`input`, `stripInterfacePrefix?`): `string`
 
 Convert the input string to kebab case.
 
@@ -72,7 +94,7 @@ Convert the input string to kebab case.
 
 The input to convert.
 
-##### stripInterfacePrefix
+##### stripInterfacePrefix?
 
 `boolean` = `true`
 
@@ -86,9 +108,9 @@ The kebab case version of the input.
 
 ***
 
-### snakeCase()
+### snakeCase() {#snakecase}
 
-> `static` **snakeCase**(`input`, `stripInterfacePrefix`): `string`
+> `static` **snakeCase**(`input`, `stripInterfacePrefix?`): `string`
 
 Convert the input string to snake case.
 
@@ -100,7 +122,7 @@ Convert the input string to snake case.
 
 The input to convert.
 
-##### stripInterfacePrefix
+##### stripInterfacePrefix?
 
 `boolean` = `true`
 
@@ -114,9 +136,9 @@ The snake case version of the input.
 
 ***
 
-### titleCase()
+### titleCase() {#titlecase}
 
-> `static` **titleCase**(`input`, `stripInterfacePrefix`): `string`
+> `static` **titleCase**(`input`, `stripInterfacePrefix?`): `string`
 
 Title case all the words.
 
@@ -128,7 +150,7 @@ Title case all the words.
 
 The input to convert.
 
-##### stripInterfacePrefix
+##### stripInterfacePrefix?
 
 `boolean` = `true`
 
@@ -142,9 +164,9 @@ The title case version of the input.
 
 ***
 
-### pascalCase()
+### pascalCase() {#pascalcase}
 
-> `static` **pascalCase**(`input`, `stripInterfacePrefix`): `string`
+> `static` **pascalCase**(`input`, `stripInterfacePrefix?`): `string`
 
 Pascal case all the words.
 
@@ -156,7 +178,7 @@ Pascal case all the words.
 
 The input to convert.
 
-##### stripInterfacePrefix
+##### stripInterfacePrefix?
 
 `boolean` = `true`
 
@@ -170,9 +192,9 @@ The pascal case version of the input.
 
 ***
 
-### camelCase()
+### camelCase() {#camelcase}
 
-> `static` **camelCase**(`input`, `stripInterfacePrefix`): `string`
+> `static` **camelCase**(`input`, `stripInterfacePrefix?`): `string`
 
 Camel case all the words.
 
@@ -184,7 +206,7 @@ Camel case all the words.
 
 The input to convert.
 
-##### stripInterfacePrefix
+##### stripInterfacePrefix?
 
 `boolean` = `true`
 
@@ -198,9 +220,9 @@ The camel case version of the input.
 
 ***
 
-### wordPath()
+### wordPath() {#wordpath}
 
-> `static` **wordPath**(`input`, `stripInterfacePrefix`): `string`
+> `static` **wordPath**(`input`, `stripInterfacePrefix?`): `string`
 
 Convert the words to a path.
 
@@ -212,7 +234,7 @@ Convert the words to a path.
 
 The input to convert.
 
-##### stripInterfacePrefix
+##### stripInterfacePrefix?
 
 `boolean` = `true`
 
@@ -226,7 +248,7 @@ The path version of the input.
 
 ***
 
-### stripPrefix()
+### stripPrefix() {#stripprefix}
 
 > `static` **stripPrefix**(`input`): `string`
 
@@ -248,7 +270,7 @@ The input with any interface prefix stripped.
 
 ***
 
-### words()
+### words() {#words}
 
 > `static` **words**(`input`): `string`[]
 
@@ -270,7 +292,7 @@ The string split into words.
 
 ***
 
-### isUtf8()
+### isUtf8() {#isutf8}
 
 > `static` **isUtf8**(`data`): `boolean`
 

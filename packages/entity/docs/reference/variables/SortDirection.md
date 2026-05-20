@@ -4,15 +4,15 @@
 
 The sort directions.
 
-## Type declaration
+## Type Declaration
 
-### Ascending
+### Ascending {#ascending}
 
 > `readonly` **Ascending**: `"asc"` = `"asc"`
 
 Ascending.
 
-### Descending
+### Descending {#descending}
 
 > `readonly` **Descending**: `"desc"` = `"desc"`
 

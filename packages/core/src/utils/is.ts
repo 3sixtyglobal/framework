@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { HexHelper } from "../helpers/hexHelper";
+import { HexHelper } from "../helpers/hexHelper.js";
 
 /**
  * Class to check types of objects.
@@ -332,6 +332,8 @@ export class Is {
 	 * @returns True if the value is a Uint8Array.
 	 */
 	public static uint8Array(value: unknown): value is Uint8Array {
+		// This is the only way we can reliably check for Uint8Array
+		// eslint-disable-next-line no-restricted-syntax
 		return value instanceof Uint8Array;
 	}
 
@@ -351,6 +353,8 @@ export class Is {
 		| Int32Array
 		| Float32Array
 		| Float64Array {
+		// This is the only way we can reliably check for TypedArray
+		// eslint-disable-next-line no-restricted-syntax
 		return value instanceof Object.getPrototypeOf(Uint8Array);
 	}
 
@@ -359,7 +363,10 @@ export class Is {
 	 * @param value The value to test.
 	 * @returns True if the value is a function.
 	 */
-	public static function(value: unknown): value is (...args: unknown[]) => unknown {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public static function<T extends (...args: any[]) => any = (...args: any[]) => any>(
+		value: unknown
+	): value is T {
 		return typeof value === "function";
 	}
 
@@ -383,6 +390,8 @@ export class Is {
 	 * @returns True if the value is a promise.
 	 */
 	public static promise<T = unknown>(value: unknown): value is Promise<T> {
+		// This is the only way we can reliably check for Promise
+		// eslint-disable-next-line no-restricted-syntax
 		return value instanceof Promise;
 	}
 
@@ -392,6 +401,42 @@ export class Is {
 	 * @returns True if the value is a regexp.
 	 */
 	public static regexp(value: unknown): value is RegExp {
+		// This is the only way we can reliably check for RegExp
+		// eslint-disable-next-line no-restricted-syntax
 		return value instanceof RegExp;
+	}
+
+	/**
+	 * Is the provided object a class constructor.
+	 * @param obj The object to check.
+	 * @returns True if the object is a class, false otherwise.
+	 */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public static class<T = unknown>(obj: unknown): obj is new (...args: any[]) => T {
+		if (typeof obj !== "function") {
+			return false;
+		}
+		const str = Function.prototype.toString.call(obj);
+		return /^class\s/.test(str);
+	}
+
+	/**
+	 * Is the value a uuidV7 string.
+	 * @param value The value to test.
+	 * @param format The format of the UUIDv7 string.
+	 * @returns True if the value is a uuidV7 string.
+	 */
+	public static uuidV7(value: unknown, format?: "standard" | "compact"): value is string {
+		if (format === "compact") {
+			// 32 hex chars, where:
+			// - char 13 (0-based index 12) is the version (7)
+			// - char 17 (0-based index 16) is the variant (8, 9, a, b)
+			return Is.stringValue(value) && /^[\da-f]{12}7[\da-f]{3}[89ab][\da-f]{15}$/i.test(value);
+		}
+
+		return (
+			Is.stringValue(value) &&
+			/^[\da-f]{8}-[\da-f]{4}-7[\da-f]{3}-[89ab][\da-f]{3}-[\da-f]{12}$/i.test(value)
+		);
 	}
 }

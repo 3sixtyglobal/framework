@@ -14,7 +14,7 @@ Class to help with decorators.
 
 ## Methods
 
-### getSchema()
+### getSchema() {#getschema}
 
 > `static` **getSchema**\<`T`\>(`target`): [`IEntitySchema`](../interfaces/IEntitySchema.md)\<`T`\>
 
@@ -42,7 +42,7 @@ The schema from the metadata if it can be found.
 
 ***
 
-### setSchema()
+### setSchema() {#setschema}
 
 > `static` **setSchema**\<`T`\>(`target`, `entitySchema`): `void`
 

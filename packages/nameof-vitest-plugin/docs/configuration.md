@@ -1,4 +1,4 @@
-# @twin.org/nameof-vitest-plugin - Configuration
+# Configuration
 
 When running vitest the default `esbuild` processing ignore any TypeScript transforms.
 

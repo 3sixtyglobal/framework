@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import testData from "./base64Url.json";
-import { Base64Url } from "../../src/encoding/base64Url";
-import { Converter } from "../../src/utils/converter";
+import testData from "./base64Url.json" with { type: "json" };
+import { Base64Url } from "../../src/encoding/base64Url.js";
+import { Converter } from "../../src/utils/converter.js";
 
 describe("Base64Url", () => {
 	test("Can encode bytes to base64", () => {

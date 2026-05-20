@@ -3,7 +3,9 @@
 ## Classes
 
 - [FetchError](classes/FetchError.md)
+- [CookieHelper](classes/CookieHelper.md)
 - [FetchHelper](classes/FetchHelper.md)
+- [HeaderHelper](classes/HeaderHelper.md)
 - [Jwk](classes/Jwk.md)
 - [Jws](classes/Jws.md)
 - [Jwt](classes/Jwt.md)
@@ -13,13 +15,15 @@
 
 - [IFetchOptions](interfaces/IFetchOptions.md)
 - [IHttpHeaders](interfaces/IHttpHeaders.md)
-- [IJwk](interfaces/IJwk.md)
-- [IJwtHeader](interfaces/IJwtHeader.md)
-- [IJwtPayload](interfaces/IJwtPayload.md)
+- [IHttpLinkHeader](interfaces/IHttpLinkHeader.md)
 
 ## Type Aliases
 
+- [IJwk](type-aliases/IJwk.md)
+- [IJwtHeader](type-aliases/IJwtHeader.md)
+- [IJwtPayload](type-aliases/IJwtPayload.md)
 - [HeaderTypes](type-aliases/HeaderTypes.md)
+- [HttpLinkRelType](type-aliases/HttpLinkRelType.md)
 - [HttpMethod](type-aliases/HttpMethod.md)
 - [HttpStatusCode](type-aliases/HttpStatusCode.md)
 - [JwkCryptoKey](type-aliases/JwkCryptoKey.md)
@@ -28,6 +32,7 @@
 ## Variables
 
 - [HeaderTypes](variables/HeaderTypes.md)
+- [HttpLinkRelType](variables/HttpLinkRelType.md)
 - [HttpMethod](variables/HttpMethod.md)
 - [HttpStatusCode](variables/HttpStatusCode.md)
 - [MimeTypes](variables/MimeTypes.md)

@@ -22,9 +22,17 @@ The length of the bit string.
 
 `BitString`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### fromBits()
+### fromBits() {#frombits}
 
 > `static` **fromBits**(`bits`, `numberBits`): `BitString`
 
@@ -52,7 +60,7 @@ The new instance of BitString.
 
 ***
 
-### getBit()
+### getBit() {#getbit}
 
 > **getBit**(`index`): `boolean`
 
@@ -78,7 +86,7 @@ GeneralError if the index is out of range.
 
 ***
 
-### setBit()
+### setBit() {#setbit}
 
 > **setBit**(`index`, `value`): `void`
 
@@ -108,7 +116,7 @@ GeneralError if the index is out of range.
 
 ***
 
-### getBits()
+### getBits() {#getbits}
 
 > **getBits**(): `Uint8Array`
 
@@ -122,7 +130,7 @@ The bits stored in a Uint8Array.
 
 ***
 
-### getLength()
+### getLength() {#getlength}
 
 > **getLength**(): `number`
 

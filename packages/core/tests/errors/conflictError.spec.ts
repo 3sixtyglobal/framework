@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { ConflictError } from "../../src/errors/conflictError";
+import { ConflictError } from "../../src/errors/conflictError.js";
 
 describe("ConflictError", () => {
 	test("can construct", () => {

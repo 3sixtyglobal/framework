@@ -4,105 +4,105 @@
 
 Definition of the entity property format.
 
-## Type declaration
+## Type Declaration
 
-### Uuid
+### Uuid {#uuid}
 
 > `readonly` **Uuid**: `"uuid"` = `"uuid"`
 
 UUID.
 
-### Uri
+### Uri {#uri}
 
 > `readonly` **Uri**: `"uri"` = `"uri"`
 
 URI.
 
-### Email
+### Email {#email}
 
 > `readonly` **Email**: `"email"` = `"email"`
 
 email.
 
-### Int8
+### Int8 {#int8}
 
 > `readonly` **Int8**: `"int8"` = `"int8"`
 
 int8.
 
-### Uint8
+### Uint8 {#uint8}
 
 > `readonly` **Uint8**: `"uint8"` = `"uint8"`
 
 uint8.
 
-### Int16
+### Int16 {#int16}
 
 > `readonly` **Int16**: `"int16"` = `"int16"`
 
 int16.
 
-### Uint16
+### Uint16 {#uint16}
 
 > `readonly` **Uint16**: `"uint16"` = `"uint16"`
 
 uint16.
 
-### Int32
+### Int32 {#int32}
 
 > `readonly` **Int32**: `"int32"` = `"int32"`
 
 int32.
 
-### Uint32
+### Uint32 {#uint32}
 
 > `readonly` **Uint32**: `"uint32"` = `"uint32"`
 
 uint32.
 
-### Float
+### Float {#float}
 
 > `readonly` **Float**: `"float"` = `"float"`
 
 float.
 
-### Double
+### Double {#double}
 
 > `readonly` **Double**: `"double"` = `"double"`
 
 double.
 
-### Int64
+### Int64 {#int64}
 
 > `readonly` **Int64**: `"int64"` = `"int64"`
 
 int64.
 
-### Uint64
+### Uint64 {#uint64}
 
 > `readonly` **Uint64**: `"uint64"` = `"uint64"`
 
 uint64.
 
-### Date
+### Date {#date}
 
 > `readonly` **Date**: `"date"` = `"date"`
 
 date.
 
-### Time
+### Time {#time}
 
 > `readonly` **Time**: `"time"` = `"time"`
 
 time.
 
-### DateTime
+### DateTime {#datetime}
 
 > `readonly` **DateTime**: `"date-time"` = `"date-time"`
 
 date-time.
 
-### Json
+### Json {#json}
 
 > `readonly` **Json**: `"json"` = `"json"`
 

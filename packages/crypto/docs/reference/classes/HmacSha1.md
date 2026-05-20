@@ -22,9 +22,17 @@ The key for the hmac.
 
 `HmacSha1`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### sum()
+### sum() {#sum}
 
 > `static` **sum**(`key`, `block`): `Uint8Array`
 
@@ -52,7 +60,7 @@ The sum of the block.
 
 ***
 
-### update()
+### update() {#update}
 
 > **update**(`block`): `HmacSha1`
 
@@ -74,7 +82,7 @@ The instance for chaining.
 
 ***
 
-### digest()
+### digest() {#digest}
 
 > **digest**(): `Uint8Array`
 

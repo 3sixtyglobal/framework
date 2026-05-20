@@ -7,19 +7,19 @@ Based on https://github.com/kazuhikoarase/qrcode-generator/ .
 
 ### Constructor
 
-> **new QR**(`typeNumber`, `errorCorrectLevel`): `QR`
+> **new QR**(`typeNumber?`, `errorCorrectLevel?`): `QR`
 
 Create a new instance of QR.
 
 #### Parameters
 
-##### typeNumber
+##### typeNumber?
 
 `number` = `6`
 
 0 to 40, 0 means autodetect.
 
-##### errorCorrectLevel
+##### errorCorrectLevel?
 
 [`ErrorCorrectLevel`](../type-aliases/ErrorCorrectLevel.md) = `ErrorCorrectLevel.L`
 
@@ -33,9 +33,17 @@ Create a new instance of QR.
 
 Error if the typeNumber is invalid.
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### addText()
+### addText() {#addtext}
 
 > **addText**(`qrData`): `void`
 
@@ -55,7 +63,7 @@ The data to add.
 
 ***
 
-### addNumber()
+### addNumber() {#addnumber}
 
 > **addNumber**(`qrData`): `void`
 
@@ -75,7 +83,7 @@ The data to add.
 
 ***
 
-### addAlphaNumeric()
+### addAlphaNumeric() {#addalphanumeric}
 
 > **addAlphaNumeric**(`qrData`): `void`
 
@@ -95,7 +103,7 @@ The data to add.
 
 ***
 
-### generate()
+### generate() {#generate}
 
 > **generate**(): [`QRCellData`](../type-aliases/QRCellData.md)
 

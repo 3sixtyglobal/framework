@@ -1,12 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Converter, I18n } from "@twin.org/core";
-import { Bech32 } from "../../src/address/bech32";
+import { Converter } from "@twin.org/core";
+import { Bech32 } from "../../src/address/bech32.js";
 
 describe("Bech32", () => {
-	beforeAll(async () => {
-		I18n.addDictionary("en", await import("../../locales/en.json"));
-	});
+	beforeAll(async () => {});
 
 	test("Can fail to decode with invalid checksum", () => {
 		expect(() =>

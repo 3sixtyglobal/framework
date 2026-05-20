@@ -14,7 +14,7 @@ Class to help with arrays.
 
 ## Methods
 
-### matches()
+### matches() {#matches}
 
 > `static` **matches**(`arr1`, `arr2`): `boolean`
 
@@ -42,70 +42,28 @@ True if both arrays are empty of have the same values.
 
 ***
 
-### fromObjectOrArray()
+### fromObjectOrArray() {#fromobjectorarray}
+
+> `static` **fromObjectOrArray**\<`T`\>(`value`): `T` *extends* `undefined` ? `undefined` : `T`[]
 
 Convert an object or array to an array.
 
-#### Param
+#### Type Parameters
 
-The object or array to convert.
-
-#### Call Signature
-
-> `static` **fromObjectOrArray**\<`T`\>(`value`): `undefined`
-
-Convert an object or array to an array.
-
-##### Type Parameters
-
-###### T
+##### T
 
 `T` = `unknown`
 
-##### Parameters
+#### Parameters
 
-###### value
+##### value
 
-`undefined`
+`T` \| `T`[] \| `undefined`
 
 The object or array to convert.
 
-##### Returns
+#### Returns
 
-`undefined`
+`T` *extends* `undefined` ? `undefined` : `T`[]
 
 The array.
-
-##### Param
-
-The object or array to convert.
-
-#### Call Signature
-
-> `static` **fromObjectOrArray**\<`T`\>(`value`): `T`[]
-
-Convert an object or array to an array.
-
-##### Type Parameters
-
-###### T
-
-`T` = `unknown`
-
-##### Parameters
-
-###### value
-
-[`ObjectOrArray`](../type-aliases/ObjectOrArray.md)\<`T`\>
-
-The object or array to convert.
-
-##### Returns
-
-`T`[]
-
-The array.
-
-##### Param
-
-The object or array to convert.

@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { HexHelper } from "../../src/helpers/hexHelper";
+import { HexHelper } from "../../src/helpers/hexHelper.js";
 
 describe("HexHelper", () => {
 	test("stripPrefix can remove the 0x prefix", () => {

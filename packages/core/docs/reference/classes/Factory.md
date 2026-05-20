@@ -8,11 +8,19 @@ Factory for creating implementation of generic types.
 
 `T`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### createFactory()
+### createFactory() {#createfactory}
 
-> `static` **createFactory**\<`U`\>(`typeName`, `autoInstance`, `matcher?`): `Factory`\<`U`\>
+> `static` **createFactory**\<`U`\>(`typeName`, `autoInstance?`, `matcher?`): `Factory`\<`U`\>
 
 Create a new factory, which is shared throughout all library instances.
 
@@ -30,7 +38,7 @@ Create a new factory, which is shared throughout all library instances.
 
 The type name for the instances.
 
-##### autoInstance
+##### autoInstance?
 
 `boolean` = `false`
 
@@ -38,7 +46,7 @@ Automatically create an instance when registered.
 
 ##### matcher?
 
-(`names`, `name`) => `undefined` \| `string`
+(`names`, `name`) => `string` \| `undefined`
 
 Match the name of the instance.
 
@@ -50,7 +58,7 @@ The factory instance.
 
 ***
 
-### getFactories()
+### getFactories() {#getfactories}
 
 > `static` **getFactories**(): `object`
 
@@ -64,7 +72,7 @@ All the factories.
 
 ***
 
-### resetFactories()
+### resetFactories() {#resetfactories}
 
 > `static` **resetFactories**(): `void`
 
@@ -76,7 +84,7 @@ Reset all the factories, which removes any created instances, but not the regist
 
 ***
 
-### clearFactories()
+### clearFactories() {#clearfactories}
 
 > `static` **clearFactories**(): `void`
 
@@ -88,7 +96,21 @@ Clear all the factories, which removes anything registered with the factories.
 
 ***
 
-### register()
+### typeName() {#typename}
+
+> **typeName**(): `string`
+
+Get the type name of the factory.
+
+#### Returns
+
+`string`
+
+The type name of the factory.
+
+***
+
+### register() {#register}
 
 > **register**\<`U`\>(`name`, `generator`): `void`
 
@@ -110,7 +132,7 @@ The name of the generator.
 
 ##### generator
 
-() => `U`
+(`args?`) => `U`
 
 The function to create an instance.
 
@@ -120,7 +142,7 @@ The function to create an instance.
 
 ***
 
-### unregister()
+### unregister() {#unregister}
 
 > **unregister**(`name`): `void`
 
@@ -148,7 +170,7 @@ GeneralError if no generator exists.
 
 ***
 
-### get()
+### get() {#get}
 
 > **get**\<`U`\>(`name`): `U`
 
@@ -184,11 +206,39 @@ GeneralError if no item exists to get.
 
 ***
 
-### getIfExists()
+### getIfExists() {#getifexists}
 
-> **getIfExists**\<`U`\>(`name`): `undefined` \| `U`
+> **getIfExists**\<`U`\>(`name?`): `U` \| `undefined`
 
 Get a generator instance with no exceptions.
+
+#### Type Parameters
+
+##### U
+
+`U`
+
+#### Parameters
+
+##### name?
+
+`string`
+
+The name of the instance to generate.
+
+#### Returns
+
+`U` \| `undefined`
+
+An instance of the item or undefined if it does not exist.
+
+***
+
+### create() {#create}
+
+> **create**\<`U`\>(`name`, `args?`): `U`
+
+Create a new instance without caching it.
 
 #### Type Parameters
 
@@ -204,15 +254,67 @@ Get a generator instance with no exceptions.
 
 The name of the instance to generate.
 
+##### args?
+
+`unknown`
+
+The arguments to pass to the generator.
+
 #### Returns
 
-`undefined` \| `U`
+`U`
 
-An instance of the item or undefined if it does not exist.
+A new instance of the item.
+
+#### Throws
+
+GuardError if the parameters are invalid.
+
+#### Throws
+
+GeneralError if no item exists to create.
 
 ***
 
-### reset()
+### createIfExists() {#createifexists}
+
+> **createIfExists**\<`U`\>(`name`, `args?`): `U` \| `undefined`
+
+Create a new instance without caching it if it exists.
+
+#### Type Parameters
+
+##### U
+
+`U`
+
+#### Parameters
+
+##### name
+
+`string`
+
+The name of the instance to generate.
+
+##### args?
+
+`unknown`
+
+The arguments to pass to the generator.
+
+#### Returns
+
+`U` \| `undefined`
+
+A new instance of the item if it exists.
+
+#### Throws
+
+GuardError if the parameters are invalid.
+
+***
+
+### reset() {#reset}
 
 > **reset**(): `void`
 
@@ -224,7 +326,7 @@ Remove all the instances and leave the generators intact.
 
 ***
 
-### clear()
+### clear() {#clear}
 
 > **clear**(): `void`
 
@@ -236,7 +338,7 @@ Remove all the instances and the generators.
 
 ***
 
-### instancesMap()
+### instancesMap() {#instancesmap}
 
 > **instancesMap**(): `object`
 
@@ -250,7 +352,7 @@ The instances as a map.
 
 ***
 
-### instancesList()
+### instancesList() {#instanceslist}
 
 > **instancesList**(): `T`[]
 
@@ -264,7 +366,7 @@ The instances as a list in the order they were registered.
 
 ***
 
-### names()
+### names() {#names}
 
 > **names**(): `string`[]
 
@@ -278,7 +380,7 @@ The ordered generator names.
 
 ***
 
-### hasName()
+### hasName() {#hasname}
 
 > **hasName**(`name`): `boolean`
 

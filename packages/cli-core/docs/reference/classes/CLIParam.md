@@ -14,9 +14,9 @@ Parameter utilities for the CLI.
 
 ## Methods
 
-### env()
+### env() {#env}
 
-> `static` **env**(`optionName`, `optionValue`, `allowEnvVar`): `undefined` \| `string`
+> `static` **env**(`optionName`, `optionValue`, `allowEnvVar`): `string` \| `undefined`
 
 Check the option to see if it exists.
 
@@ -30,9 +30,9 @@ The name of the option.
 
 ##### optionValue
 
-The option value.
+`string` \| `undefined`
 
-`undefined` | `string`
+The option value.
 
 ##### allowEnvVar
 
@@ -42,7 +42,7 @@ Allow the option to be read from an env var.
 
 #### Returns
 
-`undefined` \| `string`
+`string` \| `undefined`
 
 The final option value.
 
@@ -52,9 +52,9 @@ An error if the option is invalid.
 
 ***
 
-### stringValue()
+### stringValue() {#stringvalue}
 
-> `static` **stringValue**(`optionName`, `optionValue`, `allowEnvVar`): `string`
+> `static` **stringValue**(`optionName`, `optionValue`, `allowEnvVar?`): `string`
 
 Check the option to see if the String exists.
 
@@ -68,11 +68,11 @@ The name of the option.
 
 ##### optionValue
 
+`string` \| `undefined`
+
 The option value.
 
-`undefined` | `string`
-
-##### allowEnvVar
+##### allowEnvVar?
 
 `boolean` = `true`
 
@@ -90,9 +90,59 @@ An error if the option is invalid.
 
 ***
 
-### url()
+### arrayOneOf() {#arrayoneof}
 
-> `static` **url**(`optionName`, `optionValue`, `allowEnvVar`): `string`
+> `static` **arrayOneOf**\<`T`\>(`optionName`, `optionValue`, `validValues`, `allowEnvVar?`): `T`
+
+Check the option to see if the value exists in the specific array.
+
+#### Type Parameters
+
+##### T
+
+`T` = `string`
+
+#### Parameters
+
+##### optionName
+
+`string`
+
+The name of the option.
+
+##### optionValue
+
+`string` \| `undefined`
+
+The option value.
+
+##### validValues
+
+`T`[]
+
+The valid values.
+
+##### allowEnvVar?
+
+`boolean` = `true`
+
+Allow the option to be read from an env var.
+
+#### Returns
+
+`T`
+
+The final option value.
+
+#### Throws
+
+An error if the option is invalid.
+
+***
+
+### url() {#url}
+
+> `static` **url**(`optionName`, `optionValue`, `allowEnvVar?`): `string`
 
 Check the option to see if it is a url.
 
@@ -106,11 +156,11 @@ The name of the option.
 
 ##### optionValue
 
+`string` \| `undefined`
+
 The option value.
 
-`undefined` | `string`
-
-##### allowEnvVar
+##### allowEnvVar?
 
 `boolean` = `true`
 
@@ -128,9 +178,9 @@ An error if the option is invalid.
 
 ***
 
-### number()
+### number() {#number}
 
-> `static` **number**(`optionName`, `optionValue`, `allowEnvVar`, `minValue`, `maxValue?`): `number`
+> `static` **number**(`optionName`, `optionValue`, `allowEnvVar?`, `minValue?`, `maxValue?`): `number`
 
 Check the option to see if it exists and is a number.
 
@@ -144,17 +194,17 @@ The name of the option.
 
 ##### optionValue
 
+`string` \| `undefined`
+
 The option value.
 
-`undefined` | `string`
-
-##### allowEnvVar
+##### allowEnvVar?
 
 `boolean` = `true`
 
 Allow the option to be read from an env var.
 
-##### minValue
+##### minValue?
 
 `number` = `0`
 
@@ -178,9 +228,9 @@ An error if the option is invalid.
 
 ***
 
-### integer()
+### integer() {#integer}
 
-> `static` **integer**(`optionName`, `optionValue`, `allowEnvVar`, `minValue`, `maxValue?`): `number`
+> `static` **integer**(`optionName`, `optionValue`, `allowEnvVar?`, `minValue?`, `maxValue?`): `number`
 
 Check the option to see if it exists and is an integer.
 
@@ -194,17 +244,17 @@ The name of the option.
 
 ##### optionValue
 
+`string` \| `undefined`
+
 The option value.
 
-`undefined` | `string`
-
-##### allowEnvVar
+##### allowEnvVar?
 
 `boolean` = `true`
 
 Allow the option to be read from an env var.
 
-##### minValue
+##### minValue?
 
 `number` = `0`
 
@@ -228,9 +278,9 @@ An error if the option is invalid.
 
 ***
 
-### bigint()
+### bigint() {#bigint}
 
-> `static` **bigint**(`optionName`, `optionValue`, `allowEnvVar`, `minValue`, `maxValue?`): `bigint`
+> `static` **bigint**(`optionName`, `optionValue`, `allowEnvVar?`, `minValue?`, `maxValue?`): `bigint`
 
 Check the option to see if it exists and is a big number.
 
@@ -244,17 +294,17 @@ The name of the option.
 
 ##### optionValue
 
+`string` \| `undefined`
+
 The option value.
 
-`undefined` | `string`
-
-##### allowEnvVar
+##### allowEnvVar?
 
 `boolean` = `true`
 
 Allow the option to be read from an env var.
 
-##### minValue
+##### minValue?
 
 `bigint` = `0n`
 
@@ -278,9 +328,9 @@ An error if the option is invalid.
 
 ***
 
-### boolean()
+### boolean() {#boolean}
 
-> `static` **boolean**(`optionName`, `optionValue`, `allowEnvVar`): `boolean`
+> `static` **boolean**(`optionName`, `optionValue`, `allowEnvVar?`): `boolean`
 
 Check the option to see if it exists and is a boolean.
 
@@ -294,11 +344,11 @@ The name of the option.
 
 ##### optionValue
 
+`string` \| `undefined`
+
 The option value.
 
-`undefined` | `string`
-
-##### allowEnvVar
+##### allowEnvVar?
 
 `boolean` = `true`
 
@@ -316,9 +366,9 @@ An error if the option is invalid.
 
 ***
 
-### hex()
+### hex() {#hex}
 
-> `static` **hex**(`optionName`, `optionValue`, `allowEnvVar`): `Uint8Array`
+> `static` **hex**(`optionName`, `optionValue`, `allowEnvVar?`): `Uint8Array`
 
 Check the option to see if it exists and is hex.
 
@@ -332,11 +382,11 @@ The name of the option.
 
 ##### optionValue
 
+`string` \| `undefined`
+
 The option value.
 
-`undefined` | `string`
-
-##### allowEnvVar
+##### allowEnvVar?
 
 `boolean` = `true`
 
@@ -354,9 +404,9 @@ An error if the option is invalid.
 
 ***
 
-### base64()
+### base64() {#base64}
 
-> `static` **base64**(`optionName`, `optionValue`, `allowEnvVar`): `Uint8Array`
+> `static` **base64**(`optionName`, `optionValue`, `allowEnvVar?`): `Uint8Array`
 
 Check the option to see if it exists and is base64.
 
@@ -370,11 +420,11 @@ The name of the option.
 
 ##### optionValue
 
+`string` \| `undefined`
+
 The option value.
 
-`undefined` | `string`
-
-##### allowEnvVar
+##### allowEnvVar?
 
 `boolean` = `true`
 
@@ -392,9 +442,9 @@ An error if the option is invalid.
 
 ***
 
-### hexBase64()
+### hexBase64() {#hexbase64}
 
-> `static` **hexBase64**(`optionName`, `optionValue`, `allowEnvVar`): `Uint8Array`
+> `static` **hexBase64**(`optionName`, `optionValue`, `allowEnvVar?`): `Uint8Array`
 
 Check the option to see if it exists and is hex or base64.
 
@@ -408,11 +458,11 @@ The name of the option.
 
 ##### optionValue
 
+`string` \| `undefined`
+
 The option value.
 
-`undefined` | `string`
-
-##### allowEnvVar
+##### allowEnvVar?
 
 `boolean` = `true`
 
@@ -421,44 +471,6 @@ Allow the option to be read from an env var.
 #### Returns
 
 `Uint8Array`
-
-The final option value.
-
-#### Throws
-
-An error if the option is invalid.
-
-***
-
-### bech32()
-
-> `static` **bech32**(`optionName`, `optionValue`, `allowEnvVar`): `string`
-
-Check the option to see if it exists and is bech32.
-
-#### Parameters
-
-##### optionName
-
-`string`
-
-The name of the option.
-
-##### optionValue
-
-The option value.
-
-`undefined` | `string`
-
-##### allowEnvVar
-
-`boolean` = `true`
-
-Allow the option to be read from an env var.
-
-#### Returns
-
-`string`
 
 The final option value.
 

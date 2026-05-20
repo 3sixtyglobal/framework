@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable no-bitwise */
-import { MathHelper } from "./mathHelper";
+import { MathHelper } from "./mathHelper.js";
 
 /**
  * Class to represent a polynomial.
@@ -36,7 +36,7 @@ export class Polynomial {
 	}
 
 	/**
-	 * The the value of the polynomial at given index.
+	 * The value of the polynomial at given index.
 	 * @param index The index.
 	 * @returns The value of the polynomial.
 	 */

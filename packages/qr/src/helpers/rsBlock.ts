@@ -3,7 +3,7 @@
 /* eslint-disable no-mixed-operators */
 import { GeneralError } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
-import { ErrorCorrectLevel } from "../models/errorCorrectLevel";
+import { ErrorCorrectLevel } from "../models/errorCorrectLevel.js";
 
 /**
  * Class to represent a RS Block.
@@ -12,9 +12,8 @@ import { ErrorCorrectLevel } from "../models/errorCorrectLevel";
 export class RSBlock {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<RSBlock>();
+	public static readonly CLASS_NAME: string = nameof<RSBlock>();
 
 	/**
 	 * @internal
@@ -329,7 +328,7 @@ export class RSBlock {
 			default:
 		}
 
-		throw new GeneralError(RSBlock._CLASS_NAME, "correctionLevelRange", { errorCorrectLevel });
+		throw new GeneralError(RSBlock.CLASS_NAME, "correctionLevelRange", { errorCorrectLevel });
 	}
 
 	/**

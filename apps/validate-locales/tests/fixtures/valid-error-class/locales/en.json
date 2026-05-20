@@ -1,0 +1,8 @@
+{
+	"error": {
+		"myClass": {
+			"doError": "An error occurred.",
+			"doOtherError": "Another error occurred with count {count}."
+		}
+	}
+}

@@ -4,8 +4,8 @@ import path from "node:path";
 import { I18n, Is, type ILocaleDictionary } from "@twin.org/core";
 import type { Command } from "commander";
 import * as dotenv from "dotenv";
-import { CLIDisplay } from "../cliDisplay";
-import { CLIUtils } from "../cliUtils";
+import { CLIDisplay } from "../cliDisplay.js";
+import { CLIUtils } from "../cliUtils.js";
 
 let localesDir: string;
 
@@ -61,7 +61,7 @@ export function handleGlobalOptions(command: Command): void {
 		const resolvedEnv = loadEnv.map(e => path.resolve(e));
 		CLIDisplay.task(I18n.formatMessage("cli.progress.loadingEnvFiles"), resolvedEnv.join(", "));
 		CLIDisplay.break();
-		dotenv.config({ path: resolvedEnv });
+		dotenv.config({ path: resolvedEnv, quiet: true });
 	}
 }
 

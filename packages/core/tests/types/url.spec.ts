@@ -1,12 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Url } from "../../src/types/url";
-import { I18n } from "../../src/utils/i18n";
+import { Url } from "../../src/types/url.js";
 
 describe("Url", () => {
-	beforeAll(async () => {
-		I18n.addDictionary("en", await import("../../locales/en.json"));
-	});
+	beforeAll(async () => {});
 
 	test("can fail to create a url with empty string", () => {
 		expect(() => new Url("")).toThrow(
@@ -26,7 +23,6 @@ describe("Url", () => {
 				properties: { property: "url", value: "abc" }
 			})
 		);
-		expect(I18n.hasMessage("error.guard.url")).toEqual(true);
 	});
 
 	test("can create a url from a string with all parts", () => {

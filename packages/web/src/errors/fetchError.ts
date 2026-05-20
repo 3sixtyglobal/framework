@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { BaseError } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
-import type { HttpStatusCode } from "../models/httpStatusCode";
+import type { HttpStatusCode } from "../models/httpStatusCode.js";
 
 /**
  * Class to represent errors from fetch.
@@ -19,7 +19,7 @@ export class FetchError extends BaseError {
 	 * @param message The message as a code.
 	 * @param httpStatus The http status code.
 	 * @param properties Any additional information for the error.
-	 * @param inner The inner error if we have wrapped another error.
+	 * @param cause The cause of the error if we have wrapped another error.
 	 */
 	constructor(
 		source: string,
@@ -28,7 +28,7 @@ export class FetchError extends BaseError {
 		properties?: {
 			[id: string]: unknown;
 		},
-		inner?: unknown
+		cause?: unknown
 	) {
 		super(
 			FetchError.CLASS_NAME,
@@ -38,7 +38,7 @@ export class FetchError extends BaseError {
 				httpStatus,
 				...properties
 			},
-			inner
+			cause
 		);
 	}
 }

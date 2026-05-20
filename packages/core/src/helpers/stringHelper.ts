@@ -2,34 +2,46 @@
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable no-continue */
 /* eslint-disable no-bitwise */
-import { Is } from "../utils/is";
+import { Is } from "../utils/is.js";
 
 /**
  * Class to help with string.
  */
 export class StringHelper {
 	/**
-	 * Trim trailing slashes from a string.
+	 * Implementation signature for trimTrailingSlashes.
 	 * @param value The value to trim.
-	 * @returns The trimmed value.
+	 * @returns The trimmed string or the original.
 	 */
-	public static trimTrailingSlashes(value: string | undefined): string {
-		if (Is.stringValue(value)) {
+	public static trimTrailingSlashes(value: string): string {
+		if (Is.string(value)) {
 			return value.replace(/\/+$/, "");
 		}
-		return "";
+		return value;
 	}
 
 	/**
-	 * Trim leading slashes from a string.
+	 * Implementation signature for trimLeadingSlashes.
 	 * @param value The value to trim.
-	 * @returns The trimmed value.
+	 * @returns The trimmed string or the original.
 	 */
-	public static trimLeadingSlashes(value: string | undefined): string {
-		if (Is.stringValue(value)) {
+	public static trimLeadingSlashes(value: string): string {
+		if (Is.string(value)) {
 			return value.replace(/^\/+/, "");
 		}
-		return "";
+		return value;
+	}
+
+	/**
+	 * Trim both leading and trailing slashes from a string.
+	 * @param value The value to trim.
+	 * @returns The trimmed string or the original.
+	 */
+	public static trimLeadingAndTrailingSlashes(value: string): string {
+		if (Is.string(value)) {
+			return value.replace(/^\/+|\/+$/g, "");
+		}
+		return value;
 	}
 
 	/**
@@ -41,7 +53,7 @@ export class StringHelper {
 	public static kebabCase(input: string, stripInterfacePrefix: boolean = true): string {
 		if (Is.stringValue(input)) {
 			let output = input;
-			if (stripInterfacePrefix && /I[A-Z]/.test(output)) {
+			if (stripInterfacePrefix && /^I[A-Z]/.test(output)) {
 				output = output.slice(1);
 			}
 			return StringHelper.words(output).join("-").toLowerCase();
@@ -58,7 +70,7 @@ export class StringHelper {
 	public static snakeCase(input: string, stripInterfacePrefix: boolean = true): string {
 		if (Is.stringValue(input)) {
 			let output = input;
-			if (stripInterfacePrefix && /I[A-Z]/.test(output)) {
+			if (stripInterfacePrefix && /^I[A-Z]/.test(output)) {
 				output = output.slice(1);
 			}
 			return StringHelper.words(output).join("_").toLowerCase();
@@ -75,7 +87,7 @@ export class StringHelper {
 	public static titleCase(input: string, stripInterfacePrefix: boolean = true): string {
 		if (Is.stringValue(input)) {
 			let output = input;
-			if (stripInterfacePrefix && /I[A-Z]/.test(output)) {
+			if (stripInterfacePrefix && /^I[A-Z]/.test(output)) {
 				output = output.slice(1);
 			}
 			return StringHelper.words(output)
@@ -94,7 +106,7 @@ export class StringHelper {
 	public static pascalCase(input: string, stripInterfacePrefix: boolean = true): string {
 		if (Is.stringValue(input)) {
 			let output = input;
-			if (stripInterfacePrefix && /I[A-Z]/.test(output)) {
+			if (stripInterfacePrefix && /^I[A-Z]/.test(output)) {
 				output = output.slice(1);
 			}
 			return StringHelper.words(output)
@@ -113,7 +125,7 @@ export class StringHelper {
 	public static camelCase(input: string, stripInterfacePrefix: boolean = true): string {
 		if (Is.stringValue(input)) {
 			let output = input;
-			if (stripInterfacePrefix && /I[A-Z]/.test(output)) {
+			if (stripInterfacePrefix && /^I[A-Z]/.test(output)) {
 				output = output.slice(1);
 			}
 			const words = StringHelper.words(output);
@@ -136,7 +148,7 @@ export class StringHelper {
 	public static wordPath(input: string, stripInterfacePrefix: boolean = true): string {
 		if (Is.stringValue(input)) {
 			let output = input;
-			if (stripInterfacePrefix && /I[A-Z]/.test(output)) {
+			if (stripInterfacePrefix && /^I[A-Z]/.test(output)) {
 				output = output.slice(1);
 			}
 			const words = StringHelper.words(output);
@@ -153,7 +165,7 @@ export class StringHelper {
 	public static stripPrefix(input: string): string {
 		if (Is.stringValue(input)) {
 			let output = input;
-			if (/I[A-Z]/.test(output)) {
+			if (/^I[A-Z]/.test(output)) {
 				output = output.slice(1);
 			}
 			return output;

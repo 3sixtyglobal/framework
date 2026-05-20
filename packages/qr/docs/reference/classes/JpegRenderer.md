@@ -12,9 +12,17 @@ Class to render qr data as jpeg.
 
 `JpegRenderer`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### render()
+### render() {#render}
 
 > `static` **render**(`cellData`, `options?`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 

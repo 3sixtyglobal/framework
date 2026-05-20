@@ -1,9 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable camelcase */
-
-import { sha512_224, sha512_256, sha384, sha512 } from "@noble/hashes/sha512";
-import type { Hash } from "@noble/hashes/utils";
+import { sha384, sha512, sha512_224, sha512_256 } from "@noble/hashes/sha2.js";
+import type { Hash } from "@noble/hashes/utils.js";
 import { GeneralError, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 
@@ -33,9 +32,8 @@ export class Sha512 {
 
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Sha512>();
+	public static readonly CLASS_NAME: string = nameof<Sha512>();
 
 	/**
 	 * The instance of the hash.
@@ -55,7 +53,7 @@ export class Sha512 {
 			bits !== Sha512.SIZE_384 &&
 			bits !== Sha512.SIZE_512
 		) {
-			throw new GeneralError(Sha512._CLASS_NAME, "bitSize", { bitSize: bits });
+			throw new GeneralError(Sha512.CLASS_NAME, "bitSize", { bitSize: bits });
 		}
 
 		if (bits === Sha512.SIZE_224) {
@@ -119,7 +117,7 @@ export class Sha512 {
 	 * @returns The instance for chaining.
 	 */
 	public update(block: Uint8Array): Sha512 {
-		Guards.uint8Array(Sha512._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(Sha512.CLASS_NAME, nameof(block), block);
 		this._instance.update(block);
 		return this;
 	}

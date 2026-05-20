@@ -1,10 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@twin.org/nameof";
-import { JsonHelper } from "./jsonHelper";
-import { GeneralError } from "../errors/generalError";
-import { Converter } from "../utils/converter";
-import { Is } from "../utils/is";
+import { JsonHelper } from "./jsonHelper.js";
+import { GeneralError } from "../errors/generalError.js";
+import { Converter } from "../utils/converter.js";
+import { Is } from "../utils/is.js";
 
 /**
  * Class to help with objects.
@@ -12,9 +12,8 @@ import { Is } from "../utils/is";
 export class ObjectHelper {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<ObjectHelper>();
+	public static readonly CLASS_NAME: string = nameof<ObjectHelper>();
 
 	/**
 	 * Convert an object to bytes.
@@ -23,7 +22,7 @@ export class ObjectHelper {
 	 * @returns The object as bytes.
 	 */
 	public static toBytes<T>(obj: T | undefined, format: boolean = false): Uint8Array {
-		if (obj === undefined) {
+		if (Is.undefined(obj)) {
 			return new Uint8Array();
 		}
 		const json = format ? JSON.stringify(obj, undefined, "\t") : JSON.stringify(obj);
@@ -45,7 +44,7 @@ export class ObjectHelper {
 			const utf8 = Converter.bytesToUtf8(bytes);
 			return JSON.parse(utf8) as T;
 		} catch (err) {
-			throw new GeneralError(ObjectHelper._CLASS_NAME, "failedBytesToJSON", undefined, err);
+			throw new GeneralError(ObjectHelper.CLASS_NAME, "failedBytesToJSON", undefined, err);
 		}
 	}
 
@@ -54,9 +53,15 @@ export class ObjectHelper {
 	 * @param obj The object to clone.
 	 * @returns The objects clone.
 	 */
-	public static clone<T>(obj: T): T {
+	public static clone<T>(obj: T): T;
+	/**
+	 * Make a deep clone of an object.
+	 * @param obj The object to clone.
+	 * @returns The objects clone, or undefined if the input was undefined.
+	 */
+	public static clone<T>(obj: T | undefined): T | undefined {
 		if (Is.undefined(obj)) {
-			return undefined as T;
+			return undefined;
 		}
 		return structuredClone(obj);
 	}
@@ -167,7 +172,7 @@ export class ObjectHelper {
 					} else if (Is.object(pathValue)) {
 						pathValue[arrayIndex] = value;
 					} else {
-						throw new GeneralError(ObjectHelper._CLASS_NAME, "cannotSetArrayIndex", {
+						throw new GeneralError(ObjectHelper.CLASS_NAME, "cannotSetArrayIndex", {
 							property,
 							index: arrayIndex
 						});
@@ -175,7 +180,7 @@ export class ObjectHelper {
 				} else if (Is.object(pathValue)) {
 					pathValue[pathPart] = value;
 				} else {
-					throw new GeneralError(ObjectHelper._CLASS_NAME, "cannotSetProperty", { property });
+					throw new GeneralError(ObjectHelper.CLASS_NAME, "cannotSetProperty", { property });
 				}
 			} else {
 				parentObj = pathValue;
@@ -207,8 +212,8 @@ export class ObjectHelper {
 
 	/**
 	 * Delete the property of an unknown object.
-	 * @param obj The object to set the property from.
-	 * @param property The property to set
+	 * @param obj The object to delete the property from.
+	 * @param property The property to delete.
 	 */
 	public static propertyDelete(obj: unknown, property: string): void {
 		if (Is.object(obj)) {
@@ -248,36 +253,66 @@ export class ObjectHelper {
 	 * Pick a subset of properties from an object.
 	 * @param obj The object to pick the properties from.
 	 * @param keys The property keys to pick.
-	 * @returns The partial object.
+	 * @returns The picked object.
 	 */
-	public static pick<T>(obj: T | undefined, keys?: (keyof T)[]): Partial<T> {
-		if (Is.object(obj) && Is.arrayValue(keys)) {
-			const result: Partial<T> = {};
-			for (const key of keys) {
-				result[key] = obj[key];
+	public static pick<T, K extends keyof T>(obj: T, keys?: K[]): Pick<T, K>;
+	/**
+	 * Pick a subset of properties from an object.
+	 * @param obj The object to pick the properties from.
+	 * @param keys The property keys to pick.
+	 * @returns The picked object, or undefined if the input was undefined.
+	 */
+	public static pick<T, K extends keyof T>(obj: T | undefined, keys?: K[]): Pick<T, K> | undefined;
+	/**
+	 * Pick a subset of properties from an object.
+	 * @param obj The object to pick the properties from.
+	 * @param keys The property keys to pick.
+	 * @returns The picked object, or undefined if the input was undefined.
+	 */
+	public static pick<T, K extends keyof T>(obj: T | undefined, keys?: K[]): Pick<T, K> | undefined {
+		if (Is.object(obj)) {
+			const result = {} as Pick<T, K>;
+			if (Is.arrayValue(keys)) {
+				for (const key of keys) {
+					result[key] = obj[key];
+				}
 			}
 			return result;
 		}
 
-		return obj as Partial<T>;
+		return undefined;
 	}
 
 	/**
 	 * Omit a subset of properties from an object.
 	 * @param obj The object to omit the properties from.
 	 * @param keys The property keys to omit.
-	 * @returns The partial object.
+	 * @returns The object without the omitted keys.
 	 */
-	public static omit<T>(obj: T | undefined, keys?: (keyof T)[]): Partial<T> {
+	public static omit<T, K extends keyof T>(obj: T, keys?: K[]): Omit<T, K>;
+	/**
+	 * Omit a subset of properties from an object.
+	 * @param obj The object to omit the properties from.
+	 * @param keys The property keys to omit.
+	 * @returns The object without the omitted keys, or undefined if the input was undefined.
+	 */
+	public static omit<T, K extends keyof T>(obj: T | undefined, keys?: K[]): Omit<T, K> | undefined;
+	/**
+	 * Omit a subset of properties from an object.
+	 * @param obj The object to omit the properties from.
+	 * @param keys The property keys to omit.
+	 * @returns The object without the omitted keys, or undefined if the input was undefined.
+	 */
+	public static omit<T, K extends keyof T>(obj: T | undefined, keys?: K[]): Omit<T, K> {
 		if (Is.object(obj) && Is.arrayValue(keys)) {
-			const result = { ...obj };
+			const result = ObjectHelper.clone(obj);
 			for (const key of keys) {
 				delete result[key];
 			}
 			return result;
 		}
 
-		return obj as Partial<T>;
+		return obj as Omit<T, K>;
 	}
 
 	/**

@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { GeneralError, Guards, Is } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
-import { DecoratorHelper } from "./decoratorHelper";
-import type { IEntitySchema } from "../models/IEntitySchema";
-import type { IEntitySchemaProperty } from "../models/IEntitySchemaProperty";
-import type { IEntitySort } from "../models/IEntitySort";
-import type { SortDirection } from "../models/sortDirection";
+import { DecoratorHelper } from "./decoratorHelper.js";
+import type { IEntitySchema } from "../models/IEntitySchema.js";
+import type { IEntitySchemaProperty } from "../models/IEntitySchemaProperty.js";
+import type { IEntitySort } from "../models/IEntitySort.js";
+import type { SortDirection } from "../models/sortDirection.js";
 
 /**
  * Class to help with entity schema operations.
@@ -14,9 +14,8 @@ import type { SortDirection } from "../models/sortDirection";
 export class EntitySchemaHelper {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<EntitySchemaHelper>();
+	public static readonly CLASS_NAME: string = nameof<EntitySchemaHelper>();
 
 	/**
 	 * Get the schema for the specified object.
@@ -36,17 +35,17 @@ export class EntitySchemaHelper {
 	 */
 	public static getPrimaryKey<T>(entitySchema: IEntitySchema<T>): IEntitySchemaProperty<T> {
 		Guards.object<IEntitySchema<T>>(
-			EntitySchemaHelper._CLASS_NAME,
+			EntitySchemaHelper.CLASS_NAME,
 			nameof(entitySchema),
 			entitySchema
 		);
 
 		const primaryKeys = (entitySchema.properties ?? [])?.filter(p => p.isPrimary);
 		if (primaryKeys.length === 0) {
-			throw new GeneralError(EntitySchemaHelper._CLASS_NAME, "noIsPrimary");
+			throw new GeneralError(EntitySchemaHelper.CLASS_NAME, "noIsPrimary");
 		}
 		if (primaryKeys.length > 1) {
-			throw new GeneralError(EntitySchemaHelper._CLASS_NAME, "multipleIsPrimary");
+			throw new GeneralError(EntitySchemaHelper.CLASS_NAME, "multipleIsPrimary");
 		}
 		return primaryKeys[0];
 	}
@@ -58,7 +57,7 @@ export class EntitySchemaHelper {
 	 */
 	public static getSortProperties<T>(entitySchema: IEntitySchema<T>): IEntitySort<T>[] | undefined {
 		Guards.object<IEntitySchema<T>>(
-			EntitySchemaHelper._CLASS_NAME,
+			EntitySchemaHelper.CLASS_NAME,
 			nameof(entitySchema),
 			entitySchema
 		);
@@ -90,7 +89,7 @@ export class EntitySchemaHelper {
 			sortDirection: SortDirection;
 		}[]
 	): IEntitySort<T>[] | undefined {
-		Guards.object(EntitySchemaHelper._CLASS_NAME, nameof(entitySchema), entitySchema);
+		Guards.object(EntitySchemaHelper.CLASS_NAME, nameof(entitySchema), entitySchema);
 
 		let finalSortKeys: IEntitySort<T>[] | undefined;
 
@@ -121,16 +120,16 @@ export class EntitySchemaHelper {
 	 * @throws If the entity is invalid.
 	 */
 	public static validateEntity<T>(entity: T, entitySchema: IEntitySchema<T>): void {
-		Guards.object(EntitySchemaHelper._CLASS_NAME, nameof(entity), entity);
+		Guards.object(EntitySchemaHelper.CLASS_NAME, nameof(entity), entity);
 		Guards.object<IEntitySchema<T>>(
-			EntitySchemaHelper._CLASS_NAME,
+			EntitySchemaHelper.CLASS_NAME,
 			nameof(entitySchema),
 			entitySchema
 		);
 
 		const properties = entitySchema.properties ?? [];
 		if (properties.length === 0 && Is.objectValue(entity)) {
-			throw new GeneralError(EntitySchemaHelper._CLASS_NAME, "invalidEntityProperties");
+			throw new GeneralError(EntitySchemaHelper.CLASS_NAME, "invalidEntityProperties");
 		}
 
 		const allKeys = Object.keys(entity);
@@ -146,7 +145,7 @@ export class EntitySchemaHelper {
 			if (Is.empty(value)) {
 				// If the value is empty but the property is not optional, then it's invalid
 				if (!prop.optional) {
-					throw new GeneralError(EntitySchemaHelper._CLASS_NAME, "invalidOptional", {
+					throw new GeneralError(EntitySchemaHelper.CLASS_NAME, "invalidOptional", {
 						property: prop.property,
 						type: prop.type
 					});
@@ -167,7 +166,7 @@ export class EntitySchemaHelper {
 				// If the schema expects an array and the value is an array, then it's valid
 			} else if (prop.type !== typeof value) {
 				// The schema type does not match the value type
-				throw new GeneralError(EntitySchemaHelper._CLASS_NAME, "invalidEntityProperty", {
+				throw new GeneralError(EntitySchemaHelper.CLASS_NAME, "invalidEntityProperty", {
 					value,
 					property: prop.property,
 					type: prop.type
@@ -177,7 +176,7 @@ export class EntitySchemaHelper {
 
 		if (allKeys.length > 0) {
 			// There are keys in the entity that are not in the schema
-			throw new GeneralError(EntitySchemaHelper._CLASS_NAME, "invalidEntityKeys", {
+			throw new GeneralError(EntitySchemaHelper.CLASS_NAME, "invalidEntityKeys", {
 				keys: allKeys.join(", ")
 			});
 		}

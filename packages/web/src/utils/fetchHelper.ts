@@ -1,14 +1,14 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { AsyncCache, Guards, Is, ObjectHelper, StringHelper, type IError } from "@twin.org/core";
-import { nameof } from "@twin.org/nameof";
-import { FetchError } from "../errors/fetchError";
-import { HeaderTypes } from "../models/headerTypes";
-import { HttpMethod } from "../models/httpMethod";
-import { HttpStatusCode } from "../models/httpStatusCode";
-import type { IFetchOptions } from "../models/IFetchOptions";
-import type { IHttpHeaders } from "../models/IHttpHeaders";
-import { MimeTypes } from "../models/mimeTypes";
+import { AsyncCache, BaseError, Guards, Is, ObjectHelper, type IError } from "@twin.org/core";
+import { nameof, nameofCamelCase } from "@twin.org/nameof";
+import { FetchError } from "../errors/fetchError.js";
+import { HeaderTypes } from "../models/headerTypes.js";
+import { HttpMethod } from "../models/httpMethod.js";
+import { HttpStatusCode } from "../models/httpStatusCode.js";
+import type { IFetchOptions } from "../models/IFetchOptions.js";
+import type { IHttpHeaders } from "../models/IHttpHeaders.js";
+import { MimeTypes } from "../models/mimeTypes.js";
 
 /**
  * Class to helper with fetch operations.
@@ -16,22 +16,14 @@ import { MimeTypes } from "../models/mimeTypes";
 export class FetchHelper {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<FetchHelper>();
+	public static readonly CLASS_NAME: string = nameof<FetchHelper>();
 
 	/**
 	 * Prefix to use for cache entries.
 	 * @internal
 	 */
 	private static readonly _CACHE_PREFIX: string = "fetch_";
-
-	/**
-	 * Runtime name for the class.
-	 * @internal
-	 */
-	private static readonly _CLASS_NAME_CAMEL_CASE: string =
-		StringHelper.camelCase(nameof<FetchHelper>());
 
 	/**
 	 * Perform a fetch request.
@@ -49,41 +41,41 @@ export class FetchHelper {
 		body?: string | Uint8Array,
 		options?: Omit<IFetchOptions, "cacheTtlSeconds">
 	): Promise<Response> {
-		Guards.string(FetchHelper._CLASS_NAME, nameof(source), source);
-		Guards.string(FetchHelper._CLASS_NAME, nameof(url), url);
+		Guards.string(FetchHelper.CLASS_NAME, nameof(source), source);
+		Guards.string(FetchHelper.CLASS_NAME, nameof(url), url);
 		Guards.arrayOneOf<HttpMethod>(
-			FetchHelper._CLASS_NAME,
+			FetchHelper.CLASS_NAME,
 			nameof(method),
 			method,
 			Object.values(HttpMethod)
 		);
 		if (!Is.undefined(body) && !Is.uint8Array(body)) {
-			Guards.string(FetchHelper._CLASS_NAME, nameof(body), body);
+			Guards.string(FetchHelper.CLASS_NAME, nameof(body), body);
 		}
 		if (!Is.undefined(options)) {
-			Guards.object<IFetchOptions>(FetchHelper._CLASS_NAME, nameof(options), options);
+			Guards.object<IFetchOptions>(FetchHelper.CLASS_NAME, nameof(options), options);
 			if (!Is.undefined(options.headers)) {
 				Guards.object<IHttpHeaders>(
-					FetchHelper._CLASS_NAME,
+					FetchHelper.CLASS_NAME,
 					nameof(options.headers),
 					options.headers
 				);
 			}
 			if (!Is.undefined(options.timeoutMs)) {
-				Guards.integer(FetchHelper._CLASS_NAME, nameof(options.timeoutMs), options.timeoutMs);
+				Guards.integer(FetchHelper.CLASS_NAME, nameof(options.timeoutMs), options.timeoutMs);
 			}
 			if (!Is.undefined(options.includeCredentials)) {
 				Guards.boolean(
-					FetchHelper._CLASS_NAME,
+					FetchHelper.CLASS_NAME,
 					nameof(options.includeCredentials),
 					options.includeCredentials
 				);
 			}
 			if (!Is.undefined(options.retryCount)) {
-				Guards.integer(FetchHelper._CLASS_NAME, nameof(options.retryCount), options.retryCount);
+				Guards.integer(FetchHelper.CLASS_NAME, nameof(options.retryCount), options.retryCount);
 			}
 			if (!Is.undefined(options.retryDelayMs)) {
-				Guards.integer(FetchHelper._CLASS_NAME, nameof(options.retryDelayMs), options.retryDelayMs);
+				Guards.integer(FetchHelper.CLASS_NAME, nameof(options.retryDelayMs), options.retryDelayMs);
 			}
 		}
 
@@ -109,11 +101,20 @@ export class FetchHelper {
 				}, options?.timeoutMs);
 			}
 
+			let finalBody;
+			if (method === HttpMethod.POST || method === HttpMethod.PUT || method === HttpMethod.PATCH) {
+				if (Is.string(body)) {
+					finalBody = body;
+				} else if (Is.uint8Array(body)) {
+					finalBody = new Uint8Array(body);
+				}
+			}
+
 			try {
 				const requestOptions: RequestInit = {
 					method,
 					headers: options?.headers as HeadersInit,
-					body: method === HttpMethod.POST || method === HttpMethod.PUT ? body : undefined,
+					body: finalBody,
 					signal: controller ? controller.signal : undefined
 				};
 				if (Is.boolean(options?.includeCredentials)) {
@@ -125,7 +126,7 @@ export class FetchHelper {
 				if (!response.ok && retryCount > 1) {
 					lastError = new FetchError(
 						source,
-						`${FetchHelper._CLASS_NAME_CAMEL_CASE}.general`,
+						`${nameofCamelCase<FetchHelper>()}.general`,
 						(response.status as HttpStatusCode) ?? HttpStatusCode.internalServerError,
 						{
 							url,
@@ -140,7 +141,7 @@ export class FetchHelper {
 				if (isErr && Is.stringValue(err.message) && err.message.includes("Failed to fetch")) {
 					lastError = new FetchError(
 						source,
-						`${FetchHelper._CLASS_NAME_CAMEL_CASE}.connectivity`,
+						`${nameofCamelCase<FetchHelper>()}.connectivity`,
 						HttpStatusCode.serviceUnavailable,
 						{
 							url
@@ -159,13 +160,24 @@ export class FetchHelper {
 					if (isErr && "statusText" in err) {
 						props.statusText = err.statusText;
 					}
-					lastError = new FetchError(
-						source,
-						`${FetchHelper._CLASS_NAME_CAMEL_CASE}.${isAbort ? "timeout" : "general"}`,
-						httpStatus,
-						props,
-						err
-					);
+
+					if (isAbort) {
+						lastError = new FetchError(
+							source,
+							`${nameofCamelCase<FetchHelper>()}.timeout`,
+							httpStatus,
+							props,
+							err
+						);
+					} else {
+						lastError = new FetchError(
+							source,
+							`${nameofCamelCase<FetchHelper>()}.general`,
+							httpStatus,
+							props,
+							err
+						);
+					}
 				}
 			} finally {
 				if (timerId) {
@@ -175,18 +187,16 @@ export class FetchHelper {
 		}
 
 		if (retryCount > 1 && attempt === retryCount) {
-			// False positive as FetchError is derived from Error
-			// eslint-disable-next-line @typescript-eslint/only-throw-error
 			throw new FetchError(
 				source,
-				`${FetchHelper._CLASS_NAME_CAMEL_CASE}.retryLimitExceeded`,
+				`${nameofCamelCase<FetchHelper>()}.retryLimitExceeded`,
 				HttpStatusCode.internalServerError,
 				{ url },
 				lastError
 			);
 		}
 
-		throw lastError;
+		throw lastError as Error;
 	}
 
 	/**
@@ -253,11 +263,9 @@ export class FetchHelper {
 			try {
 				return (await response.json()) as U;
 			} catch (err) {
-				// False positive as FetchError is derived from Error
-				// eslint-disable-next-line @typescript-eslint/only-throw-error
 				throw new FetchError(
 					source,
-					`${FetchHelper._CLASS_NAME_CAMEL_CASE}.decodingJSON`,
+					`${nameofCamelCase<FetchHelper>()}.decodingJSON`,
 					HttpStatusCode.badRequest,
 					{ url },
 					err
@@ -266,18 +274,19 @@ export class FetchHelper {
 		}
 
 		const errorResponseData = await response.json();
+		const errorResponse = BaseError.fromError(errorResponseData);
+		const isErrorEmpty = BaseError.isEmpty(errorResponse);
 
-		// False positive as FetchError is derived from Error
-		// eslint-disable-next-line @typescript-eslint/only-throw-error
 		throw new FetchError(
 			source,
-			`${FetchHelper._CLASS_NAME_CAMEL_CASE}.failureStatusText`,
+			`${nameofCamelCase<FetchHelper>()}.failureStatusText`,
 			response.status as HttpStatusCode,
 			{
 				statusText: response.statusText,
-				url
+				url,
+				data: isErrorEmpty ? errorResponseData : undefined
 			},
-			errorResponseData
+			isErrorEmpty ? undefined : errorResponse
 		);
 	}
 
@@ -327,7 +336,7 @@ export class FetchHelper {
 			options.headers[HeaderTypes.ContentType] = MimeTypes.OctetStream;
 		}
 
-		const response = await this.fetch(source, url, method, requestData, options);
+		const response = await FetchHelper.fetch(source, url, method, requestData, options);
 
 		if (response.ok) {
 			if (method === HttpMethod.GET) {
@@ -339,11 +348,9 @@ export class FetchHelper {
 			try {
 				return (await response.json()) as T;
 			} catch (err) {
-				// False positive as FetchError is derived from Error
-				// eslint-disable-next-line @typescript-eslint/only-throw-error
 				throw new FetchError(
 					source,
-					`${FetchHelper._CLASS_NAME_CAMEL_CASE}.decodingJSON`,
+					`${nameofCamelCase<FetchHelper>()}.decodingJSON`,
 					HttpStatusCode.badRequest,
 					{ url },
 					err
@@ -352,18 +359,19 @@ export class FetchHelper {
 		}
 
 		const errorResponseData = await response.json();
+		const errorResponse = BaseError.fromError(errorResponseData);
+		const isErrorEmpty = BaseError.isEmpty(errorResponse);
 
-		// False positive as FetchError is derived from Error
-		// eslint-disable-next-line @typescript-eslint/only-throw-error
 		throw new FetchError(
 			source,
-			`${FetchHelper._CLASS_NAME_CAMEL_CASE}.failureStatusText`,
+			`${nameofCamelCase<FetchHelper>()}.failureStatusText`,
 			response.status as HttpStatusCode,
 			{
 				statusText: response.statusText,
-				url
+				url,
+				data: isErrorEmpty ? errorResponseData : undefined
 			},
-			errorResponseData
+			isErrorEmpty ? undefined : errorResponse
 		);
 	}
 
@@ -390,7 +398,7 @@ export class FetchHelper {
 	 * @returns The cache entry if it exists.
 	 */
 	public static async setCacheEntry<T>(url: string, value: T): Promise<void> {
-		AsyncCache.set<T>(`${FetchHelper._CACHE_PREFIX}${url}`, value);
+		await AsyncCache.set<T>(`${FetchHelper._CACHE_PREFIX}${url}`, value);
 	}
 
 	/**

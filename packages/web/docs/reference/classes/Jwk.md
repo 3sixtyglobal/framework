@@ -12,9 +12,17 @@ Class to handle JSON Web Keys.
 
 `Jwk`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### toCryptoKey()
+### toCryptoKey() {#tocryptokey}
 
 > `static` **toCryptoKey**(`jwk`, `alg?`): `Promise`\<[`JwkCryptoKey`](../type-aliases/JwkCryptoKey.md)\>
 
@@ -24,7 +32,7 @@ Convert the JWK to a crypto key.
 
 ##### jwk
 
-[`IJwk`](../interfaces/IJwk.md)
+`JWK`
 
 The JWK to convert.
 
@@ -42,9 +50,9 @@ The crypto key.
 
 ***
 
-### fromEd25519Private()
+### fromEd25519Private() {#fromed25519private}
 
-> `static` **fromEd25519Private**(`privateKey`): `Promise`\<[`IJwk`](../interfaces/IJwk.md)\>
+> `static` **fromEd25519Private**(`privateKey`, `overrideUse?`): `Promise`\<`JWK`\>
 
 Convert the Ed25519 private key to a crypto key.
 
@@ -56,17 +64,23 @@ Convert the Ed25519 private key to a crypto key.
 
 The private key to use.
 
+##### overrideUse?
+
+`string`
+
+Optional override for the use property, defaults to "sig".
+
 #### Returns
 
-`Promise`\<[`IJwk`](../interfaces/IJwk.md)\>
+`Promise`\<`JWK`\>
 
 The crypto key.
 
 ***
 
-### fromEd25519Public()
+### fromEd25519Public() {#fromed25519public}
 
-> `static` **fromEd25519Public**(`publicKey`): `Promise`\<[`IJwk`](../interfaces/IJwk.md)\>
+> `static` **fromEd25519Public**(`publicKey`, `overrideUse?`): `Promise`\<`JWK`\>
 
 Convert the Ed25519 public key to a crypto key.
 
@@ -78,15 +92,21 @@ Convert the Ed25519 public key to a crypto key.
 
 The private key to use.
 
+##### overrideUse?
+
+`string`
+
+Optional override for the use property, defaults to "sig".
+
 #### Returns
 
-`Promise`\<[`IJwk`](../interfaces/IJwk.md)\>
+`Promise`\<`JWK`\>
 
 The crypto key.
 
 ***
 
-### toRaw()
+### toRaw() {#toraw}
 
 > `static` **toRaw**(`jwk`): `Promise`\<\{ `publicKey?`: `Uint8Array`\<`ArrayBufferLike`\>; `privateKey?`: `Uint8Array`\<`ArrayBufferLike`\>; \}\>
 
@@ -96,7 +116,7 @@ Convert the JWK to raw keys.
 
 ##### jwk
 
-[`IJwk`](../interfaces/IJwk.md)
+`JWK`
 
 The JWK to convert to raw.
 
@@ -108,7 +128,7 @@ The crypto key.
 
 ***
 
-### generateKid()
+### generateKid() {#generatekid}
 
 > `static` **generateKid**(`jwk`): `Promise`\<`string`\>
 
@@ -118,7 +138,7 @@ Generate a KID for the JWK.
 
 ##### jwk
 
-[`IJwk`](../interfaces/IJwk.md)
+`JWK`
 
 The JWK to generate a KID for.
 

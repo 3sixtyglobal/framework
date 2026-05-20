@@ -1,14 +1,13 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable no-bitwise */
-/* eslint-disable unicorn/prefer-math-trunc */
 import { GeneralError } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
-import { MathHelper } from "./mathHelper";
-import { Polynomial } from "./polynomial";
-import { ErrorCorrectLevel } from "../models/errorCorrectLevel";
-import { MaskPattern } from "../models/maskPattern";
-import { QRDataMode } from "../models/qrDataMode";
+import { MathHelper } from "./mathHelper.js";
+import { Polynomial } from "./polynomial.js";
+import { ErrorCorrectLevel } from "../models/errorCorrectLevel.js";
+import { MaskPattern } from "../models/maskPattern.js";
+import { QRDataMode } from "../models/qrDataMode.js";
 
 /**
  * Helper methods for QR generation.
@@ -17,9 +16,8 @@ import { QRDataMode } from "../models/qrDataMode";
 export class QRHelper {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<QRHelper>();
+	public static readonly CLASS_NAME: string = nameof<QRHelper>();
 
 	/**
 	 * @internal
@@ -136,7 +134,7 @@ export class QRHelper {
 	/**
 	 * @internal
 	 */
-	// eslint-disable-next-line unicorn/prefer-math-trunc
+
 	private static readonly _G15: number =
 		(1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
 
@@ -144,7 +142,6 @@ export class QRHelper {
 	 * @internal
 	 */
 	private static readonly _G18: number =
-		// eslint-disable-next-line unicorn/prefer-math-trunc
 		(1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
 
 	/**
@@ -176,8 +173,8 @@ export class QRHelper {
 		errorCorrectLevel: ErrorCorrectLevel
 	): number {
 		const t = typeNumber - 1;
-		let e = 0;
-		let m = 0;
+		let e;
+		let m;
 
 		switch (errorCorrectLevel) {
 			case ErrorCorrectLevel.L:
@@ -193,7 +190,7 @@ export class QRHelper {
 				e = 3;
 				break;
 			default:
-				throw new GeneralError(QRHelper._CLASS_NAME, "correctionLevelRange", { errorCorrectLevel });
+				throw new GeneralError(QRHelper.CLASS_NAME, "correctionLevelRange", { errorCorrectLevel });
 		}
 
 		switch (mode) {
@@ -207,7 +204,7 @@ export class QRHelper {
 				m = 2;
 				break;
 			default:
-				throw new GeneralError(QRHelper._CLASS_NAME, "modeRange", { mode });
+				throw new GeneralError(QRHelper.CLASS_NAME, "modeRange", { mode });
 		}
 
 		return QRHelper._MAX_LENGTH[t][e][m];
@@ -254,7 +251,7 @@ export class QRHelper {
 				return (i: number, j: number) => (((i * j) % 3) + ((i + j) % 2)) % 2 === 0;
 
 			default:
-				throw new GeneralError(QRHelper._CLASS_NAME, "maskPatternRange", { maskPattern });
+				throw new GeneralError(QRHelper.CLASS_NAME, "maskPatternRange", { maskPattern });
 		}
 	}
 

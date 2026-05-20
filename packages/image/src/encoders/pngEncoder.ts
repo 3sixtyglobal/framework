@@ -3,11 +3,10 @@
 /* eslint-disable no-bitwise */
 /* eslint-disable no-mixed-operators */
 /* eslint-disable no-continue */
-/* eslint-disable unicorn/prefer-math-trunc */
 import { Compression } from "@twin.org/core";
-import type { Frame } from "./png/frame";
-import type { ImageData } from "./png/imageData";
-import type { Leaf } from "./png/leaf";
+import type { Frame } from "./png/frame.js";
+import type { ImageData } from "./png/imageData.js";
+import type { Leaf } from "./png/leaf.js";
 
 /**
  * PNG Encoder.
@@ -203,7 +202,7 @@ export class PngEncoder {
 	 * @internal
 	 */
 	private compress(
-		inBuffers: ArrayBuffer[],
+		inBuffers: ArrayBufferLike[],
 		w: number,
 		h: number,
 		inPs: number,
@@ -590,8 +589,8 @@ export class PngEncoder {
 	): boolean {
 		const w = Math.min(sw, tw);
 		const h = Math.min(sh, th);
-		let si = 0;
-		let ti = 0;
+		let si;
+		let ti;
 		for (let y = 0; y < h; y++) {
 			for (let x = 0; x < w; x++) {
 				if (xOffset >= 0 && yOffset >= 0) {
@@ -709,10 +708,10 @@ export class PngEncoder {
 	 * @internal
 	 */
 	private quantize(
-		buffers: ArrayBuffer[],
+		buffers: ArrayBufferLike[],
 		ps: number,
 		roundAlpha: number
-	): { buffers: ArrayBuffer[]; plte: Leaf[] } {
+	): { buffers: ArrayBufferLike[]; plte: Leaf[] } {
 		const imgs: Uint8Array[] = [];
 		let total = 0;
 		for (let i = 0; i < buffers.length; i++) {
@@ -809,7 +808,7 @@ export class PngEncoder {
 		}
 		leafs.sort((a, b) => (b.bst?.N ?? 0) - (a.bst?.N ?? 0));
 
-		const outBuffers: ArrayBuffer[] = [];
+		const outBuffers: ArrayBufferLike[] = [];
 		for (let ii = 0; ii < imgs.length; ii++) {
 			const sb = new Uint8Array(imgs[ii]);
 			const tb: Uint32Array = new Uint32Array(imgs[ii]);
@@ -920,7 +919,7 @@ export class PngEncoder {
 		const A = rj;
 		let b = [0.5, 0.5, 0.5, 0.5];
 		let mi = 0;
-		let tmi = 0;
+		let tmi;
 
 		if (N !== 0) {
 			for (let i = 0; i < 10; i++) {

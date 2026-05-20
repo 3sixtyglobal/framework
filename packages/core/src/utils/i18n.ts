@@ -1,10 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { IntlMessageFormat } from "intl-messageformat";
-import { Is } from "./is";
-import { SharedStore } from "./sharedStore";
-import type { II18nShared } from "../models/II18nShared";
-import type { ILocaleDictionary } from "../models/ILocaleDictionary";
+import { Is } from "./is.js";
+import { SharedStore } from "./sharedStore.js";
+import type { II18nShared } from "../models/II18nShared.js";
+import type { ILocaleDictionary } from "../models/ILocaleDictionary.js";
 
 /**
  * Class to perform internationalization.
@@ -144,15 +144,33 @@ export class I18n {
 			return key;
 		}
 
-		let ret = new IntlMessageFormat(i18nShared.localeDictionaries[cl][key], cl).format(
-			values
-		) as string;
+		try {
+			let ret = new IntlMessageFormat(i18nShared.localeDictionaries[cl][key], cl).format(
+				values
+			) as string;
 
-		if (i18nShared.currentLocale === "debug-x") {
-			ret = ret.replace(/[a-z]/g, "x").replace(/[A-Z]/g, "x").replace(/\d/g, "n");
+			if (i18nShared.currentLocale === "debug-x") {
+				ret = ret.replace(/[a-z]/g, "x").replace(/[A-Z]/g, "x").replace(/\d/g, "n");
+			}
+
+			return ret;
+		} catch {
+			// if there is an error the assumption is that one of the properties
+			// is undefined, which the formatting library does not like
+			// in this case we get all the property names and ensure they are defined
+			const propertyNames = I18n.getPropertyNames(i18nShared.localeDictionaries[cl][key]);
+			const safeValues: { [key: string]: unknown } = values ?? {};
+
+			for (const propertyName of propertyNames) {
+				safeValues[propertyName] ??= "";
+			}
+
+			// Format again with the safe values, if it still fails we let the error
+			// propagate up as there is nothing more we can do
+			return new IntlMessageFormat(i18nShared.localeDictionaries[cl][key], cl).format(
+				safeValues
+			) as string;
 		}
-
-		return ret;
 	}
 
 	/**
@@ -170,9 +188,8 @@ export class I18n {
 	 * @param translation The translation to merge.
 	 * @param propertyPath The current root path.
 	 * @param mergedKeys The merged keys dictionary to populate.
-	 * @internal
 	 */
-	private static flattenTranslationKeys(
+	public static flattenTranslationKeys(
 		translation: ILocaleDictionary,
 		propertyPath: string,
 		mergedKeys: { [key: string]: string }
@@ -184,6 +201,69 @@ export class I18n {
 				mergedKeys[mergedPath] = val;
 			} else if (Is.object<ILocaleDictionary>(val)) {
 				I18n.flattenTranslationKeys(val, mergedPath, mergedKeys);
+			}
+		}
+	}
+
+	/**
+	 * Get a list of the property names from the message.
+	 * @param message The message to extract the property names from.
+	 * @returns The list of property names.
+	 */
+	public static getPropertyNames(message: string): string[] {
+		const i18nShared = I18n.getI18nShared();
+
+		try {
+			const ast = new IntlMessageFormat(message, i18nShared.currentLocale).getAst();
+			const properties = new Set<string>();
+
+			I18n.extractPropertiesFromAst(ast, properties);
+
+			return Array.from(properties);
+		} catch {
+			return [];
+		}
+	}
+
+	/**
+	 * Recursively extract property names from the AST.
+	 * @param node The AST node to process.
+	 * @param properties The set to collect property names.
+	 * @internal
+	 */
+	private static extractPropertiesFromAst(node: unknown, properties: Set<string>): void {
+		if (Is.array(node)) {
+			for (const item of node) {
+				I18n.extractPropertiesFromAst(item, properties);
+			}
+		} else if (Is.object(node)) {
+			const obj = node;
+
+			// Check for elements that have property names
+			// Type 1 = ArgumentElement (simple placeholder like {name})
+			// Type 2 = NumberElement ({count, number})
+			// Type 3 = DateElement ({date, date, short})
+			// Type 4 = TimeElement ({time, time, medium})
+			// Type 5 = SelectElement ({gender, select, ...})
+			// Type 6 = PluralElement ({count, plural, ...})
+			if (
+				(obj.type === 1 ||
+					obj.type === 2 ||
+					obj.type === 3 ||
+					obj.type === 4 ||
+					obj.type === 5 ||
+					obj.type === 6) &&
+				Is.string(obj.value)
+			) {
+				properties.add(obj.value);
+			}
+
+			// Recursively process all object properties
+			for (const key in obj) {
+				const value = obj[key];
+				if (Is.object(value) || Is.array(value)) {
+					I18n.extractPropertiesFromAst(value, properties);
+				}
 			}
 		}
 	}

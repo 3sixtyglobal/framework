@@ -1,10 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { HttpMethod } from "../../src/models/httpMethod";
-import { HttpStatusCode } from "../../src/models/httpStatusCode";
-import type { IFetchOptions } from "../../src/models/IFetchOptions";
-import type { IHttpHeaders } from "../../src/models/IHttpHeaders";
-import { FetchHelper } from "../../src/utils/fetchHelper";
+import type { HttpMethod } from "../../src/models/httpMethod.js";
+import { HttpStatusCode } from "../../src/models/httpStatusCode.js";
+import type { IFetchOptions } from "../../src/models/IFetchOptions.js";
+import type { IHttpHeaders } from "../../src/models/IHttpHeaders.js";
+import { FetchHelper } from "../../src/utils/fetchHelper.js";
 
 const fetchMock = vi.fn();
 
@@ -164,7 +164,6 @@ describe("FetchHelper", () => {
 				while (!options.signal.aborted) {
 					await new Promise(resolve => globalThis.setTimeout(resolve, 100));
 				}
-				// eslint-disable-next-line no-restricted-syntax
 				const abortError = new Error("abort");
 				abortError.name = "AbortError";
 				throw abortError;
@@ -238,7 +237,6 @@ describe("FetchHelper", () => {
 	});
 
 	test("can fail to get a response from a fetchwith failed connectivity", async () => {
-		// eslint-disable-next-line no-restricted-syntax
 		fetchMock.mockRejectedValue(new Error("Failed to fetch"));
 		await expect(FetchHelper.fetch("source", "url", "GET")).rejects.toMatchObject({
 			name: "FetchError",
@@ -250,7 +248,6 @@ describe("FetchHelper", () => {
 	});
 
 	test("can fail to get a response with a custom status code", async () => {
-		// eslint-disable-next-line no-restricted-syntax
 		fetchMock.mockRejectedValue({ httpStatus: HttpStatusCode.badGateway });
 		await expect(FetchHelper.fetch("source", "url", "GET")).rejects.toMatchObject({
 			name: "FetchError",
@@ -262,7 +259,6 @@ describe("FetchHelper", () => {
 	});
 
 	test("can fail to get a response with a custom status text", async () => {
-		// eslint-disable-next-line no-restricted-syntax
 		fetchMock.mockRejectedValue({ statusText: "foo" });
 		await expect(FetchHelper.fetch("source", "url", "GET")).rejects.toMatchObject({
 			name: "FetchError",
@@ -356,7 +352,7 @@ describe("FetchHelper", () => {
 				httpStatus: HttpStatusCode.internalServerError,
 				url: "url"
 			},
-			inner: {
+			cause: {
 				name: "FetchError",
 				source: "source",
 				message: "fetchHelper.general",
@@ -397,7 +393,7 @@ describe("FetchHelper", () => {
 				httpStatus: HttpStatusCode.internalServerError,
 				url: "url"
 			},
-			inner: {
+			cause: {
 				name: "FetchError",
 				source: "source",
 				message: "fetchHelper.general",

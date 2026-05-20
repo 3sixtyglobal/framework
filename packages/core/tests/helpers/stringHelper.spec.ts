@@ -1,10 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { StringHelper } from "../../src/helpers/stringHelper";
+import { StringHelper } from "../../src/helpers/stringHelper.js";
 
 describe("StringHelper", () => {
 	test("can trim trailing slashes for undefined string", () => {
-		expect(StringHelper.trimTrailingSlashes(undefined as never)).toEqual("");
+		expect(StringHelper.trimTrailingSlashes(undefined as never)).toEqual(undefined);
 	});
 
 	test("can trim trailing slashes for empty string", () => {
@@ -21,6 +21,38 @@ describe("StringHelper", () => {
 
 	test("can trim trailing slashes for string with multiple slashes", () => {
 		expect(StringHelper.trimTrailingSlashes("abc////")).toEqual("abc");
+	});
+
+	test("can trim trailing and leading slashes for undefined string", () => {
+		expect(StringHelper.trimLeadingAndTrailingSlashes(undefined as never)).toEqual(undefined);
+	});
+
+	test("can trim trailing and leading slashes for empty string", () => {
+		expect(StringHelper.trimLeadingAndTrailingSlashes("")).toEqual("");
+	});
+
+	test("can trim trailing and leading slashes for string with no slashes", () => {
+		expect(StringHelper.trimLeadingAndTrailingSlashes("abc")).toEqual("abc");
+	});
+
+	test("can trim trailing and leading slashes for string with leading slash only", () => {
+		expect(StringHelper.trimLeadingAndTrailingSlashes("/abc")).toEqual("abc");
+	});
+
+	test("can trim trailing and leading slashes for string with trailing slash only", () => {
+		expect(StringHelper.trimLeadingAndTrailingSlashes("abc/")).toEqual("abc");
+	});
+
+	test("can trim trailing and leading slashes for string with both leading and trailing slashes", () => {
+		expect(StringHelper.trimLeadingAndTrailingSlashes("/abc/")).toEqual("abc");
+	});
+
+	test("can trim trailing and leading slashes for string with multiple leading and trailing slashes", () => {
+		expect(StringHelper.trimLeadingAndTrailingSlashes("////abc////")).toEqual("abc");
+	});
+
+	test("can trim trailing and leading slashes preserving slashes in the middle", () => {
+		expect(StringHelper.trimLeadingAndTrailingSlashes("/abc/def/")).toEqual("abc/def");
 	});
 
 	test("can split kebab case into words", () => {

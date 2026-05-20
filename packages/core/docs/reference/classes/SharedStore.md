@@ -15,9 +15,9 @@ instance loads of a packages.
 
 ## Methods
 
-### get()
+### get() {#get}
 
-> `static` **get**\<`T`\>(`prop`): `undefined` \| `T`
+> `static` **get**\<`T`\>(`prop`): `T` \| `undefined`
 
 Get a property from the shared store.
 
@@ -37,13 +37,13 @@ The name of the property to get.
 
 #### Returns
 
-`undefined` \| `T`
+`T` \| `undefined`
 
 The property if it exists.
 
 ***
 
-### set()
+### set() {#set}
 
 > `static` **set**\<`T`\>(`prop`, `value`): `void`
 
@@ -75,7 +75,7 @@ The value to set.
 
 ***
 
-### remove()
+### remove() {#remove}
 
 > `static` **remove**(`prop`): `void`
 

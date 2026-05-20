@@ -1,9 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { pbkdf2 } from "@noble/hashes/pbkdf2";
-import { sha256 } from "@noble/hashes/sha256";
-import { sha512 } from "@noble/hashes/sha512";
-import { Guards } from "@twin.org/core";
+import { pbkdf2 } from "@noble/hashes/pbkdf2.js";
+import { sha256, sha512 } from "@noble/hashes/sha2.js";
+import { GeneralError, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 
 /**
@@ -12,9 +11,8 @@ import { nameof } from "@twin.org/nameof";
 export class Pbkdf2 {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Pbkdf2>();
+	public static readonly CLASS_NAME: string = nameof<Pbkdf2>();
 
 	/**
 	 * Derive a key from the parameters using Sha256.
@@ -23,6 +21,7 @@ export class Pbkdf2 {
 	 * @param iterations Number of iterations to perform.
 	 * @param keyLength The length of the key to derive.
 	 * @returns The derived key.
+	 * @throws GeneralError If the keyLength is less than 1.
 	 */
 	public static sha256(
 		password: Uint8Array,
@@ -30,10 +29,13 @@ export class Pbkdf2 {
 		iterations: number,
 		keyLength: number
 	): Uint8Array {
-		Guards.uint8Array(Pbkdf2._CLASS_NAME, nameof(password), password);
-		Guards.uint8Array(Pbkdf2._CLASS_NAME, nameof(salt), salt);
-		Guards.number(Pbkdf2._CLASS_NAME, nameof(iterations), iterations);
-		Guards.number(Pbkdf2._CLASS_NAME, nameof(keyLength), keyLength);
+		Guards.uint8Array(Pbkdf2.CLASS_NAME, nameof(password), password);
+		Guards.uint8Array(Pbkdf2.CLASS_NAME, nameof(salt), salt);
+		Guards.number(Pbkdf2.CLASS_NAME, nameof(iterations), iterations);
+		Guards.number(Pbkdf2.CLASS_NAME, nameof(keyLength), keyLength);
+		if (keyLength < 1) {
+			throw new GeneralError(Pbkdf2.CLASS_NAME, "keyLengthTooSmall", { keyLength });
+		}
 		return pbkdf2(sha256, password, salt, { c: iterations, dkLen: keyLength });
 	}
 
@@ -44,6 +46,7 @@ export class Pbkdf2 {
 	 * @param iterations Number of iterations to perform.
 	 * @param keyLength The length of the key to derive.
 	 * @returns The derived key.
+	 * @throws GeneralError If the keyLength is less than 1.
 	 */
 	public static sha512(
 		password: Uint8Array,
@@ -51,10 +54,13 @@ export class Pbkdf2 {
 		iterations: number,
 		keyLength: number
 	): Uint8Array {
-		Guards.uint8Array(Pbkdf2._CLASS_NAME, nameof(password), password);
-		Guards.uint8Array(Pbkdf2._CLASS_NAME, nameof(salt), salt);
-		Guards.number(Pbkdf2._CLASS_NAME, nameof(iterations), iterations);
-		Guards.number(Pbkdf2._CLASS_NAME, nameof(keyLength), keyLength);
+		Guards.uint8Array(Pbkdf2.CLASS_NAME, nameof(password), password);
+		Guards.uint8Array(Pbkdf2.CLASS_NAME, nameof(salt), salt);
+		Guards.number(Pbkdf2.CLASS_NAME, nameof(iterations), iterations);
+		Guards.number(Pbkdf2.CLASS_NAME, nameof(keyLength), keyLength);
+		if (keyLength < 1) {
+			throw new GeneralError(Pbkdf2.CLASS_NAME, "keyLengthTooSmall", { keyLength });
+		}
 		return pbkdf2(sha512, password, salt, { c: iterations, dkLen: keyLength });
 	}
 }

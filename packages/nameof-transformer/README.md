@@ -1,22 +1,20 @@
 # TWIN Nameof TypeScript Transformer
 
-This transformer is used to convert class/type/property names to embedded strings, so that they are available to the code at runtime.
-
-It is used during your TypeScript compilation as part of the build pipeline.
-
-It is necessary that your code is built with a compiler that supports transformers such as `ts-patch` / `ttypescript` / `ttsc`.
-
-You will also need to include the `@twin.org/nameof` to be able to reference the methods in your code.
+This package is part of the framework workspace and provides typed transformer which converts types and properties to their actual name for use at runtime to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install @twin.org/nameof-transformer -D
+npm install -D @twin.org/nameof-transformer
 ```
 
 ## Configuration
 
-Configuration of the package is shown in [docs/configuration.md](docs/configuration.md)
+Configuration options are documented in [docs/configuration.md](docs/configuration.md)
+
+## Examples
+
+Usage of the APIs is shown in the examples [docs/examples.md](docs/examples.md)
 
 ## Reference
 

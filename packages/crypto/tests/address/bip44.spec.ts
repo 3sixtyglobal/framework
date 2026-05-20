@@ -1,9 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Converter } from "@twin.org/core";
-import { Bip44 } from "../../src/address/bip44";
-import { Bip39 } from "../../src/keys/bip39";
-import { KeyType } from "../../src/models/keyType";
+import { Bip44 } from "../../src/address/bip44.js";
+import { Bip39 } from "../../src/keys/bip39.js";
+import { KeyType } from "../../src/models/keyType.js";
 
 describe("Bip44", () => {
 	test("Can generate an address in bech32 format", () => {

@@ -24,7 +24,7 @@ Initial path to create.
 
 ## Methods
 
-### fromPath()
+### fromPath() {#frompath}
 
 > `static` **fromPath**(`bip32Path`): `Bip32Path`
 
@@ -46,7 +46,7 @@ A new instance of Bip32Path.
 
 ***
 
-### toString()
+### toString() {#tostring}
 
 > **toString**(): `string`
 
@@ -60,7 +60,7 @@ The path as a string.
 
 ***
 
-### push()
+### push() {#push}
 
 > **push**(`index`): `void`
 
@@ -80,7 +80,7 @@ The index to add to the path.
 
 ***
 
-### pushHardened()
+### pushHardened() {#pushhardened}
 
 > **pushHardened**(`index`): `void`
 
@@ -100,7 +100,7 @@ The index to add to the path.
 
 ***
 
-### pop()
+### pop() {#pop}
 
 > **pop**(): `void`
 
@@ -112,7 +112,7 @@ Pop an index from the path.
 
 ***
 
-### numberSegments()
+### numberSegments() {#numbersegments}
 
 > **numberSegments**(): `number`[]
 

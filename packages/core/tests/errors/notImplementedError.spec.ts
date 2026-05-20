@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { NotImplementedError } from "../../src/errors/notImplementedError";
+import { NotImplementedError } from "../../src/errors/notImplementedError.js";
 
 describe("NotImplementedError", () => {
 	test("can construct", () => {

@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@twin.org/nameof";
-import { Guards } from "./guards";
-import { CompressionType } from "../models/compressionType";
+import { Guards } from "./guards.js";
+import { CompressionType } from "../models/compressionType.js";
 
 /**
  * A class to handle compression.
@@ -10,9 +10,8 @@ import { CompressionType } from "../models/compressionType";
 export class Compression {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Compression>();
+	public static readonly CLASS_NAME: string = nameof<Compression>();
 
 	/**
 	 * Compress bytes using GZIP.
@@ -21,10 +20,10 @@ export class Compression {
 	 * @returns The compressed bytes.
 	 */
 	public static async compress(bytes: Uint8Array, type: CompressionType): Promise<Uint8Array> {
-		Guards.uint8Array(Compression._CLASS_NAME, nameof(bytes), bytes);
-		Guards.arrayOneOf(Compression._CLASS_NAME, nameof(type), type, Object.values(CompressionType));
+		Guards.uint8Array(Compression.CLASS_NAME, nameof(bytes), bytes);
+		Guards.arrayOneOf(Compression.CLASS_NAME, nameof(type), type, Object.values(CompressionType));
 
-		const blob = new Blob([bytes]);
+		const blob = new Blob([new Uint8Array(bytes)]);
 		const compressionStream = new CompressionStream(type);
 		const compressionPipe = blob.stream().pipeThrough(compressionStream);
 		const compressedBlob = await new Response(compressionPipe).blob();
@@ -51,10 +50,10 @@ export class Compression {
 		compressedBytes: Uint8Array,
 		type: CompressionType
 	): Promise<Uint8Array> {
-		Guards.uint8Array(Compression._CLASS_NAME, nameof(compressedBytes), compressedBytes);
-		Guards.arrayOneOf(Compression._CLASS_NAME, nameof(type), type, Object.values(CompressionType));
+		Guards.uint8Array(Compression.CLASS_NAME, nameof(compressedBytes), compressedBytes);
+		Guards.arrayOneOf(Compression.CLASS_NAME, nameof(type), type, Object.values(CompressionType));
 
-		const blob = new Blob([compressedBytes]);
+		const blob = new Blob([new Uint8Array(compressedBytes)]);
 		const decompressionStream = new DecompressionStream(type);
 		const decompressionPipe = blob.stream().pipeThrough(decompressionStream);
 		const decompressedBlob = await new Response(decompressionPipe).blob();

@@ -14,7 +14,7 @@ Error helper functions.
 
 ## Methods
 
-### formatErrors()
+### formatErrors() {#formaterrors}
 
 > `static` **formatErrors**(`error`, `includeDetails?`): `string`[]
 
@@ -38,15 +38,15 @@ Whether to include error details, defaults to false.
 
 `string`[]
 
-The error formatted including any inner errors.
+The error formatted including any causes errors.
 
 ***
 
-### localizeErrors()
+### localizeErrors() {#localizeerrors}
 
 > `static` **localizeErrors**(`error`): [`IError`](../interfaces/IError.md)[]
 
-Localize the content of an error and any inner errors.
+Localize the content of an error and any causes.
 
 #### Parameters
 
@@ -64,11 +64,11 @@ The localized version of the errors flattened.
 
 ***
 
-### formatValidationErrors()
+### formatValidationErrors() {#formatvalidationerrors}
 
-> `static` **formatValidationErrors**(`error`): `undefined` \| `string`
+> `static` **formatValidationErrors**(`error`): `string` \| `undefined`
 
-Localize the content of an error and any inner errors.
+Localize the content of an error and any causes.
 
 #### Parameters
 
@@ -80,6 +80,6 @@ The error to format.
 
 #### Returns
 
-`undefined` \| `string`
+`string` \| `undefined`
 
 The localized version of the errors flattened.

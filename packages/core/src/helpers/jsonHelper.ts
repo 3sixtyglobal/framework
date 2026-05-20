@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@twin.org/nameof";
 import { applyPatch, createPatch, type Operation } from "rfc6902";
-import { ObjectHelper } from "./objectHelper";
-import { GeneralError } from "../errors/generalError";
-import type { IPatchOperation } from "../models/IPatchOperation";
-import { Converter } from "../utils/converter";
-import { Is } from "../utils/is";
+import { ObjectHelper } from "./objectHelper.js";
+import { GeneralError } from "../errors/generalError.js";
+import type { IPatchOperation } from "../models/IPatchOperation.js";
+import { Converter } from "../utils/converter.js";
+import { Is } from "../utils/is.js";
 
 /**
  * Helpers methods for JSON objects.
@@ -14,9 +14,8 @@ import { Is } from "../utils/is";
 export class JsonHelper {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<JsonHelper>();
+	public static readonly CLASS_NAME: string = nameof<JsonHelper>();
 
 	/**
 	 * Serializes in canonical format.
@@ -30,7 +29,7 @@ export class JsonHelper {
 		if (
 			object === null ||
 			typeof object !== "object" ||
-			("toJSON" in object && object.toJSON instanceof Function)
+			("toJSON" in object && Is.function(object.toJSON))
 		) {
 			// Primitive data type
 			buffer.push(JSON.stringify(object));
@@ -70,7 +69,7 @@ export class JsonHelper {
 	 */
 	public static diff<T = unknown>(object1: T, object2: T): IPatchOperation[] {
 		const operations = createPatch(object1, object2);
-		return operations as IPatchOperation[];
+		return operations;
 	}
 
 	/**
@@ -87,7 +86,7 @@ export class JsonHelper {
 
 		for (let i = 0; i < result.length; i++) {
 			if (!Is.empty(result[i])) {
-				throw new GeneralError(JsonHelper._CLASS_NAME, "failedPatch", { index: i }, result[i]);
+				throw new GeneralError(JsonHelper.CLASS_NAME, "failedPatch", { index: i }, result[i]);
 			}
 		}
 
@@ -128,6 +127,9 @@ export class JsonHelper {
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public static stringifyExReplacer(this: any, key: string, value: unknown): unknown {
+		// The this in the replacer is the containing object
+		// so we need to get the actual value from there
+		// eslint-disable-next-line no-restricted-syntax
 		const rawValue = this[key];
 
 		if (Is.bigint(rawValue)) {

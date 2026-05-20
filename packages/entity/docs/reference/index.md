@@ -4,6 +4,7 @@
 
 - [DecoratorHelper](classes/DecoratorHelper.md)
 - [EntityConditions](classes/EntityConditions.md)
+- [EntitySchemaDiffHelper](classes/EntitySchemaDiffHelper.md)
 - [EntitySchemaHelper](classes/EntitySchemaHelper.md)
 - [EntitySorter](classes/EntitySorter.md)
 
@@ -12,6 +13,7 @@
 - [IComparator](interfaces/IComparator.md)
 - [IComparatorGroup](interfaces/IComparatorGroup.md)
 - [IEntitySchema](interfaces/IEntitySchema.md)
+- [IEntitySchemaDiff](interfaces/IEntitySchemaDiff.md)
 - [IEntitySchemaOptions](interfaces/IEntitySchemaOptions.md)
 - [IEntitySchemaProperty](interfaces/IEntitySchemaProperty.md)
 - [IEntitySort](interfaces/IEntitySort.md)

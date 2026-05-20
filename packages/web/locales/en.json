@@ -1,11 +1,12 @@
 {
 	"error": {
 		"fetchHelper": {
-			"decodingJSON": "Decoding JSON failed for route \"{route}\"",
+			"decodingJSON": "Decoding JSON failed for route \"{url}\"",
 			"failureStatusText": "The request to the API failed: \"{statusText}\"",
 			"connectivity": "The request failed, the API could be offline, or there are other connectivity issues",
 			"timeout": "The request timed out",
-			"general": "A general failure occurred during the request"
+			"general": "A general failure occurred during the request",
+			"retryLimitExceeded": "The retry limit was exceeded for route \"{url}\""
 		},
 		"jwt": {
 			"noKeyOrSigner": "No key or signer was provided for JWT creation",
@@ -20,9 +21,10 @@
 		"jws": {
 			"createFailed": "Failed to create JWS",
 			"verifyFailed": "Failed to verify JWS"
+		},
+		"headerHelper": {
+			"invalidLinkHeaderURL": "URL for Link header cannot contain \">\" character.",
+			"invalidLinkHeaderRel": "Relation type for Link header cannot contain \" character."
 		}
-	},
-	"errorMessages": {
-		"fetch": "Fetch"
 	}
 }

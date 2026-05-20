@@ -30,7 +30,7 @@ Optional key for the hash.
 
 ## Properties
 
-### SIZE\_160
+### SIZE\_160 {#size_160}
 
 > `static` **SIZE\_160**: `number` = `20`
 
@@ -38,7 +38,7 @@ Blake2b 160.
 
 ***
 
-### SIZE\_256
+### SIZE\_256 {#size_256}
 
 > `static` **SIZE\_256**: `number` = `32`
 
@@ -46,15 +46,23 @@ Blake2b 256.
 
 ***
 
-### SIZE\_512
+### SIZE\_512 {#size_512}
 
 > `static` **SIZE\_512**: `number` = `64`
 
 Blake2b 512.
 
+***
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### sum160()
+### sum160() {#sum160}
 
 > `static` **sum160**(`block`, `key?`): `Uint8Array`
 
@@ -82,7 +90,7 @@ The sum 160 of the block.
 
 ***
 
-### sum256()
+### sum256() {#sum256}
 
 > `static` **sum256**(`block`, `key?`): `Uint8Array`
 
@@ -110,7 +118,7 @@ The sum 256 of the block.
 
 ***
 
-### sum512()
+### sum512() {#sum512}
 
 > `static` **sum512**(`block`, `key?`): `Uint8Array`
 
@@ -138,7 +146,7 @@ The sum 512 of the block.
 
 ***
 
-### update()
+### update() {#update}
 
 > **update**(`block`): `Blake2b`
 
@@ -160,7 +168,7 @@ The instance for chaining.
 
 ***
 
-### digest()
+### digest() {#digest}
 
 > **digest**(): `Uint8Array`
 

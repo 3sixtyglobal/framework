@@ -1,10 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable no-bitwise */
-import { Base58 } from "../encoding/base58";
-import { Base64 } from "../encoding/base64";
-import { Base64Url } from "../encoding/base64Url";
-import { HexHelper } from "../helpers/hexHelper";
+import { Base58 } from "../encoding/base58.js";
+import { Base64 } from "../encoding/base64.js";
+import { Base64Url } from "../encoding/base64Url.js";
+import { HexHelper } from "../helpers/hexHelper.js";
 
 /**
  * Convert arrays to and from different formats.
@@ -124,7 +124,7 @@ export class Converter {
 		reverse?: boolean
 	): string {
 		let hex = "";
-		this.buildHexLookups();
+		Converter.buildHexLookups();
 		if (Converter._ENCODE_LOOKUP) {
 			const len = length ?? array.length;
 			const start = startIndex ?? 0;
@@ -153,7 +153,7 @@ export class Converter {
 		const length = sizeof << 1;
 		const array = new Uint8Array(sizeof);
 
-		this.buildHexLookups();
+		Converter.buildHexLookups();
 		if (Converter._DECODE_LOOKUP) {
 			let i = 0;
 			let n = 0;

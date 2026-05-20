@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { chacha20poly1305 } from "@noble/ciphers/chacha";
-import type { CipherWithOutput } from "@noble/ciphers/utils";
+import { chacha20poly1305 } from "@noble/ciphers/chacha.js";
+import type { CipherWithOutput } from "@noble/ciphers/utils.js";
 import { Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 
@@ -11,9 +11,8 @@ import { nameof } from "@twin.org/nameof";
 export class ChaCha20Poly1305 {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<ChaCha20Poly1305>();
+	public static readonly CLASS_NAME: string = nameof<ChaCha20Poly1305>();
 
 	/**
 	 * The cipher instance.
@@ -28,8 +27,8 @@ export class ChaCha20Poly1305 {
 	 * @param aad The additional authenticated data.
 	 */
 	constructor(key: Uint8Array, nonce: Uint8Array, aad?: Uint8Array) {
-		Guards.uint8Array(ChaCha20Poly1305._CLASS_NAME, nameof(key), key);
-		Guards.uint8Array(ChaCha20Poly1305._CLASS_NAME, nameof(nonce), nonce);
+		Guards.uint8Array(ChaCha20Poly1305.CLASS_NAME, nameof(key), key);
+		Guards.uint8Array(ChaCha20Poly1305.CLASS_NAME, nameof(nonce), nonce);
 		this._instance = chacha20poly1305(key, nonce, aad);
 	}
 
@@ -39,7 +38,7 @@ export class ChaCha20Poly1305 {
 	 * @returns The block encrypted.
 	 */
 	public encrypt(block: Uint8Array): Uint8Array {
-		Guards.uint8Array(ChaCha20Poly1305._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(ChaCha20Poly1305.CLASS_NAME, nameof(block), block);
 		return this._instance.encrypt(block);
 	}
 
@@ -49,7 +48,7 @@ export class ChaCha20Poly1305 {
 	 * @returns The block decrypted.
 	 */
 	public decrypt(block: Uint8Array): Uint8Array {
-		Guards.uint8Array(ChaCha20Poly1305._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(ChaCha20Poly1305.CLASS_NAME, nameof(block), block);
 		return this._instance.decrypt(block);
 	}
 }

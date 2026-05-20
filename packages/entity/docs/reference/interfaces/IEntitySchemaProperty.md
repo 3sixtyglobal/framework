@@ -10,7 +10,7 @@ Definition for an entity schema property.
 
 ## Properties
 
-### property
+### property {#property}
 
 > **property**: keyof `T`
 
@@ -18,7 +18,7 @@ The property name from the entity.
 
 ***
 
-### type
+### type {#type}
 
 > **type**: [`EntitySchemaPropertyType`](../type-aliases/EntitySchemaPropertyType.md)
 
@@ -26,72 +26,72 @@ The type of the property.
 
 ***
 
-### format?
+### format? {#format}
 
-> `optional` **format**: [`EntitySchemaPropertyFormat`](../type-aliases/EntitySchemaPropertyFormat.md)
+> `optional` **format?**: [`EntitySchemaPropertyFormat`](../type-aliases/EntitySchemaPropertyFormat.md)
 
 The format of the property.
 
 ***
 
-### isPrimary?
+### isPrimary? {#isprimary}
 
-> `optional` **isPrimary**: `boolean`
+> `optional` **isPrimary?**: `boolean`
 
 Is this the primary index property.
 
 ***
 
-### isSecondary?
+### isSecondary? {#issecondary}
 
-> `optional` **isSecondary**: `boolean`
+> `optional` **isSecondary?**: `boolean`
 
 Is this a secondary index property.
 
 ***
 
-### sortDirection?
+### sortDirection? {#sortdirection}
 
-> `optional` **sortDirection**: [`SortDirection`](../type-aliases/SortDirection.md)
+> `optional` **sortDirection?**: [`SortDirection`](../type-aliases/SortDirection.md)
 
 Default sort direction for this field, leave empty if not sortable.
 
 ***
 
-### optional?
+### optional? {#optional}
 
-> `optional` **optional**: `boolean`
+> `optional` **optional?**: `boolean`
 
 Is the property optional.
 
 ***
 
-### itemType?
+### itemType? {#itemtype}
 
-> `optional` **itemType**: [`EntitySchemaPropertyType`](../type-aliases/EntitySchemaPropertyType.md)
+> `optional` **itemType?**: [`EntitySchemaPropertyType`](../type-aliases/EntitySchemaPropertyType.md)
 
 The type of the item (only applies when type is `array`).
 
 ***
 
-### itemTypeRef?
+### itemTypeRef? {#itemtyperef}
 
-> `optional` **itemTypeRef**: `string`
+> `optional` **itemTypeRef?**: `string`
 
 The type ref of the item (only applies when type is either `array` or `object`).
 
 ***
 
-### description?
+### description? {#description}
 
-> `optional` **description**: `string`
+> `optional` **description?**: `string`
 
 Description of the object.
 
 ***
 
-### examples?
+### examples? {#examples}
 
-> `optional` **examples**: `unknown`[]
+> `optional` **examples?**: `unknown`[]
 
 Examples of the property values.

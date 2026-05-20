@@ -10,18 +10,22 @@
 		"**/tests/**",
 		"*.yaml",
 		"package.json",
-		"rollup.config.mjs",
 		"vitest.config.*",
 		"tsconfig.json",
+		"tsconfig.eslint.json",
 		"typedoc.json",
-		".eslintrc.cjs",
-		"**/wordlists/**"
+		"eslint.config*",
+		"**/wordlists/**",
+		"changelog.md"
 	],
 	"words": [
 		"AARRGGBB",
 		"abbrev",
+		"apng",
 		"ARGB",
+		"autorelease",
 		"Bech",
+		"cbor",
 		"chacha",
 		"crit",
 		"decryptor",
@@ -33,22 +37,39 @@
 		"otpauth",
 		"paeth",
 		"Plte",
+		"prehash",
 		"Priv",
 		"Quant",
+		"quicktime",
 		"RGBYUV",
 		"RRGGBB",
 		"Secp",
+		"selectordinal",
 		"Stiftung",
+		"teardown",
 		"Totp",
 		"tspc",
 		"ttsc",
 		"ttypescript",
-		"UVQT"
+		"UNECE",
+		"UVQT",
+		"ODRL",
+		"CEFACT",
+		"Dataspace",
+		"TLIP",
+		"IPFS",
+		"GTSC",
+		"Firestore"
 	],
 	"ignoreRegExpList": [
 		"/from\\s+(['\"]).*\\1/",
 		"/eslint-disable.*/",
+		"/^```typescript[\\s\\S]*?```$/gm",
 		"/^```shell[\\s\\S]*?```$/gm",
-		"/^```json[\\s\\S]*?```$/gm"
-	]
+		"/^```json[\\s\\S]*?```$/gm",
+		"/<code\\b[^>]*>[\\s\\S]*?<\\/code>/g",
+		"/<M\\b[^>]*>[\\s\\S]*?<\\/M>/g",
+		"/`[^`\\r\\n]+`/g"
+	],
+	"ignoreWords": ["noopener", "noreferrer", "pingback"]
 }

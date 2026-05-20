@@ -1,7 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { ObjectOrArray } from "../models/objectOrArray";
-import { Is } from "../utils/is";
+import { Is } from "../utils/is.js";
 
 /**
  * Class to help with arrays.
@@ -36,28 +35,15 @@ export class ArrayHelper {
 	 * @param value The object or array to convert.
 	 * @returns The array.
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	public static fromObjectOrArray<T = unknown>(value: undefined): undefined;
-	/**
-	 * Convert an object or array to an array.
-	 * @param value The object or array to convert.
-	 * @returns The array.
-	 */
-	public static fromObjectOrArray<T = unknown>(value: ObjectOrArray<T>): T[];
-	/**
-	 * Convert an object or array to an array.
-	 * @param value The object or array to convert.
-	 * @returns The array.
-	 */
 	public static fromObjectOrArray<T = unknown>(
-		value: ObjectOrArray<T> | undefined
-	): T[] | undefined {
+		value: T | T[] | undefined
+	): T extends undefined ? undefined : T[] {
 		if (Is.empty(value)) {
-			return undefined;
+			return undefined as T extends undefined ? undefined : T[];
 		}
 		if (Is.array<T>(value)) {
-			return value;
+			return value as T extends undefined ? undefined : T[];
 		}
-		return [value];
+		return [value] as T extends undefined ? undefined : T[];
 	}
 }

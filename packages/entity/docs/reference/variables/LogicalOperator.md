@@ -4,15 +4,15 @@
 
 The logical operators for condition combining.
 
-## Type declaration
+## Type Declaration
 
-### And
+### And {#and}
 
 > `readonly` **And**: `"and"` = `"and"`
 
 Logical operator AND.
 
-### Or
+### Or {#or}
 
 > `readonly` **Or**: `"or"` = `"or"`
 

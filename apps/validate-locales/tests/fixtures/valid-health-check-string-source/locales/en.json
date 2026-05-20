@@ -1,0 +1,8 @@
+{
+	"health": {
+		"myServer": {
+			"healthDescription": "Connectivity and availability of the IOTA gas station",
+			"healthCheckFailed": "Failed to check gas station health status"
+		}
+	}
+}

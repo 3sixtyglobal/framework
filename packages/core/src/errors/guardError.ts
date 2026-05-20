@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@twin.org/nameof";
-import { BaseError } from "./baseError";
-import { Is } from "../utils/is";
+import { BaseError } from "./baseError.js";
+import { Is } from "../utils/is.js";
 
 /**
  * Class to handle errors which are triggered by data guards.
@@ -16,7 +16,7 @@ export class GuardError extends BaseError {
 	/**
 	 * Create a new instance of GuardError.
 	 * @param source The source of the error.
-	 * @param message The message as a code.
+	 * @param message The message as an i18n key.
 	 * @param propertyName The property which triggered the guard error for the item.
 	 * @param propertyValue The property value which triggered the guard error for the item.
 	 * @param propertyOptions The property options which might be allowed.

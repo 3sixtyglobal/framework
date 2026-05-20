@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@twin.org/nameof";
-import { BaseError } from "./baseError";
+import { BaseError } from "./baseError.js";
 
 /**
  * Class to handle errors.
@@ -15,16 +15,16 @@ export class GeneralError extends BaseError {
 	/**
 	 * Create a new instance of GeneralError.
 	 * @param source The source of the error.
-	 * @param message The message as a code.
+	 * @param message The message as an i18n key.
 	 * @param properties Any additional information for the error.
-	 * @param inner The inner error if we have wrapped another error.
+	 * @param cause The cause of the error if we have wrapped another error.
 	 */
 	constructor(
 		source: string,
 		message: string,
 		properties?: { [id: string]: unknown },
-		inner?: unknown
+		cause?: unknown
 	) {
-		super(GeneralError.CLASS_NAME, source, message, properties, inner);
+		super(GeneralError.CLASS_NAME, source, message, properties, cause);
 	}
 }

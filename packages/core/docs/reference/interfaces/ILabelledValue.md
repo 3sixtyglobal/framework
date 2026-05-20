@@ -10,7 +10,7 @@ Interface describing a label/value pair.
 
 ## Properties
 
-### label
+### label {#label}
 
 > **label**: `string`
 
@@ -18,7 +18,7 @@ The label for the item.
 
 ***
 
-### value
+### value {#value}
 
 > **value**: `T`
 

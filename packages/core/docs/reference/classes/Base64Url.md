@@ -13,9 +13,17 @@ https://www.rfc-editor.org/rfc/rfc4648#section-5.
 
 `Base64Url`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### decode()
+### decode() {#decode}
 
 > `static` **decode**(`base64Url`): `Uint8Array`
 
@@ -37,7 +45,7 @@ The byte array.
 
 ***
 
-### encode()
+### encode() {#encode}
 
 > `static` **encode**(`bytes`): `string`
 

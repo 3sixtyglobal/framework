@@ -5,7 +5,7 @@ import { accessSync, readFileSync, statSync } from "node:fs";
 import { access, mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { Coerce, I18n, Is, ObjectHelper } from "@twin.org/core";
-import { CLIDisplay } from "./cliDisplay";
+import { CLIDisplay } from "./cliDisplay.js";
 
 /**
  * Utilities function for helping in the CLI.

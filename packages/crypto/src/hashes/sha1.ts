@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { sha1 } from "@noble/hashes/sha1";
-import type { Hash } from "@noble/hashes/utils";
+import { sha1 } from "@noble/hashes/legacy.js";
+import type { Hash } from "@noble/hashes/utils.js";
 import { Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 
@@ -11,9 +11,8 @@ import { nameof } from "@twin.org/nameof";
 export class Sha1 {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Sha1>();
+	public static readonly CLASS_NAME: string = nameof<Sha1>();
 
 	/**
 	 * The instance of the hash.
@@ -35,7 +34,7 @@ export class Sha1 {
 	 * @returns The sum of the block.
 	 */
 	public static sum(block: Uint8Array): Uint8Array {
-		Guards.uint8Array(Sha1._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(Sha1.CLASS_NAME, nameof(block), block);
 		return new Sha1().update(block).digest();
 	}
 
@@ -45,7 +44,7 @@ export class Sha1 {
 	 * @returns The instance for chaining.
 	 */
 	public update(block: Uint8Array): Sha1 {
-		Guards.uint8Array(Sha1._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(Sha1.CLASS_NAME, nameof(block), block);
 		this._instance.update(block);
 		return this;
 	}

@@ -4,7 +4,7 @@ Model for a locales index.
 
 ## Properties
 
-### locales
+### locales {#locales}
 
 > **locales**: [`ILocale`](ILocale.md)[]
 

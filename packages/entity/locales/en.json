@@ -1,5 +1,9 @@
 {
 	"error": {
+		"entitySchemaDiffHelper": {
+			"duplicateOldProperty": "The oldProperties array contains a duplicate property key \"{property}\"",
+			"duplicateNewProperty": "The newProperties array contains a duplicate property key \"{property}\""
+		},
 		"entitySchemaHelper": {
 			"noIsPrimary": "Property \"entitySchema.properties\" must contain a value with isPrimary set",
 			"multipleIsPrimary": "Property \"entitySchema.properties\" contains more than one property with isPrimary set",

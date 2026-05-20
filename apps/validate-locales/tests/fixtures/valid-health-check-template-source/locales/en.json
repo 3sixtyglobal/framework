@@ -1,0 +1,8 @@
+{
+	"health": {
+		"myServerFoo": {
+			"healthDescription": "My server foo health check",
+			"healthCheckFailed": "Failed to check my server foo health status"
+		}
+	}
+}

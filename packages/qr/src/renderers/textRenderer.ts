@@ -1,11 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-/* eslint-disable no-mixed-operators */
 import { GeneralError, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
-import type { IRendererOptions } from "../models/IRendererOptions";
-import type { ITextRendererOptions } from "../models/ITextRendererOptions";
-import type { QRCellData } from "../models/qrCellData";
+import type { IRendererOptions } from "../models/IRendererOptions.js";
+import type { ITextRendererOptions } from "../models/ITextRendererOptions.js";
+import type { QRCellData } from "../models/qrCellData.js";
 
 /**
  * Class to render qr data as text.
@@ -13,9 +12,8 @@ import type { QRCellData } from "../models/qrCellData";
 export class TextRenderer {
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<TextRenderer>();
+	public static readonly CLASS_NAME: string = nameof<TextRenderer>();
 
 	/**
 	 * Render the QR code data as text.
@@ -27,7 +25,7 @@ export class TextRenderer {
 		cellData: QRCellData,
 		options?: ITextRendererOptions
 	): Promise<string> {
-		Guards.array(TextRenderer._CLASS_NAME, nameof(cellData), cellData);
+		Guards.array(TextRenderer.CLASS_NAME, nameof(cellData), cellData);
 
 		options = options ?? {};
 		options.cellSize = options.cellSize ?? 1;

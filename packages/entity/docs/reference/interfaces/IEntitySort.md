@@ -10,7 +10,7 @@ Definition of an entity property sort details.
 
 ## Properties
 
-### property
+### property {#property}
 
 > **property**: keyof `T`
 
@@ -18,7 +18,7 @@ The name of the property.
 
 ***
 
-### type
+### type {#type}
 
 > **type**: [`EntitySchemaPropertyType`](../type-aliases/EntitySchemaPropertyType.md)
 
@@ -26,7 +26,7 @@ The type of the property.
 
 ***
 
-### sortDirection
+### sortDirection {#sortdirection}
 
 > **sortDirection**: [`SortDirection`](../type-aliases/SortDirection.md)
 

@@ -1,5 +1,5 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-export * from "./cli";
-export * from "./commands/mergeLocales";
-export * from "./models/IMergeLocalesConfig";
+export * from "./cli.js";
+export * from "./commands/mergeLocales.js";
+export * from "./models/IMergeLocalesConfig.js";

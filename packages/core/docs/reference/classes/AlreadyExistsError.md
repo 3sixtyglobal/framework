@@ -10,7 +10,7 @@ Class to handle errors which are triggered by data already existing.
 
 ### Constructor
 
-> **new AlreadyExistsError**(`source`, `message`, `existingId?`, `inner?`): `AlreadyExistsError`
+> **new AlreadyExistsError**(`source`, `message`, `existingId?`, `properties?`, `cause?`): `AlreadyExistsError`
 
 Create a new instance of AlreadyExistsError.
 
@@ -26,7 +26,7 @@ The source of the error.
 
 `string`
 
-The message as a code.
+The message as an i18n key.
 
 ##### existingId?
 
@@ -34,11 +34,15 @@ The message as a code.
 
 The id for the item.
 
-##### inner?
+##### properties?
+
+Any additional information for the error.
+
+##### cause?
 
 `unknown`
 
-The inner error if we have wrapped another error.
+The cause of the error if we have wrapped another error.
 
 #### Returns
 
@@ -50,7 +54,7 @@ The inner error if we have wrapped another error.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -58,9 +62,9 @@ Runtime name for the class.
 
 ***
 
-### source?
+### source? {#source}
 
-> `optional` **source**: `string`
+> `optional` **source?**: `string`
 
 The source of the error.
 
@@ -70,9 +74,9 @@ The source of the error.
 
 ***
 
-### properties?
+### properties? {#properties}
 
-> `optional` **properties**: `object`
+> `optional` **properties?**: `object`
 
 Any additional information for the error.
 
@@ -86,19 +90,19 @@ Any additional information for the error.
 
 ***
 
-### inner?
+### cause? {#cause}
 
-> `optional` **inner**: [`IError`](../interfaces/IError.md)
+> `optional` **cause?**: [`IError`](../interfaces/IError.md)
 
-The inner error if there was one.
+The cause of the error.
 
 #### Inherited from
 
-[`BaseError`](BaseError.md).[`inner`](BaseError.md#inner)
+[`BaseError`](BaseError.md).[`cause`](BaseError.md#cause)
 
 ## Methods
 
-### fromError()
+### fromError() {#fromerror}
 
 > `static` **fromError**(`err`): [`BaseError`](BaseError.md)
 
@@ -124,7 +128,7 @@ The new instance.
 
 ***
 
-### flatten()
+### flatten() {#flatten}
 
 > `static` **flatten**(`err`): [`IError`](../interfaces/IError.md)[]
 
@@ -150,9 +154,9 @@ The list of all internal errors.
 
 ***
 
-### expand()
+### expand() {#expand}
 
-> `static` **expand**(`errors`): `undefined` \| [`IError`](../interfaces/IError.md)
+> `static` **expand**(`errors`): [`IError`](../interfaces/IError.md) \| `undefined`
 
 Expand an error tree.
 
@@ -160,13 +164,13 @@ Expand an error tree.
 
 ##### errors
 
-The list of errors to expand.
+[`IError`](../interfaces/IError.md)[] \| `undefined`
 
-`undefined` | [`IError`](../interfaces/IError.md)[]
+The list of errors to expand.
 
 #### Returns
 
-`undefined` \| [`IError`](../interfaces/IError.md)
+[`IError`](../interfaces/IError.md) \| `undefined`
 
 The first level error.
 
@@ -176,7 +180,7 @@ The first level error.
 
 ***
 
-### isErrorName()
+### isErrorName() {#iserrorname}
 
 > `static` **isErrorName**(`error`, `name`): `error is BaseError`
 
@@ -192,9 +196,9 @@ The error to test.
 
 ##### name
 
-The name to check for.
+`string` \| `RegExp`
 
-`string` | `RegExp`
+The name to check for.
 
 #### Returns
 
@@ -208,7 +212,7 @@ True if the error has the name.
 
 ***
 
-### isErrorMessage()
+### isErrorMessage() {#iserrormessage}
 
 > `static` **isErrorMessage**(`error`, `message`): `error is BaseError`
 
@@ -224,9 +228,9 @@ The error to test.
 
 ##### message
 
-The message to check for.
+`string` \| `RegExp`
 
-`string` | `RegExp`
+The message to check for.
 
 #### Returns
 
@@ -240,7 +244,7 @@ True if the error has the name.
 
 ***
 
-### isErrorCode()
+### isErrorCode() {#iserrorcode}
 
 > `static` **isErrorCode**(`error`, `code`): `boolean`
 
@@ -256,9 +260,9 @@ The error to test.
 
 ##### code
 
-The code to check for.
+`string` \| `RegExp`
 
-`string` | `RegExp`
+The code to check for.
 
 #### Returns
 
@@ -272,7 +276,7 @@ True if the error has the code.
 
 ***
 
-### someErrorName()
+### someErrorName() {#someerrorname}
 
 > `static` **someErrorName**(`error`, `name`): `error is BaseError`
 
@@ -288,9 +292,9 @@ The error to test.
 
 ##### name
 
-The name to check for.
+`string` \| `RegExp`
 
-`string` | `RegExp`
+The name to check for.
 
 #### Returns
 
@@ -304,7 +308,7 @@ True if the error has the name.
 
 ***
 
-### someErrorMessage()
+### someErrorMessage() {#someerrormessage}
 
 > `static` **someErrorMessage**(`error`, `message`): `error is BaseError`
 
@@ -320,9 +324,9 @@ The error to test.
 
 ##### message
 
-The message to check for.
+`string` \| `RegExp`
 
-`string` | `RegExp`
+The message to check for.
 
 #### Returns
 
@@ -336,7 +340,7 @@ True if the error has the name.
 
 ***
 
-### someErrorClass()
+### someErrorClass() {#someerrorclass}
 
 > `static` **someErrorClass**(`error`, `cls`): `error is BaseError`
 
@@ -368,7 +372,7 @@ True if the error has the specific class.
 
 ***
 
-### someErrorCode()
+### someErrorCode() {#someerrorcode}
 
 > `static` **someErrorCode**(`error`, `code`): `error is BaseError`
 
@@ -384,9 +388,9 @@ The error to test.
 
 ##### code
 
-The code to check for.
+`string` \| `RegExp`
 
-`string` | `RegExp`
+The code to check for.
 
 #### Returns
 
@@ -400,7 +404,91 @@ True if the error has the name.
 
 ***
 
-### toJsonObject()
+### isEmpty() {#isempty}
+
+> `static` **isEmpty**(`err`): `boolean`
+
+Is the error empty, i.e. does it have no message, source, properties, or cause?
+
+#### Parameters
+
+##### err
+
+[`IError`](../interfaces/IError.md)
+
+The error to check for being empty.
+
+#### Returns
+
+`boolean`
+
+True if the error is empty.
+
+#### Inherited from
+
+[`BaseError`](BaseError.md).[`isEmpty`](BaseError.md#isempty)
+
+***
+
+### isAggregateError() {#isaggregateerror}
+
+> `static` **isAggregateError**(`err`): `err is AggregateError`
+
+Is the error an aggregate error.
+
+#### Parameters
+
+##### err
+
+`unknown`
+
+The error to check for being an aggregate error.
+
+#### Returns
+
+`err is AggregateError`
+
+True if the error is an aggregate error.
+
+#### Inherited from
+
+[`BaseError`](BaseError.md).[`isAggregateError`](BaseError.md#isaggregateerror)
+
+***
+
+### fromAggregate() {#fromaggregate}
+
+> `static` **fromAggregate**(`err`, `includeStackTrace?`): [`IError`](../interfaces/IError.md)[]
+
+Convert the aggregate error to an array of errors.
+
+#### Parameters
+
+##### err
+
+`unknown`
+
+The error to convert.
+
+##### includeStackTrace?
+
+`boolean`
+
+Whether to include the error stack in the model, defaults to false.
+
+#### Returns
+
+[`IError`](../interfaces/IError.md)[]
+
+The array of errors.
+
+#### Inherited from
+
+[`BaseError`](BaseError.md).[`fromAggregate`](BaseError.md#fromaggregate)
+
+***
+
+### toJsonObject() {#tojsonobject}
 
 > **toJsonObject**(`includeStackTrace?`): [`IError`](../interfaces/IError.md)
 

@@ -1,0 +1,137 @@
+---
+category: framework
+order: 8
+---
+
+import { DataValidationFlowDiagram } from './data-validation-diagrams.jsx';
+
+# Data Validation
+
+This document describes how data validation works across the data workspace and how schema and API generation tooling supports that validation workflow.
+
+## Validation Goals
+
+The validation model is designed to provide consistent structural checks through JSON Schema while still allowing richer type-specific validation logic where that is needed. It also aims to make known data types reusable across packages, support linked-data validation for JSON-LD payloads, and keep runtime validation aligned with schemas generated directly from TypeScript models.
+
+## Core Building Blocks
+
+The primary runtime building blocks are `DataTypeHandlerFactory` in `data-core`, which registers handlers by type id, `DataTypeHelper`, which validates through custom validators, JSON Schema, or both, and `JsonSchemaHelper`, which handles JSON Schema compilation, validation, and schema conversion. For linked-data scenarios, `JsonLdHelper` and `JsonLdProcessor` in `data-json-ld` extend that core model with document expansion, context handling, and type-oriented validation.
+
+## JSON Schema as the Baseline
+
+JSON Schema is the baseline validation format used in this workspace.
+
+`JsonSchemaHelper` supports draft 2020-12 by default and draft 2019-09 when explicitly selected. It can validate using additional referenced schemas supplied at runtime, convert entity schema models into JSON Schema, and expose helper methods such as property type extraction.
+
+At runtime, validation compiles schemas through AJV and returns structured `IValidationFailure[]` outputs.
+
+## Type Registration and Handler Resolution
+
+Type handlers are registered via `DataTypeHandlerFactory`, then consumed through `DataTypeHelper`.
+
+A handler may expose a `validate(...)` function for domain-specific checks, a `jsonSchema()` function for schema-based validation, or both methods when the caller needs flexible validation behaviour.
+
+Validation modes allow callers to choose between validate-function-only execution, JSON-Schema-only execution, running both, or using either approach with fallback behaviour.
+
+This gives teams control over performance and error detail while still preserving a common interface.
+
+## JSON-LD Validation Path
+
+For linked-data payloads, `JsonLdHelper` provides document-level validation by combining JSON-LD processing and data-type validation:
+
+1. Expand compacted JSON-LD with `JsonLdProcessor.expand(...)`.
+2. Read fully qualified `@type` values from expanded nodes.
+3. Resolve each type through registered data type handlers.
+4. Validate the original document against each resolved type definition.
+
+`JsonLdProcessor` also supports context operations such as compact, expand, and canonise, along with context merging, context removal, and document loading with caching and redirects.
+
+## TypeScript-to-Schema Tooling
+
+Schema generation is aligned to TypeScript model definitions.
+
+In this workspace, `data-json-ld` runs:
+
+- `build:schema`: `ts-to-schema ./ts-to-schema.json ./src/schemas`
+
+The current `ts-to-schema.json` in `data-json-ld` is a concrete example of the tool configuration:
+
+```json
+{
+  "baseUrl": "https://schema.twindev.org/json-ld/",
+  "types": [
+    "./src/models/IJsonLdDocument.ts",
+    "./src/models/IJsonLdObject.ts",
+    "......",
+    "./src/models/IJsonLdJsonObject.ts",
+    "./src/models/IJsonLdJsonValue.ts"
+  ]
+}
+```
+
+The `ts-to-schema` tool from the tools workspace is built on top of `ts-json-schema-generator`, giving a TypeScript-first path to JSON Schema output.
+
+This keeps model and schema drift low because generated schemas come from source types rather than manually maintained JSON files.
+
+## TypeScript-to-OpenAPI Tooling
+
+OpenAPI generation is handled by the companion `ts-to-openapi` tool in the tools workspace.
+
+A minimal configuration for that tool looks like this:
+
+```json
+{
+  "title": "TWIN - Test Endpoints",
+  "version": "1.0.0",
+  "description": "REST API for TWIN - Test Endpoints.",
+  "licenseName": "Apache 2.0 License",
+  "licenseUrl": "https://opensource.org/licenses/Apache-2.0",
+  "servers": ["https://localhost"],
+  "authMethods": ["jwtBearer"],
+  "restRoutes": [
+    {
+      "package": "@twin.org/logging-service",
+      "version": "next"
+    },
+    {
+      "package": "@twin.org/identity-service",
+      "version": "next"
+    }
+  ]
+}
+```
+
+The matching CLI invocation is:
+
+```shell
+ts-to-openapi ./config/openapi.json ./dist/openapi.json
+```
+
+While data packages themselves focus on schema and model utilities rather than OpenAPI emission, `ts-to-openapi` uses the same TypeScript-first approach and the same underlying schema-generation strategy. In practice, this keeps JSON Schema and OpenAPI outputs aligned around shared model types.
+
+## Standards Packages in the Broader Flow
+
+Standards packages in the standards workspace, including W3C and other industry-standard packages, commonly use the same `ts-to-schema` generation pattern.
+
+That means standards-aligned type definitions can be produced as JSON Schemas using the same tool chain and then integrated with data validation workflows wherever those schemas or types are consumed.
+
+Those packages also expose registration helpers so applications can work from bundled local assets rather than depending on remote resolution at runtime. In practice, `registerTypes()` imports packaged JSON Schemas and registers them with `DataTypeHelper`, as seen in packages such as catalogue vocabularies, decentralised identifier models, rights policy vocabularies, event vocabularies, trade vocabularies, and data space protocol models. `registerRedirects()` wires known remote namespace or context URLs to packaged JSON-LD context documents through `JsonLdProcessor.addRedirect(...)`, allowing JSON-LD expansion to resolve local copies instead of fetching them over the network.
+
+For example, a catalogue standards package can register bundled schema files against its namespace and map W3C vocabulary URLs to packaged context documents. A data space protocol package can do the same for its own namespace, then compose several protocol-specific type registries into a single registration step.
+
+## End-to-End Validation Flow
+
+The flow below shows how model definitions, generated schemas, type registration, and runtime validation fit together.
+
+{DataValidationFlowDiagram()}
+
+A typical flow looks like this:
+
+1. Define or update TypeScript model types.
+2. Generate JSON Schemas with `ts-to-schema`.
+3. Register types/handlers through `DataTypeHelper` and `DataTypeHandlerFactory`.
+4. Validate payloads via `DataTypeHelper` or directly via `JsonSchemaHelper`.
+5. For linked data, expand and validate through `JsonLdHelper` + `JsonLdProcessor`.
+6. For API surface generation, use `ts-to-openapi` in API/tooling pipelines.
+
+This provides a coherent TypeScript-first approach from model definition to validation and API specification artefacts.

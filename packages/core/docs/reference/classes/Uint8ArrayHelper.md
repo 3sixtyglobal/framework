@@ -14,7 +14,7 @@ Class to help with uint8 arrays.
 
 ## Methods
 
-### concat()
+### concat() {#concat}
 
 > `static` **concat**(`arrays`): `Uint8Array`
 

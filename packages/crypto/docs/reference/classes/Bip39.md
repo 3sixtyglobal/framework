@@ -12,23 +12,31 @@ Implementation of Bip39 for mnemonic generation.
 
 `Bip39`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### randomMnemonic()
+### randomMnemonic() {#randommnemonic}
 
-> `static` **randomMnemonic**(`strength`, `words`): `string`
+> `static` **randomMnemonic**(`strength?`, `words?`): `string`
 
 Generate a random mnemonic.
 
 #### Parameters
 
-##### strength
+##### strength?
 
 `number` = `256`
 
 The strength of the mnemonic to generate, defaults to 256.
 
-##### words
+##### words?
 
 `string`[] = `wordlist`
 
@@ -46,9 +54,9 @@ Error if the length is not a multiple of 32.
 
 ***
 
-### entropyToMnemonic()
+### entropyToMnemonic() {#entropytomnemonic}
 
-> `static` **entropyToMnemonic**(`entropy`, `words`): `string`
+> `static` **entropyToMnemonic**(`entropy`, `words?`): `string`
 
 Generate a mnemonic from the entropy.
 
@@ -60,7 +68,7 @@ Generate a mnemonic from the entropy.
 
 The entropy to generate.
 
-##### words
+##### words?
 
 `string`[] = `wordlist`
 
@@ -78,7 +86,7 @@ Error if the length of the entropy is not a multiple of 4, or is less than 16 or
 
 ***
 
-### mnemonicToSeed()
+### mnemonicToSeed() {#mnemonictoseed}
 
 > `static` **mnemonicToSeed**(`mnemonic`, `password?`): `Uint8Array`
 
@@ -106,9 +114,9 @@ The seed.
 
 ***
 
-### mnemonicToEntropy()
+### mnemonicToEntropy() {#mnemonictoentropy}
 
-> `static` **mnemonicToEntropy**(`mnemonic`, `words`): `Uint8Array`
+> `static` **mnemonicToEntropy**(`mnemonic`, `words?`): `Uint8Array`
 
 Convert the mnemonic back to entropy.
 
@@ -120,7 +128,7 @@ Convert the mnemonic back to entropy.
 
 The mnemonic to convert.
 
-##### words
+##### words?
 
 `string`[] = `wordlist`
 
@@ -135,3 +143,37 @@ The entropy.
 #### Throws
 
 Error if the number of words is not a multiple of 3.
+
+***
+
+### validateMnemonic() {#validatemnemonic}
+
+> `static` **validateMnemonic**(`mnemonic`, `wordCount?`, `words?`): `boolean`
+
+Validate the mnemonic.
+
+#### Parameters
+
+##### mnemonic
+
+`string`
+
+The mnemonic to validate.
+
+##### wordCount?
+
+`number` = `24`
+
+The expected number of words in the mnemonic, defaults to 24.
+
+##### words?
+
+`string`[] = `wordlist`
+
+The wordlist to use, defaults to the English wordlist.
+
+#### Returns
+
+`boolean`
+
+True if the mnemonic is valid.

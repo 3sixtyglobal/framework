@@ -10,24 +10,24 @@ Definition for an entity schema.
 
 ## Properties
 
-### type
+### type {#type}
 
-> **type**: `undefined` \| `string`
+> **type**: `string` \| `undefined`
 
 The type of the entity.
 
 ***
 
-### options?
+### options? {#options}
 
-> `optional` **options**: [`IEntitySchemaOptions`](IEntitySchemaOptions.md)
+> `optional` **options?**: [`IEntitySchemaOptions`](IEntitySchemaOptions.md)
 
 The options for the entity.
 
 ***
 
-### properties?
+### properties? {#properties}
 
-> `optional` **properties**: [`IEntitySchemaProperty`](IEntitySchemaProperty.md)\<`T`\>[]
+> `optional` **properties?**: [`IEntitySchemaProperty`](IEntitySchemaProperty.md)\<`T`\>[]
 
 The properties of the entity.

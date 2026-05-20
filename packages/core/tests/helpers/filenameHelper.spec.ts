@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { FilenameHelper } from "../../src/helpers/filenameHelper";
+import { FilenameHelper } from "../../src/helpers/filenameHelper.js";
 
 describe("FilenameHelper", () => {
 	test("can get filename with valid characters", () => {

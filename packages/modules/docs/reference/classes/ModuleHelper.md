@@ -14,7 +14,7 @@ Helper functions for modules.
 
 ## Properties
 
-### CLASS\_NAME
+### CLASS\_NAME {#class_name}
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
@@ -22,7 +22,27 @@ Runtime name for the class.
 
 ## Methods
 
-### getModuleEntry()
+### overrideImport() {#overrideimport}
+
+> `static` **overrideImport**(`overrideImport`): `void`
+
+Override the import function for modules.
+
+#### Parameters
+
+##### overrideImport
+
+(`moduleName`) => `Promise`\<\{ `module?`: `unknown`; `useDefault`: `boolean`; \}\>
+
+The override import function.
+
+#### Returns
+
+`void`
+
+***
+
+### getModuleEntry() {#getmoduleentry}
 
 > `static` **getModuleEntry**\<`T`\>(`module`, `entry`): `Promise`\<`T`\>
 
@@ -60,9 +80,9 @@ GeneralError if getting the module entry failed.
 
 ***
 
-### getModuleMethod()
+### getModuleMethod() {#getmodulemethod}
 
-> `static` **getModuleMethod**\<`T`\>(`module`, `method`): `Promise`\<(...`args`) => `T`\>
+> `static` **getModuleMethod**\<`T`\>(`module`, `method`): `Promise`\<`T`\>
 
 Get the method from a module.
 
@@ -70,7 +90,7 @@ Get the method from a module.
 
 ##### T
 
-`T`
+`T` *extends* (...`args`) => `any` = (...`args`) => `any`
 
 #### Parameters
 
@@ -88,7 +108,7 @@ The method to execute from the module, use dot notation to get a static class me
 
 #### Returns
 
-`Promise`\<(...`args`) => `T`\>
+`Promise`\<`T`\>
 
 The result of the method execution.
 
@@ -98,7 +118,7 @@ GeneralError if executing the module entry failed.
 
 ***
 
-### execModuleMethod()
+### execModuleMethod() {#execmodulemethod}
 
 > `static` **execModuleMethod**\<`T`\>(`module`, `method`, `args?`): `Promise`\<`T`\>
 
@@ -142,9 +162,9 @@ GeneralError if executing the module entry failed.
 
 ***
 
-### execModuleMethodThread()
+### execModuleMethodThread() {#execmodulemethodthread}
 
-> `static` **execModuleMethodThread**\<`T`\>(`module`, `method`, `args?`): `Promise`\<`T`\>
+> `static` **execModuleMethodThread**\<`T`\>(`module`, `method`, `args?`, `contextIds?`): `Promise`\<`T`\>
 
 Execute the method in the module in a thread.
 
@@ -174,6 +194,12 @@ The method to execute from the module.
 
 The arguments to pass to the method.
 
+##### contextIds?
+
+`IContextIds`
+
+The context IDs.
+
 #### Returns
 
 `Promise`\<`T`\>
@@ -183,3 +209,89 @@ The result of the method execution.
 #### Throws
 
 GeneralError if executing the module entry failed.
+
+***
+
+### execModuleMethodThreadMessage() {#execmodulemethodthreadmessage}
+
+> `static` **execModuleMethodThreadMessage**(`module`, `completed`, `options?`): [`IModuleWorker`](../interfaces/IModuleWorker.md)
+
+Load the module and provide a messaging interface.
+
+#### Parameters
+
+##### module
+
+`string`
+
+The module.
+
+##### completed
+
+(`operation`, `result?`, `err?`) => `void`
+
+Callback called when the worker thread processes a completion.
+
+##### options?
+
+Optional settings.
+
+###### threadName?
+
+`string`
+
+The name of the thread.
+
+#### Returns
+
+[`IModuleWorker`](../interfaces/IModuleWorker.md)
+
+The messaging interface.
+
+#### Throws
+
+GeneralError if executing the module entry failed.
+
+***
+
+### isLocalModule() {#islocalmodule}
+
+> `static` **isLocalModule**(`name`): `boolean`
+
+Check if a module is a local module.
+
+#### Parameters
+
+##### name
+
+`string`
+
+The name of the module.
+
+#### Returns
+
+`boolean`
+
+True if the module is local, false otherwise.
+
+***
+
+### isRelativeModule() {#isrelativemodule}
+
+> `static` **isRelativeModule**(`name`): `boolean`
+
+Check if a module is a relative module.
+
+#### Parameters
+
+##### name
+
+`string`
+
+The name of the module.
+
+#### Returns
+
+`boolean`
+
+True if the module is relative, false otherwise.

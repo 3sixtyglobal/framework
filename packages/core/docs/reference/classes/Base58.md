@@ -12,9 +12,17 @@ Class to help with base58 Encoding/Decoding.
 
 `Base58`
 
+## Properties
+
+### CLASS\_NAME {#class_name}
+
+> `readonly` `static` **CLASS\_NAME**: `string`
+
+Runtime name for the class.
+
 ## Methods
 
-### decode()
+### decode() {#decode}
 
 > `static` **decode**(`base58`): `Uint8Array`
 
@@ -40,7 +48,7 @@ If the input string contains a character not in the Base58 alphabet.
 
 ***
 
-### encode()
+### encode() {#encode}
 
 > `static` **encode**(`bytes`): `string`
 

@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 // eslint-disable-next-line camelcase
-import { sha3_224, sha3_256, sha3_384, sha3_512 } from "@noble/hashes/sha3";
-import type { Hash } from "@noble/hashes/utils";
+import { sha3_224, sha3_256, sha3_384, sha3_512 } from "@noble/hashes/sha3.js";
+import type { Hash } from "@noble/hashes/utils.js";
 import { GeneralError, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 
@@ -32,9 +32,8 @@ export class Sha3 {
 
 	/**
 	 * Runtime name for the class.
-	 * @internal
 	 */
-	private static readonly _CLASS_NAME: string = nameof<Sha3>();
+	public static readonly CLASS_NAME: string = nameof<Sha3>();
 
 	/**
 	 * The instance of the hash.
@@ -54,7 +53,7 @@ export class Sha3 {
 			bits !== Sha3.SIZE_384 &&
 			bits !== Sha3.SIZE_512
 		) {
-			throw new GeneralError(Sha3._CLASS_NAME, "bitSize", { bitSize: bits });
+			throw new GeneralError(Sha3.CLASS_NAME, "bitSize", { bitSize: bits });
 		}
 
 		if (bits === Sha3.SIZE_224) {
@@ -122,7 +121,7 @@ export class Sha3 {
 	 * @returns The instance for chaining.
 	 */
 	public update(block: Uint8Array): Sha3 {
-		Guards.uint8Array(Sha3._CLASS_NAME, nameof(block), block);
+		Guards.uint8Array(Sha3.CLASS_NAME, nameof(block), block);
 		this._instance.update(block);
 		return this;
 	}

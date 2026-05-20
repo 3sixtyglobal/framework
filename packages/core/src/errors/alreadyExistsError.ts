@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@twin.org/nameof";
-import { BaseError } from "./baseError";
+import { BaseError } from "./baseError.js";
 
 /**
  * Class to handle errors which are triggered by data already existing.
@@ -15,11 +15,18 @@ export class AlreadyExistsError extends BaseError {
 	/**
 	 * Create a new instance of AlreadyExistsError.
 	 * @param source The source of the error.
-	 * @param message The message as a code.
+	 * @param message The message as an i18n key.
 	 * @param existingId The id for the item.
-	 * @param inner The inner error if we have wrapped another error.
+	 * @param properties Any additional information for the error.
+	 * @param cause The cause of the error if we have wrapped another error.
 	 */
-	constructor(source: string, message: string, existingId?: string, inner?: unknown) {
-		super(AlreadyExistsError.CLASS_NAME, source, message, { existingId }, inner);
+	constructor(
+		source: string,
+		message: string,
+		existingId?: string,
+		properties?: { [id: string]: unknown },
+		cause?: unknown
+	) {
+		super(AlreadyExistsError.CLASS_NAME, source, message, { existingId, ...properties }, cause);
 	}
 }

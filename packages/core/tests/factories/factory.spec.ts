@@ -1,10 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-/* eslint-disable max-classes-per-file */
-import { nameof } from "@twin.org/nameof";
-import { Factory } from "../../src/factories/factory";
-import type { IComponent } from "../../src/models/IComponent";
-import { I18n } from "../../src/utils/i18n";
+import { Factory } from "../../src/factories/factory.js";
+import type { IComponent } from "../../src/models/IComponent.js";
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const TestFactory = Factory.createFactory<IComponent>("component");
@@ -13,11 +10,6 @@ const TestFactory = Factory.createFactory<IComponent>("component");
  * Test component for validation.
  */
 class TestComponent implements IComponent {
-	/**
-	 * The name of the component.
-	 */
-	public readonly CLASS_NAME: string;
-
 	/**
 	 * The name of the component.
 	 */
@@ -33,16 +25,21 @@ class TestComponent implements IComponent {
 	 * @param name The name of the component.
 	 */
 	constructor(name: string) {
-		this.CLASS_NAME = nameof<TestComponent>();
 		this.name = name;
 		this.foo = 1;
+	}
+
+	/**
+	 * Returns the class name of the component.
+	 * @returns The class name of the component.
+	 */
+	public className(): string {
+		return "TestComponent";
 	}
 }
 
 describe("Factory", () => {
-	beforeAll(async () => {
-		I18n.addDictionary("en", await import("../../locales/en.json"));
-	});
+	beforeAll(async () => {});
 
 	test("register can fail if name is undefined", () => {
 		expect(() => TestFactory.register(undefined as never, undefined as never)).toThrow(
@@ -78,7 +75,37 @@ describe("Factory", () => {
 				message: "factory.noGet"
 			})
 		);
-		expect(I18n.hasMessage("error.factory.noGet")).toEqual(true);
+	});
+
+	test("create can fail if name is undefined", () => {
+		expect(() => TestFactory.create(undefined as never)).toThrow(
+			expect.objectContaining({
+				name: "GuardError",
+				message: "guard.string"
+			})
+		);
+	});
+
+	test("create fail if unknown type", () => {
+		expect(() => TestFactory.create("test-create")).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "factory.noCreate"
+			})
+		);
+	});
+
+	test("createIfExists can fail if name is undefined", () => {
+		expect(() => TestFactory.createIfExists(undefined as never)).toThrow(
+			expect.objectContaining({
+				name: "GuardError",
+				message: "guard.string"
+			})
+		);
+	});
+
+	test("createIfExists returns undefined if unknown type", () => {
+		expect(TestFactory.createIfExists("test-create")).toBeUndefined();
 	});
 
 	test("register and get can succeed", () => {
@@ -103,6 +130,52 @@ describe("Factory", () => {
 		if (t2b) {
 			expect(t2b.foo).toEqual(2);
 		}
+	});
+
+	test("create can pass args and always create a new instance", () => {
+		const testFactory = Factory.createFactory<TestComponent>("component-create");
+		testFactory.register("test-create", args => {
+			const payload = args as { name: string; foo: number };
+			const instance = new TestComponent(payload.name);
+			instance.foo = payload.foo;
+			return instance;
+		});
+
+		const first = testFactory.create<TestComponent>("test-create", { name: "t1", foo: 10 });
+		const second = testFactory.create<TestComponent>("test-create", { name: "t2", foo: 20 });
+
+		expect(first).not.toBe(second);
+		expect(first.name).toEqual("t1");
+		expect(first.foo).toEqual(10);
+		expect(second.name).toEqual("t2");
+		expect(second.foo).toEqual(20);
+	});
+
+	test("createIfExists can pass args and always create a new instance", () => {
+		const testFactory = Factory.createFactory<TestComponent>("component-create-if-exists");
+		testFactory.register("test-create-if-exists", args => {
+			const payload = args as { name: string; foo: number };
+			const instance = new TestComponent(payload.name);
+			instance.foo = payload.foo;
+			return instance;
+		});
+
+		const first = testFactory.createIfExists<TestComponent>("test-create-if-exists", {
+			name: "t1",
+			foo: 10
+		});
+		const second = testFactory.createIfExists<TestComponent>("test-create-if-exists", {
+			name: "t2",
+			foo: 20
+		});
+
+		expect(first).toBeDefined();
+		expect(second).toBeDefined();
+		expect(first).not.toBe(second);
+		expect(first?.name).toEqual("t1");
+		expect(first?.foo).toEqual(10);
+		expect(second?.name).toEqual("t2");
+		expect(second?.foo).toEqual(20);
 	});
 
 	test("unregister can succeed", () => {
@@ -136,7 +209,6 @@ describe("Factory", () => {
 				message: "factory.noUnregister"
 			})
 		);
-		expect(I18n.hasMessage("error.factory.noUnregister")).toEqual(true);
 	});
 
 	test("can reset the factory", () => {

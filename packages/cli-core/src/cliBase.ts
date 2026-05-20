@@ -1,15 +1,15 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Coerce, Is } from "@twin.org/core";
+import { Coerce, I18n, Is } from "@twin.org/core";
 import { Command } from "commander";
-import { CLIDisplay } from "./cliDisplay";
+import { CLIDisplay } from "./cliDisplay.js";
 import {
 	addGlobalOptions,
 	handleGlobalOptions,
 	initGlobalOptions,
 	initLocales
-} from "./commands/global";
-import type { ICliOptions } from "./models/ICliOptions";
+} from "./commands/global.js";
+import type { ICliOptions } from "./models/ICliOptions.js";
 
 /**
  * The main entry point for the CLI.
@@ -69,6 +69,12 @@ export abstract class CLIBase {
 					throw new Error(err.code === "commander.help" ? "0" : err.exitCode.toString());
 				});
 
+			if (options.showDevToolWarning ?? false) {
+				program.hook("preAction", () =>
+					CLIDisplay.warning(I18n.formatMessage("warn.common.devOnlyTool"))
+				);
+			}
+
 			this.configureRoot(program);
 
 			addGlobalOptions(program, options.supportsLang ?? true, options.supportsEnvFiles ?? false);
@@ -89,6 +95,10 @@ export abstract class CLIBase {
 			CLIDisplay.spinnerStop();
 
 			let exitCode;
+			// We have no control over the response from commander
+			// so we have to do some checking and coercion here
+			// to get a valid exit code.
+			// eslint-disable-next-line no-restricted-syntax
 			if (error instanceof Error) {
 				// This error could be the exit code we errored with
 				// from the exitOverride so parse and resolve with it

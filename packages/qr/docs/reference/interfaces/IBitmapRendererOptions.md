@@ -8,25 +8,25 @@ Options for rendering.
 
 ## Properties
 
-### background?
+### background? {#background}
 
-> `optional` **background**: `string` \| `Color`
+> `optional` **background?**: `string` \| `Color`
 
 Background color.
 
 ***
 
-### foreground?
+### foreground? {#foreground}
 
-> `optional` **foreground**: `string` \| `Color`
+> `optional` **foreground?**: `string` \| `Color`
 
 Foreground color.
 
 ***
 
-### cellSize?
+### cellSize? {#cellsize}
 
-> `optional` **cellSize**: `number`
+> `optional` **cellSize?**: `number`
 
 The cell size.
 
@@ -36,9 +36,9 @@ The cell size.
 
 ***
 
-### marginSize?
+### marginSize? {#marginsize}
 
-> `optional` **marginSize**: `number`
+> `optional` **marginSize?**: `number`
 
 The margin size.
 
