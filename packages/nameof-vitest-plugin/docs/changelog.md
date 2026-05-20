@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.0.2](https://github.com/iotaledger/twin-framework/compare/nameof-vitest-plugin-v0.0.1...nameof-vitest-plugin-v0.0.2) (2026-05-20)
+
+
+### Features
+
+* release to production ([f7c6586](https://github.com/iotaledger/twin-framework/commit/f7c6586f6976b903b647b4c5ac5ad9421e0c9051))
+
+
+### Miscellaneous Chores
+
+* release to production ([63cae24](https://github.com/iotaledger/twin-framework/commit/63cae2401f6c11f93b2a01260b665064e8bd28e0))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.44 to 0.0.2
+
 ## [0.0.3-next.44](https://github.com/iotaledger/twin-framework/compare/nameof-vitest-plugin-v0.0.3-next.43...nameof-vitest-plugin-v0.0.3-next.44) (2026-05-19)
 
 

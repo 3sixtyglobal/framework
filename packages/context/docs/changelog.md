@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.0.2](https://github.com/iotaledger/twin-framework/compare/context-v0.0.1...context-v0.0.2) (2026-05-20)
+
+
+### Features
+
+* release to production ([f7c6586](https://github.com/iotaledger/twin-framework/commit/f7c6586f6976b903b647b4c5ac5ad9421e0c9051))
+* release to production ([829d53d](https://github.com/iotaledger/twin-framework/commit/829d53d3953b1e1b40b0243c04cfdfd3842aac7b))
+* release to production ([5cf3a76](https://github.com/iotaledger/twin-framework/commit/5cf3a76a09eff2e6414d0cba846c7c37400a11d6))
+
+
+### Miscellaneous Chores
+
+* release to production ([63cae24](https://github.com/iotaledger/twin-framework/commit/63cae2401f6c11f93b2a01260b665064e8bd28e0))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.44 to 0.0.2
+    * @twin.org/nameof bumped from 0.0.3-next.44 to 0.0.2
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.44 to 0.0.2
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.44 to 0.0.2
+    * @twin.org/validate-locales bumped from 0.0.3-next.44 to 0.0.2
+
 ## [0.0.3-next.44](https://github.com/iotaledger/twin-framework/compare/context-v0.0.3-next.43...context-v0.0.3-next.44) (2026-05-19)
 
 
