@@ -123,6 +123,18 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
 
+      # After the squash-merge to main, merge main back into next so next has the
+      # squash commit in its history and won't diverge on the next development cycle.
+      - name: Sync next with main
+        if: steps.create_pr.outputs.pr_number != ''
+        run: |
+          git fetch origin main
+          git checkout -B next origin/next
+          git merge origin/main -S --no-edit
+          git push origin next
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+
       # Removes the imported GPG private key from the runner's keyring to prevent
       # it lingering on the runner between jobs (especially important on self-hosted runners).
       - name: Cleanup GPG key
