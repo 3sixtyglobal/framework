@@ -29,15 +29,15 @@
 		"dist:no-test": "npm run clean && npm run build && npm run merge-locales"
 	},
 	"dependencies": {
-		"@twin.org/core": "0.0.2",
-		"@twin.org/nameof": "0.0.2",
+		"@twin.org/core": "^0.0.2",
+		"@twin.org/nameof": "^0.0.2",
 		"chalk": "5.6.2",
 		"commander": "14.0.3",
 		"dotenv": "17.4.2"
 	},
 	"devDependencies": {
-		"@twin.org/nameof-transformer": "0.0.2",
-		"@twin.org/nameof-vitest-plugin": "0.0.2",
+		"@twin.org/nameof-transformer": "^0.0.2",
+		"@twin.org/nameof-vitest-plugin": "^0.0.2",
 		"@types/node": "25.9.0",
 		"@vitest/coverage-v8": "4.1.6",
 		"copyfiles": "2.4.1",

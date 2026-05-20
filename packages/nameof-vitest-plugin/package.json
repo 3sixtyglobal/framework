@@ -28,7 +28,7 @@
 		"dist:no-test": "npm run clean && npm run build && npm run test:build"
 	},
 	"dependencies": {
-		"@twin.org/nameof-transformer": "0.0.2"
+		"@twin.org/nameof-transformer": "^0.0.2"
 	},
 	"devDependencies": {
 		"@vitest/coverage-v8": "4.1.6",
