@@ -16,7 +16,7 @@ Cache the results from asynchronous requests.
 
 ### exec() {#exec}
 
-> `static` **exec**\<`T`\>(`key`, `ttlMs`, `requestMethod`, `cacheFailures?`): `Promise`\<`T`\> \| `undefined`
+> `static` **exec**\<`T`\>(`key`, `ttlMs`, `requestMethod`, `cacheFailures?`): `Promise`\<`T`\>
 
 Execute an async request and cache the result.
 
@@ -54,7 +54,7 @@ Cache failure results, defaults to false.
 
 #### Returns
 
-`Promise`\<`T`\> \| `undefined`
+`Promise`\<`T`\>
 
 The response.
 

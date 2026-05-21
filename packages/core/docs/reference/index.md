@@ -63,8 +63,8 @@
 - [CompressionType](type-aliases/CompressionType.md)
 - [HealthStatus](type-aliases/HealthStatus.md)
 - [ObjectOrArray](type-aliases/ObjectOrArray.md)
-- [SingleOccurrenceArrayDepthHelper](type-aliases/SingleOccurrenceArrayDepthHelper.md)
 - [SingleOccurrenceArray](type-aliases/SingleOccurrenceArray.md)
+- [SingleOccurrenceArrayDepthHelper](type-aliases/SingleOccurrenceArrayDepthHelper.md)
 
 ## Variables
 
