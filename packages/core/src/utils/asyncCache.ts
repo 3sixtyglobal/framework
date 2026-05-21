@@ -15,12 +15,12 @@ export class AsyncCache {
 	 * @param cacheFailures Cache failure results, defaults to false.
 	 * @returns The response.
 	 */
-	public static exec<T = unknown>(
+	public static async exec<T = unknown>(
 		key: string,
 		ttlMs: number | undefined,
 		requestMethod: () => Promise<T>,
 		cacheFailures?: boolean
-	): Promise<T> | undefined {
+	): Promise<T> {
 		const cacheEnabled = Is.integer(ttlMs) && ttlMs > 0;
 		if (!cacheEnabled) {
 			// No caching, just execute the request method
