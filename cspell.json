@@ -59,7 +59,9 @@
 		"TLIP",
 		"IPFS",
 		"GTSC",
-		"Firestore"
+		"Firestore",
+		"htdc",
+		"htac"
 	],
 	"ignoreRegExpList": [
 		"/from\\s+(['\"]).*\\1/",

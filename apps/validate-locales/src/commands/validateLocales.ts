@@ -860,19 +860,19 @@ function expandTemplatePart(templatePart: string): string {
 	} else if (templatePart.startsWith("StringHelper.")) {
 		templatePart = templatePart.replace(/\.CLASS_NAME/g, "");
 
-		templatePart = templatePart.replace(/StringHelper\.camelCase\((.*?)\)/, (_, i) =>
+		templatePart = templatePart.replace(/StringHelper\.camelCase\((.*?)\)/, (substring, i) =>
 			StringHelper.camelCase(i)
 		);
-		templatePart = templatePart.replace(/StringHelper\.titleCase\((.*?)\)/, (_, i) =>
+		templatePart = templatePart.replace(/StringHelper\.titleCase\((.*?)\)/, (substring, i) =>
 			StringHelper.titleCase(i)
 		);
-		templatePart = templatePart.replace(/StringHelper\.pascalCase\((.*?)\)/, (_, i) =>
+		templatePart = templatePart.replace(/StringHelper\.pascalCase\((.*?)\)/, (substring, i) =>
 			StringHelper.pascalCase(i)
 		);
-		templatePart = templatePart.replace(/StringHelper\.kebabCase\((.*?)\)/, (_, i) =>
+		templatePart = templatePart.replace(/StringHelper\.kebabCase\((.*?)\)/, (substring, i) =>
 			StringHelper.kebabCase(i)
 		);
-		templatePart = templatePart.replace(/StringHelper\.snakeCase\((.*?)\)/, (_, i) =>
+		templatePart = templatePart.replace(/StringHelper\.snakeCase\((.*?)\)/, (substring, i) =>
 			StringHelper.snakeCase(i)
 		);
 	} else if (templatePart.includes(".CLASS_NAME")) {

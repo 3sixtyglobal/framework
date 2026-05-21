@@ -46,6 +46,7 @@ export * from "./models/IValidationFailure.js";
 export * from "./types/bitString.js";
 export * from "./types/objectOrArray.js";
 export * from "./types/singleOccurrenceArray.js";
+export * from "./types/singleOccurrenceArrayDepthHelper.js";
 export * from "./types/url.js";
 export * from "./types/urn.js";
 export * from "./utils/asyncCache.js";
