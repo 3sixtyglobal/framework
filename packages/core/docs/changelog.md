@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.3-next.45](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.44...core-v0.0.3-next.45) (2026-05-21)
+
+
+### Bug Fixes
+
+* remove misleading undefined from AsyncCache return type ([05b3291](https://github.com/iotaledger/twin-framework/commit/05b32914e03a63c7daf7b77952a2ebedb7ca7f6b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.44 to 0.0.3-next.45
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.44 to 0.0.3-next.45
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.44 to 0.0.3-next.45
+
 ## [0.0.3-next.44](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.43...core-v0.0.3-next.44) (2026-05-19)
 
 
