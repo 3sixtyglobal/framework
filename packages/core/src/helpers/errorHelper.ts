@@ -14,23 +14,37 @@ export class ErrorHelper {
 	/**
 	 * Format Errors and returns just their messages.
 	 * @param error The error to format.
-	 * @param includeDetails Whether to include error details, defaults to false.
+	 * @param options Options for formatting the error.
+	 * @param options.includeStack Whether to include the stack trace in the output, defaults to false.
+	 * @param options.includeAdditional Whether to include additional error information in the output, defaults to false.
 	 * @returns The error formatted including any causes errors.
 	 */
-	public static formatErrors(error: unknown, includeDetails?: boolean): string[] {
-		const localizedErrors = ErrorHelper.localizeErrors(error);
-		if (includeDetails ?? false) {
-			const output: string[] = [];
-			for (const err of localizedErrors) {
-				let detailedError = err.message;
-				if (Is.stringValue(err.stack)) {
-					detailedError += `\n${err.stack}`;
-				}
-				output.push(detailedError);
-			}
-			return output;
+	public static formatErrors(
+		error: unknown,
+		options?: {
+			includeStack?: boolean;
+			includeAdditional?: boolean;
 		}
-		return localizedErrors.map(e => e.message);
+	): string[] {
+		const localizedErrors = ErrorHelper.localizeErrors(error);
+
+		const output: string[] = [];
+
+		const includeAdditional = options?.includeAdditional ?? false;
+		const includeStack = options?.includeStack ?? false;
+
+		for (const err of localizedErrors) {
+			let detailedError = err.message;
+			if (includeAdditional && Is.arrayValue(err.additional)) {
+				detailedError += `\n${err.additional.join("\n")}`;
+			}
+			if (includeStack && Is.stringValue(err.stack)) {
+				detailedError += `\n${err.stack}`;
+			}
+			output.push(detailedError);
+		}
+
+		return output;
 	}
 
 	/**
@@ -38,8 +52,8 @@ export class ErrorHelper {
 	 * @param error The error to format.
 	 * @returns The localized version of the errors flattened.
 	 */
-	public static localizeErrors(error: unknown): IError[] {
-		const formattedErrors: IError[] = [];
+	public static localizeErrors(error: unknown): (IError & { additional?: string[] })[] {
+		const formattedErrors: (IError & { additional?: string[] })[] = [];
 
 		if (Is.notEmpty(error)) {
 			const errors = BaseError.flatten(error);
@@ -53,7 +67,7 @@ export class ErrorHelper {
 				const hasErrorName = I18n.hasMessage(errorNameKey);
 				const hasErrorMessage = I18n.hasMessage(errorMessageKey);
 
-				const localizedError: IError & { additional?: string } = {
+				const localizedError: IError & { additional?: string[] } = {
 					name: I18n.formatMessage(hasErrorName ? errorNameKey : "errorNames.error"),
 					message: hasErrorMessage
 						? I18n.formatMessage(errorMessageKey, err.properties)
@@ -72,7 +86,7 @@ export class ErrorHelper {
 				}
 
 				const additional = ErrorHelper.formatValidationErrors(err);
-				if (Is.stringValue(additional)) {
+				if (Is.arrayValue(additional)) {
 					localizedError.additional = additional;
 				}
 
@@ -88,14 +102,14 @@ export class ErrorHelper {
 	 * @param error The error to format.
 	 * @returns The localized version of the errors flattened.
 	 */
-	public static formatValidationErrors(error: IError): string | undefined {
+	public static formatValidationErrors(error: IError): string[] | undefined {
 		if (
 			Is.object(error.properties) &&
 			Object.keys(error.properties).length > 0 &&
 			Is.object<{ validationFailures: IValidationFailure[] }>(error.properties) &&
 			Is.arrayValue(error.properties.validationFailures)
 		) {
-			const validationErrors = [];
+			const validationErrors: string[] = [];
 			for (const validationFailure of error.properties.validationFailures) {
 				const errorI18n = `error.${validationFailure.reason}`;
 				const errorMessage = I18n.hasMessage(errorI18n)
@@ -111,7 +125,7 @@ export class ErrorHelper {
 				}
 				validationErrors.push(v);
 			}
-			return validationErrors.join("\n");
+			return validationErrors;
 		}
 	}
 }
