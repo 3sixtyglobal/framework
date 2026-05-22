@@ -16,7 +16,7 @@ Error helper functions.
 
 ### formatErrors() {#formaterrors}
 
-> `static` **formatErrors**(`error`, `includeDetails?`): `string`[]
+> `static` **formatErrors**(`error`, `options?`): `string`[]
 
 Format Errors and returns just their messages.
 
@@ -28,11 +28,21 @@ Format Errors and returns just their messages.
 
 The error to format.
 
-##### includeDetails?
+##### options?
+
+Options for formatting the error.
+
+###### includeStack?
 
 `boolean`
 
-Whether to include error details, defaults to false.
+Whether to include the stack trace in the output, defaults to false.
+
+###### includeAdditional?
+
+`boolean`
+
+Whether to include additional error information in the output, defaults to false.
 
 #### Returns
 
@@ -44,7 +54,7 @@ The error formatted including any causes errors.
 
 ### localizeErrors() {#localizeerrors}
 
-> `static` **localizeErrors**(`error`): [`IError`](../interfaces/IError.md)[]
+> `static` **localizeErrors**(`error`): [`IError`](../interfaces/IError.md) & `object`[]
 
 Localize the content of an error and any causes.
 
@@ -58,7 +68,7 @@ The error to format.
 
 #### Returns
 
-[`IError`](../interfaces/IError.md)[]
+[`IError`](../interfaces/IError.md) & `object`[]
 
 The localized version of the errors flattened.
 
@@ -66,7 +76,7 @@ The localized version of the errors flattened.
 
 ### formatValidationErrors() {#formatvalidationerrors}
 
-> `static` **formatValidationErrors**(`error`): `string` \| `undefined`
+> `static` **formatValidationErrors**(`error`): `string`[] \| `undefined`
 
 Localize the content of an error and any causes.
 
@@ -80,6 +90,6 @@ The error to format.
 
 #### Returns
 
-`string` \| `undefined`
+`string`[] \| `undefined`
 
 The localized version of the errors flattened.

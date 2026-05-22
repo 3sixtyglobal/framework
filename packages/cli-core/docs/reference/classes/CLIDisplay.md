@@ -100,7 +100,7 @@ The icon for the CLI.
 
 ### error() {#error}
 
-> `static` **error**(`error`, `lineBreaks?`): `void`
+> `static` **error**(`error`, `lineBreaks?`, `options?`): `void`
 
 Display an error message.
 
@@ -117,6 +117,22 @@ The error to display.
 `boolean` = `true`
 
 Whether to add a line break after the error.
+
+##### options?
+
+Options for formatting the error.
+
+###### includeStack?
+
+`boolean`
+
+Whether to include the stack trace in the output, defaults to false.
+
+###### includeAdditional?
+
+`boolean`
+
+Whether to include additional error information in the output, defaults to false.
 
 #### Returns
 
