@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.0.3-next.46](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.0.3-next.45...cli-core-v0.0.3-next.46) (2026-05-22)
+
+
+### Features
+
+* improve error formatting ([#313](https://github.com/iotaledger/twin-framework/issues/313)) ([5a19623](https://github.com/iotaledger/twin-framework/commit/5a196231bcbf088bf9ba92a93b7478d3b8c5593f))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.45 to 0.0.3-next.46
+    * @twin.org/nameof bumped from 0.0.3-next.45 to 0.0.3-next.46
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.45 to 0.0.3-next.46
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.45 to 0.0.3-next.46
+
 ## [0.0.3-next.45](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.0.3-next.44...cli-core-v0.0.3-next.45) (2026-05-21)
 
 
