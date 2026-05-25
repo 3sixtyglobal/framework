@@ -101,6 +101,12 @@
 		},
 		"jsonHelper": {
 			"failedPatch": "Failed to patch the JSON object, patch index \"{index}\" failed"
+		},
+		"mutex": {
+			"lockNotFound": "The key \"{key}\" has no active lock",
+			"lockAlreadyReleased": "The key \"{key}\" is not currently locked",
+			"lockTimeout": "Failed to acquire lock for key \"{key}\" within the timeout of {timeout} milliseconds",
+			"bufferFetchFailed": "Failed to retrieve shared buffer for key \"{key}\" from the main thread"
 		}
 	},
 	"errorNames": {

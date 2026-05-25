@@ -8,6 +8,30 @@ import { SharedStore } from "./sharedStore.js";
  */
 export class AsyncCache {
 	/**
+	 * Cache key for the shared cache object in the SharedStore.
+	 * @internal
+	 */
+	private static readonly _CACHE_KEY = "asyncCache";
+
+	/**
+	 * Cache key for the entry key of the soonest-expiring cache entry, used to optimize cleanup.
+	 * @internal
+	 */
+	private static readonly _NEXT_EXPIRY_CACHE_KEY = "asyncCacheNextExpiryKey";
+
+	/**
+	 * Cache key for the timestamp of the last full cleanup scan.
+	 * @internal
+	 */
+	private static readonly _LAST_CLEANUP_KEY = "asyncCacheLastCleanup";
+
+	/**
+	 * Minimum interval in ms between full cleanup scans.
+	 * @internal
+	 */
+	private static readonly _CLEANUP_INTERVAL_MS = 5000;
+
+	/**
 	 * Execute an async request and cache the result.
 	 * @param key The key for the entry in the cache.
 	 * @param ttlMs The TTL of the entry in the cache.
@@ -28,6 +52,9 @@ export class AsyncCache {
 		}
 
 		AsyncCache.cleanupExpired();
+		// Cleanup will not necessarily remove the entry for the key we are requesting
+		// as it is throttled, so we also check and evict if expired here to ensure we don't return stale data.
+		AsyncCache.evictIfExpired(key);
 
 		const cache = AsyncCache.getSharedCache<T>();
 		const cachedEntry = cache[key];
@@ -63,6 +90,7 @@ export class AsyncCache {
 		}
 
 		// If we don't have a cache entry, create a new one
+		const expires = Date.now() + ttlMs;
 		const cacheEntry: {
 			result?: T;
 			error?: unknown;
@@ -76,9 +104,10 @@ export class AsyncCache {
 		} = {
 			inProgress: true,
 			promiseQueue: [],
-			expires: Date.now() + ttlMs
+			expires
 		};
 		cache[key] = cacheEntry;
+		AsyncCache.updateNextExpiryKey(key, expires);
 
 		// Return a promise that wraps the original request method
 		// so that we can store any results or errors in the cache
@@ -133,18 +162,25 @@ export class AsyncCache {
 	/**
 	 * Get an entry from the cache.
 	 * @param key The key to get from the cache.
-	 * @returns The item from the cache if it exists.
+	 * @returns The item from the cache if it exists, or undefined if the key is missing, expired, or
+	 * its request is still in-progress. Throws if a cached failure exists for the key.
 	 */
 	public static async get<T = unknown>(key: string): Promise<T | undefined> {
-		const cache = AsyncCache.getSharedCache<T>();
-		if (!Is.empty(cache[key]?.result)) {
-			// If the cache has already resulted in a value, resolve it
-			return cache[key].result;
+		if (AsyncCache.evictIfExpired(key)) {
+			return undefined;
 		}
 
-		if (!Is.empty(cache[key]?.error)) {
+		const cache = AsyncCache.getSharedCache<T>();
+		const entry = cache[key];
+
+		if (!Is.empty(entry?.result)) {
+			// If the cache has already resulted in a value, resolve it
+			return entry.result;
+		}
+
+		if (!Is.empty(entry?.error)) {
 			// If the cache has already resulted in an error, reject it
-			throw cache[key].error as Error;
+			throw entry.error as Error;
 		}
 	}
 
@@ -152,16 +188,18 @@ export class AsyncCache {
 	 * Set an entry into the cache.
 	 * @param key The key to set in the cache.
 	 * @param value The value to set in the cache.
-	 * @param ttlMs The TTL of the entry in the cache in ms, defaults to 1s.
+	 * @param ttlMs The TTL of the entry in the cache in milliseconds. Defaults to 1000 (1 second).
 	 * @returns Nothing.
 	 */
 	public static async set<T = unknown>(key: string, value: T, ttlMs?: number): Promise<void> {
+		const expires = Date.now() + (ttlMs ?? 1000);
 		const cache = AsyncCache.getSharedCache();
 		cache[key] = {
 			result: value,
 			promiseQueue: [],
-			expires: Date.now() + (ttlMs ?? 1000)
+			expires
 		};
+		AsyncCache.updateNextExpiryKey(key, expires);
 	}
 
 	/**
@@ -171,6 +209,10 @@ export class AsyncCache {
 	public static remove(key: string): void {
 		const cache = AsyncCache.getSharedCache();
 		delete cache[key];
+		const nextKey = SharedStore.get<string>(AsyncCache._NEXT_EXPIRY_CACHE_KEY);
+		if (nextKey === key) {
+			AsyncCache.recalculateNextKey();
+		}
 	}
 
 	/**
@@ -180,13 +222,23 @@ export class AsyncCache {
 	public static clearCache(prefix?: string): void {
 		const cache = AsyncCache.getSharedCache();
 		if (Is.stringValue(prefix)) {
+			const nextKey = SharedStore.get<string>(AsyncCache._NEXT_EXPIRY_CACHE_KEY);
+			let nextKeyRemoved = false;
 			for (const entry in cache) {
 				if (entry.startsWith(prefix)) {
+					if (entry === nextKey) {
+						nextKeyRemoved = true;
+					}
 					delete cache[entry];
 				}
 			}
+			if (nextKeyRemoved) {
+				AsyncCache.recalculateNextKey();
+			}
 		} else {
-			SharedStore.set("asyncCache", {});
+			SharedStore.set(AsyncCache._CACHE_KEY, {});
+			SharedStore.set(AsyncCache._NEXT_EXPIRY_CACHE_KEY, undefined);
+			SharedStore.set(AsyncCache._LAST_CLEANUP_KEY, Date.now());
 		}
 	}
 
@@ -194,16 +246,23 @@ export class AsyncCache {
 	 * Perform a cleanup of the expired entries in the cache.
 	 */
 	public static cleanupExpired(): void {
-		const cache = AsyncCache.getSharedCache();
-		for (const entry in cache) {
-			if (
-				cache[entry].expires > 0 &&
-				cache[entry].expires < Date.now() &&
-				cache[entry].inProgress !== true
-			) {
-				delete cache[entry];
-			}
+		const now = Date.now();
+		const lastCleanup = SharedStore.get<number>(AsyncCache._LAST_CLEANUP_KEY) ?? 0;
+		if (now - lastCleanup < AsyncCache._CLEANUP_INTERVAL_MS) {
+			return;
 		}
+
+		const expiry = AsyncCache.getNextExpiry();
+		if (expiry !== undefined && expiry > now) {
+			// Nothing is expired yet. Stamp the time so the throttle suppresses further checks
+			// for the next interval. Per-key freshness is still guaranteed because exec() and
+			// get() call evictIfExpired() directly before reading the cache.
+			SharedStore.set(AsyncCache._LAST_CLEANUP_KEY, now);
+			return;
+		}
+
+		SharedStore.set(AsyncCache._LAST_CLEANUP_KEY, now);
+		AsyncCache.recalculateNextKey();
 	}
 
 	/**
@@ -236,11 +295,11 @@ export class AsyncCache {
 				}[];
 				expires: number;
 			};
-		}>("asyncCache");
+		}>(AsyncCache._CACHE_KEY);
 
 		if (Is.undefined(sharedCache)) {
 			sharedCache = {};
-			SharedStore.set("asyncCache", sharedCache);
+			SharedStore.set(AsyncCache._CACHE_KEY, sharedCache);
 		}
 
 		return sharedCache;
@@ -262,5 +321,78 @@ export class AsyncCache {
 		} catch (waitErr) {
 			reject(waitErr);
 		}
+	}
+
+	/**
+	 * Scan all cache entries, delete any that have expired, and record the key of the
+	 * soonest-expiring remaining entry.
+	 * @internal
+	 */
+	private static recalculateNextKey(): void {
+		const now = Date.now();
+		const cache = AsyncCache.getSharedCache();
+
+		if (Object.keys(cache).length === 0) {
+			SharedStore.set(AsyncCache._NEXT_EXPIRY_CACHE_KEY, undefined);
+			return;
+		}
+
+		let newNextKey: string | undefined;
+		let newNextExpiry = Number.MAX_SAFE_INTEGER;
+		for (const entryKey in cache) {
+			const { expires, inProgress } = cache[entryKey];
+			if (expires > 0 && expires < now && inProgress !== true) {
+				delete cache[entryKey];
+			} else if (expires > 0 && expires < newNextExpiry) {
+				newNextExpiry = expires;
+				newNextKey = entryKey;
+			}
+		}
+		SharedStore.set(AsyncCache._NEXT_EXPIRY_CACHE_KEY, newNextKey);
+	}
+
+	/**
+	 * Update the tracked next-expiry entry key if the given entry expires sooner than the current one.
+	 * @param key The cache entry key.
+	 * @param expires The expiry timestamp of the entry.
+	 * @internal
+	 */
+	private static updateNextExpiryKey(key: string, expires: number): void {
+		const expiry = AsyncCache.getNextExpiry();
+		if (expiry !== undefined && expiry <= expires) {
+			return;
+		}
+		SharedStore.set(AsyncCache._NEXT_EXPIRY_CACHE_KEY, key);
+	}
+
+	/**
+	 * Deletes the given key from the cache if it has expired and is not in-progress.
+	 * Returns true if the entry was evicted.
+	 * @param key The cache entry key to check.
+	 * @internal
+	 */
+	private static evictIfExpired(key: string): boolean {
+		const cache = AsyncCache.getSharedCache();
+		const entry = cache[key];
+		if (!Is.empty(entry) && entry.expires > 0 && entry.expires < Date.now() && !entry.inProgress) {
+			delete cache[key];
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Returns the expiry timestamp of the tracked next-expiry entry, or undefined if there
+	 * is no tracked entry or it is no longer present in the cache.
+	 * @internal
+	 */
+	private static getNextExpiry(): number | undefined {
+		const nextKey = SharedStore.get<string>(AsyncCache._NEXT_EXPIRY_CACHE_KEY);
+		if (Is.empty(nextKey)) {
+			return undefined;
+		}
+		const cache = AsyncCache.getSharedCache();
+		const nextEntry = cache[nextKey];
+		return Is.empty(nextEntry) ? undefined : nextEntry.expires;
 	}
 }

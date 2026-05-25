@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import path from "node:path";
-import { Coerce } from "@twin.org/core";
+import { Coerce, Mutex } from "@twin.org/core";
 import { ModuleHelper } from "../../src/helpers/moduleHelper.js";
 
 const TEST_MODULE = `file://${path.join(__dirname, "testModule.js")}`;
@@ -227,6 +227,168 @@ describe("ModuleHelper", () => {
 		expect(taskResults).toEqual([1, 3, 6]);
 		expect(finalTotal).toEqual(6);
 		expect(endCalled).toBeTruthy();
+	});
+
+	describe("mutex", () => {
+		test("execModuleMethodThread worker can acquire and release a mutex", async () => {
+			const result = await ModuleHelper.execModuleMethodThread(
+				TEST_MODULE,
+				"testMethodAcquireMutex",
+				["mutex-acquire"]
+			);
+			expect(result).toEqual("acquired");
+		});
+
+		test("execModuleMethodThread worker blocks on a mutex held by the main thread", async () => {
+			Mutex.lock("mutex-main-holds");
+
+			const workerPromise = ModuleHelper.execModuleMethodThread(
+				TEST_MODULE,
+				"testMethodAcquireMutex",
+				["mutex-main-holds"]
+			);
+
+			// Give the worker time to start and block on the mutex.
+			await new Promise<void>(resolve => {
+				setTimeout(resolve, 100);
+			});
+
+			Mutex.unlock("mutex-main-holds");
+
+			await expect(workerPromise).resolves.toEqual("acquired");
+		});
+
+		test("main thread blocks on a mutex held by a worker", async () => {
+			const signalBuf = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
+			const signal = new Int32Array(signalBuf);
+
+			// Worker acquires the mutex, sets the signal, holds for 200ms, then releases.
+			const workerPromise = ModuleHelper.execModuleMethodThread(
+				TEST_MODULE,
+				"testMethodAcquireMutexSignalled",
+				["mutex-worker-holds", signalBuf, 200]
+			);
+
+			// Poll (non-blocking) until the worker signals it holds the mutex.
+			// Atomics.wait cannot be used here — it would block this thread's event loop
+			// and prevent it from servicing the worker's buffer-fetch request, causing a deadlock.
+			const deadline = Date.now() + 5000;
+			while (Atomics.load(signal, 0) === 0 && Date.now() < deadline) {
+				await new Promise<void>(resolve => {
+					setTimeout(resolve, 10);
+				});
+			}
+			expect(Atomics.load(signal, 0)).toEqual(1);
+
+			const start = Date.now();
+			Mutex.lock("mutex-worker-holds", { timeoutMs: 5000 });
+			const elapsed = Date.now() - start;
+			Mutex.unlock("mutex-worker-holds");
+
+			await workerPromise;
+			expect(elapsed).toBeGreaterThanOrEqual(100);
+		});
+
+		test("execModuleMethodThread worker times out waiting for a mutex held by the main thread", async () => {
+			Mutex.lock("mutex-timeout");
+
+			const result = await ModuleHelper.execModuleMethodThread(
+				TEST_MODULE,
+				"testMethodTryAcquireMutex",
+				["mutex-timeout", 50]
+			);
+
+			Mutex.unlock("mutex-timeout");
+			expect(result).toEqual(false);
+		});
+	});
+
+	describe("parallel mutex", () => {
+		test("20 concurrent workers serialize counter increments under mutex with no lost updates", async () => {
+			const workerCount = 20;
+			const counterBuf = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
+			const counter = new Int32Array(counterBuf);
+
+			await Promise.all(
+				Array.from({ length: workerCount }, async () =>
+					ModuleHelper.execModuleMethodThread(TEST_MODULE, "testMethodMutexIncrement", [
+						"concurrent-increment",
+						counterBuf
+					])
+				)
+			);
+
+			expect(Atomics.load(counter, 0)).toEqual(workerCount);
+		}, 30000);
+
+		test("main thread and 10 workers interleaving increments under mutex produce the correct total", async () => {
+			const workerCount = 10;
+			const mainIncrements = 5;
+			const counterBuf = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
+			const counter = new Int32Array(counterBuf);
+
+			const workerPromises = Array.from({ length: workerCount }, async () =>
+				ModuleHelper.execModuleMethodThread(TEST_MODULE, "testMethodMutexIncrement", [
+					"mixed-parallel",
+					counterBuf
+				])
+			);
+
+			for (let i = 0; i < mainIncrements; i++) {
+				Mutex.lock("mixed-parallel", { timeoutMs: 10000 });
+				const val = Atomics.load(counter, 0);
+				Atomics.store(counter, 0, val + 1);
+				Mutex.unlock("mixed-parallel");
+			}
+
+			await Promise.all(workerPromises);
+			expect(Atomics.load(counter, 0)).toEqual(workerCount + mainIncrements);
+		}, 30000);
+
+		test("30 concurrent workers under high load produce no lost counter updates", async () => {
+			const workerCount = 30;
+			const counterBuf = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
+			const counter = new Int32Array(counterBuf);
+
+			await Promise.all(
+				Array.from({ length: workerCount }, async () =>
+					ModuleHelper.execModuleMethodThread(TEST_MODULE, "testMethodMutexIncrement", [
+						"high-load",
+						counterBuf
+					])
+				)
+			);
+
+			expect(Atomics.load(counter, 0)).toEqual(workerCount);
+		}, 30000);
+
+		test("10 persistent workers via execModuleMethodThreadMessage produce no lost counter updates", async () => {
+			const workerCount = 10;
+			const counterBuf = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
+			const counter = new Int32Array(counterBuf);
+
+			await Promise.all(
+				Array.from(
+					{ length: workerCount },
+					async () =>
+						new Promise<void>((resolve, reject) => {
+							const m = ModuleHelper.execModuleMethodThreadMessage(
+								TEST_MODULE,
+								(operation, result, err) => {
+									if (err) {
+										reject(err);
+									} else if (operation === "testMethodMutexIncrement") {
+										resolve();
+									}
+								}
+							);
+							m.executeMethod("testMethodMutexIncrement", ["persistent-increment", counterBuf]);
+						})
+				)
+			);
+
+			expect(Atomics.load(counter, 0)).toEqual(workerCount);
+		}, 30000);
 	});
 
 	test("execModuleMethodThreadMessage can terminate a long background task", async () => {

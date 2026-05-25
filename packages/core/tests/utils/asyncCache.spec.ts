@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { AsyncCache } from "../../src/utils/asyncCache.js";
 import { Is } from "../../src/utils/is.js";
+import { SharedStore } from "../../src/utils/sharedStore.js";
 
 let counter = 0;
 
@@ -36,6 +37,7 @@ const createDeferred = <T>(): {
 describe("AsyncCache", () => {
 	beforeEach(() => {
 		AsyncCache.clearCache();
+		SharedStore.set("asyncCacheLastCleanup", 0);
 		counterIncrement.mockClear();
 		counter = 0;
 	});
@@ -273,7 +275,7 @@ describe("AsyncCache", () => {
 		expect(Is.promise(res2)).toEqual(true);
 
 		AsyncCache.remove("key");
-		const res3 = AsyncCache.exec("key", 1000, async () => counterIncrement());
+		const res3 = AsyncCache.exec("key", 100000, async () => counterIncrement());
 		deferred.reject(new Error("Test error"));
 
 		const settledResult = await Promise.allSettled([res, res2, res3]);
@@ -430,15 +432,10 @@ describe("AsyncCache", () => {
 	});
 
 	test("exec with ttl 0 does not cache", async () => {
-		const res = AsyncCache.exec("key", 0, async () => counterIncrement(10));
-		const res2 = AsyncCache.exec("key", 0, async () => counterIncrement(10));
-
-		expect(Is.promise(res)).toEqual(true);
-		expect(Is.promise(res2)).toEqual(true);
-
-		const settledResult = await Promise.allSettled([res, res2]);
-		expect(settledResult[0].status === "fulfilled" && settledResult[0].value === 1).toEqual(true);
-		expect(settledResult[1].status === "fulfilled" && settledResult[1].value === 2).toEqual(true);
+		const res1 = await AsyncCache.exec("key", 0, counterIncrement);
+		const res2 = await AsyncCache.exec("key", 0, counterIncrement);
+		expect(res1).toEqual(1);
+		expect(res2).toEqual(2);
 		expect(counterIncrement).toHaveBeenCalledTimes(2);
 		expect(await AsyncCache.get("key")).toBeUndefined();
 	});
@@ -468,6 +465,67 @@ describe("AsyncCache", () => {
 		expect(counterIncrement).toHaveBeenCalledTimes(1);
 	});
 
+	test("get evicts an expired entry even when cleanup is throttled", async () => {
+		await AsyncCache.set("key", 1, 1);
+		SharedStore.set("asyncCacheLastCleanup", Date.now());
+		await new Promise<void>(resolve => setTimeout(resolve, 10));
+		expect(await AsyncCache.get("key")).toBeUndefined();
+	});
+
+	test("exec re-executes for an expired entry even when cleanup is throttled", async () => {
+		await AsyncCache.exec("key", 1, counterIncrement);
+		SharedStore.set("asyncCacheLastCleanup", Date.now());
+		await new Promise<void>(resolve => setTimeout(resolve, 10));
+		const res = await AsyncCache.exec("key", 100000, counterIncrement);
+		expect(res).toEqual(2);
+		expect(counterIncrement).toHaveBeenCalledTimes(2);
+	});
+
+	test("get throws for a cached error entry", async () => {
+		await expect(
+			AsyncCache.exec(
+				"key",
+				100000,
+				async () => {
+					throw new Error("cached error");
+				},
+				true
+			)
+		).rejects.toThrow("cached error");
+		await expect(AsyncCache.get("key")).rejects.toThrow("cached error");
+	});
+
+	test("get returns undefined for an in-progress entry", async () => {
+		const deferred = createDeferred<number>();
+		// Intentionally not awaited — we need the request to remain in-progress so we can
+		// verify that get() returns undefined while it is still pending.
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+		AsyncCache.exec("key", 1000, async () => deferred.promise);
+		expect(await AsyncCache.get("key")).toBeUndefined();
+		deferred.resolve(1);
+	});
+
+	test("remove on a key that was never set is a no-op", () => {
+		expect(() => AsyncCache.remove("never-set")).not.toThrow();
+	});
+
+	test("clearCache on an empty cache does not throw", () => {
+		expect(() => AsyncCache.clearCache()).not.toThrow();
+		expect(() => AsyncCache.clearCache("prefix-")).not.toThrow();
+	});
+
+	test("cleanupExpired on an empty cache does not throw", () => {
+		expect(() => AsyncCache.cleanupExpired()).not.toThrow();
+	});
+
+	test("exec with negative ttl does not cache", async () => {
+		const res1 = await AsyncCache.exec("key", -1, counterIncrement);
+		const res2 = await AsyncCache.exec("key", -1, counterIncrement);
+		expect(res1).toEqual(1);
+		expect(res2).toEqual(2);
+		expect(counterIncrement).toHaveBeenCalledTimes(2);
+	});
+
 	test("queued retries reject if request method throws synchronously", async () => {
 		const res = AsyncCache.exec("key", 1, async () => {
 			throw new Error("initial failure");
@@ -490,5 +548,129 @@ describe("AsyncCache", () => {
 				settledResult[1].reason instanceof Error &&
 				settledResult[1].reason.message === "sync failure"
 		).toEqual(true);
+	});
+
+	describe("cleanup optimization", () => {
+		const nextExpiryKey = "asyncCacheNextExpiryKey";
+
+		test("next expiry key is set when exec creates an entry", async () => {
+			await AsyncCache.exec("key", 5000, counterIncrement);
+			expect(SharedStore.get<string>(nextExpiryKey)).toEqual("key");
+		});
+
+		test("next expiry key is set when set creates an entry", async () => {
+			await AsyncCache.set("key", 1, 5000);
+			expect(SharedStore.get<string>(nextExpiryKey)).toEqual("key");
+		});
+
+		test("next expiry key tracks the entry with the earliest expiry", async () => {
+			await AsyncCache.set("long", 1, 50000);
+			await AsyncCache.set("short", 1, 500);
+			expect(SharedStore.get<string>(nextExpiryKey)).toEqual("short");
+		});
+
+		test("next expiry key is not overwritten by a later-expiring entry", async () => {
+			await AsyncCache.set("short", 1, 500);
+			await AsyncCache.set("long", 1, 50000);
+			expect(SharedStore.get<string>(nextExpiryKey)).toEqual("short");
+		});
+
+		test("cleanupExpired skips scan when tracked entry has not expired", async () => {
+			await AsyncCache.set("key", 1, 100000);
+			AsyncCache.cleanupExpired();
+			AsyncCache.cleanupExpired();
+			AsyncCache.cleanupExpired();
+			expect(await AsyncCache.get("key")).toEqual(1);
+		});
+
+		test("next expiry key advances to next soonest entry after cleanup removes expired entry", async () => {
+			await AsyncCache.set("short", 1, 1);
+			await AsyncCache.set("long", 2, 100000);
+			await new Promise<void>(resolve => setTimeout(resolve, 10));
+			AsyncCache.cleanupExpired();
+			expect(await AsyncCache.get("short")).toBeUndefined();
+			expect(await AsyncCache.get("long")).toEqual(2);
+			expect(SharedStore.get<string>(nextExpiryKey)).toEqual("long");
+		});
+
+		test("next expiry key is cleared after full clearCache", async () => {
+			await AsyncCache.set("key", 1, 100000);
+			AsyncCache.clearCache();
+			expect(SharedStore.get<string>(nextExpiryKey)).toBeUndefined();
+		});
+
+		test("next expiry key is recalculated after removing the tracked entry", async () => {
+			await AsyncCache.set("a", 1, 500);
+			await AsyncCache.set("b", 2, 100000);
+			expect(SharedStore.get<string>(nextExpiryKey)).toEqual("a");
+			AsyncCache.remove("a");
+			expect(SharedStore.get<string>(nextExpiryKey)).toEqual("b");
+		});
+
+		test("next expiry key is unchanged after removing a non-tracked entry", async () => {
+			await AsyncCache.set("a", 1, 500);
+			await AsyncCache.set("b", 2, 100000);
+			expect(SharedStore.get<string>(nextExpiryKey)).toEqual("a");
+			AsyncCache.remove("b");
+			expect(SharedStore.get<string>(nextExpiryKey)).toEqual("a");
+		});
+
+		test("next expiry key is recalculated after prefixed clearCache removes the tracked entry", async () => {
+			await AsyncCache.set("api-a", 1, 500);
+			await AsyncCache.set("other", 2, 100000);
+			expect(SharedStore.get<string>(nextExpiryKey)).toEqual("api-a");
+			AsyncCache.clearCache("api-");
+			expect(SharedStore.get<string>(nextExpiryKey)).toEqual("other");
+		});
+
+		test("next expiry key is unchanged after prefixed clearCache that does not remove the tracked entry", async () => {
+			await AsyncCache.set("other", 1, 500);
+			await AsyncCache.set("api-a", 2, 100000);
+			expect(SharedStore.get<string>(nextExpiryKey)).toEqual("other");
+			AsyncCache.clearCache("api-");
+			expect(SharedStore.get<string>(nextExpiryKey)).toEqual("other");
+		});
+
+		test("next expiry key is undefined after removing the only cached entry", async () => {
+			await AsyncCache.set("only", 1, 100000);
+			expect(SharedStore.get<string>(nextExpiryKey)).toEqual("only");
+			AsyncCache.remove("only");
+			expect(SharedStore.get<string>(nextExpiryKey)).toBeUndefined();
+		});
+
+		test("cleanupExpired scan is throttled to at most once every 5 seconds", async () => {
+			vi.useFakeTimers();
+			try {
+				// Re-clear inside the fake-timer scope so _LAST_CLEANUP_KEY is set to fake
+				// time, then advance past the initial interval so the first scan is allowed.
+				AsyncCache.clearCache();
+				vi.advanceTimersByTime(5001);
+
+				await AsyncCache.set("a", 1, 1);
+				vi.advanceTimersByTime(10);
+
+				// First call after expiry should scan and remove "a" from the raw cache
+				AsyncCache.cleanupExpired();
+				const rawCache = SharedStore.get<{ [key: string]: unknown }>("asyncCache") ?? {};
+				expect("a" in rawCache).toEqual(false);
+
+				// Add another expired entry
+				await AsyncCache.set("b", 2, 1);
+				vi.advanceTimersByTime(10);
+
+				// Second call is within 5 s — scan is throttled so "b" remains in the raw cache
+				AsyncCache.cleanupExpired();
+				expect("b" in rawCache).toEqual(true);
+
+				// Advance past the 5 s interval
+				vi.advanceTimersByTime(5000);
+
+				// Now the scan runs and removes "b" from the raw cache
+				AsyncCache.cleanupExpired();
+				expect("b" in rawCache).toEqual(false);
+			} finally {
+				vi.useRealTimers();
+			}
+		});
 	});
 });

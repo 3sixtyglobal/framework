@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { Worker } from "node:worker_threads";
 import type { IContextIds } from "@twin.org/context";
-import { BaseError, GeneralError, Is, SharedStore } from "@twin.org/core";
+import { BaseError, GeneralError, Is, Mutex, SharedStore } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 import type { IModuleWorker } from "../models/IModuleWorker.js";
 
@@ -153,20 +153,25 @@ export class ModuleHelper {
 		args?: unknown[],
 		contextIds?: IContextIds
 	): Promise<T> {
-		return new Promise<T>((resolve, reject) => {
-			const messageModule = ModuleHelper.execModuleMethodThreadMessage(
-				module,
-				(resultMethod, result, err) => {
-					if (err) {
-						reject(err);
-					} else {
-						resolve(result as T);
+		let messageModule: IModuleWorker | undefined;
+		try {
+			return await new Promise<T>((resolve, reject) => {
+				messageModule = ModuleHelper.execModuleMethodThreadMessage(
+					module,
+					(resultMethod, result, err) => {
+						if (err) {
+							reject(err);
+						} else {
+							resolve(result as T);
+						}
 					}
-				}
-			);
+				);
 
-			messageModule.executeMethod(method, args, contextIds);
-		});
+				messageModule.executeMethod(method, args, contextIds);
+			});
+		} finally {
+			await messageModule?.terminate();
+		}
 	}
 
 	/**
@@ -235,7 +240,7 @@ export class ModuleHelper {
 				rejectError('notFunction', method, args);
 			}
 		} catch (errInner) {
-				rejectError('moduleNotFound', method, args, errInner);
+			rejectError('moduleNotFound', method, args, errInner);
 		}
 	});
 })();`,
@@ -243,6 +248,12 @@ export class ModuleHelper {
 		);
 
 		worker.on("message", msg => {
+			if (Mutex.handleWorkerMessage(msg)) {
+				return;
+			}
+			if (!Is.stringValue(msg?.method)) {
+				return;
+			}
 			if (Is.stringValue(msg.errorType)) {
 				completed(
 					msg.method,
