@@ -39,6 +39,7 @@
 - [Guards](classes/Guards.md)
 - [I18n](classes/I18n.md)
 - [Is](classes/Is.md)
+- [Mutex](classes/Mutex.md)
 - [SharedStore](classes/SharedStore.md)
 - [Validation](classes/Validation.md)
 
@@ -53,6 +54,7 @@
 - [ILocale](interfaces/ILocale.md)
 - [ILocaleDictionary](interfaces/ILocaleDictionary.md)
 - [ILocalesIndex](interfaces/ILocalesIndex.md)
+- [IMutexWorkerMessage](interfaces/IMutexWorkerMessage.md)
 - [IPatchOperation](interfaces/IPatchOperation.md)
 - [IUrlParts](interfaces/IUrlParts.md)
 - [IValidationFailure](interfaces/IValidationFailure.md)
@@ -62,6 +64,7 @@
 - [CoerceType](type-aliases/CoerceType.md)
 - [CompressionType](type-aliases/CompressionType.md)
 - [HealthStatus](type-aliases/HealthStatus.md)
+- [MutexMessageTypes](type-aliases/MutexMessageTypes.md)
 - [ObjectOrArray](type-aliases/ObjectOrArray.md)
 - [SingleOccurrenceArray](type-aliases/SingleOccurrenceArray.md)
 - [SingleOccurrenceArrayDepthHelper](type-aliases/SingleOccurrenceArrayDepthHelper.md)
@@ -72,3 +75,4 @@
 - [CoerceType](variables/CoerceType.md)
 - [CompressionType](variables/CompressionType.md)
 - [HealthStatus](variables/HealthStatus.md)
+- [MutexMessageTypes](variables/MutexMessageTypes.md)

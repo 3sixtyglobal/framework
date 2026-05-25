@@ -84,7 +84,8 @@ The key to get from the cache.
 
 `Promise`\<`T` \| `undefined`\>
 
-The item from the cache if it exists.
+The item from the cache if it exists, or undefined if the key is missing, expired, or
+its request is still in-progress. Throws if a cached failure exists for the key.
 
 ***
 
@@ -118,7 +119,7 @@ The value to set in the cache.
 
 `number`
 
-The TTL of the entry in the cache in ms, defaults to 1s.
+The TTL of the entry in the cache in milliseconds. Defaults to 1000 (1 second).
 
 #### Returns
 
