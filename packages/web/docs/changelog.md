@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.0.3-next.47](https://github.com/iotaledger/twin-framework/compare/web-v0.0.3-next.46...web-v0.0.3-next.47) (2026-05-25)
+
+
+### Miscellaneous Chores
+
+* **web:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.3-next.46 to 0.0.3-next.47
+    * @twin.org/crypto bumped from 0.0.3-next.46 to 0.0.3-next.47
+    * @twin.org/nameof bumped from 0.0.3-next.46 to 0.0.3-next.47
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.46 to 0.0.3-next.47
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.46 to 0.0.3-next.47
+    * @twin.org/validate-locales bumped from 0.0.3-next.46 to 0.0.3-next.47
+
 ## [0.0.3-next.46](https://github.com/iotaledger/twin-framework/compare/web-v0.0.3-next.45...web-v0.0.3-next.46) (2026-05-22)
 
 

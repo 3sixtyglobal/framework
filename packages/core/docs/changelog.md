@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.3-next.47](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.46...core-v0.0.3-next.47) (2026-05-25)
+
+
+### Features
+
+* add mutex ([#316](https://github.com/iotaledger/twin-framework/issues/316)) ([1027e5a](https://github.com/iotaledger/twin-framework/commit/1027e5ac77aa9804178b4253abdeefd6f1c3d521))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.3-next.46 to 0.0.3-next.47
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.3-next.46 to 0.0.3-next.47
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.46 to 0.0.3-next.47
+
 ## [0.0.3-next.46](https://github.com/iotaledger/twin-framework/compare/core-v0.0.3-next.45...core-v0.0.3-next.46) (2026-05-22)
 
 
