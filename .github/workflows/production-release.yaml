@@ -76,6 +76,12 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
 
+      # Our self-hosted runner clears the workspace after local composite
+      # actions, so restore the workflow ref before the job completes.
+      - name: Restore workflow checkout
+        if: ${{ always() }}
+        uses: actions/checkout@v6
+
   # ──────────────────────────────────────────────────────────────────────────
   # GATE 1 – WAIT FOR MAIN ALIGNMENT PR
   # Polls until the PR is merged. Fails hard if the PR is closed without merge
