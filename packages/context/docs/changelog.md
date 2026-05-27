@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.0.4-next.1](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.0...context-v0.0.4-next.1) (2026-05-27)
+
+
+### Features
+
+* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* context id handler derives from component ([c868ec2](https://github.com/iotaledger/twin-framework/commit/c868ec21d3a576d4faa222bf130270a21936e50e))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* use singleton pattern for context storage ([c69f358](https://github.com/iotaledger/twin-framework/commit/c69f358e45361b45d4e46f19846cd5b8c99b0ccd))
+* use singleton pattern for context storage ([5cc706a](https://github.com/iotaledger/twin-framework/commit/5cc706a2bbfc601fa3d00f3efd8b764052e9f91d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.0 to 0.0.4-next.1
+    * @twin.org/nameof bumped from 0.0.4-next.0 to 0.0.4-next.1
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.0 to 0.0.4-next.1
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.0 to 0.0.4-next.1
+    * @twin.org/validate-locales bumped from 0.0.4-next.0 to 0.0.4-next.1
+
 ## [0.0.3](https://github.com/iotaledger/twin-framework/compare/context-v0.0.3...context-v0.0.3) (2026-05-27)
 
 
