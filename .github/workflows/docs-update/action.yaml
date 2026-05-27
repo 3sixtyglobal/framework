@@ -159,10 +159,10 @@ runs:
 
         if [ "$MERGE_STATE" = "CLEAN" ]; then
           echo "PR is mergeable now; merging immediately."
-          gh pr merge "$PR_NUMBER" --squash --delete-branch
+          gh pr merge "$PR_NUMBER" --squash
         else
           echo "PR is not mergeable yet; enabling auto-merge."
-          gh pr merge "$PR_NUMBER" --auto --squash --delete-branch
+          gh pr merge "$PR_NUMBER" --auto --squash
         fi
       env:
         GH_TOKEN: ${{ inputs.release_token }}
