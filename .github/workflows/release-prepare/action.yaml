@@ -126,9 +126,15 @@ runs:
       if: ${{ inputs.branch == 'main' }}
       shell: bash
       run: |
+        PROD_VERSION=$(node -e "
+          const m = JSON.parse(require('fs').readFileSync('release/release-please-manifest.prod.json', 'utf8'));
+          console.log(Object.values(m)[0]);
+        ")
+        echo "Release-As version: $PROD_VERSION"
+
         FORCE_BRANCH="release/force-commit-$(date +%s)"
         git checkout -b "$FORCE_BRANCH"
-        git commit -S --allow-empty -m "feat: release to production"
+        git commit -S --allow-empty -m "feat: release to production" -m "Release-As: $PROD_VERSION"
         git push origin "$FORCE_BRANCH"
         git checkout main
 

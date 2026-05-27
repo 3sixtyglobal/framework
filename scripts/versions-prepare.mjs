@@ -22,7 +22,7 @@ const CONFIG_PRERELEASE_FILENAME = 'release/release-please-config.prerelease.jso
 /**
  * Apply a semver bump to a stable version string.
  * @param {string} version A stable semver string e.g. "1.2.4".
- * @param {'patch'|'minor'|'major'} bumpType The bump to apply.
+ * @param {'promote'|'patch'|'minor'|'major'} bumpType The bump to apply.
  * @returns {string} The bumped version.
  */
 function applyBump(version, bumpType) {
@@ -88,6 +88,19 @@ async function run() {
 		process.stdout.write(`Stripped Version:   ${strippedVersion}\n`);
 		process.stdout.write(`Semver Bump:        ${semverType}\n`);
 		process.stdout.write(`Production Version: ${prodVersion}\n\n`);
+
+		// Update the prod manifest to prodVersion so release-prepare can read it back
+		// and stamp Release-As: {prodVersion} on the force commit, which tells
+		// release-please to use exactly this version regardless of commit analysis.
+		process.stdout.write(
+			`Updating release-please manifest: ${MANIFEST_PRODUCTION_FILENAME}\n\n`
+		);
+		const releaseManifestProd = await loadJson(MANIFEST_PRODUCTION_FILENAME);
+		for (const key of Object.keys(releaseManifestProd)) {
+			releaseManifestProd[key] = prodVersion;
+		}
+		await saveJson(MANIFEST_PRODUCTION_FILENAME, releaseManifestProd);
+		process.stdout.write(`Prod Manifest updated to: ${prodVersion}\n\n`);
 	} else {
 		process.stdout.write(`Loading release-please manifest: ${MANIFEST_PRODUCTION_FILENAME}\n\n`);
 		const releaseManifestProd = await loadJson(MANIFEST_PRODUCTION_FILENAME);
