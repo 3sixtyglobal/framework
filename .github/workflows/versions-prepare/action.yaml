@@ -72,6 +72,11 @@ runs:
         TARGET_BRANCH="${{ inputs.branch }}"
         TARGET_DIR="$RUNNER_TEMP/versions-prepare-$TARGET_BRANCH-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
 
+        # Unshallow the clone so git can locate the common ancestor between branches.
+        # actions/checkout defaults to fetch-depth:1; without full history the merge
+        # sees next and main as unrelated and every file becomes an add/add conflict.
+        git fetch --unshallow 2>/dev/null || true
+
         git fetch --no-tags --prune origin "+refs/heads/$TARGET_BRANCH:refs/remotes/origin/$TARGET_BRANCH"
 
         if [ "$TARGET_BRANCH" = "next" ]; then
@@ -87,7 +92,23 @@ runs:
       shell: bash
       run: |
         cd "$TARGET_DIR"
-        git merge -S --no-ff --allow-unrelated-histories --strategy-option theirs origin/main
+        if ! git merge -S --no-ff --strategy-option theirs origin/main; then
+          # add/add conflicts (files added independently on both branches with no common
+          # ancestor) are not auto-resolved by --strategy-option theirs. Resolve them by
+          # keeping next's version; versions-prepare will update version-bearing files anyway.
+          CONFLICT_FILES=$(git diff --name-only --diff-filter=U)
+          if [ -z "$CONFLICT_FILES" ]; then
+            echo "::error::Merge failed for reasons other than unresolved conflicts"
+            exit 1
+          fi
+          echo "Resolving add/add conflicts (keeping next's version):"
+          echo "$CONFLICT_FILES"
+          while IFS= read -r file; do
+            git checkout --ours -- "$file"
+          done <<< "$CONFLICT_FILES"
+          git add -A
+          git commit -S -m "chore: merge main into next"
+        fi
 
     # Set up Node.js environment for running npm commands
     - name: Setup Node.js
