@@ -106,19 +106,24 @@ jobs:
 
           # Attempt the merge; --strategy-option theirs handles most conflicts
           # but not modify/delete or rename/rename — those are resolved below.
-          git merge -S --no-ff --strategy-option theirs origin/next || {
+          # Capture the exit code without triggering set -e so the resolution
+          # block below runs in a normal set -e context and fails fast on error.
+          MERGE_EXIT=0
+          git merge -S --no-ff --strategy-option theirs origin/next || MERGE_EXIT=$?
+
+          if [ "$MERGE_EXIT" -ne 0 ]; then
             # For each file still in unmerged state, take next's version if it
             # exists there, or remove it if next deleted it.
             git ls-files --unmerged | awk '{print $4}' | sort -u | while IFS= read -r file; do
               if git ls-tree -r origin/next -- "$file" | grep -q .; then
                 git checkout origin/next -- "$file"
               else
-                git rm -f "$file" 2>/dev/null || rm -f "$file"
+                git rm -f "$file"
               fi
             done
             git add -A
             git commit -S --no-edit
-          }
+          fi
 
           git push origin "$BRANCH_NAME"
           echo "branch_name=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
