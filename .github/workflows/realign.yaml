@@ -1,0 +1,32 @@
+name: Realign Next Branch
+
+# Manually trigger a next-branch realignment outside of the normal release
+# lifecycle — useful after hotfixes, manual main changes, or failed releases.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  realign-next:
+    name: Realign Next Branch
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - name: Checkout workflow ref
+        uses: actions/checkout@v6
+
+      - name: Versions Prepare for next
+        uses: ./.github/workflows/versions-prepare
+        with:
+          branch: next
+          gpg_private_key: ${{ secrets.TWIN_GPG_PRIVATE_KEY }}
+          gpg_key_id: ${{ secrets.TWIN_GPG_KEY_ID }}
+          test_env_vars: ${{ secrets.TWIN_TEST_ENV_VARS }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
