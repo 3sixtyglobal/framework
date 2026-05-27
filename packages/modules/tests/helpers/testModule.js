@@ -61,7 +61,7 @@ export async function testMethodWithContextIds() {
 }
 
 export async function testMethodAcquireMutex(key, holdMs = 0) {
-	Mutex.lock(key, { timeoutMs: 5000, throwOnTimeout: true });
+	await Mutex.lock(key, { timeoutMs: 5000, throwOnTimeout: true });
 	if (holdMs > 0) {
 		await new Promise(resolve => setTimeout(resolve, holdMs));
 	}
@@ -72,7 +72,7 @@ export async function testMethodAcquireMutex(key, holdMs = 0) {
 // Like testMethodAcquireMutex but also writes 1 to signalBuf once the lock is held,
 // so the main thread can synchronise without polling or arbitrary sleeps.
 export async function testMethodAcquireMutexSignalled(key, signalBuf, holdMs = 0) {
-	Mutex.lock(key, { timeoutMs: 5000, throwOnTimeout: true });
+	await Mutex.lock(key, { timeoutMs: 5000, throwOnTimeout: true });
 	const signal = new Int32Array(signalBuf);
 	Atomics.store(signal, 0, 1);
 	Atomics.notify(signal, 0, 1);
@@ -91,7 +91,7 @@ export async function testMethodTryAcquireMutex(key, timeoutMs) {
 // The separate Atomics.load + Atomics.store is intentionally non-atomic so that any gap
 // in mutex protection would produce a lost update.
 export async function testMethodMutexIncrement(key, counterBuf) {
-	Mutex.lock(key, { timeoutMs: 10000, throwOnTimeout: true });
+	await Mutex.lock(key, { timeoutMs: 10000, throwOnTimeout: true });
 	const counter = new Int32Array(counterBuf);
 	const val = Atomics.load(counter, 0);
 	Atomics.store(counter, 0, val + 1);
