@@ -1,1 +1,3 @@
+#!/usr/bin/env sh
+
 node ./scripts/validate-branch-name.mjs

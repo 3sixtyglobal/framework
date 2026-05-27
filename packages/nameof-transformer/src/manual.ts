@@ -23,7 +23,7 @@ export function manual(content: string): string {
 		const nameRegExCamelCase = /nameofCamelCase<(.*?)(?:<.*?>)?>\(\)/g;
 		content = content.replace(
 			nameRegExCamelCase,
-			(_match, typeName: string) => `"${camelCase(typeName)}"`
+			(match, typeName: string) => `"${camelCase(typeName)}"`
 		);
 
 		// Replace the nameofKebabCase<IMyObject>() with the kebabCase version of the type name
@@ -32,7 +32,7 @@ export function manual(content: string): string {
 		const nameRegExKebabCase = /nameofKebabCase<(.*?)(?:<.*?>)?>\(\)/g;
 		content = content.replace(
 			nameRegExKebabCase,
-			(_match, typeName: string) => `"${kebabCase(typeName)}"`
+			(match, typeName: string) => `"${kebabCase(typeName)}"`
 		);
 
 		// Replace the nameof(object?.prop) with "object.prop"
@@ -43,14 +43,14 @@ export function manual(content: string): string {
 		const propRegExCamelCase = /nameofCamelCase\((.*?)\)/g;
 		content = content.replace(
 			propRegExCamelCase,
-			(_match, typeName: string) => `"${camelCase(typeName)}"`
+			(match, typeName: string) => `"${camelCase(typeName)}"`
 		);
 
 		// Replace the nameofKebabCase(object?.prop) with "object.prop"
 		const propRegExKebabCase = /nameofKebabCase\((.*?)\)/g;
 		content = content.replace(
 			propRegExKebabCase,
-			(_match, typeName: string) => `"${kebabCase(typeName)}"`
+			(match, typeName: string) => `"${kebabCase(typeName)}"`
 		);
 	}
 	return content;

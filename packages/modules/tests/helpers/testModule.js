@@ -1,23 +1,35 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 const { ContextIdStore } = await import('@twin.org/context');
+const { Mutex } = await import('@twin.org/core');
 
-export const testMethod = () => 1;
-export const testMethodAdd = (value1, value2) => value1 + value2;
-export const testMethodAddAsync = async (value1, value2) => value1 * value2;
+export function testMethod() {
+	return 1;
+}
+
+export function testMethodAdd(value1, value2) {
+	return value1 + value2;
+}
+
+export async function testMethodAddAsync(value1, value2) {
+	return value1 * value2;
+}
+
 export const testValue = 2;
-export const testMethodWithError = () => {
+
+export function testMethodWithError() {
 	throw new Error('This is a test error');
-};
-export const testMethodWithErrorAsync = async () => {
+}
+
+export async function testMethodWithErrorAsync() {
 	throw new Error('This is a test error async');
-};
+}
 
 let continueRunning = true;
 let runningTotal = 0;
 const tasks = [];
 
-export const testStartTaskRunner = async () => {
+export async function testStartTaskRunner() {
 	// eslint-disable-next-line no-unmodified-loop-condition
 	while (continueRunning) {
 		if (tasks.length > 0) {
@@ -27,22 +39,62 @@ export const testStartTaskRunner = async () => {
 		}
 		await new Promise(resolve => setTimeout(resolve, 50));
 	}
-};
+}
 
-export const testTask = async value =>
-	new Promise(resolve => {
+export async function testTask(value) {
+	return new Promise(resolve => {
 		tasks.push({
 			complete: () => resolve(runningTotal),
 			value
 		});
 	});
+}
 
-export const testEndTaskRunner = async () => {
+export async function testEndTaskRunner() {
 	continueRunning = false;
 	return runningTotal;
-};
+}
 
-export const testMethodWithContextIds = async () => {
+export async function testMethodWithContextIds() {
 	const contextIds = await ContextIdStore.getContextIds();
 	return contextIds;
-};
+}
+
+export async function testMethodAcquireMutex(key, holdMs = 0) {
+	Mutex.lock(key, { timeoutMs: 5000, throwOnTimeout: true });
+	if (holdMs > 0) {
+		await new Promise(resolve => setTimeout(resolve, holdMs));
+	}
+	Mutex.unlock(key);
+	return 'acquired';
+}
+
+// Like testMethodAcquireMutex but also writes 1 to signalBuf once the lock is held,
+// so the main thread can synchronise without polling or arbitrary sleeps.
+export async function testMethodAcquireMutexSignalled(key, signalBuf, holdMs = 0) {
+	Mutex.lock(key, { timeoutMs: 5000, throwOnTimeout: true });
+	const signal = new Int32Array(signalBuf);
+	Atomics.store(signal, 0, 1);
+	Atomics.notify(signal, 0, 1);
+	if (holdMs > 0) {
+		await new Promise(resolve => setTimeout(resolve, holdMs));
+	}
+	Mutex.unlock(key);
+	return 'acquired';
+}
+
+export async function testMethodTryAcquireMutex(key, timeoutMs) {
+	return Mutex.lock(key, { timeoutMs });
+}
+
+// Acquires the mutex, performs a non-atomic read-modify-write on counterBuf, releases.
+// The separate Atomics.load + Atomics.store is intentionally non-atomic so that any gap
+// in mutex protection would produce a lost update.
+export async function testMethodMutexIncrement(key, counterBuf) {
+	Mutex.lock(key, { timeoutMs: 10000, throwOnTimeout: true });
+	const counter = new Int32Array(counterBuf);
+	const val = Atomics.load(counter, 0);
+	Atomics.store(counter, 0, val + 1);
+	Mutex.unlock(key);
+	return val + 1;
+}

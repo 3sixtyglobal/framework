@@ -238,7 +238,7 @@ describe("ContextIdStore", () => {
 		let insideBeforeThrow: IContextIds | undefined;
 		await expect(
 			ContextIdStore.run(ids, async () => {
-				await new Promise<void>((_resolve, reject) => {
+				await new Promise<void>((resolve, reject) => {
 					setTimeout(async () => {
 						insideBeforeThrow = await ContextIdStore.getContextIds();
 						reject(new Error("Timeout error"));

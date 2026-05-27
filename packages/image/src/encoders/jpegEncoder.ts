@@ -798,20 +798,20 @@ export class JpegEncoder {
 	 * @internal
 	 */
 	private processDU(
-		CDU: number[],
+		cdu: number[],
 		fdTbl: number[],
 		passedDC: number,
-		HTDc: number[][],
-		HTAc: number[][]
+		htdc: number[][],
+		htac: number[][]
 	): number {
 		let DC = passedDC;
-		const EOB = HTAc[0x00];
-		const m16zeroes = HTAc[0xf0];
+		const EOB = htac[0x00];
+		const m16zeroes = htac[0xf0];
 		let pos;
 		const I16 = 16;
 		const I63 = 63;
 		const I64 = 64;
-		const DU_DCT = this.fDCTQuant(CDU, fdTbl);
+		const DU_DCT = this.fDCTQuant(cdu, fdTbl);
 		// ZigZag reorder
 		for (let j = 0; j < I64; ++j) {
 			this._du[JpegEncoder._SIG_ZAG[j]] = DU_DCT[j];
@@ -820,10 +820,10 @@ export class JpegEncoder {
 		DC = this._du[0];
 		// Encode DC
 		if (diff === 0) {
-			this.writeBits(HTDc[0]); // Diff might be 0
+			this.writeBits(htdc[0]); // Diff might be 0
 		} else {
 			pos = 32767 + diff;
-			this.writeBits(HTDc[this._category[pos]]);
+			this.writeBits(htdc[this._category[pos]]);
 			this.writeBits(this._bitCode[pos]);
 		}
 		// Encode ACs
@@ -848,7 +848,7 @@ export class JpegEncoder {
 				nrZeroes &= 0xf;
 			}
 			pos = 32767 + this._du[i];
-			this.writeBits(HTAc[(nrZeroes << 4) + this._category[pos]]);
+			this.writeBits(htac[(nrZeroes << 4) + this._category[pos]]);
 			this.writeBits(this._bitCode[pos]);
 			i++;
 		}

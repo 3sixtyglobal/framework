@@ -53,16 +53,43 @@ export class CLIDisplay {
 	 * Display an error message.
 	 * @param error The error to display.
 	 * @param lineBreaks Whether to add a line break after the error.
+	 * @param options Options for formatting the error.
+	 * @param options.includeStack Whether to include the stack trace in the output, defaults to false.
+	 * @param options.includeAdditional Whether to include additional error information in the output, defaults to false.
 	 */
-	public static error(error: unknown, lineBreaks: boolean = true): void {
+	public static error(
+		error: unknown,
+		lineBreaks: boolean = true,
+		options: { includeStack?: boolean; includeAdditional?: boolean } = {}
+	): void {
 		CLIDisplay.writeError("❗ ");
 		CLIDisplay.writeError(chalk.red(I18n.formatMessage("cli.progress.error")));
 		if (lineBreaks) {
 			CLIDisplay.writeError("\n");
 		}
 
-		const formatted = ErrorHelper.formatErrors(error, true);
-		CLIDisplay.writeError(chalk.red(formatted.map(e => `\t${e}`).join("\n")));
+		const formatted = ErrorHelper.localizeErrors(error);
+		CLIDisplay.writeError(chalk.red(formatted.map(e => `\t${e.message}`).join("\n")));
+
+		if (options.includeAdditional) {
+			for (const err of formatted) {
+				if (Is.arrayValue(err.additional)) {
+					CLIDisplay.writeError(chalk.red(`\n\t\t${err.additional.join("\n\t\t")}\n`));
+				}
+			}
+		}
+
+		if (options.includeStack) {
+			CLIDisplay.writeError("\n");
+			CLIDisplay.writeError("\n-----DEBUG STACK START-----\n\n");
+			for (const err of formatted) {
+				if (Is.stringValue(err.stack)) {
+					CLIDisplay.writeError(`${err.stack}\n`);
+				}
+			}
+			CLIDisplay.writeError("\n-----DEBUG STACK END-----\n");
+		}
+
 		if (lineBreaks) {
 			CLIDisplay.writeError("\n");
 		}
