@@ -1,0 +1,321 @@
+name: Production Release
+
+# GHA_RELEASE_TOKEN requires:
+#   actions:       read/write
+#   contents:      read
+#   pull-requests: read
+
+# This workflow orchestrates the full production release process in a single run.
+# It drives the Versions Prepare → Release → Publish chain and pauses at each
+# review boundary until the generated pull request is approved and merged.
+#
+# Flow:
+#   Phase 1 – Run the versions-prepare composite action for main and create the alignment PR.
+#   Gate  1 – Poll until the main alignment PR is approved and merged.
+#   Phase 2 – Dispatch Release workflow (prepare phase) and wait for the release PR.
+#   Gate  2 – Poll until the release PR is approved and merged.
+#             Publishing and next-branch realignment proceed automatically via
+#             the Release workflow once the release PR is merged.
+#
+# Event-driven note: The gate jobs poll the GitHub API every 60 seconds for up
+# to 6 hours each. For repositories where holding a runner for that duration is
+# unacceptable, replace each gate job with a lightweight repository_dispatch
+# handler fired from a pull_request.closed event workflow.
+
+on:
+  workflow_dispatch:
+    inputs:
+      semverBump:
+        description: 'Version bump type for this production release'
+        required: true
+        type: choice
+        options:
+          - '🔧 patch'
+          - '✨ minor'
+          - '🚀 major'
+
+# Only one production release may run at a time. A second trigger is queued,
+# not cancelled, so it cannot race with an in-progress release.
+concurrency:
+  group: production-release
+  cancel-in-progress: false
+
+jobs:
+  # ──────────────────────────────────────────────────────────────────────────
+  # PHASE 1 – PREPARE MAIN
+  # Runs the Versions Prepare steps inline on main and creates the alignment
+  # PR.
+  # ──────────────────────────────────────────────────────────────────────────
+  prepare-main:
+    name: 'Phase 1 · Prepare main branch'
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    timeout-minutes: 90
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    outputs:
+      pr_number: ${{ steps.versions-prepare.outputs.pr_number }}
+      pr_url: ${{ steps.versions-prepare.outputs.pr_url }}
+      has_changes: ${{ steps.versions-prepare.outputs.has_changes }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Versions Prepare
+        id: versions-prepare
+        uses: ./.github/workflows/versions-prepare
+        with:
+          branch: main
+          gpg_private_key: ${{ secrets.TWIN_GPG_PRIVATE_KEY }}
+          gpg_key_id: ${{ secrets.TWIN_GPG_KEY_ID }}
+          test_env_vars: ${{ secrets.TWIN_TEST_ENV_VARS }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # GATE 1 – WAIT FOR MAIN ALIGNMENT PR
+  # Polls until the PR is merged. Fails hard if the PR is closed without merge
+  # so the release does not proceed on a misaligned main branch.
+  # ──────────────────────────────────────────────────────────────────────────
+  gate-main-alignment:
+    name: 'Gate 1 · Merge main alignment PR'
+    needs: prepare-main
+    if: ${{ needs.prepare-main.outputs.has_changes == 'true' }}
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    timeout-minutes: 360
+    permissions:
+      pull-requests: read
+
+    steps:
+      - name: Poll until main alignment PR is merged
+        run: |
+          PR_NUMBER="${{ needs.prepare-main.outputs.pr_number }}"
+          PR_URL="${{ needs.prepare-main.outputs.pr_url }}"
+
+          echo "::notice title=Gate 1 – Main Alignment PR::Approve and merge to continue the production release: $PR_URL"
+          echo ""
+          echo "Waiting for PR #$PR_NUMBER to be approved and merged..."
+
+          while true; do
+            PR_JSON=$(gh pr view "$PR_NUMBER" \
+              --repo "${{ github.repository }}" \
+              --json state,mergedAt)
+
+            STATE=$(echo "$PR_JSON" | jq -r '.state')
+            MERGED_AT=$(echo "$PR_JSON" | jq -r '.mergedAt // empty')
+
+            if [ -n "$MERGED_AT" ]; then
+              echo "PR #$PR_NUMBER merged. Advancing to release preparation."
+              exit 0
+            fi
+
+            if [ "$STATE" = "CLOSED" ]; then
+              echo "::error title=Gate 1 Failed::PR #$PR_NUMBER ($PR_URL) was closed without merging. Production release aborted."
+              echo "Re-run this workflow to restart."
+              exit 1
+            fi
+
+            echo "PR #$PR_NUMBER is still open. Rechecking in 60 seconds..."
+            sleep 60
+          done
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # PHASE 2 – PREPARE RELEASE PR
+  # Maps the semver input to the release type expected by release.yaml, then
+  # dispatches the Release workflow (prepare phase) and waits for the release
+  # PR to appear. Runs whether Phase 1 produced a PR or was a no-op.
+  # ──────────────────────────────────────────────────────────────────────────
+  prepare-release:
+    name: 'Phase 2 · Prepare release PR'
+    needs: gate-main-alignment
+    if: |
+      always() &&
+      !cancelled() &&
+      (needs.gate-main-alignment.result == 'success' || needs.gate-main-alignment.result == 'skipped')
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    timeout-minutes: 60
+    permissions:
+      actions: write
+    outputs:
+      pr_number: ${{ steps.find-release-pr.outputs.pr_number }}
+      pr_url: ${{ steps.find-release-pr.outputs.pr_url }}
+
+    steps:
+      - name: Resolve release type and dispatch Release workflow
+        id: dispatch
+        run: |
+          INPUT="${{ inputs.semverBump }}"
+
+          case "$INPUT" in
+            *patch*) RELEASE_TYPE='🔧 patch (main branch)' ;;
+            *minor*) RELEASE_TYPE='✨ minor (main branch)' ;;
+            *major*) RELEASE_TYPE='🚀 major (main branch)' ;;
+            *)
+              echo "::error::Unrecognised semver bump: $INPUT"
+              exit 1
+              ;;
+          esac
+
+          START_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "start_time=$START_TIME" >> $GITHUB_OUTPUT
+          echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
+
+          echo "Dispatching Release workflow with type: $RELEASE_TYPE"
+          gh workflow run release.yaml \
+            --repo "${{ github.repository }}" \
+            --ref main \
+            -f releaseType="$RELEASE_TYPE"
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+
+      # Poll for the release PR (identified by the autorelease: pending label).
+      # The Release prepare phase runs docs-update and a full build before
+      # opening the PR, so allow up to 45 minutes (90 × 30 s).
+      - name: Wait for release PR to be created
+        id: find-release-pr
+        run: |
+          START_TIME="${{ steps.dispatch.outputs.start_time }}"
+          echo "Waiting for release PR with 'autorelease: pending' label (dispatched at $START_TIME)..."
+
+          for i in $(seq 1 90); do
+            sleep 30
+
+            PR_DATA=$(gh pr list \
+              --repo "${{ github.repository }}" \
+              --base main \
+              --state open \
+              --label "autorelease: pending" \
+              --json number,url,createdAt \
+              --jq "[.[] | select(.createdAt >= \"$START_TIME\")] \
+                    | sort_by(.createdAt) | reverse | .[0] // empty")
+
+            if [ -n "$PR_DATA" ]; then
+              PR_NUMBER=$(echo "$PR_DATA" | jq -r '.number')
+              PR_URL=$(echo "$PR_DATA" | jq -r '.url')
+              echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+              echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
+              echo "Release PR found: #$PR_NUMBER – $PR_URL"
+              exit 0
+            fi
+
+            # Surface early if the dispatched Release workflow has already failed
+            FAILED_RUN=$(gh run list \
+              --repo "${{ github.repository }}" \
+              --workflow "Release" \
+              --branch main \
+              --event workflow_dispatch \
+              --json databaseId,conclusion,createdAt \
+              --jq "[.[] | select(.createdAt >= \"$START_TIME\" and .conclusion == \"failure\")] \
+                    | .[0].databaseId // empty")
+
+            if [ -n "$FAILED_RUN" ]; then
+              RUN_URL="https://github.com/${{ github.repository }}/actions/runs/$FAILED_RUN"
+              echo "::error::Release workflow failed before creating a release PR. See: $RUN_URL"
+              echo "Common cause: a stale 'autorelease: pending' PR is blocking a new one."
+              echo "To recover: remove the 'autorelease: pending' label from the existing PR, then re-run."
+              exit 1
+            fi
+
+            echo "Release PR not visible yet (attempt $i/90, ~$((i * 30 / 60)) min elapsed)..."
+          done
+
+          echo "::error::Release workflow did not create a release PR within 45 minutes."
+          echo "Check the Release workflow run for failure details."
+          exit 1
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # GATE 2 – WAIT FOR RELEASE PR
+  # Polls until the release PR (labelled autorelease: pending) is merged.
+  # Once merged, the Release workflow's publish phase fires automatically
+  # and the next branch is realigned after publishing completes.
+  # ──────────────────────────────────────────────────────────────────────────
+  gate-release-pr:
+    name: 'Gate 2 · Merge release PR'
+    needs: prepare-release
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    timeout-minutes: 360
+    permissions:
+      pull-requests: read
+
+    steps:
+      - name: Poll until release PR is merged
+        run: |
+          PR_NUMBER="${{ needs.prepare-release.outputs.pr_number }}"
+          PR_URL="${{ needs.prepare-release.outputs.pr_url }}"
+
+          echo "::notice title=Gate 2 – Release PR::Review and merge to publish: $PR_URL"
+          echo ""
+          echo "Waiting for release PR #$PR_NUMBER to be approved and merged..."
+          echo "Once merged, packages will publish automatically and next will be realigned."
+
+          while true; do
+            PR_JSON=$(gh pr view "$PR_NUMBER" \
+              --repo "${{ github.repository }}" \
+              --json state,mergedAt)
+
+            STATE=$(echo "$PR_JSON" | jq -r '.state')
+            MERGED_AT=$(echo "$PR_JSON" | jq -r '.mergedAt // empty')
+
+            if [ -n "$MERGED_AT" ]; then
+              echo "Release PR #$PR_NUMBER merged."
+              echo "The Release workflow is now publishing packages to npm and creating GitHub releases."
+              echo "The next branch will be realigned automatically after publishing completes."
+              exit 0
+            fi
+
+            if [ "$STATE" = "CLOSED" ]; then
+              echo "::error title=Gate 2 Failed::Release PR #$PR_NUMBER ($PR_URL) was closed without merging. Publishing aborted."
+              echo "To recover: remove the 'autorelease: pending' label from the PR, then re-run this workflow."
+              exit 1
+            fi
+
+            echo "PR #$PR_NUMBER is still open. Rechecking in 60 seconds..."
+            sleep 60
+          done
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # SUMMARY
+  # Prints the final handoff state once both gates have passed.
+  # Publishing and next-branch realignment are already underway via the
+  # Release workflow at this point.
+  # ──────────────────────────────────────────────────────────────────────────
+  summary:
+    name: 'Production release handoff complete'
+    needs: [prepare-main, prepare-release, gate-release-pr]
+    if: always() && !cancelled() && needs.gate-release-pr.result == 'success'
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+
+    steps:
+      - name: Print release summary
+        run: |
+          echo "## Production Release Orchestration Complete"
+          echo ""
+          if [ "${{ needs.prepare-main.outputs.has_changes }}" = "true" ]; then
+            echo "Main alignment PR:  ${{ needs.prepare-main.outputs.pr_url }}"
+          else
+            echo "Main alignment PR:  skipped (no version changes)"
+          fi
+          echo "Release PR:         ${{ needs.prepare-release.outputs.pr_url }}"
+          echo ""
+          echo "The Release workflow is now:"
+          echo "  • Publishing packages to npm (latest tag)"
+          echo "  • Creating GitHub releases"
+          echo "  • Realigning the next branch via Versions Prepare (PR will be opened for review)"

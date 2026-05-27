@@ -1,0 +1,522 @@
+name: Release
+
+# GHA_RELEASE_TOKEN requires:
+#   contents: read/write
+#   pull-requests: read/write
+#   workflows: read/write
+
+# This workflow orchestrates the full release lifecycle in two gated phases.
+#
+# Phase 1 – Prepare (workflow_dispatch):
+#   A maintainer selects the release type. The workflow refreshes docs, runs
+#   release-please to create a versioned PR, then stops. No packages are
+#   published at this point.
+#
+# Phase 2 – Publish (pull_request closed, merged):
+#   Triggered automatically when a release PR labelled 'autorelease: pending'
+#   is approved and merged into main or next. Packages are published to npm
+#   and GitHub releases are created. If the PR is closed without merge, this
+#   phase is skipped entirely.
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseType:
+        description: 'Which type of release to create'
+        required: true
+        type: choice
+        options:
+          - '🚧 prerelease (next branch)' # Development releases (e.g. 0.1.0-next.1) – uses 'next' branch
+          - '🔧 patch (main branch)' # Bug fixes (e.g. 0.1.1) – uses 'main' branch
+          - '✨ minor (main branch)' # New features (e.g. 0.2.0) – uses 'main' branch
+          - '🚀 major (main branch)' # Breaking changes (e.g. 1.0.0) – uses 'main' branch
+
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+      - next
+
+jobs:
+  # ──────────────────────────────────────────────────────────────────────────
+  # PHASE 1 – PREPARE
+  # Runs on workflow_dispatch only. Creates the release PR with version bumps
+  # and changelog updates. Publishing will start automatically after merge.
+  # ──────────────────────────────────────────────────────────────────────────
+  prepare:
+    name: Prepare Release
+    if: github.event_name == 'workflow_dispatch'
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    permissions:
+      checks: read # Needed when querying workflow/check run state
+      contents: write # Needed for creating/updating branches for version bumps
+      pull-requests: write # Needed for creating the release PR
+      id-token: write # Keep existing permissions for authentication
+
+    steps:
+      # Set branch variable based on release type
+      - name: Set target branch
+        id: set-branch
+        run: |
+          INPUT="${{ github.event.inputs.releaseType }}"
+
+          if [[ "$INPUT" == *"patch"* ]]; then
+            BRANCH="main"
+            SEMVER_TYPE="patch"
+          elif [[ "$INPUT" == *"minor"* ]]; then
+            BRANCH="main"
+            SEMVER_TYPE="minor"
+          elif [[ "$INPUT" == *"major"* ]]; then
+            BRANCH="main"
+            SEMVER_TYPE="major"
+          elif [[ "$INPUT" == *"prerelease"* ]]; then
+            BRANCH="next"
+            SEMVER_TYPE="prerelease"
+          else
+            echo "Error: Unrecognized release type: $INPUT"
+            exit 1
+          fi
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          echo "semver_type=$SEMVER_TYPE" >> $GITHUB_OUTPUT
+          echo "Using branch: $BRANCH"
+          echo "Using semver type: $SEMVER_TYPE"
+
+      # Fail fast if a previous release PR is still open with autorelease: pending.
+      # release-please will not create a new PR while one already exists, so this
+      # surfaces the blocking state explicitly before any work is done.
+      - name: Check for stale autorelease state
+        run: |
+          BRANCH="${{ steps.set-branch.outputs.branch }}"
+          STALE_COUNT=$(gh pr list \
+            --repo "${{ github.repository }}" \
+            --base "$BRANCH" \
+            --label "autorelease: pending" \
+            --state open \
+            --json number \
+            --jq 'length')
+
+          if [ "$STALE_COUNT" -gt 0 ]; then
+            STALE_PRS=$(gh pr list \
+              --repo "${{ github.repository }}" \
+              --base "$BRANCH" \
+              --label "autorelease: pending" \
+              --state open \
+              --json number,url \
+              --jq '.[] | "#\(.number) \(.url)"')
+            echo "::error::Found $STALE_COUNT open release PR(s) with 'autorelease: pending' targeting $BRANCH:"
+            echo "$STALE_PRS"
+            echo "Remove the 'autorelease: pending' label from the existing PR (or close it) before starting a new release."
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      # Ensure docs are refreshed on the target branch before release preparation starts
+      - name: Docs Update
+        uses: ./.github/workflows/docs-update
+        with:
+          branch: ${{ steps.set-branch.outputs.branch }}
+          gpg_private_key: ${{ secrets.TWIN_GPG_PRIVATE_KEY }}
+          gpg_key_id: ${{ secrets.TWIN_GPG_KEY_ID }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+
+      # Clone the repository to the runner
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }} # Use admin PAT instead of GITHUB_TOKEN
+          ref: ${{ steps.set-branch.outputs.branch }} # Checkout the calculated branch
+          fetch-depth: 0 # Fetch all history for accurate versioning
+
+      # Set up Node.js environment for running npm commands
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      # Install dependencies with retry
+      - name: Install dependencies
+        run: |
+          for i in {1..3}; do
+            npm ci && break || {
+              if [ $i -eq 3 ]; then
+                echo "npm ci failed after 3 attempts"
+                exit 1
+              fi
+              echo "npm ci failed, retrying in 30 seconds (attempt $i/3)..."
+              sleep 30
+            }
+          done
+
+      # Apply custom patches to release-please to modify its behavior.
+      # This customizes how prerelease versioning works to always increment the prerelease
+      # number without bumping the core version (e.g. 0.1.0-next.1 → 0.1.0-next.2).
+      - name: Patch release-please prerelease versioning strategy
+        run: npx patch-package --patch-dir release
+
+      # Import GPG key for signing commits
+      - name: Import GPG key
+        run: |
+          echo "$TWIN_GPG_PRIVATE_KEY" | base64 --decode | gpg --import
+          echo "TWIN_GPG_KEY_ID=$TWIN_GPG_KEY_ID" >> $GITHUB_ENV
+        env:
+          TWIN_GPG_PRIVATE_KEY: ${{ secrets.TWIN_GPG_PRIVATE_KEY }} # Base64 encoded private key
+          TWIN_GPG_KEY_ID: ${{ secrets.TWIN_GPG_KEY_ID }} # GPG key ID
+
+      # Set git config once for all subsequent steps
+      - name: Configure Git
+        run: |
+          git config --global user.email "github@twindev.org"
+          git config --global user.name "TWIN GitHub Bot"
+          git config --global user.signingkey "$TWIN_GPG_KEY_ID"
+          git config --global commit.gpgsign true
+          git config --global tag.gpgsign true
+
+      # release-please will not see any changes if next has been merged into main.
+      # This step ensures release-please runs even if there are no conventional commits.
+      - name: Force release by adding commit
+        if: steps.set-branch.outputs.branch == 'main'
+        run: |
+          git commit -S --allow-empty -m "feat: release to production"
+          git push origin main
+
+      # Update the release-please configuration based on the selected release type
+      - name: Update release-please prod config
+        if: steps.set-branch.outputs.branch == 'main' # Only run for production releases
+        run: |
+          node -e "
+            const fs = require('fs');
+            const config = JSON.parse(fs.readFileSync('release/release-please-config.prod.json', 'utf8'));
+            config['versioning'] = 'always-bump-${{ steps.set-branch.outputs.semver_type }}';
+            fs.writeFileSync('release/release-please-config.prod.json', JSON.stringify(config, null, 2));
+          "
+
+      # Run release-please to analyse commits, determine version bumps, update changelogs,
+      # and open a PR with all those changes
+      - name: Release Please
+        id: release-please
+        run: |
+          CONFIG_FILE=release/release-please-config.${{ steps.set-branch.outputs.branch == 'next' && 'prerelease' || 'prod' }}.json
+          MANIFEST_FILE=release/release-please-manifest.${{ steps.set-branch.outputs.branch == 'next' && 'prerelease' || 'prod' }}.json
+
+          OUTPUT=$(node_modules/.bin/release-please release-pr \
+            --config-file=${CONFIG_FILE} \
+            --manifest-file=${MANIFEST_FILE} \
+            --repo-url=${{ github.repository }} \
+            --target-branch=${{ steps.set-branch.outputs.branch }} \
+            --token=${{ secrets.GITHUB_TOKEN }})
+
+          echo "Release-please output: $OUTPUT"
+
+          if [[ "$OUTPUT" == *"Successfully opened pull request:"* ]]; then
+            PR_NUMBER=$(echo "$OUTPUT" | grep -o "Successfully opened pull request: [0-9]\+" | sed 's/Successfully opened pull request: //')
+            echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+            echo "Release PR created: #$PR_NUMBER"
+            echo ""
+            echo "Next steps:"
+            echo "  1. Review the release PR: https://github.com/${{ github.repository }}/pull/$PR_NUMBER"
+            echo "  2. Approve and merge it."
+            echo "  3. Publishing will start automatically once the PR is merged."
+          else
+            echo "::error::release-please did not create a PR. Either there are no releasable commits since the last release, or a stale 'autorelease: pending' PR is blocking a new one. Check for open PRs labelled 'autorelease: pending' on the ${{ steps.set-branch.outputs.branch }} branch."
+            exit 1
+          fi
+
+      # Approve the PR using a separate token because GitHub does not allow self-approval.
+      # Branch protection requires at least one approval before merge.
+      - name: Add reviewer to PR
+        if: steps.release-please.outputs.pr_number != ''
+        run: |
+          gh pr review ${{ steps.release-please.outputs.pr_number }} --approve
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }} # Personal access token from a different user
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # PHASE 2 – PUBLISH
+  # Triggered automatically when a release PR labelled 'autorelease: pending'
+  # is approved and merged into main or next. All three publish jobs are
+  # skipped if the PR was closed without merge, or for any non-release PR.
+  # ──────────────────────────────────────────────────────────────────────────
+
+  # Extract workspace package patterns and determine the target branch.
+  # Downstream publish jobs depend on the outputs of this job.
+  process-workspaces:
+    name: Process Workspaces
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.merged == true &&
+      contains(github.event.pull_request.labels.*.name, 'autorelease: pending')
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    permissions:
+      contents: read
+    outputs:
+      packages: ${{ steps.read-workspaces.outputs.packages }}
+      branch: ${{ steps.set-branch.outputs.branch }}
+
+    steps:
+      # Derive the target branch from the merged PR rather than an operator input
+      - name: Set target branch
+        id: set-branch
+        run: |
+          BRANCH="${{ github.event.pull_request.base.ref }}"
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          echo "Publishing from branch: $BRANCH"
+
+      # Clone the repository to the runner
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ github.token }}
+          ref: ${{ steps.set-branch.outputs.branch }}
+
+      # Configure Node.js and NPM settings
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+
+      # Extract workspace package patterns from package.json.
+      # The matrix in publish-packages receives these patterns.
+      - name: Extract workspaces from package.json
+        id: read-workspaces
+        run: |
+          PACKAGES=$(node -e '
+            const pkg = JSON.parse(require("fs").readFileSync("./package.json", "utf8"));
+            console.log(JSON.stringify(pkg.workspaces));
+          ')
+          echo "Found packages: $PACKAGES"
+          echo "packages=$PACKAGES" >> $GITHUB_OUTPUT
+
+  # Build, test, and publish each workspace package to npm.
+  # Runs once per workspace pattern (max-parallel: 1 for ordered publishing).
+  publish-packages:
+    name: Publish Package (${{ matrix.package || 'phase 2 only' }})
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    permissions:
+      contents: read
+      id-token: write # Needed for npm provenance
+    needs: process-workspaces
+    strategy:
+      max-parallel: 1 # Process one package at a time (important for interdependent packages)
+      matrix:
+        package: ${{ fromJson(needs.process-workspaces.outputs.packages) }}
+
+    steps:
+      # Clone the repository to the runner
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ github.token }}
+          ref: ${{ needs.process-workspaces.outputs.branch }}
+
+      # Load test environment variables into the runner environment
+      - name: Load Test Environment Variables
+        shell: bash
+        run: |
+          printf '%s\n' "${{ secrets.TWIN_TEST_ENV_VARS }}" >> "$GITHUB_ENV"
+
+      # Configure Node.js and NPM settings
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+
+      # Setup any services required for tests
+      - name: Setup Test Environment
+        uses: ./.github/workflows/setup-test-env
+        with:
+          package: ${{ matrix.package }}
+          test_env_vars: ${{ secrets.TWIN_TEST_ENV_VARS }}
+
+      # Remove root manifests so installs only resolve within the current workspace package
+      - name: Remove Mono-Repo Node Modules
+        run: |
+          rm package.json
+          rm package-lock.json
+
+      # Install dependencies with retry for the specific package
+      - name: Install dependencies
+        run: |
+          cd ${{ matrix.package }}
+          for i in {1..3}; do
+            npm install && break || {
+              if [ $i -eq 3 ]; then
+                echo "npm install failed after 3 attempts"
+                exit 1
+              fi
+              echo "npm install failed, retrying in 30 seconds (attempt $i/3)..."
+              sleep 30
+            }
+          done
+
+      # Build and package the distribution artefacts
+      - name: Run Dist
+        run: |
+          cd ${{ matrix.package }}
+          npm run dist
+
+      # Remove scripts and devDependencies that are not needed in the published package
+      - name: Cleanup package.json properties
+        run: |
+          cd ${{ matrix.package }}
+          npm pkg delete scripts
+          npm pkg delete devDependencies
+
+      - name: Pack NPM Package
+        id: pack_npm_package
+        run: |
+          cd ${{ matrix.package }}
+          TARBALL_FILENAME=$(npm pack --json | node -e 'const input = JSON.parse(require("fs").readFileSync(0, "utf8")); console.log(input[0].filename);')
+          echo "tarball_filename=${TARBALL_FILENAME}" >> $GITHUB_OUTPUT
+
+      # Publish the package to npm; use 'next' tag for prerelease, 'latest' for production
+      - name: Publish NPM Package
+        id: publish_npm_package
+        run: |
+          NPM_TAG=${{ needs.process-workspaces.outputs.branch == 'next' && 'next' || 'latest' }}
+          cd ${{ matrix.package }}
+          IS_PRIVATE=$(node -e "console.log(require('./package.json').private === true ? 'true' : 'false')")
+          PACKAGE_NAME=$(node -e "console.log(require('./package.json').name)")
+          PACKAGE_VERSION=$(node -e "console.log(require('./package.json').version)")
+
+          echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
+          echo "package_version=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
+
+          if [ "$IS_PRIVATE" = "true" ]; then
+            echo "Package is marked as private, skipping publication"
+            echo "published=false" >> $GITHUB_OUTPUT
+          else
+            npm publish "${{ steps.pack_npm_package.outputs.tarball_filename }}" --access public --tag ${NPM_TAG}
+            echo "published=true" >> $GITHUB_OUTPUT
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TWIN_NPM_TOKEN }}
+
+      - name: Wait for package to be available on npm
+        if: steps.publish_npm_package.outputs.published == 'true'
+        run: |
+          PACKAGE_NAME='${{ steps.publish_npm_package.outputs.package_name }}'
+          PACKAGE_VERSION='${{ steps.publish_npm_package.outputs.package_version }}'
+
+          echo "Waiting for ${PACKAGE_NAME}@${PACKAGE_VERSION} to become available on npm..."
+
+          MAX_ATTEMPTS=20
+          SLEEP_SECONDS=10
+
+          for attempt in $(seq 1 $MAX_ATTEMPTS); do
+            if npm view "${PACKAGE_NAME}@${PACKAGE_VERSION}" version >/dev/null 2>&1; then
+              echo "Package ${PACKAGE_NAME}@${PACKAGE_VERSION} is now available on npm."
+              exit 0
+            fi
+
+            if [ "$attempt" -eq "$MAX_ATTEMPTS" ]; then
+              echo "Timed out waiting for ${PACKAGE_NAME}@${PACKAGE_VERSION} to appear on npm."
+              # Do not fail the workflow here; npm propagation delays are often temporary
+              # and will resolve by the time the next package is published or the GitHub release is created.
+              exit 0
+            fi
+
+            echo "Not available yet (attempt ${attempt}/${MAX_ATTEMPTS}); retrying in ${SLEEP_SECONDS}s..."
+            sleep $SLEEP_SECONDS
+          done
+
+      - name: Teardown Test Environment
+        if: always()
+        uses: ./.github/workflows/teardown-test-env
+
+  # Create GitHub releases for each package using release-please github-release.
+  # Version numbers were already bumped in the prepare phase, so no patching needed here.
+  publish-gh-releases:
+    name: Publish GitHub Releases
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    permissions:
+      contents: read
+    needs: [process-workspaces, publish-packages]
+
+    steps:
+      # Clone the repository to the runner
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ github.token }}
+          ref: ${{ needs.process-workspaces.outputs.branch }}
+          fetch-depth: 0 # release-please github-release may require full git history/tags
+
+      # Configure Node.js and NPM settings
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+
+      # Publish the GitHub releases
+      - name: Release Please
+        run: |
+          CONFIG_FILE=release/release-please-config.${{ needs.process-workspaces.outputs.branch == 'next' && 'prerelease' || 'prod' }}.json
+          MANIFEST_FILE=release/release-please-manifest.${{ needs.process-workspaces.outputs.branch == 'next' && 'prerelease' || 'prod' }}.json
+          npx --yes release-please github-release \
+            --config-file=${CONFIG_FILE} \
+            --manifest-file=${MANIFEST_FILE} \
+            --repo-url=${{ github.repository }} \
+            --target-branch=${{ needs.process-workspaces.outputs.branch }} \
+            --token=${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+
+  notify-workspace:
+    name: Notify Workspace
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    needs: [process-workspaces, publish-gh-releases]
+
+    steps:
+      - name: Dispatch submodule change to workspace
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+        run: |
+          gh api repos/iotaledger/twin-workspace/dispatches \
+            --method POST \
+            --input - <<EOF
+          {
+            "event_type": "submodule-published",
+            "client_payload": {
+              "submodule": "${{ github.event.repository.name }}",
+              "branch": "${{ needs.process-workspaces.outputs.branch }}",
+              "sha": "${{ github.sha }}"
+            }
+          }
+          EOF
+
+  # Trigger Versions Prepare on next after every successful production publish
+  # so prerelease development resumes from the released version. The generated
+  # PR still requires human review before it is merged.
+  realign-next:
+    name: Realign Next Branch
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    needs: [process-workspaces, notify-workspace]
+    if: needs.process-workspaces.outputs.branch == 'main'
+    permissions:
+      actions: write
+
+    steps:
+      - name: Trigger Versions Prepare for next
+        run: |
+          gh workflow run versions-prepare.yaml \
+            --repo "${{ github.repository }}" \
+            --ref next \
+            -f releaseType='🚧 prerelease (next branch)'
+          echo "Versions Prepare for next dispatched. A PR will be opened for review."
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}

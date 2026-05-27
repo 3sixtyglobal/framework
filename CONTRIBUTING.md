@@ -238,54 +238,65 @@ Before submitting your PR:
 
 ## Release Process
 
+The release process is handled by the **`Release`** workflow. A maintainer triggers it once with the desired release type. The workflow prepares a release PR and stops. Once that PR is reviewed, approved, and merged, publishing starts automatically — no second manual step is needed.
+
+### How the gate works
+
+```text
+workflow_dispatch  →  prepare PR  →  [review & approve]  →  merge PR  →  publish (auto)
+```
+
+The publish phase is gated on the release PR being **approved and merged**. If the PR is closed without merge, publishing is skipped. Nothing is published and no GitHub release is created until the PR clears the gate.
+
 ### Next (Prerelease) Versions
 
 For development/beta releases from the `next` branch:
 
-1. **Prepare Release**:
-   - Run `Prepare Release` GitHub Action on `next` branch
-   - Set semver type to `prerelease`
-   - This creates a PR with version bumps and changelog updates
+1. **Start the Release workflow**:
+   - Go to `Actions → Release → Run workflow`
+   - Select `🚧 prerelease (next branch)`
 
 2. **Review & Merge**:
-   - Review the generated PR carefully
-   - Merge the PR to `next` branch
+   - Review the generated release PR carefully
+   - Approve and merge it into `next`
 
-3. **Publish**:
-   - Run `Publish Release` GitHub Action
-   - Publishes packages to NPM with `next` tag
-   - Creates GitHub releases marked as prerelease
+3. **Publishing runs automatically**:
+   - Packages are published to npm with the `next` tag
+   - GitHub releases are created and marked as prerelease
 
 ### Production Versions
 
-For stable releases to the `main` branch:
+For stable releases to the `main` branch, use the **`Production Release`** workflow. One trigger drives the full path end-to-end and pauses at each review boundary until the generated pull request is approved and merged.
 
-1. **Prepare Main Branch**:
-   - Run `Versions Prepare` on `main` branch
-   - Set type to `production`
-   - Creates PR merging `next` to `main`
+1. **Trigger the Production Release workflow**:
+   - Go to `Actions → Production Release → Run workflow`
+   - Select the version bump: `🔧 patch`, `✨ minor`, or `🚀 major`
+   - Enable **Skip versions prepare** only if `main` is already fully aligned with `next` (for example, if Versions Prepare was run manually just before this trigger)
 
-2. **Merge to Main**:
-   - Review and merge the preparation PR
+2. **Gate 1 – Review the main alignment PR**:
+   - The workflow prepares `main` with the latest package versions from `next` and waits
+   - Review and merge the generated alignment PR
+   - The workflow advances automatically once the PR is merged
 
-3. **Prepare Release**:
-   - Run `Prepare Release` GitHub Action on `main` branch
-   - Choose semver type: `major`, `minor`, or `patch`
-   - Creates PR with version bumps and changelog updates
+3. **Gate 2 – Review the release PR**:
+   - The workflow prepares the versioned release PR (version bumps and changelog) and waits
+   - Review the generated release PR carefully
+   - Approve and merge it into `main`
 
-4. **Merge Release**:
-   - Review and merge the release PR
+4. **Publishing and next-branch realignment run automatically**:
+   - Packages are published to npm with the `latest` tag
+   - Stable GitHub releases are created
+   - `Versions Prepare` is triggered on `next` automatically; review and merge the resulting PR to resume prerelease development from the published version
 
-5. **Publish**:
-   - Run `Publish Release` GitHub Action
-   - Publishes packages to NPM with `latest` tag
-   - Creates stable GitHub releases
+### Recovery: stale autorelease state
 
-6. **Update Next Branch**:
-   - Run `Versions Prepare` on `next` branch
-   - Updates `next` branch versions to reflect published version
+The `Release` workflow checks for stale state before doing any work and will fail immediately with the blocking PR URL if it finds one. The `Production Release` orchestrator surfaces the same error and prints recovery instructions in the workflow log.
 
-If running `Prepare Release` fails it will most likely leave a PR in a state where it is impossible to generate a new release. If this happens then look for a PR (might be closed) that is tagged with `autorelease: pending` and remove the tag.
+If a release PR is left open or closed with the `autorelease: pending` label (for example after a cancelled or failed run), a new release cannot be started until the label is removed. To recover:
+
+1. Find the PR (open or closed) labelled `autorelease: pending` on the relevant branch
+2. Remove the `autorelease: pending` label from that PR
+3. Re-run the `Production Release` workflow (or the `Release` workflow directly for the prepare phase)
 
 ### Version Strategy
 
