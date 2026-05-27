@@ -1,47 +1,35 @@
-name: Release
+name: Release Next
 
 # GHA_RELEASE_TOKEN requires:
 #   contents: read/write
 #   pull-requests: read/write
 #   workflows: read/write
 
-# This workflow orchestrates the full release lifecycle in two gated phases.
+# This workflow handles the prerelease (next branch) release lifecycle only.
+# Production releases (main branch) are handled by production-release.yaml.
 #
 # Phase 1 – Prepare (workflow_dispatch):
-#   A maintainer selects the release type. The workflow refreshes docs, runs
-#   release-please to create a versioned PR, then stops. No packages are
-#   published at this point.
+#   Refreshes docs, runs release-please to create a versioned PR, then stops.
+#   No packages are published at this point.
 #
-# Phase 2 – Publish (pull_request closed, merged):
+# Phase 2 – Publish (pull_request closed, next branch merged):
 #   Triggered automatically when a release PR labelled 'autorelease: pending'
-#   is approved and merged into main or next. Packages are published to npm
-#   and GitHub releases are created. If the PR is closed without merge, this
-#   phase is skipped entirely.
+#   is approved and merged into next. Packages are published to npm and GitHub
+#   releases are created. If the PR is closed without merge, this phase is
+#   skipped entirely.
 
 on:
   workflow_dispatch:
-    inputs:
-      releaseType:
-        description: 'Which type of release to create'
-        required: true
-        type: choice
-        options:
-          - '🚧 prerelease (next branch)' # Development releases (e.g. 0.1.0-next.1) – uses 'next' branch
-          - '🔧 patch (main branch)' # Bug fixes (e.g. 0.1.1) – uses 'main' branch
-          - '✨ minor (main branch)' # New features (e.g. 0.2.0) – uses 'main' branch
-          - '🚀 major (main branch)' # Breaking changes (e.g. 1.0.0) – uses 'main' branch
 
   pull_request:
     types: [closed]
     branches:
-      - main
       - next
 
 jobs:
   # ──────────────────────────────────────────────────────────────────────────
   # PHASE 1 – PREPARE
-  # Runs on workflow_dispatch only. Creates the release PR with version bumps
-  # and changelog updates. Publishing will start automatically after merge.
+  # Runs on workflow_dispatch only. Creates the prerelease PR for next.
   # ──────────────────────────────────────────────────────────────────────────
   prepare:
     name: Prepare Release
@@ -50,46 +38,20 @@ jobs:
       labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
       group: ${{ github.event.repository.private && 'twin' || 'default' }}
     permissions:
-      checks: read # Needed when querying workflow/check run state
-      contents: write # Needed for creating/updating branches for version bumps
-      pull-requests: write # Needed for creating the release PR
-      id-token: write # Keep existing permissions for authentication
+      checks: read
+      contents: write
+      pull-requests: write
+      id-token: write
 
     steps:
-      - name: Set target branch
-        id: set-branch
-        run: |
-          INPUT="${{ github.event.inputs.releaseType }}"
-
-          if [[ "$INPUT" == *"patch"* ]]; then
-            BRANCH="main"
-            SEMVER_TYPE="patch"
-          elif [[ "$INPUT" == *"minor"* ]]; then
-            BRANCH="main"
-            SEMVER_TYPE="minor"
-          elif [[ "$INPUT" == *"major"* ]]; then
-            BRANCH="main"
-            SEMVER_TYPE="major"
-          elif [[ "$INPUT" == *"prerelease"* ]]; then
-            BRANCH="next"
-            SEMVER_TYPE="prerelease"
-          else
-            echo "Error: Unrecognized release type: $INPUT"
-            exit 1
-          fi
-          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
-          echo "semver_type=$SEMVER_TYPE" >> $GITHUB_OUTPUT
-          echo "Using branch: $BRANCH"
-          echo "Using semver type: $SEMVER_TYPE"
-
       - name: Checkout workflow ref
         uses: actions/checkout@v6
 
       - name: Prepare release PR
         uses: ./.github/workflows/release-prepare
         with:
-          branch: ${{ steps.set-branch.outputs.branch }}
-          semver_type: ${{ steps.set-branch.outputs.semver_type }}
+          branch: next
+          semver_type: prerelease
           gpg_private_key: ${{ secrets.TWIN_GPG_PRIVATE_KEY }}
           gpg_key_id: ${{ secrets.TWIN_GPG_KEY_ID }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -98,12 +60,9 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   # PHASE 2 – PUBLISH
   # Triggered automatically when a release PR labelled 'autorelease: pending'
-  # is approved and merged into main or next. All three publish jobs are
-  # skipped if the PR was closed without merge, or for any non-release PR.
+  # is approved and merged into next.
   # ──────────────────────────────────────────────────────────────────────────
 
-  # Extract workspace package patterns and determine the target branch.
-  # Downstream publish jobs depend on the outputs of this job.
   process-workspaces:
     name: Process Workspaces
     if: >-
@@ -117,33 +76,20 @@ jobs:
       contents: read
     outputs:
       packages: ${{ steps.read-workspaces.outputs.packages }}
-      branch: ${{ steps.set-branch.outputs.branch }}
 
     steps:
-      # Derive the target branch from the merged PR rather than an operator input
-      - name: Set target branch
-        id: set-branch
-        run: |
-          BRANCH="${{ github.event.pull_request.base.ref }}"
-          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
-          echo "Publishing from branch: $BRANCH"
-
-      # Clone the repository to the runner
       - name: Checkout
         uses: actions/checkout@v6
         with:
           token: ${{ github.token }}
-          ref: ${{ steps.set-branch.outputs.branch }}
+          ref: next
 
-      # Configure Node.js and NPM settings
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
 
-      # Extract workspace package patterns from package.json.
-      # The matrix in publish-packages receives these patterns.
       - name: Extract workspaces from package.json
         id: read-workspaces
         run: |
@@ -154,8 +100,6 @@ jobs:
           echo "Found packages: $PACKAGES"
           echo "packages=$PACKAGES" >> $GITHUB_OUTPUT
 
-  # Build, test, and publish each workspace package to npm.
-  # Runs once per workspace pattern (max-parallel: 1 for ordered publishing).
   publish-packages:
     name: Publish Package (${{ matrix.package || 'phase 2 only' }})
     runs-on:
@@ -163,36 +107,31 @@ jobs:
       group: ${{ github.event.repository.private && 'twin' || 'default' }}
     permissions:
       contents: read
-      id-token: write # Needed for npm provenance
+      id-token: write
     needs: process-workspaces
     strategy:
-      max-parallel: 1 # Process one package at a time (important for interdependent packages)
+      max-parallel: 1
       matrix:
         package: ${{ fromJson(needs.process-workspaces.outputs.packages) }}
 
     steps:
-      # Clone the repository to the runner
       - name: Checkout
         uses: actions/checkout@v6
         with:
           token: ${{ github.token }}
-          ref: ${{ needs.process-workspaces.outputs.branch }}
+          ref: next
 
-      # Load test environment variables into the runner environment
       - name: Load Test Environment Variables
         shell: bash
         run: |
           printf '%s\n' "${{ secrets.TWIN_TEST_ENV_VARS }}" >> "$GITHUB_ENV"
 
-      # Configure Node.js and NPM settings
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
 
-      # Keep the workflow code on the triggering ref even though package
-      # publication runs against a checked-out target branch.
       - name: Setup Test Environment
         shell: bash
         run: |
@@ -202,13 +141,11 @@ jobs:
 
           echo "No setup required for this workflow."
 
-      # Remove root manifests so installs only resolve within the current workspace package
       - name: Remove Mono-Repo Node Modules
         run: |
           rm package.json
           rm package-lock.json
 
-      # Install dependencies with retry for the specific package
       - name: Install dependencies
         run: |
           cd ${{ matrix.package }}
@@ -223,13 +160,11 @@ jobs:
             }
           done
 
-      # Build and package the distribution artefacts
       - name: Run Dist
         run: |
           cd ${{ matrix.package }}
           npm run dist
 
-      # Remove scripts and devDependencies that are not needed in the published package
       - name: Cleanup package.json properties
         run: |
           cd ${{ matrix.package }}
@@ -243,11 +178,9 @@ jobs:
           TARBALL_FILENAME=$(npm pack --json | node -e 'const input = JSON.parse(require("fs").readFileSync(0, "utf8")); console.log(input[0].filename);')
           echo "tarball_filename=${TARBALL_FILENAME}" >> $GITHUB_OUTPUT
 
-      # Publish the package to npm; use 'next' tag for prerelease, 'latest' for production
       - name: Publish NPM Package
         id: publish_npm_package
         run: |
-          NPM_TAG=${{ needs.process-workspaces.outputs.branch == 'next' && 'next' || 'latest' }}
           cd ${{ matrix.package }}
           IS_PRIVATE=$(node -e "console.log(require('./package.json').private === true ? 'true' : 'false')")
           PACKAGE_NAME=$(node -e "console.log(require('./package.json').name)")
@@ -260,7 +193,7 @@ jobs:
             echo "Package is marked as private, skipping publication"
             echo "published=false" >> $GITHUB_OUTPUT
           else
-            npm publish "${{ steps.pack_npm_package.outputs.tarball_filename }}" --access public --tag ${NPM_TAG}
+            npm publish "${{ steps.pack_npm_package.outputs.tarball_filename }}" --access public --tag next
             echo "published=true" >> $GITHUB_OUTPUT
           fi
         env:
@@ -285,8 +218,6 @@ jobs:
 
             if [ "$attempt" -eq "$MAX_ATTEMPTS" ]; then
               echo "Timed out waiting for ${PACKAGE_NAME}@${PACKAGE_VERSION} to appear on npm."
-              # Do not fail the workflow here; npm propagation delays are often temporary
-              # and will resolve by the time the next package is published or the GitHub release is created.
               exit 0
             fi
 
@@ -301,8 +232,6 @@ jobs:
           echo "No Docker test resources are created by setup-test-env in this repository."
           rm -f /tmp/test_env_vars.txt
 
-  # Create GitHub releases for each package using release-please github-release.
-  # Version numbers were already bumped in the prepare phase, so no patching needed here.
   publish-gh-releases:
     name: Publish GitHub Releases
     runs-on:
@@ -313,31 +242,26 @@ jobs:
     needs: [process-workspaces, publish-packages]
 
     steps:
-      # Clone the repository to the runner
       - name: Checkout
         uses: actions/checkout@v6
         with:
           token: ${{ github.token }}
-          ref: ${{ needs.process-workspaces.outputs.branch }}
-          fetch-depth: 0 # release-please github-release may require full git history/tags
+          ref: next
+          fetch-depth: 0
 
-      # Configure Node.js and NPM settings
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
 
-      # Publish the GitHub releases
       - name: Release Please
         run: |
-          CONFIG_FILE=release/release-please-config.${{ needs.process-workspaces.outputs.branch == 'next' && 'prerelease' || 'prod' }}.json
-          MANIFEST_FILE=release/release-please-manifest.${{ needs.process-workspaces.outputs.branch == 'next' && 'prerelease' || 'prod' }}.json
           npx --yes release-please github-release \
-            --config-file=${CONFIG_FILE} \
-            --manifest-file=${MANIFEST_FILE} \
+            --config-file=release/release-please-config.prerelease.json \
+            --manifest-file=release/release-please-manifest.prerelease.json \
             --repo-url=${{ github.repository }} \
-            --target-branch=${{ needs.process-workspaces.outputs.branch }} \
+            --target-branch=next \
             --token=${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
 
   notify-workspace:
@@ -359,37 +283,8 @@ jobs:
             "event_type": "submodule-published",
             "client_payload": {
               "submodule": "${{ github.event.repository.name }}",
-              "branch": "${{ needs.process-workspaces.outputs.branch }}",
+              "branch": "next",
               "sha": "${{ github.sha }}"
             }
           }
           EOF
-
-  # Trigger Versions Prepare on next after every successful production publish
-  # so prerelease development resumes from the released version. The generated
-  # PR still requires human review before it is merged.
-  realign-next:
-    name: Realign Next Branch
-    runs-on:
-      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
-      group: ${{ github.event.repository.private && 'twin' || 'default' }}
-    needs: [process-workspaces, notify-workspace]
-    if: needs.process-workspaces.outputs.branch == 'main'
-    permissions:
-      contents: write
-      pull-requests: write
-      id-token: write
-
-    steps:
-      - name: Checkout workflow ref
-        uses: actions/checkout@v6
-
-      - name: Versions Prepare for next
-        uses: ./.github/workflows/versions-prepare
-        with:
-          branch: next
-          gpg_private_key: ${{ secrets.TWIN_GPG_PRIVATE_KEY }}
-          gpg_key_id: ${{ secrets.TWIN_GPG_KEY_ID }}
-          test_env_vars: ${{ secrets.TWIN_TEST_ENV_VARS }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          release_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}

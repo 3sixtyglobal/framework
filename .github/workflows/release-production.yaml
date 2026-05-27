@@ -1,4 +1,4 @@
-name: Production Release
+name: Release Production
 
 # GHA_RELEASE_TOKEN requires:
 #   actions:       read/write
@@ -34,6 +34,11 @@ on:
           - '🔧 patch'
           - '✨ minor'
           - '🚀 major'
+
+  pull_request:
+    types: [closed]
+    branches:
+      - main
 
 # Only one production release may run at a time. A second trigger is queued,
 # not cancelled, so it cannot race with an in-progress release.
@@ -463,3 +468,262 @@ jobs:
           echo "  • Publishing packages to npm (latest tag)"
           echo "  • Creating GitHub releases"
           echo "  • Realigning the next branch via Versions Prepare (PR will be opened for review)"
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # PHASE 3 – PUBLISH
+  # Triggered automatically when the release PR (autorelease: pending) merges
+  # into main. Publishes packages to npm and creates GitHub releases.
+  # ──────────────────────────────────────────────────────────────────────────
+
+  process-workspaces:
+    name: Process Workspaces
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.merged == true &&
+      contains(github.event.pull_request.labels.*.name, 'autorelease: pending')
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    permissions:
+      contents: read
+    outputs:
+      packages: ${{ steps.read-workspaces.outputs.packages }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ github.token }}
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Extract workspaces from package.json
+        id: read-workspaces
+        run: |
+          PACKAGES=$(node -e '
+            const pkg = JSON.parse(require("fs").readFileSync("./package.json", "utf8"));
+            console.log(JSON.stringify(pkg.workspaces));
+          ')
+          echo "Found packages: $PACKAGES"
+          echo "packages=$PACKAGES" >> $GITHUB_OUTPUT
+
+  publish-packages:
+    name: Publish Package (${{ matrix.package || 'phase 3 only' }})
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    permissions:
+      contents: read
+      id-token: write
+    needs: process-workspaces
+    strategy:
+      max-parallel: 1
+      matrix:
+        package: ${{ fromJson(needs.process-workspaces.outputs.packages) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ github.token }}
+          ref: main
+
+      - name: Load Test Environment Variables
+        shell: bash
+        run: |
+          printf '%s\n' "${{ secrets.TWIN_TEST_ENV_VARS }}" >> "$GITHUB_ENV"
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Setup Test Environment
+        shell: bash
+        run: |
+          if [ "${{ matrix.package }}" = "packages/messaging-connector-aws" ] || [ "${{ matrix.package }}" = "all" ]; then
+            echo "${{ secrets.TWIN_TEST_ENV_VARS }}" > /tmp/test_env_vars.txt
+          fi
+
+          echo "No setup required for this workflow."
+
+      - name: Remove Mono-Repo Node Modules
+        run: |
+          rm package.json
+          rm package-lock.json
+
+      - name: Install dependencies
+        run: |
+          cd ${{ matrix.package }}
+          for i in {1..3}; do
+            npm install && break || {
+              if [ $i -eq 3 ]; then
+                echo "npm install failed after 3 attempts"
+                exit 1
+              fi
+              echo "npm install failed, retrying in 30 seconds (attempt $i/3)..."
+              sleep 30
+            }
+          done
+
+      - name: Run Dist
+        run: |
+          cd ${{ matrix.package }}
+          npm run dist
+
+      - name: Cleanup package.json properties
+        run: |
+          cd ${{ matrix.package }}
+          npm pkg delete scripts
+          npm pkg delete devDependencies
+
+      - name: Pack NPM Package
+        id: pack_npm_package
+        run: |
+          cd ${{ matrix.package }}
+          TARBALL_FILENAME=$(npm pack --json | node -e 'const input = JSON.parse(require("fs").readFileSync(0, "utf8")); console.log(input[0].filename);')
+          echo "tarball_filename=${TARBALL_FILENAME}" >> $GITHUB_OUTPUT
+
+      - name: Publish NPM Package
+        id: publish_npm_package
+        run: |
+          cd ${{ matrix.package }}
+          IS_PRIVATE=$(node -e "console.log(require('./package.json').private === true ? 'true' : 'false')")
+          PACKAGE_NAME=$(node -e "console.log(require('./package.json').name)")
+          PACKAGE_VERSION=$(node -e "console.log(require('./package.json').version)")
+
+          echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
+          echo "package_version=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
+
+          if [ "$IS_PRIVATE" = "true" ]; then
+            echo "Package is marked as private, skipping publication"
+            echo "published=false" >> $GITHUB_OUTPUT
+          else
+            npm publish "${{ steps.pack_npm_package.outputs.tarball_filename }}" --access public --tag latest
+            echo "published=true" >> $GITHUB_OUTPUT
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TWIN_NPM_TOKEN }}
+
+      - name: Wait for package to be available on npm
+        if: steps.publish_npm_package.outputs.published == 'true'
+        run: |
+          PACKAGE_NAME='${{ steps.publish_npm_package.outputs.package_name }}'
+          PACKAGE_VERSION='${{ steps.publish_npm_package.outputs.package_version }}'
+
+          echo "Waiting for ${PACKAGE_NAME}@${PACKAGE_VERSION} to become available on npm..."
+
+          MAX_ATTEMPTS=20
+          SLEEP_SECONDS=10
+
+          for attempt in $(seq 1 $MAX_ATTEMPTS); do
+            if npm view "${PACKAGE_NAME}@${PACKAGE_VERSION}" version >/dev/null 2>&1; then
+              echo "Package ${PACKAGE_NAME}@${PACKAGE_VERSION} is now available on npm."
+              exit 0
+            fi
+
+            if [ "$attempt" -eq "$MAX_ATTEMPTS" ]; then
+              echo "Timed out waiting for ${PACKAGE_NAME}@${PACKAGE_VERSION} to appear on npm."
+              exit 0
+            fi
+
+            echo "Not available yet (attempt ${attempt}/${MAX_ATTEMPTS}); retrying in ${SLEEP_SECONDS}s..."
+            sleep $SLEEP_SECONDS
+          done
+
+      - name: Teardown Test Environment
+        if: always()
+        shell: bash
+        run: |
+          echo "No Docker test resources are created by setup-test-env in this repository."
+          rm -f /tmp/test_env_vars.txt
+
+  publish-gh-releases:
+    name: Publish GitHub Releases
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    permissions:
+      contents: read
+    needs: [process-workspaces, publish-packages]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ github.token }}
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Release Please
+        run: |
+          npx --yes release-please github-release \
+            --config-file=release/release-please-config.prod.json \
+            --manifest-file=release/release-please-manifest.prod.json \
+            --repo-url=${{ github.repository }} \
+            --target-branch=main \
+            --token=${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+
+  notify-workspace:
+    name: Notify Workspace
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    needs: [process-workspaces, publish-gh-releases]
+
+    steps:
+      - name: Dispatch submodule change to workspace
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+        run: |
+          gh api repos/iotaledger/twin-workspace/dispatches \
+            --method POST \
+            --input - <<EOF
+          {
+            "event_type": "submodule-published",
+            "client_payload": {
+              "submodule": "${{ github.event.repository.name }}",
+              "branch": "main",
+              "sha": "${{ github.sha }}"
+            }
+          }
+          EOF
+
+  # Trigger next-branch realignment after production publish so development
+  # can resume from the released version.
+  realign-next:
+    name: Realign Next Branch
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    needs: [process-workspaces, notify-workspace]
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - name: Checkout workflow ref
+        uses: actions/checkout@v6
+
+      - name: Versions Prepare for next
+        uses: ./.github/workflows/versions-prepare
+        with:
+          branch: next
+          gpg_private_key: ${{ secrets.TWIN_GPG_PRIVATE_KEY }}
+          gpg_key_id: ${{ secrets.TWIN_GPG_KEY_ID }}
+          test_env_vars: ${{ secrets.TWIN_TEST_ENV_VARS }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
