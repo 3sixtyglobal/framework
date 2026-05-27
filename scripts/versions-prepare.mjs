@@ -92,9 +92,7 @@ async function run() {
 		// Update the prod manifest to prodVersion so release-prepare can read it back
 		// and stamp Release-As: {prodVersion} on the force commit, which tells
 		// release-please to use exactly this version regardless of commit analysis.
-		process.stdout.write(
-			`Updating release-please manifest: ${MANIFEST_PRODUCTION_FILENAME}\n\n`
-		);
+		process.stdout.write(`Updating release-please manifest: ${MANIFEST_PRODUCTION_FILENAME}\n\n`);
 		const releaseManifestProd = await loadJson(MANIFEST_PRODUCTION_FILENAME);
 		for (const key of Object.keys(releaseManifestProd)) {
 			releaseManifestProd[key] = prodVersion;
