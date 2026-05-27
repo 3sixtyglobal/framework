@@ -44,12 +44,12 @@ export class Mutex {
 	private static readonly _LOCKS_KEY = "mutexLocks";
 
 	/**
-	 * Acquires a lock for the given key. If the lock is already held, it will wait until it is released or until the timeout is reached.
-	 * The lock is not re-entrant: if the same thread tries to acquire the same lock again, it will deadlock until the timeout is reached.
-	 *
-	 * WARNING: this method calls Atomics.wait internally. On the main thread this blocks the Node.js event loop for the
-	 * duration of the wait. Do not call from the main thread while a worker thread may simultaneously need to fetch a
-	 * buffer for a new mutex key, as that fetch requires the main thread's message loop to be running and will deadlock.
+	 * Acquires a lock for the given key without blocking the event loop. If the lock is already
+	 * held, it suspends the current async task until the lock is released or the timeout is reached.
+	 * Use this in async single-threaded contexts (e.g. the main thread or a Fastify route handler)
+	 * where calling the synchronous lock() would freeze the event loop and deadlock.
+	 * The lock is not re-entrant: if the same context holds the key and calls lockAsync() again on
+	 * the same key, it will suspend until the timeout elapses.
 	 * @param key The key to lock on.
 	 * @param options Lock options.
 	 * @param options.timeoutMs The maximum time to wait for the lock in milliseconds, default is 5000.
@@ -57,16 +57,18 @@ export class Mutex {
 	 * @returns True if the lock was acquired, false if it timed out and throwOnTimeout is false.
 	 * @throws GeneralError if the key is invalid or if the lock could not be acquired within the timeout and throwOnTimeout is true.
 	 */
-	public static lock(
+	public static async lock(
 		key: string,
 		options?: { timeoutMs?: number; throwOnTimeout?: boolean }
-	): boolean {
+	): Promise<boolean> {
 		Guards.stringValue(Mutex.CLASS_NAME, nameof(key), key);
 
 		const timeoutMs = options?.timeoutMs ?? 5000;
 		const throwOnTimeout = options?.throwOnTimeout ?? false;
 		const deadline = Date.now() + timeoutMs;
 
+		// getOrFetchLock may block once per key on worker threads to negotiate the
+		// shared buffer with the main thread; that one-time fetch is acceptable here.
 		const lock = Mutex.getOrFetchLock(key, deadline);
 
 		for (;;) {
@@ -76,7 +78,7 @@ export class Mutex {
 				return true;
 			}
 
-			// Otherwise, the lock is held by someone else. Check if we've already timed out before blocking.
+			// Otherwise, the lock is held by someone else. Check if we've already timed out.
 			const remaining = deadline - Date.now();
 			if (remaining <= 0) {
 				if (throwOnTimeout) {
@@ -85,10 +87,11 @@ export class Mutex {
 				return false;
 			}
 
-			// Block until the value changes away from 1 (i.e. the holder calls unlock)
-			// or until the remaining timeout elapses.
-			const waitResult = Atomics.wait(lock, 0, 1, remaining);
-			if (waitResult === "timed-out") {
+			// Suspend without blocking the event loop so the lock holder's async
+			// continuations can run and eventually call unlock().
+			const waitResult = Atomics.waitAsync(lock, 0, 1, remaining);
+			const outcome = waitResult.async ? await waitResult.value : waitResult.value;
+			if (outcome === "timed-out") {
 				if (throwOnTimeout) {
 					throw new GeneralError(Mutex.CLASS_NAME, "lockTimeout", { key, timeoutMs });
 				}

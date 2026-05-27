@@ -37,126 +37,134 @@ describe("Mutex", () => {
 	});
 
 	describe("lock", () => {
-		test("acquires an unlocked key and returns true", () => {
-			expect(Mutex.lock("key")).toEqual(true);
+		test("acquires an unlocked key and returns true", async () => {
+			expect(await Mutex.lock("key")).toEqual(true);
 			Mutex.unlock("key");
 		});
 
-		test("acquires different keys independently", () => {
-			expect(Mutex.lock("key-a")).toEqual(true);
-			expect(Mutex.lock("key-b")).toEqual(true);
+		test("acquires different keys independently", async () => {
+			expect(await Mutex.lock("key-a")).toEqual(true);
+			expect(await Mutex.lock("key-b")).toEqual(true);
 			Mutex.unlock("key-a");
 			Mutex.unlock("key-b");
 		});
 
-		test("throws on empty key", () => {
-			expect(() => Mutex.lock("")).toThrow();
+		test("throws on empty key", async () => {
+			await expect(Mutex.lock("")).rejects.toThrow();
 		});
 
-		test("returns false when the lock is held and the timeout elapses", () => {
+		test("returns false when the lock is held and the timeout elapses", async () => {
 			const arr = mutexSimulateHeldLock("held");
-			expect(Mutex.lock("held", { timeoutMs: 50 })).toEqual(false);
+			expect(await Mutex.lock("held", { timeoutMs: 50 })).toEqual(false);
 			Atomics.store(arr, 0, 0);
 		});
 
-		test("throws when the lock is held and throwOnTimeout is true", () => {
+		test("throws when the lock is held and throwOnTimeout is true", async () => {
 			const arr = mutexSimulateHeldLock("held-throw");
-			expect(() => Mutex.lock("held-throw", { timeoutMs: 50, throwOnTimeout: true })).toThrow();
+			await expect(
+				Mutex.lock("held-throw", { timeoutMs: 50, throwOnTimeout: true })
+			).rejects.toThrow();
 			Atomics.store(arr, 0, 0);
 		});
 
-		test("returns false immediately with timeoutMs 0 when the lock is held", () => {
+		test("returns false immediately with timeoutMs 0 when the lock is held", async () => {
 			const arr = mutexSimulateHeldLock("zero-timeout-held");
 			const start = Date.now();
-			expect(Mutex.lock("zero-timeout-held", { timeoutMs: 0 })).toEqual(false);
+			expect(await Mutex.lock("zero-timeout-held", { timeoutMs: 0 })).toEqual(false);
 			expect(Date.now() - start).toBeLessThan(50);
 			Atomics.store(arr, 0, 0);
 		});
 
-		test("acquires immediately with timeoutMs 0 when the lock is free", () => {
-			expect(Mutex.lock("zero-timeout-free", { timeoutMs: 0 })).toEqual(true);
+		test("acquires immediately with timeoutMs 0 when the lock is free", async () => {
+			expect(await Mutex.lock("zero-timeout-free", { timeoutMs: 0 })).toEqual(true);
 			Mutex.unlock("zero-timeout-free");
 		});
 
-		test("re-acquires the same key after it has been unlocked", () => {
-			Mutex.lock("reuse");
+		test("re-acquires the same key after it has been unlocked", async () => {
+			await Mutex.lock("reuse");
 			Mutex.unlock("reuse");
-			expect(Mutex.lock("reuse")).toEqual(true);
+			expect(await Mutex.lock("reuse")).toEqual(true);
 			Mutex.unlock("reuse");
 		});
 
-		test("multiple sequential lock/unlock cycles on the same key all succeed", () => {
+		test("multiple sequential lock/unlock cycles on the same key all succeed", async () => {
 			for (let i = 0; i < 5; i++) {
-				expect(Mutex.lock("cycle")).toEqual(true);
+				expect(await Mutex.lock("cycle")).toEqual(true);
 				Mutex.unlock("cycle");
 			}
 		});
 
-		test("accepts keys containing special characters", () => {
+		test("accepts keys containing special characters", async () => {
 			const keys = ["a/b", "a.b", "a b", "a:b"];
 			for (const key of keys) {
-				expect(Mutex.lock(key)).toEqual(true);
+				expect(await Mutex.lock(key)).toEqual(true);
 				Mutex.unlock(key);
 			}
 		});
 
-		test("returns false immediately with negative timeoutMs when the lock is held", () => {
+		test("returns false immediately with negative timeoutMs when the lock is held", async () => {
 			const arr = mutexSimulateHeldLock("neg-timeout");
 			const start = Date.now();
-			expect(Mutex.lock("neg-timeout", { timeoutMs: -1 })).toEqual(false);
+			expect(await Mutex.lock("neg-timeout", { timeoutMs: -1 })).toEqual(false);
 			expect(Date.now() - start).toBeLessThan(50);
 			Atomics.store(arr, 0, 0);
 		});
 
-		test("throws immediately with negative timeoutMs when throwOnTimeout is true", () => {
+		test("throws immediately with negative timeoutMs when throwOnTimeout is true", async () => {
 			const arr = mutexSimulateHeldLock("neg-throw");
-			expect(() => Mutex.lock("neg-throw", { timeoutMs: -1, throwOnTimeout: true })).toThrow();
+			await expect(
+				Mutex.lock("neg-throw", { timeoutMs: -1, throwOnTimeout: true })
+			).rejects.toThrow();
 			Atomics.store(arr, 0, 0);
 		});
 
-		test("creates a shared store entry when a key is first locked", () => {
+		test("creates a shared store entry when a key is first locked", async () => {
 			expect(mutexGetPrivateLock("brand-new")).toBeUndefined();
-			Mutex.lock("brand-new");
+			await Mutex.lock("brand-new");
 			expect(mutexGetPrivateLock("brand-new")).toBeDefined();
 			Mutex.unlock("brand-new");
 		});
 
-		test("is acquirable once the holder releases following a throwOnTimeout attempt", () => {
+		test("is acquirable once the holder releases following a throwOnTimeout attempt", async () => {
 			const arr = mutexSimulateHeldLock("throw-recovery");
-			expect(() => Mutex.lock("throw-recovery", { timeoutMs: 50, throwOnTimeout: true })).toThrow();
+			await expect(
+				Mutex.lock("throw-recovery", { timeoutMs: 50, throwOnTimeout: true })
+			).rejects.toThrow();
 			// The thrower never held the lock; releasing the simulated holder makes it free.
 			Atomics.store(arr, 0, 0);
-			expect(Mutex.lock("throw-recovery", { timeoutMs: 100 })).toEqual(true);
+			expect(await Mutex.lock("throw-recovery", { timeoutMs: 100 })).toEqual(true);
 			Mutex.unlock("throw-recovery");
 		});
 	});
 
 	describe("nested locking (same key, same thread)", () => {
-		test("second lock on the same key times out and returns false", () => {
-			Mutex.lock("nested");
-			// Not re-entrant: the same thread can never release the lock while blocked in Atomics.wait.
-			const result = Mutex.lock("nested", { timeoutMs: 50 });
+		test("second lock on the same key times out and returns false", async () => {
+			await Mutex.lock("nested");
+			// Not re-entrant: the same context holds the lock and no one will release it.
+			const result = await Mutex.lock("nested", { timeoutMs: 50 });
 			expect(result).toEqual(false);
 			Mutex.unlock("nested");
 		});
 
-		test("second lock on the same key throws when throwOnTimeout is true", () => {
-			Mutex.lock("nested-throw");
-			expect(() => Mutex.lock("nested-throw", { timeoutMs: 50, throwOnTimeout: true })).toThrow();
+		test("second lock on the same key throws when throwOnTimeout is true", async () => {
+			await Mutex.lock("nested-throw");
+			await expect(
+				Mutex.lock("nested-throw", { timeoutMs: 50, throwOnTimeout: true })
+			).rejects.toThrow();
 			Mutex.unlock("nested-throw");
 		});
 
-		test("lock is still held and usable after a nested attempt times out", () => {
-			Mutex.lock("nested-recovery");
-			Mutex.lock("nested-recovery", { timeoutMs: 50 });
+		test("lock is still held and usable after a nested attempt times out", async () => {
+			await Mutex.lock("nested-recovery");
+			await Mutex.lock("nested-recovery", { timeoutMs: 50 });
 			// The original holder should still be able to unlock normally.
 			expect(() => Mutex.unlock("nested-recovery")).not.toThrow();
 		});
 	});
 
 	describe("unlock", () => {
-		test("releases a held lock without throwing", () => {
-			Mutex.lock("key");
+		test("releases a held lock without throwing", async () => {
+			await Mutex.lock("key");
 			expect(() => Mutex.unlock("key")).not.toThrow();
 		});
 
@@ -164,8 +172,8 @@ describe("Mutex", () => {
 			expect(() => Mutex.unlock("never-locked")).toThrow();
 		});
 
-		test("throws on double unlock", () => {
-			Mutex.lock("double");
+		test("throws on double unlock", async () => {
+			await Mutex.lock("double");
 			Mutex.unlock("double");
 			expect(() => Mutex.unlock("double")).toThrow();
 		});
@@ -174,10 +182,10 @@ describe("Mutex", () => {
 			expect(() => Mutex.unlock("")).toThrow();
 		});
 
-		test("retains the key entry in the registry after unlock with no waiters", () => {
+		test("retains the key entry in the registry after unlock with no waiters", async () => {
 			// parentPort is null in fork-mode test processes, so this process owns the
 			// registry and never deletes entries — worker threads may still hold references.
-			Mutex.lock("cleanup");
+			await Mutex.lock("cleanup");
 			Mutex.unlock("cleanup");
 			expect(mutexGetPrivateLock("cleanup")).toBeDefined();
 		});
@@ -308,7 +316,7 @@ describe("Mutex", () => {
 			});
 
 			const start = Date.now();
-			const acquired = Mutex.lock("worker-key", { timeoutMs: 2000 });
+			const acquired = await Mutex.lock("worker-key", { timeoutMs: 2000 });
 			const elapsed = Date.now() - start;
 
 			expect(acquired).toEqual(true);
@@ -341,13 +349,13 @@ describe("Mutex", () => {
 				});
 			});
 
-			expect(Mutex.lock("held-forever", { timeoutMs: 100 })).toEqual(false);
+			expect(await Mutex.lock("held-forever", { timeoutMs: 100 })).toEqual(false);
 			await worker.terminate();
 		});
 
 		test("retains the key entry while a waiter is queued", async () => {
 			// Main acquires first so the buffer is created in the registry before the worker starts.
-			Mutex.lock("contested");
+			await Mutex.lock("contested");
 
 			// Worker fetches the same buffer via the protocol, then blocks waiting for main to release.
 			const worker = new Worker(
@@ -393,7 +401,7 @@ describe("Mutex", () => {
 					const { parentPort } = require("worker_threads");
 					try {
 						const { Mutex } = await import("@twin.org/core");
-						Mutex.lock("fetch-timeout", { timeoutMs: 200, throwOnTimeout: true });
+						await Mutex.lock("fetch-timeout", { timeoutMs: 200, throwOnTimeout: true });
 						parentPort.postMessage({ ok: true });
 					} catch (err) {
 						parentPort.postMessage({ error: err.message });
@@ -507,7 +515,7 @@ describe("Mutex", () => {
 			}
 
 			for (let i = 0; i < mainIncrements; i++) {
-				Mutex.lock("stress-mixed", { timeoutMs: 5000 });
+				await Mutex.lock("stress-mixed", { timeoutMs: 5000 });
 				const current = Atomics.load(counter, 0);
 				Atomics.store(counter, 0, current + 1);
 				Mutex.unlock("stress-mixed");
