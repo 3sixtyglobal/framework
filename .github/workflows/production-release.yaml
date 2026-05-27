@@ -44,12 +44,13 @@ concurrency:
 jobs:
   # ──────────────────────────────────────────────────────────────────────────
   # PHASE 0 – MERGE NEXT INTO MAIN
-  # Creates a branch from main and squash-merges next into it as a single
-  # signed commit (next's developer commits are not GPG-signed and would
-  # fail a "Commits must have verified signatures" push ruleset). Conflicts
-  # are resolved by always taking next's content. A human merges the PR;
-  # GitHub creates and signs the resulting merge commit on main. Skipped
-  # entirely when the branches are already in sync.
+  # Creates a branch from main and applies the exact diff of main → next as a
+  # single signed commit. Using diff|apply rather than a merge algorithm
+  # guarantees next's full content is present (no merge conflicts, no missing
+  # files) and avoids pushing unsigned developer commits from next (which would
+  # fail a "Commits must have verified signatures" push ruleset). A human merges
+  # the PR; GitHub creates and signs the merge commit on main. Skipped when the
+  # branches are already in sync.
   # ──────────────────────────────────────────────────────────────────────────
   merge-next-to-main:
     name: 'Phase 0 · Merge next into main'
@@ -106,29 +107,13 @@ jobs:
           BRANCH_NAME="release/merge-next-to-main-$(date +%s)"
           git checkout -b "$BRANCH_NAME" origin/main
 
-          # Squash all of next's changes into a single commit rather than a
-          # merge commit. This avoids pushing unsigned developer commits from
-          # next, which would fail a "Commits must have verified signatures"
-          # push ruleset. The actual merge commit on main is created by GitHub
-          # when a human merges the PR (GitHub signs it on their end).
-          # -X theirs auto-resolves most conflicts in favour of next; the block
-          # below handles the remainder (modify/delete, rename/rename).
-          MERGE_EXIT=0
-          git merge --squash -X theirs origin/next || MERGE_EXIT=$?
-
-          if [ "$MERGE_EXIT" -ne 0 ]; then
-            git ls-files --unmerged | awk '{print $4}' | sort -u | while IFS= read -r file; do
-              if git ls-tree -r origin/next -- "$file" | grep -q .; then
-                git checkout origin/next -- "$file"
-              else
-                git rm -f "$file"
-              fi
-            done
-            git add -A
-          fi
+          # Apply the exact diff from main → next as a single signed commit.
+          # Using diff | apply bypasses the merge algorithm entirely — no
+          # conflicts to resolve and no unsigned next commits in the push.
+          # Correctly handles all cases: adds, modifies, deletes, and renames.
+          git diff --binary origin/main origin/next | git apply --index
 
           git commit -S -m "chore: merge next into main for production release"
-
           git push origin "$BRANCH_NAME"
           echo "branch_name=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
 
