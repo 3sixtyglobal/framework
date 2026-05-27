@@ -59,6 +59,7 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   merge-next-to-main:
     name: 'Phase 0 · Merge next into main'
+    if: github.event_name == 'workflow_dispatch'
     runs-on:
       labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
       group: ${{ github.event.repository.private && 'twin' || 'default' }}
@@ -212,6 +213,7 @@ jobs:
     name: 'Phase 1 · Prepare main branch'
     needs: gate-next-to-main
     if: |
+      github.event_name == 'workflow_dispatch' &&
       always() &&
       !cancelled() &&
       (needs.gate-next-to-main.result == 'success' || needs.gate-next-to-main.result == 'skipped')
@@ -327,6 +329,7 @@ jobs:
     name: 'Phase 2 · Prepare release PR'
     needs: gate-main-alignment
     if: |
+      github.event_name == 'workflow_dispatch' &&
       always() &&
       !cancelled() &&
       (needs.gate-main-alignment.result == 'success' || needs.gate-main-alignment.result == 'skipped')
@@ -442,7 +445,7 @@ jobs:
   summary:
     name: 'Production release handoff complete'
     needs: [merge-next-to-main, prepare-main, prepare-release, gate-release-pr]
-    if: always() && !cancelled() && needs.gate-release-pr.result == 'success'
+    if: github.event_name == 'workflow_dispatch' && always() && !cancelled() && needs.gate-release-pr.result == 'success'
     runs-on:
       labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
       group: ${{ github.event.repository.private && 'twin' || 'default' }}
@@ -478,7 +481,6 @@ jobs:
   process-workspaces:
     name: Process Workspaces
     if: >-
-      github.event_name == 'pull_request' &&
       github.event.pull_request.merged == true &&
       contains(github.event.pull_request.labels.*.name, 'autorelease: pending')
     runs-on:

@@ -5,35 +5,26 @@ name: Release Next
 #   pull-requests: read/write
 #   workflows: read/write
 
-# This workflow handles the prerelease (next branch) release lifecycle only.
-# Production releases (main branch) are handled by production-release.yaml.
+# Orchestrates the full prerelease lifecycle in a single run.
 #
-# Phase 1 – Prepare (workflow_dispatch):
-#   Refreshes docs, runs release-please to create a versioned PR, then stops.
-#   No packages are published at this point.
+# Phase 1 – Prepare:
+#   Refreshes docs, runs release-please to create a versioned PR. Stops here.
 #
-# Phase 2 – Publish (pull_request closed, next branch merged):
-#   Triggered automatically when a release PR labelled 'autorelease: pending'
-#   is approved and merged into next. Packages are published to npm and GitHub
-#   releases are created. If the PR is closed without merge, this phase is
-#   skipped entirely.
+# Gate  1 – Wait for release PR:
+#   Polls until the release PR (autorelease: pending) is approved and merged.
+#
+# Phase 2 – Publish:
+#   Publishes packages to npm (next tag) and creates GitHub releases.
 
 on:
   workflow_dispatch:
 
-  pull_request:
-    types: [closed]
-    branches:
-      - next
-
 jobs:
   # ──────────────────────────────────────────────────────────────────────────
   # PHASE 1 – PREPARE
-  # Runs on workflow_dispatch only. Creates the prerelease PR for next.
   # ──────────────────────────────────────────────────────────────────────────
   prepare:
-    name: Prepare Release
-    if: github.event_name == 'workflow_dispatch'
+    name: 'Phase 1 · Prepare release PR'
     runs-on:
       labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
       group: ${{ github.event.repository.private && 'twin' || 'default' }}
@@ -42,12 +33,16 @@ jobs:
       contents: write
       pull-requests: write
       id-token: write
+    outputs:
+      pr_number: ${{ steps.release-prepare.outputs.pr_number }}
+      pr_url: ${{ steps.release-prepare.outputs.pr_url }}
 
     steps:
       - name: Checkout workflow ref
         uses: actions/checkout@v6
 
       - name: Prepare release PR
+        id: release-prepare
         uses: ./.github/workflows/release-prepare
         with:
           branch: next
@@ -58,17 +53,60 @@ jobs:
           release_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
 
   # ──────────────────────────────────────────────────────────────────────────
-  # PHASE 2 – PUBLISH
-  # Triggered automatically when a release PR labelled 'autorelease: pending'
-  # is approved and merged into next.
+  # GATE 1 – WAIT FOR RELEASE PR
+  # Polls until the release PR is approved and merged into next.
   # ──────────────────────────────────────────────────────────────────────────
+  gate-release-pr:
+    name: 'Gate 1 · Merge release PR'
+    needs: prepare
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    timeout-minutes: 360
+    permissions:
+      pull-requests: read
 
+    steps:
+      - name: Poll until release PR is merged
+        run: |
+          PR_NUMBER="${{ needs.prepare.outputs.pr_number }}"
+          PR_URL="${{ needs.prepare.outputs.pr_url }}"
+
+          echo "::notice title=Gate 1 – Release PR::Review and merge to publish: $PR_URL"
+          echo ""
+          echo "Waiting for release PR #$PR_NUMBER to be approved and merged..."
+
+          while true; do
+            PR_JSON=$(gh pr view "$PR_NUMBER" \
+              --repo "${{ github.repository }}" \
+              --json state,mergedAt)
+
+            STATE=$(echo "$PR_JSON" | jq -r '.state')
+            MERGED_AT=$(echo "$PR_JSON" | jq -r '.mergedAt // empty')
+
+            if [ -n "$MERGED_AT" ]; then
+              echo "Release PR #$PR_NUMBER merged. Proceeding to publish."
+              exit 0
+            fi
+
+            if [ "$STATE" = "CLOSED" ]; then
+              echo "::error title=Gate 1 Failed::PR #$PR_NUMBER ($PR_URL) was closed without merging."
+              exit 1
+            fi
+
+            echo "PR #$PR_NUMBER is still open. Rechecking in 60 seconds..."
+            sleep 60
+          done
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # PHASE 2 – PUBLISH
+  # Runs once the release PR is merged.
+  # ──────────────────────────────────────────────────────────────────────────
   process-workspaces:
     name: Process Workspaces
-    if: >-
-      github.event_name == 'pull_request' &&
-      github.event.pull_request.merged == true &&
-      contains(github.event.pull_request.labels.*.name, 'autorelease: pending')
+    needs: gate-release-pr
     runs-on:
       labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
       group: ${{ github.event.repository.private && 'twin' || 'default' }}
@@ -101,7 +139,7 @@ jobs:
           echo "packages=$PACKAGES" >> $GITHUB_OUTPUT
 
   publish-packages:
-    name: Publish Package (${{ matrix.package || 'phase 2 only' }})
+    name: Publish Package (${{ matrix.package }})
     runs-on:
       labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
       group: ${{ github.event.repository.private && 'twin' || 'default' }}
@@ -138,7 +176,6 @@ jobs:
           if [ "${{ matrix.package }}" = "packages/messaging-connector-aws" ] || [ "${{ matrix.package }}" = "all" ]; then
             echo "${{ secrets.TWIN_TEST_ENV_VARS }}" > /tmp/test_env_vars.txt
           fi
-
           echo "No setup required for this workflow."
 
       - name: Remove Mono-Repo Node Modules
