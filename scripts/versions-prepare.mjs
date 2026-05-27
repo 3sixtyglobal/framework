@@ -36,7 +36,7 @@ function applyBump(version, bumpType) {
 	if (bumpType === 'patch') {
 		return `${major}.${minor}.${patch + 1}`;
 	}
-	return `${major}.${minor}.${patch}`; // 'same' — strip only, no bump
+	return `${major}.${minor}.${patch}`; // 'promote' — strip only, no bump
 }
 
 /**
@@ -71,9 +71,9 @@ async function run() {
 
 	if (isProduction) {
 		const semverType = process.argv[3];
-		if (!semverType || !['same', 'patch', 'minor', 'major'].includes(semverType)) {
+		if (!semverType || !['promote', 'patch', 'minor', 'major'].includes(semverType)) {
 			throw new Error(
-				'semver_type must be same, patch, minor, or major for the production command'
+				'semver_type must be promote, patch, minor, or major for the production command'
 			);
 		}
 

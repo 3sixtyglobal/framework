@@ -30,7 +30,7 @@ on:
         required: true
         type: choice
         options:
-          - '= same'
+          - '⬆️ promote'
           - '🔧 patch'
           - '✨ minor'
           - '🚀 major'
@@ -198,7 +198,7 @@ jobs:
         run: |
           INPUT="${{ inputs.semverBump }}"
           case "$INPUT" in
-            *same*)  SEMVER_TYPE='same'  ;;
+            *promote*) SEMVER_TYPE='promote' ;;
             *patch*) SEMVER_TYPE='patch' ;;
             *minor*) SEMVER_TYPE='minor' ;;
             *major*) SEMVER_TYPE='major' ;;
@@ -311,7 +311,7 @@ jobs:
           INPUT="${{ inputs.semverBump }}"
 
           case "$INPUT" in
-            *same*)  BRANCH='main'; SEMVER_TYPE='patch' ;;
+            *promote*) BRANCH='main'; SEMVER_TYPE='patch' ;;
             *patch*) BRANCH='main'; SEMVER_TYPE='patch' ;;
             *minor*) BRANCH='main'; SEMVER_TYPE='minor' ;;
             *major*) BRANCH='main'; SEMVER_TYPE='major' ;;

@@ -6,7 +6,7 @@ inputs:
     description: 'Target branch to prepare versions on (main or next)'
     required: true
   semver_type:
-    description: 'Semver bump type for production releases (patch, minor, major). Required when branch is main.'
+    description: 'Semver bump type for production releases (promote, patch, minor, major). Required when branch is main.'
     required: false
     default: ''
   gpg_private_key:
