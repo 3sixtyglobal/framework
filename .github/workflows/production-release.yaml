@@ -44,9 +44,11 @@ concurrency:
 jobs:
   # ──────────────────────────────────────────────────────────────────────────
   # PHASE 0 – MERGE NEXT INTO MAIN
-  # Creates an intermediate merge branch from main, merges next into it using
-  # --strategy-option theirs so next always wins on conflicts, then raises a PR
-  # to main. A human must merge the PR before the release continues. Skipped
+  # Creates a branch from main and squash-merges next into it as a single
+  # signed commit (next's developer commits are not GPG-signed and would
+  # fail a "Commits must have verified signatures" push ruleset). Conflicts
+  # are resolved by always taking next's content. A human merges the PR;
+  # GitHub creates and signs the resulting merge commit on main. Skipped
   # entirely when the branches are already in sync.
   # ──────────────────────────────────────────────────────────────────────────
   merge-next-to-main:
@@ -104,16 +106,17 @@ jobs:
           BRANCH_NAME="release/merge-next-to-main-$(date +%s)"
           git checkout -b "$BRANCH_NAME" origin/main
 
-          # Attempt the merge; --strategy-option theirs handles most conflicts
-          # but not modify/delete or rename/rename — those are resolved below.
-          # Capture the exit code without triggering set -e so the resolution
-          # block below runs in a normal set -e context and fails fast on error.
+          # Squash all of next's changes into a single commit rather than a
+          # merge commit. This avoids pushing unsigned developer commits from
+          # next, which would fail a "Commits must have verified signatures"
+          # push ruleset. The actual merge commit on main is created by GitHub
+          # when a human merges the PR (GitHub signs it on their end).
+          # -X theirs auto-resolves most conflicts in favour of next; the block
+          # below handles the remainder (modify/delete, rename/rename).
           MERGE_EXIT=0
-          git merge -S --no-ff --strategy-option theirs origin/next || MERGE_EXIT=$?
+          git merge --squash -X theirs origin/next || MERGE_EXIT=$?
 
           if [ "$MERGE_EXIT" -ne 0 ]; then
-            # For each file still in unmerged state, take next's version if it
-            # exists there, or remove it if next deleted it.
             git ls-files --unmerged | awk '{print $4}' | sort -u | while IFS= read -r file; do
               if git ls-tree -r origin/next -- "$file" | grep -q .; then
                 git checkout origin/next -- "$file"
@@ -122,8 +125,9 @@ jobs:
               fi
             done
             git add -A
-            git commit -S --no-edit
           fi
+
+          git commit -S -m "chore: merge next into main for production release"
 
           git push origin "$BRANCH_NAME"
           echo "branch_name=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
