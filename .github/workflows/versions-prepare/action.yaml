@@ -87,7 +87,7 @@ runs:
       shell: bash
       run: |
         cd "$TARGET_DIR"
-        git merge -S --no-ff --strategy-option theirs origin/main
+        git merge -S --no-ff --allow-unrelated-histories --strategy-option theirs origin/main
 
     # Set up Node.js environment for running npm commands
     - name: Setup Node.js
