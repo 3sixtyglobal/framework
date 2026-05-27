@@ -12,7 +12,7 @@ name: Production Release
 # Flow:
 #   Phase 1 – Run the versions-prepare composite action for main and create the alignment PR.
 #   Gate  1 – Poll until the main alignment PR is approved and merged.
-#   Phase 2 – Dispatch Release workflow (prepare phase) and wait for the release PR.
+#   Phase 2 – Run the release-prepare composite action for main and wait for the release PR.
 #   Gate  2 – Poll until the release PR is approved and merged.
 #             Publishing and next-branch realignment proceed automatically via
 #             the Release workflow once the release PR is merged.
@@ -135,9 +135,9 @@ jobs:
 
   # ──────────────────────────────────────────────────────────────────────────
   # PHASE 2 – PREPARE RELEASE PR
-  # Maps the semver input to the release type expected by release.yaml, then
-  # dispatches the Release workflow (prepare phase) and waits for the release
-  # PR to appear. Runs whether Phase 1 produced a PR or was a no-op.
+  # Maps the semver input to the target branch and semver strategy, then runs
+  # the release-prepare composite directly to create the release PR. Runs
+  # whether Phase 1 produced a PR or was a no-op.
   # ──────────────────────────────────────────────────────────────────────────
   prepare-release:
     name: 'Phase 2 · Prepare release PR'
@@ -151,95 +151,48 @@ jobs:
       group: ${{ github.event.repository.private && 'twin' || 'default' }}
     timeout-minutes: 60
     permissions:
-      actions: write
+      checks: read
+      contents: write
+      pull-requests: write
+      id-token: write
     outputs:
-      pr_number: ${{ steps.find-release-pr.outputs.pr_number }}
-      pr_url: ${{ steps.find-release-pr.outputs.pr_url }}
+      pr_number: ${{ steps.release-prepare.outputs.pr_number }}
+      pr_url: ${{ steps.release-prepare.outputs.pr_url }}
 
     steps:
-      - name: Resolve release type and dispatch Release workflow
-        id: dispatch
+      - name: Resolve release type
+        id: resolve-release
         run: |
           INPUT="${{ inputs.semverBump }}"
 
           case "$INPUT" in
-            *patch*) RELEASE_TYPE='🔧 patch (main branch)' ;;
-            *minor*) RELEASE_TYPE='✨ minor (main branch)' ;;
-            *major*) RELEASE_TYPE='🚀 major (main branch)' ;;
+            *patch*) BRANCH='main'; SEMVER_TYPE='patch' ;;
+            *minor*) BRANCH='main'; SEMVER_TYPE='minor' ;;
+            *major*) BRANCH='main'; SEMVER_TYPE='major' ;;
             *)
               echo "::error::Unrecognised semver bump: $INPUT"
               exit 1
               ;;
           esac
 
-          START_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          echo "start_time=$START_TIME" >> $GITHUB_OUTPUT
-          echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          echo "semver_type=$SEMVER_TYPE" >> $GITHUB_OUTPUT
+          echo "Using branch: $BRANCH"
+          echo "Using semver type: $SEMVER_TYPE"
 
-          echo "Dispatching Release workflow with type: $RELEASE_TYPE"
-          gh workflow run release.yaml \
-            --repo "${{ github.repository }}" \
-            --ref "${{ github.ref_name }}" \
-            -f releaseType="$RELEASE_TYPE"
-        env:
-          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+      - name: Checkout workflow ref
+        uses: actions/checkout@v6
 
-      # Poll for the release PR (identified by the autorelease: pending label).
-      # The Release prepare phase runs docs-update and a full build before
-      # opening the PR, so allow up to 45 minutes (90 × 30 s).
-      - name: Wait for release PR to be created
-        id: find-release-pr
-        run: |
-          START_TIME="${{ steps.dispatch.outputs.start_time }}"
-          echo "Waiting for release PR with 'autorelease: pending' label (dispatched at $START_TIME)..."
-
-          for i in $(seq 1 90); do
-            sleep 30
-
-            PR_DATA=$(gh pr list \
-              --repo "${{ github.repository }}" \
-              --base main \
-              --state open \
-              --label "autorelease: pending" \
-              --json number,url,createdAt \
-              --jq "[.[] | select(.createdAt >= \"$START_TIME\")] \
-                    | sort_by(.createdAt) | reverse | .[0] // empty")
-
-            if [ -n "$PR_DATA" ]; then
-              PR_NUMBER=$(echo "$PR_DATA" | jq -r '.number')
-              PR_URL=$(echo "$PR_DATA" | jq -r '.url')
-              echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
-              echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
-              echo "Release PR found: #$PR_NUMBER – $PR_URL"
-              exit 0
-            fi
-
-            # Surface early if the dispatched Release workflow has already failed
-            FAILED_RUN=$(gh run list \
-              --repo "${{ github.repository }}" \
-              --workflow "Release" \
-              --branch main \
-              --event workflow_dispatch \
-              --json databaseId,conclusion,createdAt \
-              --jq "[.[] | select(.createdAt >= \"$START_TIME\" and .conclusion == \"failure\")] \
-                    | .[0].databaseId // empty")
-
-            if [ -n "$FAILED_RUN" ]; then
-              RUN_URL="https://github.com/${{ github.repository }}/actions/runs/$FAILED_RUN"
-              echo "::error::Release workflow failed before creating a release PR. See: $RUN_URL"
-              echo "Common cause: a stale 'autorelease: pending' PR is blocking a new one."
-              echo "To recover: remove the 'autorelease: pending' label from the existing PR, then re-run."
-              exit 1
-            fi
-
-            echo "Release PR not visible yet (attempt $i/90, ~$((i * 30 / 60)) min elapsed)..."
-          done
-
-          echo "::error::Release workflow did not create a release PR within 45 minutes."
-          echo "Check the Release workflow run for failure details."
-          exit 1
-        env:
-          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+      - name: Prepare release PR
+        id: release-prepare
+        uses: ./.github/workflows/release-prepare
+        with:
+          branch: ${{ steps.resolve-release.outputs.branch }}
+          semver_type: ${{ steps.resolve-release.outputs.semver_type }}
+          gpg_private_key: ${{ secrets.TWIN_GPG_PRIVATE_KEY }}
+          gpg_key_id: ${{ secrets.TWIN_GPG_KEY_ID }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
 
   # ──────────────────────────────────────────────────────────────────────────
   # GATE 2 – WAIT FOR RELEASE PR
