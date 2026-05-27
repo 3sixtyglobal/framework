@@ -5,6 +5,10 @@ inputs:
   branch:
     description: 'Target branch to prepare versions on (main or next)'
     required: true
+  semver_type:
+    description: 'Semver bump type for production releases (patch, minor, major). Required when branch is main.'
+    required: false
+    default: ''
   gpg_private_key:
     description: 'Base64-encoded GPG private key for signing commits'
     required: true
@@ -108,7 +112,7 @@ runs:
         if [ "${{ inputs.branch }}" = "next" ]; then
           node scripts/versions-prepare.mjs next
         else
-          node scripts/versions-prepare.mjs production
+          node scripts/versions-prepare.mjs production ${{ inputs.semver_type }}
         fi
 
     - name: Check for changes

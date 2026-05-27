@@ -30,6 +30,7 @@ on:
         required: true
         type: choice
         options:
+          - '= same'
           - '🔧 patch'
           - '✨ minor'
           - '🚀 major'
@@ -42,12 +43,139 @@ concurrency:
 
 jobs:
   # ──────────────────────────────────────────────────────────────────────────
+  # PHASE 0 – MERGE NEXT INTO MAIN
+  # Creates a PR from next → main and auto-approves it, then stops. A human
+  # must merge the PR before the release continues. If the branches are already
+  # in sync the job is a no-op and the gate is skipped.
+  # ──────────────────────────────────────────────────────────────────────────
+  merge-next-to-main:
+    name: 'Phase 0 · Merge next into main'
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      pr_number: ${{ steps.create-pr.outputs.pr_number }}
+      pr_url: ${{ steps.create-pr.outputs.pr_url }}
+      has_changes: ${{ steps.check-diff.outputs.has_changes }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Check if next is ahead of main
+        id: check-diff
+        run: |
+          git fetch --no-tags origin main next
+          AHEAD=$(git log origin/main..origin/next --oneline | wc -l)
+          if [ "$AHEAD" -gt 0 ]; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            echo "next is $AHEAD commit(s) ahead of main — PR required."
+          else
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "next and main are already in sync — skipping PR."
+          fi
+
+      - name: Create or reuse PR next → main
+        id: create-pr
+        if: ${{ steps.check-diff.outputs.has_changes == 'true' }}
+        run: |
+          EXISTING=$(gh pr list \
+            --head next --base main --state open \
+            --json number,url --jq '.[0] // empty')
+
+          if [ -n "$EXISTING" ]; then
+            PR_NUMBER=$(echo "$EXISTING" | jq -r '.number')
+            PR_URL=$(echo "$EXISTING" | jq -r '.url')
+            echo "Reusing existing PR #$PR_NUMBER: $PR_URL"
+          else
+            PR_URL=$(gh pr create \
+              --title "chore: merge next into main for production release" \
+              --body "Automated merge of \`next\` into \`main\` as part of the production release process." \
+              --base main \
+              --head next)
+            PR_NUMBER=$(echo "$PR_URL" | grep -o '[0-9]\+$')
+            echo "Created PR #$PR_NUMBER: $PR_URL"
+          fi
+
+          echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+          echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Approve PR
+        if: ${{ steps.create-pr.outputs.pr_number != '' }}
+        run: |
+          gh pr review ${{ steps.create-pr.outputs.pr_number }} --approve
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # GATE 0 – WAIT FOR NEXT → MAIN PR
+  # Polls until the PR is merged. Skipped when branches are already in sync.
+  # ──────────────────────────────────────────────────────────────────────────
+  gate-next-to-main:
+    name: 'Gate 0 · Merge next into main PR'
+    needs: merge-next-to-main
+    if: ${{ needs.merge-next-to-main.outputs.has_changes == 'true' }}
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    timeout-minutes: 360
+    permissions:
+      pull-requests: read
+
+    steps:
+      - name: Poll until next → main PR is merged
+        run: |
+          PR_NUMBER="${{ needs.merge-next-to-main.outputs.pr_number }}"
+          PR_URL="${{ needs.merge-next-to-main.outputs.pr_url }}"
+
+          echo "::notice title=Gate 0 – Next to Main PR::Approve and merge to continue the production release: $PR_URL"
+          echo ""
+          echo "Waiting for PR #$PR_NUMBER to be merged..."
+
+          while true; do
+            PR_JSON=$(gh pr view "$PR_NUMBER" \
+              --repo "${{ github.repository }}" \
+              --json state,mergedAt)
+
+            STATE=$(echo "$PR_JSON" | jq -r '.state')
+            MERGED_AT=$(echo "$PR_JSON" | jq -r '.mergedAt // empty')
+
+            if [ -n "$MERGED_AT" ]; then
+              echo "PR #$PR_NUMBER merged. Advancing to version preparation."
+              exit 0
+            fi
+
+            if [ "$STATE" = "CLOSED" ]; then
+              echo "::error title=Gate 0 Failed::PR #$PR_NUMBER ($PR_URL) was closed without merging. Production release aborted."
+              exit 1
+            fi
+
+            echo "PR #$PR_NUMBER is still open. Rechecking in 60 seconds..."
+            sleep 60
+          done
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+
+  # ──────────────────────────────────────────────────────────────────────────
   # PHASE 1 – PREPARE MAIN
   # Runs the Versions Prepare steps inline on main and creates the alignment
   # PR.
   # ──────────────────────────────────────────────────────────────────────────
   prepare-main:
     name: 'Phase 1 · Prepare main branch'
+    needs: gate-next-to-main
+    if: |
+      always() &&
+      !cancelled() &&
+      (needs.gate-next-to-main.result == 'success' || needs.gate-next-to-main.result == 'skipped')
     runs-on:
       labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
       group: ${{ github.event.repository.private && 'twin' || 'default' }}
@@ -65,11 +193,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Resolve semver type
+        id: resolve-semver
+        run: |
+          INPUT="${{ inputs.semverBump }}"
+          case "$INPUT" in
+            *same*)  SEMVER_TYPE='same'  ;;
+            *patch*) SEMVER_TYPE='patch' ;;
+            *minor*) SEMVER_TYPE='minor' ;;
+            *major*) SEMVER_TYPE='major' ;;
+            *)
+              echo "::error::Unrecognised semver bump: $INPUT"
+              exit 1
+              ;;
+          esac
+          echo "semver_type=$SEMVER_TYPE" >> $GITHUB_OUTPUT
+
       - name: Versions Prepare
         id: versions-prepare
         uses: ./.github/workflows/versions-prepare
         with:
           branch: main
+          semver_type: ${{ steps.resolve-semver.outputs.semver_type }}
           gpg_private_key: ${{ secrets.TWIN_GPG_PRIVATE_KEY }}
           gpg_key_id: ${{ secrets.TWIN_GPG_KEY_ID }}
           test_env_vars: ${{ secrets.TWIN_TEST_ENV_VARS }}
@@ -166,6 +311,7 @@ jobs:
           INPUT="${{ inputs.semverBump }}"
 
           case "$INPUT" in
+            *same*)  BRANCH='main'; SEMVER_TYPE='patch' ;;
             *patch*) BRANCH='main'; SEMVER_TYPE='patch' ;;
             *minor*) BRANCH='main'; SEMVER_TYPE='minor' ;;
             *major*) BRANCH='main'; SEMVER_TYPE='major' ;;
@@ -256,7 +402,7 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   summary:
     name: 'Production release handoff complete'
-    needs: [prepare-main, prepare-release, gate-release-pr]
+    needs: [merge-next-to-main, prepare-main, prepare-release, gate-release-pr]
     if: always() && !cancelled() && needs.gate-release-pr.result == 'success'
     runs-on:
       labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
@@ -267,6 +413,11 @@ jobs:
         run: |
           echo "## Production Release Orchestration Complete"
           echo ""
+          if [ "${{ needs.merge-next-to-main.outputs.has_changes }}" = "true" ]; then
+            echo "Next → main PR:     ${{ needs.merge-next-to-main.outputs.pr_url }}"
+          else
+            echo "Next → main PR:     skipped (branches already in sync)"
+          fi
           if [ "${{ needs.prepare-main.outputs.has_changes }}" = "true" ]; then
             echo "Main alignment PR:  ${{ needs.prepare-main.outputs.pr_url }}"
           else
