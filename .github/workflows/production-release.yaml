@@ -103,7 +103,23 @@ jobs:
         run: |
           BRANCH_NAME="release/merge-next-to-main-$(date +%s)"
           git checkout -b "$BRANCH_NAME" origin/main
-          git merge -S --no-ff --strategy-option theirs origin/next
+
+          # Attempt the merge; --strategy-option theirs handles most conflicts
+          # but not modify/delete or rename/rename — those are resolved below.
+          git merge -S --no-ff --strategy-option theirs origin/next || {
+            # For each file still in unmerged state, take next's version if it
+            # exists there, or remove it if next deleted it.
+            git ls-files --unmerged | awk '{print $4}' | sort -u | while IFS= read -r file; do
+              if git ls-tree -r origin/next -- "$file" | grep -q .; then
+                git checkout origin/next -- "$file"
+              else
+                git rm -f "$file" 2>/dev/null || rm -f "$file"
+              fi
+            done
+            git add -A
+            git commit -S --no-edit
+          }
+
           git push origin "$BRANCH_NAME"
           echo "branch_name=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
 
