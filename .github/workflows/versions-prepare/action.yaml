@@ -36,14 +36,6 @@ outputs:
 runs:
   using: composite
   steps:
-    # Fetch full history so the merge step can resolve divergence between main and next.
-    - name: Checkout
-      uses: actions/checkout@v6
-      with:
-        token: ${{ inputs.github_token }}
-        ref: ${{ inputs.branch }}
-        fetch-depth: 0
-
     # Inject secrets as env vars so subsequent steps can reference them without re-expanding the secret.
     - name: Load Test Environment Variables
       shell: bash
@@ -67,11 +59,30 @@ runs:
         git config --global commit.gpgsign true
         git config --global tag.gpgsign true
 
+    # Keep the main workspace on the triggering ref and do target-branch work in
+    # a separate worktree so local actions continue to resolve from the ref that
+    # started the workflow.
+    - name: Prepare target worktree
+      shell: bash
+      run: |
+        TARGET_BRANCH="${{ inputs.branch }}"
+        TARGET_DIR="$RUNNER_TEMP/versions-prepare-$TARGET_BRANCH-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+
+        git fetch --no-tags --prune origin "+refs/heads/$TARGET_BRANCH:refs/remotes/origin/$TARGET_BRANCH"
+
+        if [ "$TARGET_BRANCH" = "next" ]; then
+          git fetch --no-tags --prune origin "+refs/heads/main:refs/remotes/origin/main"
+        fi
+
+        git worktree add --detach "$TARGET_DIR" "origin/$TARGET_BRANCH"
+        echo "TARGET_DIR=$TARGET_DIR" >> "$GITHUB_ENV"
+
     # Bring next up to date with main before aligning versions so the PR has no merge conflicts.
     - name: Merge Main into Next
       if: ${{ inputs.branch == 'next' }}
       shell: bash
       run: |
+        cd "$TARGET_DIR"
         git merge -S --no-ff --strategy-option theirs origin/main
 
     # Set up Node.js environment for running npm commands
@@ -85,6 +96,7 @@ runs:
       shell: bash
       run: |
         BRANCH_NAME="release/versions-prepare-${{ inputs.branch }}-$(date +%s)"
+        cd "$TARGET_DIR"
         git checkout -b $BRANCH_NAME
         echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
 
@@ -92,6 +104,7 @@ runs:
     - name: Update Versions
       shell: bash
       run: |
+        cd "$TARGET_DIR"
         if [ "${{ inputs.branch }}" = "next" ]; then
           node scripts/versions-prepare.mjs next
         else
@@ -102,6 +115,7 @@ runs:
       id: check-changes
       shell: bash
       run: |
+        cd "$TARGET_DIR"
         if [ -z "$(git status --porcelain)" ]; then
           echo "has_changes=false" >> $GITHUB_OUTPUT
           echo "No version changes detected. Skipping build and PR creation."
@@ -117,6 +131,7 @@ runs:
       if: ${{ steps.check-changes.outputs.has_changes == 'true' }}
       shell: bash
       run: |
+        cd "$TARGET_DIR"
         for i in {1..3}; do
           npm install && break || {
             if [ $i -eq 3 ]; then
@@ -141,6 +156,7 @@ runs:
       if: ${{ steps.check-changes.outputs.has_changes == 'true' }}
       shell: bash
       run: |
+        cd "$TARGET_DIR"
         npm run format
         npm run lint
         npm run dist
@@ -150,6 +166,7 @@ runs:
       if: ${{ steps.check-changes.outputs.has_changes == 'true' }}
       shell: bash
       run: |
+        cd "$TARGET_DIR"
         git add -A
         git commit -S -m "chore: prepare versions for ${{ inputs.branch }}"
         git push origin $BRANCH_NAME
@@ -196,3 +213,11 @@ runs:
     - name: Teardown Test Environment
       if: always()
       uses: ./.github/workflows/teardown-test-env
+
+    - name: Cleanup target worktree
+      if: always()
+      shell: bash
+      run: |
+        if [ -n "${TARGET_DIR:-}" ]; then
+          git worktree remove --force "$TARGET_DIR" || true
+        fi

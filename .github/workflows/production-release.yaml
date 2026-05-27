@@ -173,7 +173,7 @@ jobs:
           echo "Dispatching Release workflow with type: $RELEASE_TYPE"
           gh workflow run release.yaml \
             --repo "${{ github.repository }}" \
-            --ref main \
+            --ref "${{ github.ref_name }}" \
             -f releaseType="$RELEASE_TYPE"
         env:
           GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}

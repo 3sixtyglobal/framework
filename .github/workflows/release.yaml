@@ -330,12 +330,16 @@ jobs:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
 
-      # Setup any services required for tests
+      # Keep the workflow code on the triggering ref even though package
+      # publication runs against a checked-out target branch.
       - name: Setup Test Environment
-        uses: ./.github/workflows/setup-test-env
-        with:
-          package: ${{ matrix.package }}
-          test_env_vars: ${{ secrets.TWIN_TEST_ENV_VARS }}
+        shell: bash
+        run: |
+          if [ "${{ matrix.package }}" = "packages/messaging-connector-aws" ] || [ "${{ matrix.package }}" = "all" ]; then
+            echo "${{ secrets.TWIN_TEST_ENV_VARS }}" > /tmp/test_env_vars.txt
+          fi
+
+          echo "No setup required for this workflow."
 
       # Remove root manifests so installs only resolve within the current workspace package
       - name: Remove Mono-Repo Node Modules
@@ -431,7 +435,10 @@ jobs:
 
       - name: Teardown Test Environment
         if: always()
-        uses: ./.github/workflows/teardown-test-env
+        shell: bash
+        run: |
+          echo "No Docker test resources are created by setup-test-env in this repository."
+          rm -f /tmp/test_env_vars.txt
 
   # Create GitHub releases for each package using release-please github-release.
   # Version numbers were already bumped in the prepare phase, so no patching needed here.
@@ -515,7 +522,7 @@ jobs:
         run: |
           gh workflow run versions-prepare.yaml \
             --repo "${{ github.repository }}" \
-            --ref next \
+            --ref "${{ github.ref_name }}" \
             -f releaseType='🚧 prerelease (next branch)'
           echo "Versions Prepare for next dispatched. A PR will be opened for review."
         env:
