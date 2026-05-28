@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.4-next.3](https://github.com/iotaledger/twin-framework/compare/core-v0.0.4-next.2...core-v0.0.4-next.3) (2026-05-28)
+
+
+### Features
+
+* mutex safe usage in browser ([#339](https://github.com/iotaledger/twin-framework/issues/339)) ([02d409f](https://github.com/iotaledger/twin-framework/commit/02d409f211e91267964208d58a27f29791715086))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.4-next.2 to 0.0.4-next.3
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.2 to 0.0.4-next.3
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.2 to 0.0.4-next.3
+
 ## [0.0.4-next.2](https://github.com/iotaledger/twin-framework/compare/core-v0.0.4-next.1...core-v0.0.4-next.2) (2026-05-28)
 
 
