@@ -238,6 +238,57 @@ export class Guards {
 	}
 
 	/**
+	 * Is the property a date-only string (ISO 8601 date, no time component).
+	 * @param source The source of the error.
+	 * @param property The name of the property.
+	 * @param value The value to test.
+	 * @throws GuardError If the value does not match the assertion.
+	 */
+	public static dateString(
+		source: string,
+		property: string,
+		value: unknown
+	): asserts value is string {
+		if (!Is.dateString(value)) {
+			throw new GuardError(source, "guard.dateString", property, value);
+		}
+	}
+
+	/**
+	 * Is the property a date-time string (ISO 8601 with T separator).
+	 * @param source The source of the error.
+	 * @param property The name of the property.
+	 * @param value The value to test.
+	 * @throws GuardError If the value does not match the assertion.
+	 */
+	public static dateTimeString(
+		source: string,
+		property: string,
+		value: unknown
+	): asserts value is string {
+		if (!Is.dateTimeString(value)) {
+			throw new GuardError(source, "guard.dateTimeString", property, value);
+		}
+	}
+
+	/**
+	 * Is the property a time-only string (ISO 8601 time, no date component).
+	 * @param source The source of the error.
+	 * @param property The name of the property.
+	 * @param value The value to test.
+	 * @throws GuardError If the value does not match the assertion.
+	 */
+	public static timeString(
+		source: string,
+		property: string,
+		value: unknown
+	): asserts value is string {
+		if (!Is.timeString(value)) {
+			throw new GuardError(source, "guard.timeString", property, value);
+		}
+	}
+
+	/**
 	 * Is the property a timestamp in milliseconds.
 	 * @param source The source of the error.
 	 * @param property The name of the property.

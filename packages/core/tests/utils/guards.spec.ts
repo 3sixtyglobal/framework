@@ -155,6 +155,126 @@ describe("Guards", () => {
 		expect(Guards.date("source", "propName", new Date())).toBeUndefined();
 	});
 
+	test("dateString can fail if value is undefined", () => {
+		expect(() => Guards.dateString("source", "propName", undefined)).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.dateString" })
+		);
+	});
+
+	test("dateString can fail if value is null", () => {
+		expect(() => Guards.dateString("source", "propName", null)).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.dateString" })
+		);
+	});
+
+	test("dateString can fail if value is a number", () => {
+		expect(() => Guards.dateString("source", "propName", 20240115)).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.dateString" })
+		);
+	});
+
+	test("dateString can fail if value is an empty string", () => {
+		expect(() => Guards.dateString("source", "propName", "")).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.dateString" })
+		);
+	});
+
+	test("dateString can fail if value is a date-time string with a T separator", () => {
+		expect(() => Guards.dateString("source", "propName", "2024-01-15T10:30:00Z")).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.dateString" })
+		);
+	});
+
+	test("dateString can fail if value is an invalid date string", () => {
+		expect(() => Guards.dateString("source", "propName", "not-a-date")).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.dateString" })
+		);
+	});
+
+	test("dateString can succeed if value is an ISO 8601 date-only string", () => {
+		expect(Guards.dateString("source", "propName", "2024-01-15")).toBeUndefined();
+	});
+
+	test("dateTimeString can fail if value is undefined", () => {
+		expect(() => Guards.dateTimeString("source", "propName", undefined)).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.dateTimeString" })
+		);
+	});
+
+	test("dateTimeString can fail if value is null", () => {
+		expect(() => Guards.dateTimeString("source", "propName", null)).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.dateTimeString" })
+		);
+	});
+
+	test("dateTimeString can fail if value is a number", () => {
+		expect(() => Guards.dateTimeString("source", "propName", 20240115)).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.dateTimeString" })
+		);
+	});
+
+	test("dateTimeString can fail if value is an empty string", () => {
+		expect(() => Guards.dateTimeString("source", "propName", "")).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.dateTimeString" })
+		);
+	});
+
+	test("dateTimeString can fail if value is a date-only string without a T separator", () => {
+		expect(() => Guards.dateTimeString("source", "propName", "2024-01-15")).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.dateTimeString" })
+		);
+	});
+
+	test("dateTimeString can fail if value is an invalid date-time string", () => {
+		expect(() => Guards.dateTimeString("source", "propName", "not-a-date")).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.dateTimeString" })
+		);
+	});
+
+	test("dateTimeString can succeed if value is an ISO 8601 date-time string", () => {
+		expect(Guards.dateTimeString("source", "propName", "2024-01-15T10:30:00Z")).toBeUndefined();
+	});
+
+	test("timeString can fail if value is undefined", () => {
+		expect(() => Guards.timeString("source", "propName", undefined)).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.timeString" })
+		);
+	});
+
+	test("timeString can fail if value is null", () => {
+		expect(() => Guards.timeString("source", "propName", null)).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.timeString" })
+		);
+	});
+
+	test("timeString can fail if value is a number", () => {
+		expect(() => Guards.timeString("source", "propName", 103000)).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.timeString" })
+		);
+	});
+
+	test("timeString can fail if value is an empty string", () => {
+		expect(() => Guards.timeString("source", "propName", "")).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.timeString" })
+		);
+	});
+
+	test("timeString can fail if value is a date-time string with a T separator", () => {
+		expect(() => Guards.timeString("source", "propName", "2024-01-15T10:30:00Z")).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.timeString" })
+		);
+	});
+
+	test("timeString can fail if value is an invalid time string", () => {
+		expect(() => Guards.timeString("source", "propName", "not-a-time")).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.timeString" })
+		);
+	});
+
+	test("timeString can succeed if value is an ISO 8601 time string", () => {
+		expect(Guards.timeString("source", "propName", "10:30:00")).toBeUndefined();
+	});
+
 	test("object can fail if value is undefined", () => {
 		expect(() => Guards.object("source", "propName", undefined)).toThrow(
 			expect.objectContaining({ name: "GuardError", message: "guard.objectUndefined" })
