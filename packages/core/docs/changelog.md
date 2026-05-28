@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.4-next.2](https://github.com/iotaledger/twin-framework/compare/core-v0.0.4-next.1...core-v0.0.4-next.2) (2026-05-28)
+
+
+### Features
+
+* add guard.dateString ([#335](https://github.com/iotaledger/twin-framework/issues/335)) ([a26a166](https://github.com/iotaledger/twin-framework/commit/a26a166eb1f62ece05b2432730cb7354feacecfc))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.4-next.1 to 0.0.4-next.2
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.1 to 0.0.4-next.2
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.1 to 0.0.4-next.2
+
 ## [0.0.4-next.1](https://github.com/iotaledger/twin-framework/compare/core-v0.0.4-next.0...core-v0.0.4-next.1) (2026-05-27)
 
 

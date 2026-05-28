@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.0.4-next.2](https://github.com/iotaledger/twin-framework/compare/modules-v0.0.4-next.1...modules-v0.0.4-next.2) (2026-05-28)
+
+
+### Bug Fixes
+
+* module tests ([58fd497](https://github.com/iotaledger/twin-framework/commit/58fd497876aa65062001d146727e1084be891ac4))
+* module tests ([e323b7b](https://github.com/iotaledger/twin-framework/commit/e323b7b62aa430cedbeb09e83c2388cd458a6d48))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.1 to 0.0.4-next.2
+    * @twin.org/context bumped from 0.0.4-next.1 to 0.0.4-next.2
+    * @twin.org/nameof bumped from 0.0.4-next.1 to 0.0.4-next.2
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.1 to 0.0.4-next.2
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.1 to 0.0.4-next.2
+    * @twin.org/validate-locales bumped from 0.0.4-next.1 to 0.0.4-next.2
+
 ## [0.0.4-next.1](https://github.com/iotaledger/twin-framework/compare/modules-v0.0.4-next.0...modules-v0.0.4-next.1) (2026-05-27)
 
 
