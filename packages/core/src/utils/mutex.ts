@@ -1,12 +1,6 @@
 // Copyright 2026 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import {
-	MessageChannel,
-	type MessagePort,
-	isMainThread,
-	parentPort,
-	receiveMessageOnPort
-} from "node:worker_threads";
+import type { MessagePort } from "node:worker_threads";
 import { nameof } from "@twin.org/nameof";
 import { Guards } from "./guards.js";
 import { Is } from "./is.js";
@@ -44,6 +38,14 @@ export class Mutex {
 	private static readonly _LOCKS_KEY = "mutexLocks";
 
 	/**
+	 * Cached reference to the node:worker_threads module, null if unavailable (browser).
+	 * @internal
+	 */
+	// false positive: this is a type not an actual import
+	// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+	private static _workerThreadsModule: typeof import("node:worker_threads") | null | undefined;
+
+	/**
 	 * Acquires a lock for the given key without blocking the event loop. If the lock is already
 	 * held, it suspends the current async task until the lock is released or the timeout is reached.
 	 * Use this in async single-threaded contexts (e.g. the main thread or a Fastify route handler)
@@ -69,7 +71,7 @@ export class Mutex {
 
 		// getOrFetchLock may block once per key on worker threads to negotiate the
 		// shared buffer with the main thread; that one-time fetch is acceptable here.
-		const lock = Mutex.getOrFetchLock(key, deadline);
+		const lock = await Mutex.getOrFetchLock(key, deadline);
 
 		for (;;) {
 			// Atomically swap 0 → 1; if the previous value was 0 we acquired the lock.
@@ -155,25 +157,27 @@ export class Mutex {
 	 * @returns The Int32Array backed by a SharedArrayBuffer for this key.
 	 * @internal
 	 */
-	private static getOrFetchLock(key: string, deadline: number): Int32Array {
+	private static async getOrFetchLock(key: string, deadline: number): Promise<Int32Array> {
 		const locks = Mutex.getLocks();
 		if (!Is.empty(locks[key])) {
 			return locks[key];
 		}
 
-		if (isMainThread) {
-			// Main thread or fork-mode process: own the registry entry.
+		const wt = await Mutex.loadWorkerThreads();
+
+		if (Is.empty(wt) || wt.isMainThread) {
+			// Main thread, fork-mode process, or browser: own the registry entry.
 			locks[key] = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
 			return locks[key];
 		}
 
 		// Worker thread: synchronously request the SharedArrayBuffer from the main thread.
 		// Mutex.handleWorkerMessage(msg) must be called on the main thread's worker message handler.
-		if (Is.empty(parentPort)) {
+		if (Is.empty(wt.parentPort)) {
 			throw new GeneralError(Mutex.CLASS_NAME, "bufferFetchFailed", { key });
 		}
 
-		const { port1, port2 } = new MessageChannel();
+		const { port1, port2 } = new wt.MessageChannel();
 		const signal = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
 
 		const msg: IMutexWorkerMessage = {
@@ -183,7 +187,7 @@ export class Mutex {
 			port: port2
 		};
 
-		parentPort.postMessage(msg, [port2]);
+		wt.parentPort.postMessage(msg, [port2]);
 
 		try {
 			// Block until the main thread posts the response and fires Atomics.notify.
@@ -195,7 +199,7 @@ export class Mutex {
 				throw new GeneralError(Mutex.CLASS_NAME, "bufferFetchFailed", { key });
 			}
 
-			const response = receiveMessageOnPort(port1) as {
+			const response = wt.receiveMessageOnPort(port1) as {
 				message: { buffer: SharedArrayBuffer };
 			} | null;
 
@@ -222,5 +226,23 @@ export class Mutex {
 			SharedStore.set(Mutex._LOCKS_KEY, locks);
 		}
 		return locks;
+	}
+
+	/**
+	 * Lazily loads node:worker_threads, returning null in environments where it is unavailable.
+	 * @returns The worker_threads module or null.
+	 * @internal
+	 */
+	// false positive: this is a type not an actual import
+	// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+	private static async loadWorkerThreads(): Promise<typeof import("node:worker_threads") | null> {
+		if (Mutex._workerThreadsModule === undefined) {
+			try {
+				Mutex._workerThreadsModule = await import("node:worker_threads");
+			} catch {
+				Mutex._workerThreadsModule = null;
+			}
+		}
+		return Mutex._workerThreadsModule;
 	}
 }
