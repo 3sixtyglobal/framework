@@ -135,6 +135,7 @@ jobs:
           PR_NUMBER=$(echo "$PR_URL" | grep -o '[0-9]\+$')
           echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
           echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+          echo "::notice title=Gate 0 – Next to Main PR::Approve and merge to continue the production release: $PR_URL"
           echo "Created PR #$PR_NUMBER: $PR_URL"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -172,37 +173,18 @@ jobs:
 
     steps:
       - name: Poll until next → main PR is merged
-        run: |
-          PR_NUMBER="${{ needs.merge-next-to-main.outputs.pr_number }}"
-          PR_URL="${{ needs.merge-next-to-main.outputs.pr_url }}"
-
-          echo "::notice title=Gate 0 – Next to Main PR::Approve and merge to continue the production release: $PR_URL"
-          echo ""
-          echo "Waiting for PR #$PR_NUMBER to be merged..."
-
-          while true; do
-            PR_JSON=$(gh pr view "$PR_NUMBER" \
-              --repo "${{ github.repository }}" \
-              --json state,mergedAt)
-
-            STATE=$(echo "$PR_JSON" | jq -r '.state')
-            MERGED_AT=$(echo "$PR_JSON" | jq -r '.mergedAt // empty')
-
-            if [ -n "$MERGED_AT" ]; then
-              echo "PR #$PR_NUMBER merged. Advancing to version preparation."
-              exit 0
-            fi
-
-            if [ "$STATE" = "CLOSED" ]; then
-              echo "::error title=Gate 0 Failed::PR #$PR_NUMBER ($PR_URL) was closed without merging. Production release aborted."
-              exit 1
-            fi
-
-            echo "PR #$PR_NUMBER is still open. Rechecking in 60 seconds..."
-            sleep 60
-          done
-        env:
-          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+        uses: ./.github/workflows/wait-for-pr
+        with:
+          repo: ${{ github.repository }}
+          pr_number: ${{ needs.merge-next-to-main.outputs.pr_number }}
+          pr_url: ${{ needs.merge-next-to-main.outputs.pr_url }}
+          notice_title: Gate 0 – Next to Main PR
+          notice_message: 'Approve and merge to continue the production release: __PR_URL__'
+          waiting_message: Waiting for PR #__PR_NUMBER__ to be merged...
+          success_message: PR #__PR_NUMBER__ merged. Advancing to version preparation.
+          closed_error_title: Gate 0 Failed
+          closed_error_message: PR #__PR_NUMBER__ (__PR_URL__) was closed without merging. Production release aborted.
+          github_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
 
   # ──────────────────────────────────────────────────────────────────────────
   # PHASE 1 – PREPARE MAIN
@@ -210,7 +192,7 @@ jobs:
   # PR.
   # ──────────────────────────────────────────────────────────────────────────
   prepare-main:
-    name: 'Phase 1 · Prepare main branch'
+    name: 'Phase 1 · Prepare and build main branch'
     needs: gate-next-to-main
     if: |
       github.event_name == 'workflow_dispatch' &&
@@ -262,6 +244,11 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
 
+      - name: Announce main alignment PR
+        if: ${{ steps.versions-prepare.outputs.has_changes == 'true' && steps.versions-prepare.outputs.pr_url != '' }}
+        run: |
+          echo "::notice title=Gate 1 – Main Alignment PR::Approve and merge to continue the production release: ${{ steps.versions-prepare.outputs.pr_url }}"
+
       # Our self-hosted runner clears the workspace after local composite
       # actions, so restore the workflow ref before the job completes.
       - name: Restore workflow checkout
@@ -286,38 +273,19 @@ jobs:
 
     steps:
       - name: Poll until main alignment PR is merged
-        run: |
-          PR_NUMBER="${{ needs.prepare-main.outputs.pr_number }}"
-          PR_URL="${{ needs.prepare-main.outputs.pr_url }}"
-
-          echo "::notice title=Gate 1 – Main Alignment PR::Approve and merge to continue the production release: $PR_URL"
-          echo ""
-          echo "Waiting for PR #$PR_NUMBER to be approved and merged..."
-
-          while true; do
-            PR_JSON=$(gh pr view "$PR_NUMBER" \
-              --repo "${{ github.repository }}" \
-              --json state,mergedAt)
-
-            STATE=$(echo "$PR_JSON" | jq -r '.state')
-            MERGED_AT=$(echo "$PR_JSON" | jq -r '.mergedAt // empty')
-
-            if [ -n "$MERGED_AT" ]; then
-              echo "PR #$PR_NUMBER merged. Advancing to release preparation."
-              exit 0
-            fi
-
-            if [ "$STATE" = "CLOSED" ]; then
-              echo "::error title=Gate 1 Failed::PR #$PR_NUMBER ($PR_URL) was closed without merging. Production release aborted."
-              echo "Re-run this workflow to restart."
-              exit 1
-            fi
-
-            echo "PR #$PR_NUMBER is still open. Rechecking in 60 seconds..."
-            sleep 60
-          done
-        env:
-          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+        uses: ./.github/workflows/wait-for-pr
+        with:
+          repo: ${{ github.repository }}
+          pr_number: ${{ needs.prepare-main.outputs.pr_number }}
+          pr_url: ${{ needs.prepare-main.outputs.pr_url }}
+          notice_title: Gate 1 – Main Alignment PR
+          notice_message: 'Approve and merge to continue the production release: __PR_URL__'
+          waiting_message: Waiting for PR #__PR_NUMBER__ to be approved and merged...
+          success_message: PR #__PR_NUMBER__ merged. Advancing to release preparation.
+          closed_error_title: Gate 1 Failed
+          closed_error_message: PR #__PR_NUMBER__ (__PR_URL__) was closed without merging. Production release aborted.
+          closed_follow_up: Re-run this workflow to restart.
+          github_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
 
   # ──────────────────────────────────────────────────────────────────────────
   # PHASE 2 – PREPARE RELEASE PR
@@ -382,6 +350,11 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
 
+      - name: Announce release PR
+        if: ${{ steps.release-prepare.outputs.pr_url != '' }}
+        run: |
+          echo "::notice title=Gate 2 – Release PR::Review and merge to publish: ${{ steps.release-prepare.outputs.pr_url }}"
+
   # ──────────────────────────────────────────────────────────────────────────
   # GATE 2 – WAIT FOR RELEASE PR
   # Polls until the release PR (labelled autorelease: pending) is merged.
@@ -400,41 +373,24 @@ jobs:
 
     steps:
       - name: Poll until release PR is merged
-        run: |
-          PR_NUMBER="${{ needs.prepare-release.outputs.pr_number }}"
-          PR_URL="${{ needs.prepare-release.outputs.pr_url }}"
-
-          echo "::notice title=Gate 2 – Release PR::Review and merge to publish: $PR_URL"
-          echo ""
-          echo "Waiting for release PR #$PR_NUMBER to be approved and merged..."
-          echo "Once merged, packages will publish automatically and next will be realigned."
-
-          while true; do
-            PR_JSON=$(gh pr view "$PR_NUMBER" \
-              --repo "${{ github.repository }}" \
-              --json state,mergedAt)
-
-            STATE=$(echo "$PR_JSON" | jq -r '.state')
-            MERGED_AT=$(echo "$PR_JSON" | jq -r '.mergedAt // empty')
-
-            if [ -n "$MERGED_AT" ]; then
-              echo "Release PR #$PR_NUMBER merged."
-              echo "The Release workflow is now publishing packages to npm and creating GitHub releases."
-              echo "The next branch will be realigned automatically after publishing completes."
-              exit 0
-            fi
-
-            if [ "$STATE" = "CLOSED" ]; then
-              echo "::error title=Gate 2 Failed::Release PR #$PR_NUMBER ($PR_URL) was closed without merging. Publishing aborted."
-              echo "To recover: remove the 'autorelease: pending' label from the PR, then re-run this workflow."
-              exit 1
-            fi
-
-            echo "PR #$PR_NUMBER is still open. Rechecking in 60 seconds..."
-            sleep 60
-          done
-        env:
-          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+        uses: ./.github/workflows/wait-for-pr
+        with:
+          repo: ${{ github.repository }}
+          pr_number: ${{ needs.prepare-release.outputs.pr_number }}
+          pr_url: ${{ needs.prepare-release.outputs.pr_url }}
+          notice_title: Gate 2 – Release PR
+          notice_message: 'Review and merge to publish: __PR_URL__'
+          waiting_message: |
+            Waiting for release PR #__PR_NUMBER__ to be approved and merged...
+            Once merged, packages will publish automatically and next will be realigned.
+          success_message: |
+            Release PR #__PR_NUMBER__ merged.
+            The Release workflow is now publishing packages to npm and creating GitHub releases.
+            The next branch will be realigned automatically after publishing completes.
+          closed_error_title: Gate 2 Failed
+          closed_error_message: Release PR #__PR_NUMBER__ (__PR_URL__) was closed without merging. Publishing aborted.
+          closed_follow_up: "To recover: remove the 'autorelease: pending' label from the PR, then re-run this workflow."
+          github_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
 
   # ──────────────────────────────────────────────────────────────────────────
   # SUMMARY

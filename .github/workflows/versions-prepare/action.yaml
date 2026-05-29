@@ -72,6 +72,10 @@ runs:
         TARGET_BRANCH="${{ inputs.branch }}"
         TARGET_DIR="$RUNNER_TEMP/versions-prepare-$TARGET_BRANCH-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
 
+        if [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
+          git fetch --no-tags --prune --unshallow origin
+        fi
+
         git fetch --no-tags --prune origin "+refs/heads/$TARGET_BRANCH:refs/remotes/origin/$TARGET_BRANCH"
 
         if [ "$TARGET_BRANCH" = "next" ]; then
@@ -81,13 +85,16 @@ runs:
         git worktree add --detach "$TARGET_DIR" "origin/$TARGET_BRANCH"
         echo "TARGET_DIR=$TARGET_DIR" >> "$GITHUB_ENV"
 
-    # Bring next up to date with main before aligning versions so the PR has no merge conflicts.
-    - name: Merge Main into Next
+    # Align next to main's current content before version preparation so the
+    # follow-up PR does not inherit merge conflicts from divergent branch state.
+    # Using diff | apply bypasses the merge algorithm entirely, so add/add
+    # conflicts and other merge-time ambiguities do not block realignment.
+    - name: Align Next to Main
       if: ${{ inputs.branch == 'next' }}
       shell: bash
       run: |
         cd "$TARGET_DIR"
-        git merge -S --no-ff --strategy-option theirs origin/main
+        git diff --binary origin/next origin/main | git apply --index
 
     # Set up Node.js environment for running npm commands
     - name: Setup Node.js

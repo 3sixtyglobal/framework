@@ -52,6 +52,11 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
 
+      - name: Announce release PR
+        if: ${{ steps.release-prepare.outputs.pr_url != '' }}
+        run: |
+          echo "::notice title=Gate 1 – Release PR::Review and merge to publish: ${{ steps.release-prepare.outputs.pr_url }}"
+
   # ──────────────────────────────────────────────────────────────────────────
   # GATE 1 – WAIT FOR RELEASE PR
   # Polls until the release PR is approved and merged into next.
@@ -68,37 +73,18 @@ jobs:
 
     steps:
       - name: Poll until release PR is merged
-        run: |
-          PR_NUMBER="${{ needs.prepare.outputs.pr_number }}"
-          PR_URL="${{ needs.prepare.outputs.pr_url }}"
-
-          echo "::notice title=Gate 1 – Release PR::Review and merge to publish: $PR_URL"
-          echo ""
-          echo "Waiting for release PR #$PR_NUMBER to be approved and merged..."
-
-          while true; do
-            PR_JSON=$(gh pr view "$PR_NUMBER" \
-              --repo "${{ github.repository }}" \
-              --json state,mergedAt)
-
-            STATE=$(echo "$PR_JSON" | jq -r '.state')
-            MERGED_AT=$(echo "$PR_JSON" | jq -r '.mergedAt // empty')
-
-            if [ -n "$MERGED_AT" ]; then
-              echo "Release PR #$PR_NUMBER merged. Proceeding to publish."
-              exit 0
-            fi
-
-            if [ "$STATE" = "CLOSED" ]; then
-              echo "::error title=Gate 1 Failed::PR #$PR_NUMBER ($PR_URL) was closed without merging."
-              exit 1
-            fi
-
-            echo "PR #$PR_NUMBER is still open. Rechecking in 60 seconds..."
-            sleep 60
-          done
-        env:
-          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+        uses: ./.github/workflows/wait-for-pr
+        with:
+          repo: ${{ github.repository }}
+          pr_number: ${{ needs.prepare.outputs.pr_number }}
+          pr_url: ${{ needs.prepare.outputs.pr_url }}
+          notice_title: Gate 1 – Release PR
+          notice_message: 'Review and merge to publish: __PR_URL__'
+          waiting_message: Waiting for release PR #__PR_NUMBER__ to be approved and merged...
+          success_message: Release PR #__PR_NUMBER__ merged. Proceeding to publish.
+          closed_error_title: Gate 1 Failed
+          closed_error_message: PR #__PR_NUMBER__ (__PR_URL__) was closed without merging.
+          github_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
 
   # ──────────────────────────────────────────────────────────────────────────
   # PHASE 2 – PUBLISH
