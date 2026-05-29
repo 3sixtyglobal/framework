@@ -4,7 +4,7 @@
 	"description": "Helper methods/classes for data type checking/validation/guarding/error handling",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/iotaledger/framework.git",
+		"url": "git+https://github.com/iotaledger/twin-framework.git",
 		"directory": "packages/core"
 	},
 	"author": "martyn.janes@iota.org",
@@ -73,7 +73,7 @@
 		"utilities"
 	],
 	"bugs": {
-		"url": "git+https://github.com/iotaledger/framework/issues"
+		"url": "git+https://github.com/iotaledger/twin-framework/issues"
 	},
 	"homepage": "https://twindev.org"
 }

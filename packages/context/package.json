@@ -4,7 +4,7 @@
 	"description": "Helper methods/classes for context handling",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/iotaledger/framework.git",
+		"url": "git+https://github.com/iotaledger/twin-framework.git",
 		"directory": "packages/context"
 	},
 	"author": "martyn.janes@iota.org",
@@ -73,7 +73,7 @@
 		"utilities"
 	],
 	"bugs": {
-		"url": "git+https://github.com/iotaledger/framework/issues"
+		"url": "git+https://github.com/iotaledger/twin-framework/issues"
 	},
 	"homepage": "https://twindev.org"
 }

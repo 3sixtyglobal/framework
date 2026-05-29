@@ -4,7 +4,7 @@
 	"description": "Classes for image manipulation",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/iotaledger/framework.git",
+		"url": "git+https://github.com/iotaledger/twin-framework.git",
 		"directory": "packages/image"
 	},
 	"author": "martyn.janes@iota.org",
@@ -68,7 +68,7 @@
 		"blockchain"
 	],
 	"bugs": {
-		"url": "git+https://github.com/iotaledger/framework/issues"
+		"url": "git+https://github.com/iotaledger/twin-framework/issues"
 	},
 	"homepage": "https://twindev.org"
 }

@@ -4,7 +4,7 @@
 	"description": "Typed transformer which converts types and properties to their actual name for use at runtime",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/iotaledger/framework.git",
+		"url": "git+https://github.com/iotaledger/twin-framework.git",
 		"directory": "packages/nameof-transformer"
 	},
 	"author": "martyn.janes@iota.org",
@@ -63,7 +63,7 @@
 		"blockchain"
 	],
 	"bugs": {
-		"url": "git+https://github.com/iotaledger/framework/issues"
+		"url": "git+https://github.com/iotaledger/twin-framework/issues"
 	},
 	"homepage": "https://twindev.org"
 }

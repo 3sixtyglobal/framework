@@ -4,7 +4,7 @@
 	"description": "Classes for use with web operations",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/iotaledger/framework.git",
+		"url": "git+https://github.com/iotaledger/twin-framework.git",
 		"directory": "packages/web"
 	},
 	"author": "martyn.janes@iota.org",
@@ -75,7 +75,7 @@
 		"api"
 	],
 	"bugs": {
-		"url": "git+https://github.com/iotaledger/framework/issues"
+		"url": "git+https://github.com/iotaledger/twin-framework/issues"
 	},
 	"homepage": "https://twindev.org"
 }
