@@ -4,7 +4,7 @@
 	"description": "Shared foundation packages and developer tools for the framework ecosystem.",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/iotaledger/framework.git"
+		"url": "git+https://github.com/iotaledger/twin-framework.git"
 	},
 	"author": "martyn.janes@iota.org",
 	"license": "Apache-2.0",
@@ -71,7 +71,7 @@
 	],
 	"type": "module",
 	"bugs": {
-		"url": "git+https://github.com/iotaledger/framework/issues"
+		"url": "git+https://github.com/iotaledger/twin-framework/issues"
 	},
 	"homepage": "https://twindev.org"
 }
