@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.4-next.4](https://github.com/iotaledger/twin-framework/compare/core-v0.0.4-next.3...core-v0.0.4-next.4) (2026-06-02)
+
+
+### Bug Fixes
+
+* prevent TOCTOU race in Mutex.getOrFetchLock for concurrent async callers ([#343](https://github.com/iotaledger/twin-framework/issues/343)) ([5238ad1](https://github.com/iotaledger/twin-framework/commit/5238ad1a68e24c69162204b02030c6686c15e9f4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.4-next.3 to 0.0.4-next.4
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.3 to 0.0.4-next.4
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.3 to 0.0.4-next.4
+
 ## [0.0.4-next.3](https://github.com/iotaledger/twin-framework/compare/core-v0.0.4-next.2...core-v0.0.4-next.3) (2026-05-28)
 
 
