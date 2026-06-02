@@ -430,6 +430,63 @@ describe("Mutex", () => {
 		});
 	});
 
+	describe("concurrent main-thread locks on a new key", () => {
+		test("only one coroutine holds the lock at a time when N async tasks lock the same brand-new key simultaneously", async () => {
+			const N = 10;
+			let concurrentHolders = 0;
+			let maxConcurrent = 0;
+			const key = "toctou-mutual-exclusion";
+
+			// Launch all N tasks at once — none of them have ever seen this key before,
+			// so getOrFetchLock will hit the `await loadWorkerThreads()` yield window for all of them.
+			await Promise.all(
+				Array.from({ length: N }, async () => {
+					await Mutex.lock(key, { throwOnTimeout: true, timeoutMs: 10_000 });
+					try {
+						concurrentHolders++;
+						maxConcurrent = Math.max(maxConcurrent, concurrentHolders);
+						// Yield to the event loop so concurrent coroutines can interleave
+						// if (and only if) the mutex is broken and multiple are "holding" it.
+						await new Promise<void>(resolve => {
+							setTimeout(resolve, 10);
+						});
+						concurrentHolders--;
+					} finally {
+						Mutex.unlock(key);
+					}
+				})
+			);
+
+			// If mutual exclusion holds, no more than one coroutine was ever inside at once.
+			expect(maxConcurrent).toEqual(1);
+		});
+
+		test("no counter increments are lost when N async tasks lock the same brand-new key simultaneously", async () => {
+			const N = 10;
+			let counter = 0;
+			const key = "toctou-lost-update";
+
+			// Each task reads the counter, yields, then writes counter + 1.
+			// If two tasks read the same value concurrently, one increment is silently lost.
+			await Promise.all(
+				Array.from({ length: N }, async () => {
+					await Mutex.lock(key, { throwOnTimeout: true, timeoutMs: 10_000 });
+					try {
+						const snapshot = counter;
+						await new Promise<void>(resolve => {
+							setTimeout(resolve, 10);
+						});
+						counter = snapshot + 1;
+					} finally {
+						Mutex.unlock(key);
+					}
+				})
+			);
+
+			expect(counter).toEqual(N);
+		});
+	});
+
 	describe("stress", () => {
 		// Worker script that fetches the lock buffer from the main thread via the Mutex protocol,
 		// acquires the lock, increments a shared counter, then releases.

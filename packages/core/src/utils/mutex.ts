@@ -165,6 +165,12 @@ export class Mutex {
 
 		const wt = await Mutex.loadWorkerThreads();
 
+		// Re-check after the await: another coroutine that was also waiting on
+		// loadWorkerThreads() may have allocated the buffer while we yielded.
+		if (!Is.empty(locks[key])) {
+			return locks[key];
+		}
+
 		if (Is.empty(wt) || wt.isMainThread) {
 			// Main thread, fork-mode process, or browser: own the registry entry.
 			locks[key] = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
