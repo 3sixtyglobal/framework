@@ -1,4 +1,4 @@
-name: Project add issue
+name: Project Add Issue
 
 # GHA_RELEASE_TOKEN requires
 # org->project: read/write
