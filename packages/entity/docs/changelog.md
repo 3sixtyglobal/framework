@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.0.4-next.5](https://github.com/iotaledger/twin-framework/compare/entity-v0.0.4-next.4...entity-v0.0.4-next.5) (2026-06-04)
+
+
+### Features
+
+* add version field to IEntitySchema and EntitySchemaHelper.getVersion for migration support ([#346](https://github.com/iotaledger/twin-framework/issues/346)) ([e74557e](https://github.com/iotaledger/twin-framework/commit/e74557e4ccbda5b9971f4cfcd0852ba5957cead0))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.4-next.4 to 0.0.4-next.5
+    * @twin.org/core bumped from 0.0.4-next.4 to 0.0.4-next.5
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.4 to 0.0.4-next.5
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.4 to 0.0.4-next.5
+    * @twin.org/validate-locales bumped from 0.0.4-next.4 to 0.0.4-next.5
+
 ## [0.0.4-next.4](https://github.com/iotaledger/twin-framework/compare/entity-v0.0.4-next.3...entity-v0.0.4-next.4) (2026-06-02)
 
 
