@@ -26,6 +26,14 @@ The options for the entity.
 
 ***
 
+### version? {#version}
+
+> `optional` **version?**: `number`
+
+The schema version. Used to drive ordered migrations. Absent is treated as version 1.
+
+***
+
 ### properties? {#properties}
 
 > `optional` **properties?**: [`IEntitySchemaProperty`](IEntitySchemaProperty.md)\<`T`\>[]

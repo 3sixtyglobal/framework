@@ -50,6 +50,38 @@ The schema for the object if it can be found.
 
 ***
 
+### getVersion() {#getversion}
+
+> `static` **getVersion**(`entitySchema`): `number`
+
+Get the version of the entity schema, defaulting to 1 when absent.
+This is the single source of truth for the "absent version = v1" convention.
+When a version is present it must be a positive integer >= 1.
+
+#### Parameters
+
+##### entitySchema
+
+[`IEntitySchema`](../interfaces/IEntitySchema.md)
+
+The entity schema to read the version from.
+
+#### Returns
+
+`number`
+
+The declared version, or 1 if no version was set.
+
+#### Throws
+
+GuardError if entitySchema is undefined or version is not an integer.
+
+#### Throws
+
+GeneralError if version is present but less than 1.
+
+***
+
 ### getPrimaryKey() {#getprimarykey}
 
 > `static` **getPrimaryKey**\<`T`\>(`entitySchema`): [`IEntitySchemaProperty`](../interfaces/IEntitySchemaProperty.md)\<`T`\>
