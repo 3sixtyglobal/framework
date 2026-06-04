@@ -18,6 +18,11 @@ export interface IEntitySchema<T = unknown> {
 	options?: IEntitySchemaOptions;
 
 	/**
+	 * The schema version. Used to drive ordered migrations. Absent is treated as version 1.
+	 */
+	version?: number;
+
+	/**
 	 * The properties of the entity.
 	 */
 	properties?: IEntitySchemaProperty<T>[];

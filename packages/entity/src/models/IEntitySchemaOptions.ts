@@ -9,4 +9,9 @@ export interface IEntitySchemaOptions {
 	 * Description of the object.
 	 */
 	description?: string;
+
+	/**
+	 * The schema version. Used to drive ordered migrations. Absent is treated as version 1.
+	 */
+	version?: number;
 }

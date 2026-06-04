@@ -519,4 +519,51 @@ describe("EntitySchemaHelper", () => {
 			})
 		);
 	});
+
+	test("can fail getVersion with a guard error when schema is undefined", () => {
+		expect(() => EntitySchemaHelper.getVersion(undefined as unknown as IEntitySchema)).toThrow(
+			expect.objectContaining({
+				name: "GuardError",
+				message: "guard.objectUndefined"
+			})
+		);
+	});
+
+	test("can get version of 1 when version is absent", () => {
+		expect(EntitySchemaHelper.getVersion({ type: "Foo" })).toEqual(1);
+	});
+
+	test("can get version of 1 when version is undefined", () => {
+		expect(EntitySchemaHelper.getVersion({ type: "Foo", version: undefined })).toEqual(1);
+	});
+
+	test("can get the declared version when set", () => {
+		expect(EntitySchemaHelper.getVersion({ type: "Foo", version: 5 })).toEqual(5);
+	});
+
+	test("can fail getVersion with a guard error when version is not an integer", () => {
+		expect(() => EntitySchemaHelper.getVersion({ type: "Foo", version: 1.5 })).toThrow(
+			expect.objectContaining({
+				name: "GuardError"
+			})
+		);
+	});
+
+	test("can fail getVersion with a general error when version is zero", () => {
+		expect(() => EntitySchemaHelper.getVersion({ type: "Foo", version: 0 })).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.versionMustBePositive"
+			})
+		);
+	});
+
+	test("can fail getVersion with a general error when version is negative", () => {
+		expect(() => EntitySchemaHelper.getVersion({ type: "Foo", version: -1 })).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.versionMustBePositive"
+			})
+		);
+	});
 });
