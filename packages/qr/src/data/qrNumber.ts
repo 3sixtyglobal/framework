@@ -60,6 +60,9 @@ export class QRNumber extends QRDataBase {
 	}
 
 	/**
+	 * Convert a numeric string segment into its numeric value.
+	 * @param s The numeric string segment.
+	 * @returns The parsed numeric value.
 	 * @internal
 	 */
 	private strToNum(s: string): number {
@@ -71,6 +74,10 @@ export class QRNumber extends QRDataBase {
 	}
 
 	/**
+	 * Convert a numeric QR character into its encoded digit value.
+	 * @param c The character to convert.
+	 * @returns The numeric value of the character.
+	 * @throws GeneralError if the character is not a decimal digit.
 	 * @internal
 	 */
 	private charToNum(c: string): number {

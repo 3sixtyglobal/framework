@@ -206,6 +206,7 @@ export class Base64 {
 	 * Get the valid and placeholder lengths from a bas64 string.
 	 * @param base64 The base64 string.
 	 * @returns The lengths.
+	 * @throws GeneralError if the string length is not a multiple of 4.
 	 * @internal
 	 */
 	private static getLengths(base64: string): number[] {

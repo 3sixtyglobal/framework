@@ -42,6 +42,7 @@ export class CLI extends CLIBase {
 	/**
 	 * Get the commands for the CLI.
 	 * @param program The main program to add the commands to.
+	 * @returns The commands to register with the CLI program.
 	 * @internal
 	 */
 	protected getCommands(program: Command): Command[] {

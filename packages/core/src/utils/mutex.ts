@@ -154,6 +154,7 @@ export class Mutex {
 	 * Returns the Int32Array for the given key, fetching it from the main thread if this
 	 * is a worker thread and the key is not yet in the local cache.
 	 * @param key The lock key.
+	 * @param deadline The deadline to use while waiting for the main thread to provide the lock.
 	 * @returns The Int32Array backed by a SharedArrayBuffer for this key.
 	 * @internal
 	 */

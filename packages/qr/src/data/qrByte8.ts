@@ -38,6 +38,9 @@ export class QRByte8 extends QRDataBase {
 	}
 
 	/**
+	 * Convert a string into a UTF-8 byte array.
+	 * @param str The string to convert.
+	 * @returns The UTF-8 encoded bytes.
 	 * @internal
 	 */
 	private stringToBytes(str: string): number[] {

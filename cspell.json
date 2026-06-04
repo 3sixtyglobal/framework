@@ -53,6 +53,7 @@
 		"ttypescript",
 		"UNECE",
 		"UVQT",
+		"bitcode",
 		"ODRL",
 		"CEFACT",
 		"Dataspace",
@@ -60,8 +61,10 @@
 		"IPFS",
 		"GTSC",
 		"Firestore",
+		"JFIF",
 		"htdc",
-		"htac"
+		"htac",
+		"scanline"
 	],
 	"ignoreRegExpList": [
 		"/from\\s+(['\"]).*\\1/",

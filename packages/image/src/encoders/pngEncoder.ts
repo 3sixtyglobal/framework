@@ -176,6 +176,13 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Compress the supplied frames into PNG-ready image data.
+	 * @param buffers The source frame buffers.
+	 * @param w The image width.
+	 * @param h The image height.
+	 * @param ps The palette size target.
+	 * @param forbidPlte True if palette output must be avoided.
+	 * @returns The compressed image data and frame metadata.
 	 * @internal
 	 */
 	private async compressPNG(
@@ -199,6 +206,14 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Prepare frame data, colour type, and palette information for PNG encoding.
+	 * @param inBuffers The source frame buffers.
+	 * @param w The image width.
+	 * @param h The image height.
+	 * @param inPs The requested palette size.
+	 * @param forGIF Whether the output is being prepared for GIF-style constraints.
+	 * @param forbidPlte True if palette output must be avoided.
+	 * @returns The processed frame data and PNG metadata.
 	 * @internal
 	 */
 	private compress(
@@ -419,6 +434,13 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Apply PNG filters and choose the smallest compressed result.
+	 * @param img The raw frame image data.
+	 * @param h The frame height.
+	 * @param bpp The bytes per pixel.
+	 * @param bpl The bytes per line.
+	 * @param data The working filter buffer.
+	 * @returns The deflated filtered image data.
 	 * @internal
 	 */
 	private async filterZero(
@@ -454,6 +476,13 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Write one filtered scanline into the working PNG buffer.
+	 * @param data The output buffer that receives the filtered data.
+	 * @param img The source image bytes.
+	 * @param y The scanline index.
+	 * @param bpl The bytes per line.
+	 * @param bpp The bytes per pixel.
+	 * @param type The PNG filter type to apply.
 	 * @internal
 	 */
 	private filterLine(
@@ -530,6 +559,11 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Calculate the Paeth predictor for PNG filtering.
+	 * @param a The left value.
+	 * @param b The above value.
+	 * @param c The upper-left value.
+	 * @returns The predicted byte value.
 	 * @internal
 	 */
 	private paeth(a: number, b: number, c: number): number {
@@ -547,6 +581,10 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Write an ASCII string into the output buffer.
+	 * @param data The destination buffer.
+	 * @param p The offset to start writing at.
+	 * @param s The ASCII string to write.
 	 * @internal
 	 */
 	private writeASCII(data: Uint8Array, p: number, s: string): void {
@@ -556,6 +594,10 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Write a 32-bit unsigned integer into the output buffer.
+	 * @param buff The destination buffer.
+	 * @param p The offset to write at.
+	 * @param n The value to write.
 	 * @internal
 	 */
 	private writeUint(buff: Uint8Array, p: number, n: number): void {
@@ -566,6 +608,10 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Write a 16-bit unsigned integer into the output buffer.
+	 * @param buff The destination buffer.
+	 * @param p The offset to write at.
+	 * @param n The value to write.
 	 * @internal
 	 */
 	private writeUshort(buff: Uint8Array, p: number, n: number): void {
@@ -574,6 +620,17 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Copy or blend a tile of RGBA pixels into a target image.
+	 * @param sb The source buffer.
+	 * @param sw The source width.
+	 * @param sh The source height.
+	 * @param tb The target buffer.
+	 * @param tw The target width.
+	 * @param th The target height.
+	 * @param xOffset The horizontal offset between the source and target.
+	 * @param yOffset The vertical offset between the source and target.
+	 * @param mode The copy or blend mode.
+	 * @returns True if the requested operation succeeded; otherwise, false.
 	 * @internal
 	 */
 	private copyTile(
@@ -667,6 +724,11 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Calculate the CRC for a slice of the buffer.
+	 * @param b The source buffer.
+	 * @param o The slice offset.
+	 * @param l The slice length.
+	 * @returns The computed CRC value.
 	 * @internal
 	 */
 	private crc(b: Uint8Array, o: number, l: number): number {
@@ -674,6 +736,12 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Update a CRC value with additional bytes.
+	 * @param c The current CRC accumulator.
+	 * @param buf The source buffer.
+	 * @param off The offset to start reading from.
+	 * @param len The number of bytes to process.
+	 * @returns The updated CRC value.
 	 * @internal
 	 */
 	private crcUpdate(c: number, buf: Uint8Array, off: number, len: number): number {
@@ -686,6 +754,8 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Build the PNG CRC lookup table.
+	 * @returns The CRC lookup table.
 	 * @internal
 	 */
 	private crcTable(): Uint32Array {
@@ -705,6 +775,11 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Quantize the supplied frames to a reduced palette.
+	 * @param buffers The source frame buffers.
+	 * @param ps The target palette size.
+	 * @param roundAlpha Whether alpha values should be rounded to binary transparency.
+	 * @returns The quantized frame buffers and palette leaf nodes.
 	 * @internal
 	 */
 	private quantize(
@@ -834,6 +909,11 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Gather covariance and mean statistics for a range of RGBA pixels.
+	 * @param nImg The source pixel buffer.
+	 * @param i0 The inclusive start offset.
+	 * @param i1 The exclusive end offset.
+	 * @returns The accumulated statistics for the range.
 	 * @internal
 	 */
 	private quantizeStats(
@@ -877,6 +957,12 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Derive quantization metrics from accumulated colour statistics.
+	 * @param stats The accumulated statistics.
+	 * @param stats.R The covariance accumulator matrix.
+	 * @param stats.m The colour channel sums.
+	 * @param stats.N The number of pixels in the sample.
+	 * @returns The derived quantization metrics.
 	 * @internal
 	 */
 	private quantizeEStats(stats: { R: number[]; m: number[]; N: number }): {
@@ -954,6 +1040,15 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Measure the signed distance of a colour sample from the split plane.
+	 * @param est The split estimator.
+	 * @param est.e The split plane normal vector.
+	 * @param est.eMq The split plane offset.
+	 * @param r The red channel value.
+	 * @param g The green channel value.
+	 * @param b The blue channel value.
+	 * @param a The alpha channel value.
+	 * @returns The signed distance from the split plane.
 	 * @internal
 	 */
 	private quantizePlaneDst(
@@ -968,6 +1063,14 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Partition pixels in-place around the current split plane.
+	 * @param nImg The source pixel buffer.
+	 * @param nImg32 The same pixel buffer viewed as 32-bit values.
+	 * @param i0in The inclusive start offset.
+	 * @param i1in The exclusive end offset.
+	 * @param e The split plane normal vector.
+	 * @param eMq The split plane offset.
+	 * @returns The split point between the two partitions.
 	 * @internal
 	 */
 	private quantizeSplitPixels(
@@ -1005,6 +1108,11 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Calculate the dot product between one RGBA pixel and a four-element vector.
+	 * @param nImg The source pixel buffer.
+	 * @param i The pixel offset.
+	 * @param e The four-element vector.
+	 * @returns The dot product value.
 	 * @internal
 	 */
 	private quantizeVecDot(nImg: Uint8Array, i: number, e: number[]): number {
@@ -1012,6 +1120,10 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Multiply a 4x4 matrix by a four-element vector.
+	 * @param m The matrix values.
+	 * @param v The vector values.
+	 * @returns The resulting vector.
 	 * @internal
 	 */
 	private m4MultiplyVec(m: number[], v: number[]): number[] {
@@ -1024,6 +1136,10 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Calculate the dot product of two four-element vectors.
+	 * @param x The first vector.
+	 * @param y The second vector.
+	 * @returns The dot product value.
 	 * @internal
 	 */
 	private m4Dot(x: number[], y: number[]): number {
@@ -1031,6 +1147,10 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Multiply a four-element vector by a scalar.
+	 * @param a The scalar value.
+	 * @param y The vector to scale.
+	 * @returns The scaled vector.
 	 * @internal
 	 */
 	private m4Sml(a: number, y: number[]): number[] {
@@ -1038,6 +1158,10 @@ export class PngEncoder {
 	}
 
 	/**
+	 * Premultiply image colour channels by alpha.
+	 * @param img The source image data.
+	 * @param roundA Whether alpha should be rounded to fully transparent or opaque.
+	 * @returns The alpha-premultiplied image data.
 	 * @internal
 	 */
 	private alphaMul(img: Uint8Array, roundA: number): Uint8Array {

@@ -52,6 +52,10 @@ export class QRAlphaNumeric extends QRDataBase {
 	}
 
 	/**
+	 * Convert an alphanumeric QR character into its encoded value.
+	 * @param c The character to convert.
+	 * @returns The encoded value for the character.
+	 * @throws GeneralError if the character is not supported by alphanumeric QR encoding.
 	 * @internal
 	 */
 	private getCode(c: string): number {

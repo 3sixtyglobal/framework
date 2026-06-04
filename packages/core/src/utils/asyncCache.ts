@@ -310,6 +310,7 @@ export class AsyncCache {
 	 * @param requestMethod The method to execute.
 	 * @param resolve The resolver for the waiter.
 	 * @param reject The rejector for the waiter.
+	 * @internal
 	 */
 	private static async resolveWaiter<T>(
 		requestMethod: () => Promise<T>,
@@ -369,6 +370,7 @@ export class AsyncCache {
 	 * Deletes the given key from the cache if it has expired and is not in-progress.
 	 * Returns true if the entry was evicted.
 	 * @param key The cache entry key to check.
+	 * @returns True if the expired entry was removed; otherwise, false.
 	 * @internal
 	 */
 	private static evictIfExpired(key: string): boolean {
@@ -384,6 +386,7 @@ export class AsyncCache {
 	/**
 	 * Returns the expiry timestamp of the tracked next-expiry entry, or undefined if there
 	 * is no tracked entry or it is no longer present in the cache.
+	 * @returns The next tracked expiry timestamp, if one is still available.
 	 * @internal
 	 */
 	private static getNextExpiry(): number | undefined {

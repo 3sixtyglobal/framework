@@ -125,6 +125,10 @@ export class QR {
 	}
 
 	/**
+	 * Determine whether the module at the given row and column is dark.
+	 * @param row The module row.
+	 * @param col The module column.
+	 * @returns True if the module is dark, otherwise false.
 	 * @internal
 	 */
 	private isDark(row: number, col: number): boolean | null {
@@ -135,6 +139,8 @@ export class QR {
 	}
 
 	/**
+	 * Find the mask pattern that yields the lowest penalty score.
+	 * @returns The best mask pattern index.
 	 * @internal
 	 */
 	private getBestMaskPattern(): number {
@@ -156,6 +162,9 @@ export class QR {
 	}
 
 	/**
+	 * Build the QR module matrix for the current configuration.
+	 * @param test True when generating test patterns.
+	 * @param maskPattern The mask pattern to apply.
 	 * @internal
 	 */
 	private makeImpl(test: boolean, maskPattern: number): void {
@@ -187,6 +196,9 @@ export class QR {
 	}
 
 	/**
+	 * Map encoded bytes into the QR module matrix.
+	 * @param data The encoded QR data bytes.
+	 * @param maskPattern The mask pattern to apply.
 	 * @internal
 	 */
 	private mapData(data: number[], maskPattern: number): void {
@@ -239,6 +251,7 @@ export class QR {
 	}
 
 	/**
+	 * Place the position adjustment patterns into the QR matrix.
 	 * @internal
 	 */
 	private setupPositionAdjustPattern(): void {
@@ -267,6 +280,9 @@ export class QR {
 	}
 
 	/**
+	 * Place a position probe pattern at the given matrix coordinates.
+	 * @param row The top row of the probe pattern.
+	 * @param col The left column of the probe pattern.
 	 * @internal
 	 */
 	private setupPositionProbePattern(row: number, col: number): void {
@@ -295,6 +311,7 @@ export class QR {
 	}
 
 	/**
+	 * Place the timing patterns into the QR matrix.
 	 * @internal
 	 */
 	private setupTimingPattern(): void {
@@ -313,6 +330,8 @@ export class QR {
 	}
 
 	/**
+	 * Place the type number bits into the QR matrix.
+	 * @param test True when generating test patterns.
 	 * @internal
 	 */
 	private setupTypeNumber(test: boolean): void {
@@ -330,6 +349,9 @@ export class QR {
 	}
 
 	/**
+	 * Place the type information bits into the QR matrix.
+	 * @param test True when generating test patterns.
+	 * @param maskPattern The mask pattern to encode.
 	 * @internal
 	 */
 	private setupTypeInfo(test: boolean, maskPattern: number): void {
@@ -367,6 +389,8 @@ export class QR {
 	}
 
 	/**
+	 * Calculate the QR penalty score for the current module matrix.
+	 * @returns The penalty score.
 	 * @internal
 	 */
 	private getLostPoint(): number {
@@ -483,6 +507,9 @@ export class QR {
 	}
 
 	/**
+	 * Encode the current QR data segments into interleaved bytes.
+	 * @returns The encoded data bytes.
+	 * @throws GeneralError if the payload exceeds the QR capacity.
 	 * @internal
 	 */
 	private createData(): number[] {
@@ -540,6 +567,10 @@ export class QR {
 	}
 
 	/**
+	 * Interleave data and error-correction bytes for all RS blocks.
+	 * @param buffer The source bit buffer.
+	 * @param rsBlocks The Reed-Solomon blocks to encode.
+	 * @returns The interleaved byte sequence.
 	 * @internal
 	 */
 	private createBytes(buffer: BitBuffer, rsBlocks: RSBlock[]): number[] {
@@ -609,6 +640,9 @@ export class QR {
 	}
 
 	/**
+	 * Create a zero-filled numeric array of the requested length.
+	 * @param len The array length.
+	 * @returns The zero-filled array.
 	 * @internal
 	 */
 	private createNumArray(len: number): number[] {
@@ -620,6 +654,8 @@ export class QR {
 	}
 
 	/**
+	 * Determine the smallest QR type number that can hold the current payload.
+	 * @throws GeneralError if the payload exceeds the largest supported QR type.
 	 * @internal
 	 */
 	private autoDetectTypeNumber(): void {
