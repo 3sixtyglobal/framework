@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.0.4-next.6](https://github.com/iotaledger/twin-framework/compare/entity-v0.0.4-next.5...entity-v0.0.4-next.6) (2026-06-05)
+
+
+### Features
+
+* entity schema decorators default value ([33397c2](https://github.com/iotaledger/twin-framework/commit/33397c2e24978a91257371a4c63ce7f6a7125d0c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.4-next.5 to 0.0.4-next.6
+    * @twin.org/core bumped from 0.0.4-next.5 to 0.0.4-next.6
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.5 to 0.0.4-next.6
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.5 to 0.0.4-next.6
+    * @twin.org/validate-locales bumped from 0.0.4-next.5 to 0.0.4-next.6
+
 ## [0.0.4-next.5](https://github.com/iotaledger/twin-framework/compare/entity-v0.0.4-next.4...entity-v0.0.4-next.5) (2026-06-04)
 
 
