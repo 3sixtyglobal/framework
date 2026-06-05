@@ -2,6 +2,10 @@
 
 Definition for an entity schema.
 
+## Extends
+
+- [`IEntitySchemaOptions`](IEntitySchemaOptions.md)
+
 ## Type Parameters
 
 ### T
@@ -18,11 +22,23 @@ The type of the entity.
 
 ***
 
-### options? {#options}
+### properties? {#properties}
 
-> `optional` **options?**: [`IEntitySchemaOptions`](IEntitySchemaOptions.md)
+> `optional` **properties?**: [`IEntitySchemaProperty`](IEntitySchemaProperty.md)\<`T`\>[]
 
-The options for the entity.
+The properties of the entity.
+
+***
+
+### description? {#description}
+
+> `optional` **description?**: `string`
+
+Description of the object.
+
+#### Inherited from
+
+[`IEntitySchemaOptions`](IEntitySchemaOptions.md).[`description`](IEntitySchemaOptions.md#description)
 
 ***
 
@@ -32,10 +48,6 @@ The options for the entity.
 
 The schema version. Used to drive ordered migrations. Absent is treated as version 1.
 
-***
+#### Inherited from
 
-### properties? {#properties}
-
-> `optional` **properties?**: [`IEntitySchemaProperty`](IEntitySchemaProperty.md)\<`T`\>[]
-
-The properties of the entity.
+[`IEntitySchemaOptions`](IEntitySchemaOptions.md).[`version`](IEntitySchemaOptions.md#version)

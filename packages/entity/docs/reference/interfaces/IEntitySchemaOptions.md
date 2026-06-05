@@ -2,6 +2,10 @@
 
 Definition for an entity schema options.
 
+## Extended by
+
+- [`IEntitySchema`](IEntitySchema.md)
+
 ## Properties
 
 ### description? {#description}
