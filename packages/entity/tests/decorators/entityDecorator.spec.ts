@@ -10,6 +10,12 @@ import { DecoratorHelper } from "../../src/utils/decoratorHelper.js";
 export class TestEntity {}
 
 /**
+ * Test entity with a description.
+ */
+@entity({ description: "This is a test entity with a description." })
+export class TestEntityWithDescription {}
+
+/**
  * Test entity with an explicit version.
  */
 @entity({ version: 3 })
@@ -20,6 +26,13 @@ describe("EntityDecorator", () => {
 		expect(DecoratorHelper.getSchema(TestEntity)).toEqual({ type: "TestEntity" });
 	});
 
+	test("Can set description on the schema when provided via options", () => {
+		expect(DecoratorHelper.getSchema(TestEntityWithDescription)).toEqual({
+			type: "TestEntityWithDescription",
+			description: "This is a test entity with a description."
+		});
+	});
+
 	test("Can set version on the schema when provided via options", () => {
 		expect(DecoratorHelper.getSchema(TestEntityVersioned)).toEqual({
 			type: "TestEntityVersioned",
@@ -28,6 +41,6 @@ describe("EntityDecorator", () => {
 	});
 
 	test("Can leave version undefined on the schema when not provided", () => {
-		expect(DecoratorHelper.getSchema(TestEntity).version).toBeUndefined();
+		expect(DecoratorHelper.getSchema(TestEntity)?.version).toBeUndefined();
 	});
 });

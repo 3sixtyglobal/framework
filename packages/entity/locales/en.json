@@ -11,7 +11,7 @@
 			"invalidEntityProperty": "The entity value of \"{value}\" does not match the type \"{type}\" for property \"{property}\"",
 			"invalidOptional": "The entity property \"{property}\" of type \"{type}\" is not optional, but no value has been provided",
 			"invalidEntityKeys": "The entity had additional properties that are not in the schema, \"{keys}\"",
-			"versionMustBePositive": "Property \"entitySchema.version\" must be a positive integer >= 1, but got {version}"
+			"versionMustBeGreaterThanOrEqualZero": "Property \"entitySchema.version\" must be an integer >= 0, but got {version}"
 		}
 	}
 }

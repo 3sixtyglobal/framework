@@ -529,12 +529,12 @@ describe("EntitySchemaHelper", () => {
 		);
 	});
 
-	test("can get version of 1 when version is absent", () => {
-		expect(EntitySchemaHelper.getVersion({ type: "Foo" })).toEqual(1);
+	test("can get version of 0 when version is absent", () => {
+		expect(EntitySchemaHelper.getVersion({ type: "Foo" })).toEqual(0);
 	});
 
-	test("can get version of 1 when version is undefined", () => {
-		expect(EntitySchemaHelper.getVersion({ type: "Foo", version: undefined })).toEqual(1);
+	test("can get version of 0 when version is undefined", () => {
+		expect(EntitySchemaHelper.getVersion({ type: "Foo", version: undefined })).toEqual(0);
 	});
 
 	test("can get the declared version when set", () => {
@@ -549,20 +549,11 @@ describe("EntitySchemaHelper", () => {
 		);
 	});
 
-	test("can fail getVersion with a general error when version is zero", () => {
-		expect(() => EntitySchemaHelper.getVersion({ type: "Foo", version: 0 })).toThrow(
-			expect.objectContaining({
-				name: "GeneralError",
-				message: "entitySchemaHelper.versionMustBePositive"
-			})
-		);
-	});
-
 	test("can fail getVersion with a general error when version is negative", () => {
 		expect(() => EntitySchemaHelper.getVersion({ type: "Foo", version: -1 })).toThrow(
 			expect.objectContaining({
 				name: "GeneralError",
-				message: "entitySchemaHelper.versionMustBePositive"
+				message: "entitySchemaHelper.versionMustBeGreaterThanOrEqualZero"
 			})
 		);
 	});

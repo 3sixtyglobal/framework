@@ -28,29 +28,35 @@ export class EntitySchemaHelper {
 	}
 
 	/**
-	 * Get the version of the entity schema, defaulting to 1 when absent.
-	 * This is the single source of truth for the "absent version = v1" convention.
-	 * When a version is present it must be a positive integer >= 1.
+	 * Get the version of the entity schema, defaulting to 0 when absent.
+	 * This is the single source of truth for the "absent version = v0" convention.
+	 * When a version is present it must be a non-negative integer >= 0.
 	 * @param entitySchema The entity schema to read the version from.
-	 * @returns The declared version, or 1 if no version was set.
+	 * @returns The declared version, or 0 if no version was set.
 	 * @throws GuardError if entitySchema is undefined or version is not an integer.
-	 * @throws GeneralError if version is present but less than 1.
+	 * @throws GeneralError if version is present but less than 0.
 	 */
 	public static getVersion(entitySchema: IEntitySchema): number {
 		Guards.object<IEntitySchema>(EntitySchemaHelper.CLASS_NAME, nameof(entitySchema), entitySchema);
-		if (entitySchema.version !== undefined) {
+
+		if (!Is.empty(entitySchema?.version)) {
 			Guards.integer(
 				EntitySchemaHelper.CLASS_NAME,
-				nameof(entitySchema.version),
-				entitySchema.version
+				nameof(entitySchema?.version),
+				entitySchema?.version
 			);
-			if (entitySchema.version < 1) {
-				throw new GeneralError(EntitySchemaHelper.CLASS_NAME, "versionMustBePositive", {
-					version: entitySchema.version
-				});
+			if (entitySchema.version < 0) {
+				throw new GeneralError(
+					EntitySchemaHelper.CLASS_NAME,
+					"versionMustBeGreaterThanOrEqualZero",
+					{
+						version: entitySchema.version
+					}
+				);
 			}
 		}
-		return entitySchema.version ?? 1;
+
+		return entitySchema.version ?? 0;
 	}
 
 	/**
