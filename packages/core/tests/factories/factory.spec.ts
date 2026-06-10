@@ -276,6 +276,26 @@ describe("Factory", () => {
 		expect(names[2]).toEqual("test1");
 	});
 
+	test("getFactory returns undefined for an unknown type name", () => {
+		expect(Factory.getFactory("unknown-type")).toBeUndefined();
+	});
+
+	test("getFactory returns the factory for a known type name", () => {
+		const typeName = "component-get-factory";
+		const created = Factory.createFactory<IComponent>(typeName);
+		const retrieved = Factory.getFactory<IComponent>(typeName);
+		expect(retrieved).toBeDefined();
+		expect(retrieved).toBe(created);
+	});
+
+	test("getFactory returns the same instance as createFactory", () => {
+		const typeName = "component-get-factory-same";
+		Factory.createFactory<IComponent>(typeName);
+		const a = Factory.getFactory<IComponent>(typeName);
+		const b = Factory.getFactory<IComponent>(typeName);
+		expect(a).toBe(b);
+	});
+
 	test("can have two factories which don't collide", () => {
 		const testFactory1 = Factory.createFactory<IComponent>("component11");
 		const testFactory2 = Factory.createFactory<IComponent>("component12");

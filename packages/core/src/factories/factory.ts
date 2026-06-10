@@ -114,6 +114,17 @@ export class Factory<T> {
 	}
 
 	/**
+	 * Get a specific factory by type name.
+	 * @param typeName The type name of the factory.
+	 * @returns The factory instance if it exists, otherwise undefined.
+	 */
+	public static getFactory<T = unknown>(typeName: string): Factory<T> | undefined {
+		const factories = Factory.getFactories();
+
+		return factories[typeName] as Factory<T> | undefined;
+	}
+
+	/**
 	 * Reset all the factories, which removes any created instances, but not the registrations.
 	 */
 	public static resetFactories(): void {
