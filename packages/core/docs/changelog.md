@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.4-next.7](https://github.com/iotaledger/twin-framework/compare/core-v0.0.4-next.6...core-v0.0.4-next.7) (2026-06-10)
+
+
+### Features
+
+* add Factory.getFactory ([ad6cd2d](https://github.com/iotaledger/twin-framework/commit/ad6cd2d30351c145c70212f8cce1b66d5e8a5235))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.4-next.6 to 0.0.4-next.7
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.6 to 0.0.4-next.7
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.6 to 0.0.4-next.7
+
 ## [0.0.4-next.6](https://github.com/iotaledger/twin-framework/compare/core-v0.0.4-next.5...core-v0.0.4-next.6) (2026-06-05)
 
 

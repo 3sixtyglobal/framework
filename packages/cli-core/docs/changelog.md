@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.0.4-next.7](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.0.4-next.6...cli-core-v0.0.4-next.7) (2026-06-10)
+
+
+### Miscellaneous Chores
+
+* **cli-core:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.6 to 0.0.4-next.7
+    * @twin.org/nameof bumped from 0.0.4-next.6 to 0.0.4-next.7
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.6 to 0.0.4-next.7
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.6 to 0.0.4-next.7
+
 ## [0.0.4-next.6](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.0.4-next.5...cli-core-v0.0.4-next.6) (2026-06-05)
 
 
