@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.4-next.8](https://github.com/iotaledger/twin-framework/compare/nameof-v0.0.4-next.7...nameof-v0.0.4-next.8) (2026-06-10)
+
+
+### Miscellaneous Chores
+
+* **nameof:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.7 to 0.0.4-next.8
+
 ## [0.0.4-next.7](https://github.com/iotaledger/twin-framework/compare/nameof-v0.0.4-next.6...nameof-v0.0.4-next.7) (2026-06-10)
 
 

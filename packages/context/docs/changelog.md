@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.0.4-next.8](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.7...context-v0.0.4-next.8) (2026-06-10)
+
+
+### Features
+
+* add user organization context key ([a3da436](https://github.com/iotaledger/twin-framework/commit/a3da4360451860052a508bdc147255a0b9ca8410))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.7 to 0.0.4-next.8
+    * @twin.org/nameof bumped from 0.0.4-next.7 to 0.0.4-next.8
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.7 to 0.0.4-next.8
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.7 to 0.0.4-next.8
+    * @twin.org/validate-locales bumped from 0.0.4-next.7 to 0.0.4-next.8
+
 ## [0.0.4-next.7](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.6...context-v0.0.4-next.7) (2026-06-10)
 
 
