@@ -72,6 +72,34 @@ All the factories.
 
 ***
 
+### getFactory() {#getfactory}
+
+> `static` **getFactory**\<`T`\>(`typeName`): `Factory`\<`T`\> \| `undefined`
+
+Get a specific factory by type name.
+
+#### Type Parameters
+
+##### T
+
+`T` = `unknown`
+
+#### Parameters
+
+##### typeName
+
+`string`
+
+The type name of the factory.
+
+#### Returns
+
+`Factory`\<`T`\> \| `undefined`
+
+The factory instance if it exists, otherwise undefined.
+
+***
+
 ### resetFactories() {#resetfactories}
 
 > `static` **resetFactories**(): `void`
