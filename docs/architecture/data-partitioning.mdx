@@ -5,7 +5,9 @@ order: 7
 
 # Data Partitioning and Multi-Tenant Architecture
 
-The platform uses partition-based logical isolation to support multi-tenancy. All tenants on a given node share the same database and blob storage infrastructure, but every record is tagged with a `partitionId` field that is automatically injected on writes and filtered on reads. When the partition context is correctly populated and the storage backend enforces partition constraints, tenants cannot see each other's data without requiring separate database instances. The strength of this isolation varies by connector — some backends enforce it at the database level, while others rely on application-level filtering and silently skip isolation when the partition key is absent (see [Partitioning by Storage Backend](#partitioning-by-storage-backend)).
+The platform uses partition-based logical isolation to support multi-tenancy. Every record is tagged with a `partitionId` field that is automatically injected on writes and filtered on reads. When the partition context is correctly populated and the storage backend enforces partition constraints, tenants cannot see each other's data without requiring separate database instances. The strength of this isolation varies by connector: some backends enforce it at the database level, while others rely on application-level filtering and silently skip isolation when the partition key is absent (see [Partitioning by Storage Backend](#partitioning-by-storage-backend)).
+
+The `node` context ID is always the outermost component of every partition key. This means multiple node instances can safely share the same database or blob storage infrastructure: each node's data is isolated by its node DID regardless of what other nodes write to the same backing store. Tenant and user partitions are nested within the node partition, so the hierarchy is `node / tenant / ...` from outermost to innermost.
 
 For details on how context IDs are propagated and how partition keys are derived from them, see [Context IDs](./context-ids.mdx).
 
@@ -15,17 +17,17 @@ Storage connectors use the partition key differently depending on the underlying
 
 ### Entity Storage
 
-| Backend        | How Partition Is Stored                                    | DB-Level Constraint                                 | Behaviour When Partition Key Is Undefined                    |
-| -------------- | ---------------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------------------ |
-| PostgreSQL     | `partitionId` column, part of composite PRIMARY KEY        | Yes — composite PK `(partitionId, primaryKey)`      | Falls back to `"root"` — isolation always enforced           |
-| MySQL          | `partitionId` column, part of composite PRIMARY KEY        | Yes — composite PK `(partitionId(255), primaryKey)` | Falls back to `"root"` — isolation always enforced           |
-| DynamoDB       | `partitionId` as HASH key, entity primary key as RANGE key | Yes — HASH key constraint                           | Falls back to `"root"` — isolation always enforced           |
-| Azure CosmosDB | `partitionId` as container partition key                   | Yes — partition key constraint                      | Falls back to `"root"` — isolation always enforced           |
-| ScyllaDB       | `partitionId` column used in CQL queries                   | Yes — included in query conditions                  | Falls back to `"root"` — isolation always enforced           |
-| GCP Firestore  | Collection name suffix derived from partition key          | Yes — logical collection separation                 | Falls back to `"default"` suffix — isolation always enforced |
-| MongoDB        | `partitionId` field on every document                      | No — application-level filter only                  | **Silently skipped** — all documents visible                 |
-| Memory         | `partitionId` property on in-memory objects                | No — application-level filter only                  | **Silently skipped** — all entities visible                  |
-| File           | `partitionId` property in JSON store file                  | No — application-level filter only                  | **Silently skipped** — all entities visible                  |
+| Backend        | How Partition Is Stored                                    | DB-Level Constraint                                | Behaviour When Partition Key Is Undefined                   |
+| -------------- | ---------------------------------------------------------- | -------------------------------------------------- | ----------------------------------------------------------- |
+| PostgreSQL     | `partitionId` column, part of composite PRIMARY KEY        | Yes, composite PK `(partitionId, primaryKey)`      | Falls back to `"root"`, isolation always enforced           |
+| MySQL          | `partitionId` column, part of composite PRIMARY KEY        | Yes, composite PK `(partitionId(255), primaryKey)` | Falls back to `"root"`, isolation always enforced           |
+| DynamoDB       | `partitionId` as HASH key, entity primary key as RANGE key | Yes, HASH key constraint                           | Falls back to `"root"`, isolation always enforced           |
+| Azure CosmosDB | `partitionId` as container partition key                   | Yes, partition key constraint                      | Falls back to `"root"`, isolation always enforced           |
+| ScyllaDB       | `partitionId` column used in CQL queries                   | Yes, included in query conditions                  | Falls back to `"root"`, isolation always enforced           |
+| GCP Firestore  | Collection name suffix derived from partition key          | Yes, logical collection separation                 | Falls back to `"default"` suffix, isolation always enforced |
+| MongoDB        | `partitionId` field on every document                      | No, application-level filter only                  | **Silently skipped**, all documents visible                 |
+| Memory         | `partitionId` property on in-memory objects                | No, application-level filter only                  | **Silently skipped**, all entities visible                  |
+| File           | `partitionId` property in JSON store file                  | No, application-level filter only                  | **Silently skipped**, all entities visible                  |
 
 ### Blob Storage
 
@@ -49,7 +51,7 @@ TWIN_NODE_TENANT_ENABLED=false
 ```
 
 - One node instance serves one tenant.
-- `TenantProcessor` is not registered — no API key validation occurs.
+- `TenantProcessor` is not registered, so no API key validation occurs.
 - The `tenant` context ID is absent, so `ContextIdHelper.pickKeysFromAvailable` filters it out and the partition key is derived from the node DID alone.
 - Cross-tenant data sharing happens via the Dataspace Protocol (Federated Catalogue and Rights Management).
 
@@ -63,11 +65,23 @@ TWIN_NODE_TENANT_ENABLED=true
 
 - One node instance serves multiple tenants.
 - Partition key uses `node` + `tenant` context.
-- Every tenant-scoped request must include an API key (`x-api-key` header), including login. Routes marked with `skipTenant: true` are exempt (e.g. health checks or cross-node endpoints).
+- Tenant identification works in two modes per request. Endpoints matching the configured `apiKeyEndpoints` pattern (default: `/login`) require an `x-api-key` header to identify the tenant. All other tenant-scoped routes that require authentication use the `organization` query parameter (the tenant's `organizationId` DID) to look up the tenant instead.
+- Routes marked with `skipTenant: true` bypass tenant identification entirely. Routes marked with `skipAuth: true` do not require an `organization` parameter; if absent, no tenant context is set for that request.
 - Tenants share the same database but see only their own data.
 - Tenant management via CLI commands (`tenant-create`, `tenant-update`, etc.) or REST API.
 
 **When to use:** community nodes, development environments, or cost-sensitive deployments where multiple small tenants share infrastructure.
+
+### Abstracting Over Deployment Mode
+
+Background tasks, scheduled operations, and any code that needs to run the same logic for every active tenant can use `IPlatformComponent` (implemented by `PlatformService` in `@twin.org/api-service`). This component abstracts over the deployment mode so that the calling code does not need to know whether the node is single-tenant or multi-tenant.
+
+`IPlatformComponent` exposes two methods:
+
+- `isMultiTenant()`: returns `true` if the node is configured for multi-tenant mode.
+- `execute(method)`: in single-tenant mode, calls the provided async method once. In multi-tenant mode, queries all registered tenants from entity storage and calls the method inside a `ContextIdStore.run(...)` scope for each tenant in turn, so each iteration sees the correct `tenant` context ID and storage partition.
+
+This is the recommended approach for any operation that must touch all tenants, such as background maintenance, scheduled processing, or node-wide policy enforcement. The same code path works correctly regardless of how many tenants exist or which deployment mode is active.
 
 ## Tenant Management
 
@@ -75,25 +89,26 @@ TWIN_NODE_TENANT_ENABLED=true
 
 Each tenant is stored as an entity with the following structure:
 
-| Field          | Type               | Description                                                                                                                                                                                                                        |
-| -------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`           | string (primary)   | 32-character hex identifier                                                                                                                                                                                                        |
-| `apiKey`       | string (secondary) | 32-character hex API key used for authentication                                                                                                                                                                                   |
-| `label`        | string             | Human-readable display name                                                                                                                                                                                                        |
-| `publicOrigin` | string (optional)  | Public URL of the node for this tenant (e.g. `https://tenant-a.api.example.com:4321`)                                                                                                                                              |
-| `isNodeTenant` | boolean            | Set to `true` by the `node-set-tenant` CLI command. Identifies the tenant used for the node's own administrative operations (e.g. node identity, wallet, bootstrap data) as distinct from application tenants. Defaults to `false` |
-| `dateCreated`  | string             | ISO 8601 timestamp                                                                                                                                                                                                                 |
-| `dateModified` | string             | ISO 8601 timestamp                                                                                                                                                                                                                 |
+| Field                  | Type                | Description                                                                                                                                                                                                        |
+| ---------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `id`                   | string (primary)    | 32-character hex identifier                                                                                                                                                                                        |
+| `apiKey`               | string (secondary)  | 32-character hex API key used for authentication                                                                                                                                                                   |
+| `label`                | string              | Human-readable display name                                                                                                                                                                                        |
+| `publicOrigin`         | string (optional)   | Public URL of the node for this tenant (e.g. `https://tenant-a.api.example.com:4321`)                                                                                                                              |
+| `organizationId`       | string (optional)   | DID of the organisation this tenant represents. Injected into the `organization` context ID on every request by `TenantProcessor`. Required for the `tenant-create` CLI command and recommended for REST creation. |
+| `organizationIdLegacy` | string[] (optional) | Additional organisation DIDs accepted as aliases during tenant resolution. Used to support tenants that previously operated under a different organisation DID.                                                    |
+| `dateCreated`          | string              | ISO 8601 timestamp                                                                                                                                                                                                 |
+| `dateModified`         | string              | ISO 8601 timestamp                                                                                                                                                                                                 |
 
 ### Creating a Tenant
 
 **CLI (run as a node command):**
 
 ```bash
-tenant-create --label="My Tenant" --public-origin="https://example.com:1234"
+tenant-create --organization-id="did:iota:..." --label="My Tenant" --public-origin="https://example.com:1234"
 ```
 
-All parameters are optional. If `--tenant-id` and `--api-key` are omitted, they are auto-generated as 32-character hex values. The command outputs the created tenant's ID, API key, label, and public origin. Results can also be written to a file with `--output-json` or `--output-env`.
+`--organization-id` is required. If `--tenant-id` and `--api-key` are omitted, they are auto-generated as 32-character hex values. The command outputs the created tenant's ID, API key, label, and public origin. Results can also be written to a file with `--output-json` or `--output-env`.
 
 **REST API:**
 
@@ -103,24 +118,54 @@ POST /tenants/
 
 ```json
 {
+  "organizationId": "did:iota:...",
   "apiKey": "optional-custom-api-key",
   "label": "My New Tenant",
-  "publicOrigin": "https://my-tenant.example.com:4321",
-  "isNodeTenant": false
+  "publicOrigin": "https://my-tenant.example.com:4321"
 }
 ```
 
-All body fields are optional except `label`. If `apiKey` is omitted, one is auto-generated. Requires `tenant-admin` scope on the JWT.
+`organizationId` is strongly recommended. All other body fields are optional except `label`. If `apiKey` is omitted, one is auto-generated. Requires `tenant-admin` scope on the JWT.
 
 ### How API Keys Map to Tenants
 
 ```
-API Key (changeable, secret)  →  Tenant ID (stable, partition key)  →  Data Partition
+Login:                API Key (secret, header)       →  Tenant ID + Organization DID  →  Data Partition
+Unauthenticated:      Organization DID (query param)  →  Tenant ID + Organization DID  →  Data Partition
+Authenticated (JWT):  Organization DID (query param)  →  [TenantProcessor sets initial context]
+                      JWT tid claim                   →  [AuthHeaderProcessor overrides Tenant + Organization]
+                      JWT sub + tid partition          →  User entity lookup (must exist in tid partition)
+                                                      →  Tenant ID + Organization DID + User + UserOrganization
 ```
 
-- Each tenant has a single `apiKey` field. To rotate keys, update the tenant's API key — the tenant ID and therefore the data partition remains unchanged.
-- The API key is the only way to identify a tenant before login.
-- API keys should never be exposed to browsers — use a reverse proxy to inject them.
+- The API key is only required for endpoints configured in `apiKeyEndpoints` (default: `/login`). All other tenant-scoped routes that require authentication must include the `organization` query parameter (the tenant's `organizationId` DID) so that `TenantProcessor` can set the initial request context.
+- For authenticated requests, `AuthHeaderProcessor` then overrides the tenant and organisation context with values derived from the JWT. It reads the `tid` claim (the tenant ID embedded in the JWT at login time), looks up that tenant by ID, and sets `contextIds[Tenant]` and `contextIds[Organization]` from the result. The JWT `tid` is authoritative; `TenantProcessor`'s initial values are superseded.
+- The user lookup is partitioned by the JWT `tid`: the user entity must exist in that tenant's storage partition. If it does not, authentication fails. This prevents a JWT from being used to access data in a different tenant partition.
+- The `organization` context ID on an authenticated request comes from `tenant.organizationId` on the tenant looked up by JWT `tid`, not from the JWT itself. Similarly, `userOrganization` comes from `user.organization` in the user entity record; the JWT `org` claim is validated against this field but the context ID is sourced from the entity.
+- Each tenant has a single `apiKey` field. To rotate keys, update the tenant's API key: the tenant ID and data partition remain unchanged.
+- API keys should never be exposed to browsers; use a reverse proxy to inject the `x-api-key` header for login requests.
+
+### Cross-Node Trust Verification
+
+Endpoints that resolve the tenant from the `organization` query parameter typically serve inter-node or cross-organisation calls rather than interactive user sessions. These routes are marked `skipAuth: true`, which means `AuthHeaderProcessor` does not run and no user JWT is required or expected.
+
+Instead, such endpoints are secured by a trust payload sent in the `Authorization: Bearer` header. The route handler extracts the bearer token and passes it into the service method, which calls `TrustHelper.verifyTrust()`. This runs the configured trust verifiers against the payload; the default implementation uses a `JwtVerifiableCredentialVerifier` that checks a JWT VC signature and extracts the caller's identity DID, followed optionally by an `IdentityAllowDenyVerifier` that enforces an allow or deny list. The payload format is not fixed to JWT VCs; other mechanisms can be supported by registering different verifiers. If verification fails, an `UnauthorizedError` is thrown before any service logic runs.
+
+The `organization` query parameter and the trust payload serve independent purposes. The query parameter identifies the target tenant (handled by `TenantProcessor`); the trust payload authenticates the calling node or organisation (handled by the service layer). Neither implies the other.
+
+For details on the trust payload format, the verifier chain, generators, and future extensibility, see [Trust](./trust.mdx).
+
+### Organisation Context and Default Organisation
+
+The `organization` context ID carries the DID of the organisation associated with the current request. Its source depends on the deployment mode.
+
+In single-tenant mode, the value comes from `state.nodeOrganizationId` in the node engine state. This is set once via the `set-node-org-id` CLI command (which is only valid when `tenantEnabled=false`) and registered as an engine-level context ID at startup. `SingleTenantProcessor` then injects it into every request context, so the `organization` context ID is always present, including on unauthenticated requests and background tasks.
+
+In multi-tenant mode, the value comes from the `organizationId` field on the tenant record. `TenantProcessor` resolves the tenant by `organization` query parameter and writes `tenant.organizationId` to the `organization` context ID. On auth-protected routes, `AuthHeaderProcessor` overrides this by looking up the tenant whose ID matches the JWT `tid` claim and reading that tenant's `organizationId`. The two lookups use different keys (query param vs JWT `tid`) but resolve to the same tenant for a correctly issued JWT. At startup, `enforceTenantOrganizationIds` validates that every registered tenant has an `organizationId`. If exactly one tenant is missing an `organizationId`, it is automatically filled from `state.nodeOrganizationId` to allow recovery. If more than one tenant is missing it, startup fails with an error.
+
+In single-tenant mode, the `organization` value is fixed and cannot be overridden by the caller. `SingleTenantProcessor` validates any `organization` query parameter provided in incoming requests: if the parameter is present and does not match `nodeOrganizationId`, the request is rejected with a 401 Unauthorised error. This covers callback scenarios where an external system sends an `organization` query param: the node accepts it only if it matches the node's own organisation DID, or if it is absent entirely.
+
+The `userOrganization` context ID is separate and carries the DID from the authenticated user's own identity record. It is only populated after login and is not used for partitioning.
 
 ## What Partitioning Does Not Support
 
@@ -128,11 +173,13 @@ API Key (changeable, secret)  →  Tenant ID (stable, partition key)  →  Data 
 
 User context (`contextIds["user"]`) is only available after login. Background tasks, bootstrap operations, and pre-login flows (like the login endpoint itself) have no user context. Partitioning by user would leave these operations with nowhere to store data.
 
-Additionally, per-user database isolation would break the data sharing model. The Rights Management system (PEP/PDP) and Dataspace Protocol operate at the organisational level — agreements are between organisations, not individual users.
+Additionally, per-user database isolation would break the data sharing model. The Rights Management system (PEP/PDP) and Dataspace Protocol operate at the organisational level: agreements are between organisations, not individual users.
 
 ### No Per-Organisation Database Isolation
 
-Organisation context is transient — it comes from the JWT and is not available for background tasks. While organisation context is available on authenticated requests, it is not used as a partition key because a tenant may contain multiple organisations, background jobs and system tasks run outside of user sessions, and the tenant is the natural isolation boundary.
+The `organization` context ID identifies the whole organisation that owns the tenant. In single-tenant mode it comes from `state.nodeOrganizationId` and is always present. In multi-tenant mode it comes from `tenant.organizationId` and is resolved per request. In both cases it maps one-to-one with the tenant, so partitioning by organisation DID would produce equivalent isolation to the existing tenant partition without adding any additional boundary.
+
+Using the `userOrganization` context ID (the user's own organisation DID) as a partition key would break background tasks and pre-login flows, where no user session exists. The Rights Management system and Dataspace Protocol also operate at the organisational level, requiring agreements between organisations rather than per-user isolation.
 
 ### No Per-Tenant Separate Databases
 
@@ -152,7 +199,7 @@ There is no connector that routes requests to different databases based on the c
 
 During engine startup, each storage connector is instantiated with a `partitionContextIds` array. This happens in two steps.
 
-**Step 1 — Filter desired keys against available keys:**
+**Step 1: Filter desired keys against available keys:**
 
 ```typescript
 const partitionContextIds = ContextIdHelper.pickKeysFromAvailable(engineCore.getContextIdKeys(), [
@@ -161,9 +208,9 @@ const partitionContextIds = ContextIdHelper.pickKeysFromAvailable(engineCore.get
 ]);
 ```
 
-This intersects the desired keys with what is actually configured on the engine. If `tenantEnabled=false`, `"tenant"` is not in the available keys, so it gets filtered out and only `"node"` remains.
+This intersects the desired keys with what is actually configured on the engine. If `tenantEnabled=false`, `"tenant"` is not in the available keys, so it gets filtered out and only `"node"` remains. The `node` key is never filtered out in a correctly configured deployment: it is what allows multiple node instances to share the same physical database without their data colliding.
 
-**Step 2 — Derive partition key per request:**
+**Step 2: Derive partition key per request:**
 
 On each storage operation, the connector calls:
 
@@ -173,7 +220,7 @@ const partitionKey = ContextIdHelper.combinedContextKey(contextIds, this._partit
 
 This reads the current request's context IDs, compacts them via registered handlers, and joins them with `/` to produce the final partition key string.
 
-The default node configuration requests `["node", "tenant"]`, but individual modules can override this for specific storage connectors where the additional context is guaranteed to be present. For example, a blob storage connector that is only used by authenticated endpoints could be configured with `["node", "tenant", "user"]` to partition uploads per user. This is safe because user context is always populated after login — it does not contradict the general recommendation against per-user partitioning, which applies to storage that must also be accessible from background tasks or pre-login flows.
+The default node configuration requests `["node", "tenant"]`, but individual modules can override this for specific storage connectors where the additional context is guaranteed to be present. For example, a blob storage connector that is only used by authenticated endpoints could be configured with `["node", "tenant", "user"]` to partition uploads per user. This is safe because user context is always populated after login, and it does not contradict the general recommendation against per-user partitioning, which applies to storage that must also be accessible from background tasks or pre-login flows.
 
 ### Changing Partition Configuration
 
@@ -202,21 +249,21 @@ This prevents API key exposure to the browser. A single frontend codebase can se
 
 ## Summary
 
-| Question                                      | Answer                                                                                                              |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| How is data isolated between tenants?         | Hidden `partitionId` field on every record, automatically injected and filtered                                     |
-| What determines the partition?                | `node` + `tenant` context IDs, derived from engine state and API key                                                |
-| Can users have their own database?            | No — user context is transient and unavailable before login                                                         |
-| Can organisations have their own database?    | No — organisation context is transient                                                                              |
-| Can tenants have their own database?          | Not within the same node — deploy a separate node instance instead                                                  |
-| Is isolation enforced at the database level?  | PostgreSQL, MySQL, DynamoDB, CosmosDB, ScyllaDB, Firestore: yes. MongoDB, Memory, File: no (application-level only) |
-| What happens if no API key is provided?       | `TenantProcessor` rejects the request with 401 (unless `skipTenant: true`)                                          |
-| Can partition config change after deployment? | Not without data migration — existing records become inaccessible                                                   |
+| Question                                      | Answer                                                                                                                                                                       |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| How is data isolated between tenants?         | Hidden `partitionId` field on every record, automatically injected and filtered                                                                                              |
+| What determines the partition?                | Always `node` (the outermost key, isolating this node's data from all other nodes sharing the same DB), plus `tenant` for tenant-owned resources in multi-tenant deployments |
+| Can users have their own database?            | No; user context is transient and unavailable before login                                                                                                                   |
+| Can organisations have their own database?    | No; organisation DID maps one-to-one with the tenant, so the tenant partition already covers this boundary                                                                   |
+| Can tenants have their own database?          | Not within the same node: deploy a separate node instance instead                                                                                                            |
+| Is isolation enforced at the database level?  | PostgreSQL, MySQL, DynamoDB, CosmosDB, ScyllaDB, Firestore: yes. MongoDB, Memory, File: no (application-level only)                                                          |
+| What happens if no API key is provided?       | `TenantProcessor` rejects the request with 401 (unless `skipTenant: true`)                                                                                                   |
+| Can partition config change after deployment? | Not without data migration; existing records become inaccessible                                                                                                             |
 
 ## Recommendations
 
 1. **For most use cases**, tenant-level partitioning within a shared database is sufficient and cost-effective.
 2. **For enterprise or compliance-sensitive tenants**, deploy a separate node instance with its own database and blob storage.
-3. **Do not partition by user or organisation** — these contexts are transient, and the platform's data sharing model (Rights Management, Dataspace Protocol) operates at the organisational level.
+3. **Do not partition by user or `userOrganization`**: these contexts are only available after login and are absent during background tasks and pre-login flows. The platform's data sharing model (Rights Management, Dataspace Protocol) operates at the organisational level, requiring cross-organisation data access rather than per-user isolation.
 4. **Always ensure `tenantEnabled=true`** if running a multi-tenant node. Without it, there is only node-level partitioning and no tenant isolation.
 5. **Use a reverse proxy** to inject API keys for browser-facing applications. Never expose API keys to the frontend.

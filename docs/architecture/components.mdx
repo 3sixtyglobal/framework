@@ -7,7 +7,7 @@ import { ComponentLayerDiagram } from './components-diagrams.jsx';
 
 # Components
 
-A component is the business capability layer of the TWIN platform. Where connectors translate between platform contracts and external technologies, components translate domain operations into co-ordinated connector calls, cross-domain orchestration, input validation, conversion, and policy-aware processing. Components are the units that routes and processors normally expose.
+A component is the business capability layer of the platform. Where connectors translate between platform contracts and external technologies, components translate domain operations into co-ordinated connector calls, cross-domain orchestration, input validation, conversion, and policy-aware processing. Components are the units that routes and processors normally expose.
 
 {ComponentLayerDiagram()}
 
@@ -25,9 +25,9 @@ Each capability repository typically defines one or more `I...Component` interfa
 
 `IEntityStorageComponent` defines `set`, `get`, `remove`, and `query` operations with domain-oriented query semantics.
 
-`IIdentityComponent`, `IAttestationComponent`, `INftComponent`, `IVerifiableStorageComponent`, `IDataProcessingComponent`, `IDocumentManagementComponent`, and related interfaces follow the same pattern.
+`IIdentityComponent`, `IAttestationComponent`, `INftComponent`, `IVerifiableStorageComponent`, `IDataProcessingComponent`, `IDocumentManagementComponent`, `INotarizationComponent`, `IAutomationComponent`, `IEventBusComponent`, and related interfaces follow the same pattern.
 
-In total, the codebase currently includes component interfaces for identity, storage, logging, attestation, NFT, verifiable storage, messaging, telemetry, trust, background task scheduling, auditable graph and stream processing, immutable proof, federated catalogue, synchronised storage, and API authentication management.
+In total, the codebase currently includes component interfaces for identity, storage, logging, attestation, NFT, verifiable storage, messaging, telemetry, trust, notarization, automation, event bus, background task scheduling, auditable graph and stream processing, immutable proof, federated catalogue, synchronised storage, dataspace, rights management, and API authentication management.
 
 ## Implementations
 
@@ -97,24 +97,30 @@ In distributed deployments, this consistent lifecycle model allows deterministic
 
 The table below summarises key component interfaces currently present in the codebase.
 
-| Domain                | Interface                                                                       |
-| --------------------- | ------------------------------------------------------------------------------- |
-| Entity Storage        | `IEntityStorageComponent`                                                       |
-| Logging               | `ILoggingComponent`                                                             |
-| Blob Storage          | `IBlobStorageComponent`                                                         |
-| Identity              | `IIdentityComponent`, `IIdentityResolverComponent`, `IIdentityProfileComponent` |
-| Messaging             | `IMessagingComponent`, `IMessagingAdminComponent`                               |
-| NFT                   | `INftComponent`                                                                 |
-| Verifiable Storage    | `IVerifiableStorageComponent`                                                   |
-| Attestation           | `IAttestationComponent`                                                         |
-| Data Processing       | `IDataProcessingComponent`                                                      |
-| Document Management   | `IDocumentManagementComponent`                                                  |
-| Auditable Item Graph  | `IAuditableItemGraphComponent`                                                  |
-| Auditable Item Stream | `IAuditableItemStreamComponent`                                                 |
-| Telemetry             | `ITelemetryComponent`                                                           |
-| Trust                 | `ITrustComponent`                                                               |
-| Background Tasks      | `IBackgroundTaskComponent`, `ITaskSchedulerComponent`                           |
-| Synchronised Storage  | `ISynchronisedStorageComponent`                                                 |
-| Immutable Proof       | `IImmutableProofComponent`                                                      |
-| Federated Catalogue   | `IFederatedCatalogueComponent`                                                  |
-| API Authentication    | `IAuthenticationComponent`, `IAuthenticationAdminComponent`                     |
+| Domain                | Interface                                                                                                                                                                                                                                                                                        |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Entity Storage        | `IEntityStorageComponent`                                                                                                                                                                                                                                                                        |
+| Logging               | `ILoggingComponent`                                                                                                                                                                                                                                                                              |
+| Blob Storage          | `IBlobStorageComponent`                                                                                                                                                                                                                                                                          |
+| Identity              | `IIdentityComponent`, `IIdentityResolverComponent`, `IIdentityProfileComponent`                                                                                                                                                                                                                  |
+| Messaging             | `IMessagingComponent`, `IMessagingAdminComponent`                                                                                                                                                                                                                                                |
+| NFT                   | `INftComponent`                                                                                                                                                                                                                                                                                  |
+| Verifiable Storage    | `IVerifiableStorageComponent`                                                                                                                                                                                                                                                                    |
+| Attestation           | `IAttestationComponent`                                                                                                                                                                                                                                                                          |
+| Data Processing       | `IDataProcessingComponent`                                                                                                                                                                                                                                                                       |
+| Document Management   | `IDocumentManagementComponent`                                                                                                                                                                                                                                                                   |
+| Auditable Item Graph  | `IAuditableItemGraphComponent`                                                                                                                                                                                                                                                                   |
+| Auditable Item Stream | `IAuditableItemStreamComponent`                                                                                                                                                                                                                                                                  |
+| Telemetry             | `ITelemetryComponent`                                                                                                                                                                                                                                                                            |
+| Trust                 | `ITrustComponent`                                                                                                                                                                                                                                                                                |
+| Background Tasks      | `IBackgroundTaskComponent`, `ITaskSchedulerComponent`                                                                                                                                                                                                                                            |
+| Synchronised Storage  | `ISynchronisedStorageComponent`                                                                                                                                                                                                                                                                  |
+| Immutable Proof       | `IImmutableProofComponent`                                                                                                                                                                                                                                                                       |
+| Federated Catalogue   | `IFederatedCatalogueComponent`                                                                                                                                                                                                                                                                   |
+| Event Bus             | `IEventBusComponent`                                                                                                                                                                                                                                                                             |
+| Notarization          | `INotarizationComponent`                                                                                                                                                                                                                                                                         |
+| Automation            | `IAutomationComponent`                                                                                                                                                                                                                                                                           |
+| Metrics Collector     | `IMetricsCollectorComponent`                                                                                                                                                                                                                                                                     |
+| Dataspace             | `IDataspaceControlPlaneComponent`, `IDataspaceControlPlaneResolverComponent`, `IDataspaceDataPlaneComponent`                                                                                                                                                                                     |
+| Rights Management     | `IPolicyAdministrationPointComponent`, `IPolicyDecisionPointComponent`, `IPolicyEnforcementPointComponent`, `IPolicyInformationPointComponent`, `IPolicyManagementPointComponent`, `IPolicyNegotiationPointComponent`, `IPolicyNegotiationAdminPointComponent`, `IPolicyExecutionPointComponent` |
+| API Authentication    | `IAuthenticationComponent`, `IAuthenticationAdminComponent`                                                                                                                                                                                                                                      |
