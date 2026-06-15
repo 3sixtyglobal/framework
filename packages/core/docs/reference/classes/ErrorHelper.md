@@ -18,7 +18,7 @@ Error helper functions.
 
 > `static` **formatErrors**(`error`, `options?`): `string`[]
 
-Format Errors and returns just their messages.
+Format errors and returns just their messages.
 
 #### Parameters
 

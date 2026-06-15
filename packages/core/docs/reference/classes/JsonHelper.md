@@ -105,7 +105,7 @@ The object to patch.
 
 [`IPatchOperation`](../interfaces/IPatchOperation.md)[]
 
-The second object.
+The patch operations to apply.
 
 #### Returns
 

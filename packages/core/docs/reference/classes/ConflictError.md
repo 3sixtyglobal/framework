@@ -48,7 +48,7 @@ Any additional information for the error.
 
 `unknown`
 
-The cause or the error if we have wrapped another error.
+The cause of the error if we have wrapped another error.
 
 #### Returns
 

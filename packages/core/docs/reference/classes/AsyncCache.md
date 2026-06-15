@@ -125,7 +125,7 @@ The TTL of the entry in the cache in milliseconds. Defaults to 1000 (1 second).
 
 `Promise`\<`void`\>
 
-Nothing.
+A promise that resolves when the entry has been stored.
 
 ***
 

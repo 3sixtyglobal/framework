@@ -80,7 +80,7 @@ The node logging component type.
 
 `Promise`\<`void`\>
 
-Nothing.
+A promise that resolves when the component has started.
 
 ***
 
@@ -102,7 +102,7 @@ The node logging component type.
 
 `Promise`\<`void`\>
 
-Nothing.
+A promise that resolves when the component has stopped.
 
 ***
 

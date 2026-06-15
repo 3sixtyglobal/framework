@@ -34,8 +34,6 @@ The context IDs.
 
 `void`
 
-The result of the method.
-
 ***
 
 ### terminate() {#terminate}

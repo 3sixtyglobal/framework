@@ -506,7 +506,7 @@ The object without the omitted keys, or undefined if the input was undefined.
 
 > `static` **toExtended**(`obj`): `any`
 
-Converter the non JSON primitives to extended types.
+Convert the non JSON primitives to extended types.
 
 #### Parameters
 
@@ -528,7 +528,7 @@ The object with extended properties.
 
 > `static` **fromExtended**(`obj`): `any`
 
-Converter the extended types to non JSON primitives.
+Convert the extended types to non JSON primitives.
 
 #### Parameters
 

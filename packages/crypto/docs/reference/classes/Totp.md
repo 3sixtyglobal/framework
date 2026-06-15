@@ -92,7 +92,7 @@ The timestamp now.
 
 `number` \| `undefined`
 
-Undefined if failure, delta on success
+The counter delta on success, or undefined if no matching code is found within the window.
 
 ***
 

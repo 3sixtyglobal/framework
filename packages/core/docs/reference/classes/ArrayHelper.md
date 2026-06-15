@@ -38,7 +38,7 @@ The second array.
 
 `boolean`
 
-True if both arrays are empty of have the same values.
+True if both arrays are empty or have the same values.
 
 ***
 

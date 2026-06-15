@@ -20,4 +20,4 @@ Description of the object.
 
 > `optional` **version?**: `number`
 
-The schema version. Used to drive ordered migrations. Absent is treated as version 1.
+The schema version. Used to drive ordered migrations. Absent is treated as version 0.

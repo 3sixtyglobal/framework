@@ -80,4 +80,4 @@ The maximum amount of memory to use in bytes, default 2^30.
 
 `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
-The derived key.
+A promise that resolves with the derived key bytes.

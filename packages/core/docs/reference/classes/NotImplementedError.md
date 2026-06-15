@@ -1,6 +1,6 @@
 # Class: NotImplementedError
 
-Class to handle errors.
+Class to handle errors raised when a method has not been implemented.
 
 ## Extends
 

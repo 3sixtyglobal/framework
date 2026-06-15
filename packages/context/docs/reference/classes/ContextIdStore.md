@@ -52,7 +52,7 @@ The async method to run.
 
 `Promise`\<`T`\>
 
-Nothing.
+A promise that resolves with the result of the async method.
 
 ***
 

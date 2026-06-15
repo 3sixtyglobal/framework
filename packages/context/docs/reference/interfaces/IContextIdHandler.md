@@ -142,7 +142,7 @@ The node logging component type.
 
 `Promise`\<`void`\>
 
-Nothing.
+A promise that resolves when the component has started.
 
 #### Inherited from
 
@@ -168,7 +168,7 @@ The node logging component type.
 
 `Promise`\<`void`\>
 
-Nothing.
+A promise that resolves when the component has stopped.
 
 #### Inherited from
 

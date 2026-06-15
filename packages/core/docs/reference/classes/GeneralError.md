@@ -1,6 +1,6 @@
 # Class: GeneralError
 
-Class to handle errors.
+Class to handle general-purpose errors.
 
 ## Extends
 
