@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import type { MessagePort } from "node:worker_threads";
-import { nameof } from "@twin.org/nameof";
 import { GeneralError, Is, ObjectHelper, SharedStore } from "@twin.org/core";
+import { nameof } from "@twin.org/nameof";
 import type { ISharedObjectBufferOptions } from "../models/ISharedObjectBufferOptions.js";
 import type { ISharedObjectBufferWorkerMessage } from "../models/ISharedObjectBufferWorkerMessage.js";
 import { SharedObjectBufferMessageTypes } from "../models/sharedObjectBufferMessageTypes.js";
