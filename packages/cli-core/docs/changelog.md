@@ -1,5 +1,44 @@
 # Changelog
 
+## [0.0.4-next.10](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.0.4-next.9...cli-core-v0.0.4-next.10) (2026-06-15)
+
+
+### Features
+
+* add CLIParam.arrayOneOf ([18f0815](https://github.com/iotaledger/twin-framework/commit/18f08157e5305cddf65d09b36a51a91a0873e396))
+* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* add guards arrayEndsWith and arrayStartsWith ([95d875e](https://github.com/iotaledger/twin-framework/commit/95d875ec8ccb4713c145fdde941d4cfedcec2ed3))
+* eslint migration to flat config ([74427d7](https://github.com/iotaledger/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* improve error display in CLI ([94b6ca8](https://github.com/iotaledger/twin-framework/commit/94b6ca8bdcfe3ca7671c4095b436ea7bddaae98e))
+* improve error formatting ([#313](https://github.com/iotaledger/twin-framework/issues/313)) ([5a19623](https://github.com/iotaledger/twin-framework/commit/5a196231bcbf088bf9ba92a93b7478d3b8c5593f))
+* improve signatures ([bcc21ae](https://github.com/iotaledger/twin-framework/commit/bcc21aed3e10a264ef5c8515bde8dcac8a05c719))
+* improve signatures ([cdd24be](https://github.com/iotaledger/twin-framework/commit/cdd24be6fb898d33955b6f2f93c3ddbd73582269))
+* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* relocate core packages from tools ([bcab8f3](https://github.com/iotaledger/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/iotaledger/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+
+
+### Bug Fixes
+
+* cli display output for JSON to allow infinite depth ([2a06f52](https://github.com/iotaledger/twin-framework/commit/2a06f52c92dbc51a4969d651486a0c3548529929))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* export the json locales for cli-core ([188b47d](https://github.com/iotaledger/twin-framework/commit/188b47d3339deb42d08c32715909337749fb0e4a))
+* framework pr naming convention ([#142](https://github.com/iotaledger/twin-framework/issues/142)) ([e29acee](https://github.com/iotaledger/twin-framework/commit/e29acee2fbec42506091956d6ba8b8ce25a90008))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.9 to 0.0.4-next.10
+    * @twin.org/nameof bumped from 0.0.4-next.9 to 0.0.4-next.10
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.9 to 0.0.4-next.10
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.9 to 0.0.4-next.10
+
 ## [0.0.4-next.9](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.0.4-next.8...cli-core-v0.0.4-next.9) (2026-06-15)
 
 

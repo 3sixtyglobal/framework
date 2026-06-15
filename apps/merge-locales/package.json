@@ -1,6 +1,6 @@
 {
 	"name": "@twin.org/merge-locales",
-	"version": "0.0.4-next.9",
+	"version": "0.0.4-next.10",
 	"description": "Merge locale files from all dependencies",
 	"repository": {
 		"type": "git",
@@ -29,15 +29,15 @@
 		"dist:no-test": "npm run clean && npm run build && npm run merge-locales"
 	},
 	"dependencies": {
-		"@twin.org/cli-core": "0.0.4-next.9",
-		"@twin.org/core": "0.0.4-next.9",
-		"@twin.org/nameof": "0.0.4-next.9",
+		"@twin.org/cli-core": "0.0.4-next.10",
+		"@twin.org/core": "0.0.4-next.10",
+		"@twin.org/nameof": "0.0.4-next.10",
 		"commander": "14.0.3",
 		"glob": "13.0.6"
 	},
 	"devDependencies": {
-		"@twin.org/nameof-transformer": "0.0.4-next.9",
-		"@twin.org/nameof-vitest-plugin": "0.0.4-next.9",
+		"@twin.org/nameof-transformer": "0.0.4-next.10",
+		"@twin.org/nameof-vitest-plugin": "0.0.4-next.10",
 		"@types/node": "25.9.0",
 		"@vitest/coverage-v8": "4.1.6",
 		"copyfiles": "2.4.1",

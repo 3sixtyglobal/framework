@@ -1,5 +1,58 @@
 # Changelog
 
+## [0.0.4-next.10](https://github.com/iotaledger/twin-framework/compare/web-v0.0.4-next.9...web-v0.0.4-next.10) (2026-06-15)
+
+
+### Features
+
+* add additional header types ([#222](https://github.com/iotaledger/twin-framework/issues/222)) ([05f01cf](https://github.com/iotaledger/twin-framework/commit/05f01cf34b7bcec561ee989f679281b1cacdf032))
+* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* add cookie helper method to web package ([#217](https://github.com/iotaledger/twin-framework/issues/217)) ([043c632](https://github.com/iotaledger/twin-framework/commit/043c63298bff96f70bdefed56b82afef42ec3f44))
+* add guards arrayEndsWith and arrayStartsWith ([95d875e](https://github.com/iotaledger/twin-framework/commit/95d875ec8ccb4713c145fdde941d4cfedcec2ed3))
+* add header helper for common bearer support ([0c940b2](https://github.com/iotaledger/twin-framework/commit/0c940b29cccf0c3bb5b4aa8a01f1998010e44d51))
+* add IEntitySchemaDiff and entitySchemaDiff utility ([#282](https://github.com/iotaledger/twin-framework/issues/282)) ([9d63e94](https://github.com/iotaledger/twin-framework/commit/9d63e94021ee2ffc138004ee68cf53d08a6b17f9))
+* add jwk enc property overrides ([18b6309](https://github.com/iotaledger/twin-framework/commit/18b63092a386b56ea7fcd7e12865ac6e1b47cc1e))
+* add kid method to Jwk ([bc9239e](https://github.com/iotaledger/twin-framework/commit/bc9239ed9896a053d83e00ca221e962704ebc277))
+* add Link header array support ([aff32a3](https://github.com/iotaledger/twin-framework/commit/aff32a3ff8ad3d076cade7c889444220706bfb1e))
+* add rsa cipher support ([7af6cc6](https://github.com/iotaledger/twin-framework/commit/7af6cc67512d3363bd4a2f2e87bd7733c2800147))
+* add zlib/deflate mime types detection ([72c472b](https://github.com/iotaledger/twin-framework/commit/72c472b5a35a973e7109336f5b6cdd84dbb8bbcb))
+* add/update http and mime types ([#229](https://github.com/iotaledger/twin-framework/issues/229)) ([d50154a](https://github.com/iotaledger/twin-framework/commit/d50154a484711b67feb42ea20a94e4415e53d392))
+* adding link header helper ([#225](https://github.com/iotaledger/twin-framework/issues/225)) ([703c072](https://github.com/iotaledger/twin-framework/commit/703c0725aceac6b6ec0c4fa729ef832d12fb3fd7))
+* additional http header extraction ([#262](https://github.com/iotaledger/twin-framework/issues/262)) ([124fa3f](https://github.com/iotaledger/twin-framework/commit/124fa3fdd118ed17f973d4b46842f5b7f35365c2))
+* additional http link feature support ([b68b4cc](https://github.com/iotaledger/twin-framework/commit/b68b4cc6a6e3cf02f91e794353714e26a49fe66c))
+* additional nameof operators ([a5aab60](https://github.com/iotaledger/twin-framework/commit/a5aab60bf66a86f1b7ff8af7c4f044cb03706d50))
+* ensure the alg is the correct one when generating JWK or JWS ([#136](https://github.com/iotaledger/twin-framework/issues/136)) ([46a5af1](https://github.com/iotaledger/twin-framework/commit/46a5af127192d7048068275d14f555f09add3642))
+* eslint migration to flat config ([74427d7](https://github.com/iotaledger/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* improve bearer creation and extraction ([b9ddd6d](https://github.com/iotaledger/twin-framework/commit/b9ddd6dae0cb558e2227f0ec5e9cd21f85957400))
+* improve bearer creation and extraction ([29a347a](https://github.com/iotaledger/twin-framework/commit/29a347a760cb3bc5eb819112e84f1ac99430e72b))
+* improve signatures ([cdd24be](https://github.com/iotaledger/twin-framework/commit/cdd24be6fb898d33955b6f2f93c3ddbd73582269))
+* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* propagate includeStackTrace on error conversion ([098fc72](https://github.com/iotaledger/twin-framework/commit/098fc729939ea3127f2bdcc0ddb6754096c5f919))
+* relocate core packages from tools ([bcab8f3](https://github.com/iotaledger/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* use body on patch verb ([28627e5](https://github.com/iotaledger/twin-framework/commit/28627e527d033d433acefe0e9fde52ba88c0d047))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/iotaledger/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.9 to 0.0.4-next.10
+    * @twin.org/crypto bumped from 0.0.4-next.9 to 0.0.4-next.10
+    * @twin.org/nameof bumped from 0.0.4-next.9 to 0.0.4-next.10
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.9 to 0.0.4-next.10
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.9 to 0.0.4-next.10
+    * @twin.org/validate-locales bumped from 0.0.4-next.9 to 0.0.4-next.10
+
 ## [0.0.4-next.9](https://github.com/iotaledger/twin-framework/compare/web-v0.0.4-next.8...web-v0.0.4-next.9) (2026-06-15)
 
 
