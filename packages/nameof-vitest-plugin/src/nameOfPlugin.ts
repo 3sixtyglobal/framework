@@ -13,6 +13,9 @@ export function nameOfPluginTransform(code: string, id: string): string {
 	return manual(code);
 }
 
+/**
+ * Vitest plugin that applies the nameof transformer to all source files before testing.
+ */
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const NameOfPlugin: Plugin = {
 	name: "name-of",

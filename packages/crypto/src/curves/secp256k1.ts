@@ -43,7 +43,7 @@ export class Secp256k1 {
 	}
 
 	/**
-	 * Sign the block with privateKey and returns a signature.
+	 * Signs the block with the private key and returns a signature.
 	 * @param privateKey The private key.
 	 * @param block The block to sign.
 	 * @returns The signature.

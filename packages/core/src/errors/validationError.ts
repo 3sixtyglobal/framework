@@ -9,7 +9,7 @@ import type { IValidationFailure } from "../models/IValidationFailure.js";
  */
 export class ValidationError extends BaseError {
 	/**
-	 * Runtime name for the class.s
+	 * Runtime name for the class.
 	 */
 	public static readonly CLASS_NAME: string = nameof<ValidationError>();
 

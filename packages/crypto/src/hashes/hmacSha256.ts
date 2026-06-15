@@ -86,7 +86,7 @@ export class HmacSha256 {
 
 	/**
 	 * Get the digest for the hash.
-	 * @returns The instance for chaining.
+	 * @returns The computed hash as bytes.
 	 */
 	public digest(): Uint8Array {
 		return this._instance.digest();

@@ -9,7 +9,7 @@ export class Is {
 	/**
 	 * Is the property undefined.
 	 * @param value The value to test.
-	 * @returns True if the value is a empty.
+	 * @returns True if the value is undefined.
 	 */
 	public static undefined(value: unknown): value is undefined {
 		return value === undefined;
@@ -18,7 +18,7 @@ export class Is {
 	/**
 	 * Is the property null.
 	 * @param value The value to test.
-	 * @returns True if the value is a empty.
+	 * @returns True if the value is null.
 	 */
 	public static null(value: unknown): value is null {
 		return value === null;
@@ -27,16 +27,16 @@ export class Is {
 	/**
 	 * Is the property null or undefined.
 	 * @param value The value to test.
-	 * @returns True if the value is a empty.
+	 * @returns True if the value is null or undefined.
 	 */
 	public static empty(value: unknown): value is undefined | null {
 		return value === null || value === undefined;
 	}
 
 	/**
-	 * Is the property is not null or undefined.
+	 * Is the property not null or undefined.
 	 * @param value The value to test.
-	 * @returns True if the value is a not empty.
+	 * @returns True if the value is not null or undefined.
 	 */
 	public static notEmpty(value: unknown): boolean {
 		return value !== null && value !== undefined;
@@ -52,9 +52,9 @@ export class Is {
 	}
 
 	/**
-	 * Is the value a string.
+	 * Is the value a non-empty string.
 	 * @param value The value to test.
-	 * @returns True if the value is a string.
+	 * @returns True if the value is a non-empty string.
 	 */
 	public static stringValue(value: unknown): value is string {
 		return Is.string(value) && value.trim().length > 0;
@@ -248,7 +248,7 @@ export class Is {
 	/**
 	 * Is the value a timestamp in seconds.
 	 * @param value The value to test.
-	 * @returns True if the value is a date.
+	 * @returns True if the value is a timestamp in seconds.
 	 */
 	public static timestampSeconds(value: unknown): value is number {
 		if (!Is.integer(value)) {
@@ -261,7 +261,7 @@ export class Is {
 	/**
 	 * Is the value a timestamp in milliseconds.
 	 * @param value The value to test.
-	 * @returns True if the value is a date.
+	 * @returns True if the value is a timestamp in milliseconds.
 	 */
 	public static timestampMilliseconds(value: unknown): value is number {
 		if (!Is.integer(value)) {

@@ -76,7 +76,7 @@ export class JsonHelper {
 	 * Applies a RFC 6902 diff set to an object.
 	 * Based on https://www.rfc-editor.org/rfc/rfc6902.
 	 * @param object The object to patch.
-	 * @param patches The second object.
+	 * @param patches The patch operations to apply.
 	 * @returns The updated object.
 	 * @throws GeneralError if the patch fails.
 	 */

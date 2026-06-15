@@ -311,7 +311,7 @@ export class FetchHelper {
 			// the cache option to get the result and cache it.
 			const cacheResponse = AsyncCache.exec(
 				`${FetchHelper._CACHE_PREFIX}${url}`,
-				options.cacheTtlMs * 1000,
+				options.cacheTtlMs,
 				async () =>
 					FetchHelper.fetchBinary<T>(
 						source,

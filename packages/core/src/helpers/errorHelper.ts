@@ -12,7 +12,7 @@ import { Is } from "../utils/is.js";
  */
 export class ErrorHelper {
 	/**
-	 * Format Errors and returns just their messages.
+	 * Format errors and returns just their messages.
 	 * @param error The error to format.
 	 * @param options Options for formatting the error.
 	 * @param options.includeStack Whether to include the stack trace in the output, defaults to false.

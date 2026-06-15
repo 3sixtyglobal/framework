@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 /**
- * Model for a local.
+ * Model for a locale.
  */
 export interface ILocale {
 	/**

@@ -3,8 +3,8 @@
 import { Is } from "./is.js";
 
 /**
- * Provide a store for shared objects which can be accesses through multiple
- * instance loads of a packages.
+ * Provide a store for shared objects which can be accessed through multiple
+ * instance loads of a package.
  */
 export class SharedStore {
 	/**

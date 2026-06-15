@@ -31,7 +31,7 @@ export class Totp {
 	 * @param window The allowable margin for the counter.
 	 * @param interval The time step of the counter.
 	 * @param timestamp The timestamp now.
-	 * @returns Undefined if failure, delta on success
+	 * @returns The counter delta on success, or undefined if no matching code is found within the window.
 	 */
 	public static verify(
 		token: string,

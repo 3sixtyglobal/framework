@@ -192,8 +192,8 @@ export class StringHelper {
 
 	/**
 	 * Check if a Node.js Buffer or Uint8Array is UTF-8.
-	 * Url https://tools.ietf.org/html/rfc3629
-	 * Source https://github.com/hcodes/isutf8
+	 * @see https://tools.ietf.org/html/rfc3629
+	 * @see https://github.com/hcodes/isutf8
 	 * UTF8-char = UTF8-1 / UTF8-2 / UTF8-3 / UTF8-4.
 	 * UTF8-1    = %x00-7F.
 	 * UTF8-2    = %xC2-DF UTF8-tail.
