@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.0.4-next.9](https://github.com/iotaledger/twin-framework/compare/core-v0.0.4-next.8...core-v0.0.4-next.9) (2026-06-15)
+
+
+### Features
+
+* shared object buffer ([#355](https://github.com/iotaledger/twin-framework/issues/355)) ([70d82ea](https://github.com/iotaledger/twin-framework/commit/70d82ea8f43f01aa840ae90ee0b1f23b064a07c6))
+
+
+### Bug Fixes
+
+* linting ([b77511d](https://github.com/iotaledger/twin-framework/commit/b77511de8781707088b1beb4c92f12d7d6e0fd5f))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.4-next.8 to 0.0.4-next.9
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.8 to 0.0.4-next.9
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.8 to 0.0.4-next.9
+
 ## [0.0.4-next.8](https://github.com/iotaledger/twin-framework/compare/core-v0.0.4-next.7...core-v0.0.4-next.8) (2026-06-10)
 
 
