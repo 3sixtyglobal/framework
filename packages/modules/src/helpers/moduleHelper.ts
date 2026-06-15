@@ -2,7 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { Worker } from "node:worker_threads";
 import type { IContextIds } from "@twin.org/context";
-import { BaseError, GeneralError, Is, Mutex, SharedStore } from "@twin.org/core";
+import {
+	BaseError,
+	GeneralError,
+	Is,
+	Mutex,
+	SharedObjectBuffer,
+	SharedStore
+} from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 import type { IModuleWorker } from "../models/IModuleWorker.js";
 
@@ -249,6 +256,9 @@ export class ModuleHelper {
 
 		worker.on("message", msg => {
 			if (Mutex.handleWorkerMessage(msg)) {
+				return;
+			}
+			if (SharedObjectBuffer.handleWorkerMessage(msg)) {
 				return;
 			}
 			if (!Is.stringValue(msg?.method)) {
