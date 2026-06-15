@@ -141,10 +141,17 @@ export class Mutex {
 
 		const locks = Mutex.getLocks();
 		locks[msg.key] ??= new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
-		// Send the buffer to the worker before notifying so that it is guaranteed
-		// to be in port1's receive queue when Atomics.wait returns on the worker side.
+		// Send the buffer before updating the signal so it is guaranteed to be in
+		// port1's receive queue when Atomics.wait returns on the worker side.
 		msg.port.postMessage({ buffer: locks[msg.key].buffer });
-		Atomics.notify(new Int32Array(msg.signal), 0, 1);
+		// Set signal[0] = 1 before notifying. If the OS scheduled the main thread
+		// to process this request before the worker reached Atomics.wait, the notify
+		// would fire with no waiters (lost wakeup). Setting the value first means
+		// Atomics.wait(signal, 0, 0) sees a non-zero value and returns "not-equal"
+		// immediately instead of blocking indefinitely.
+		const signalArr = new Int32Array(msg.signal);
+		Atomics.store(signalArr, 0, 1);
+		Atomics.notify(signalArr, 0, 1);
 		msg.port.close();
 
 		return true;
@@ -197,9 +204,11 @@ export class Mutex {
 		wt.parentPort.postMessage(msg, [port2]);
 
 		try {
-			// Block until the main thread posts the response and fires Atomics.notify.
-			// The response is guaranteed to be in port1's queue at this point because
-			// port.postMessage executes before Atomics.notify on the main thread.
+			// Block until the main thread signals readiness. The main thread sets
+			// signal[0] = 1 before calling notify, so if the notify fired before this
+			// wait call (lost-wakeup scenario with concurrent workers), Atomics.wait
+			// sees a non-zero value and returns "not-equal" immediately.
+			// Either way the port message is already in port1's receive queue.
 			// Use the lock deadline so the buffer fetch is bounded by the same timeout.
 			const waitResult = Atomics.wait(signal, 0, 0, Math.max(0, deadline - Date.now()));
 			if (waitResult === "timed-out") {
