@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4-next.11](https://github.com/iotaledger/twin-framework/compare/nameof-transformer-v0.0.4-next.10...nameof-transformer-v0.0.4-next.11) (2026-06-15)
+
+
+### Miscellaneous Chores
+
+* **nameof-transformer:** Synchronize repo versions
+
 ## [0.0.4-next.10](https://github.com/iotaledger/twin-framework/compare/nameof-transformer-v0.0.4-next.9...nameof-transformer-v0.0.4-next.10) (2026-06-15)
 
 
