@@ -110,6 +110,11 @@
 			"lockAlreadyReleased": "The key \"{key}\" is not currently locked",
 			"lockTimeout": "Failed to acquire lock for key \"{key}\" within the timeout of {timeout} milliseconds",
 			"bufferFetchFailed": "Failed to retrieve shared buffer for key \"{key}\" from the main thread"
+		},
+		"sharedObjectBuffer": {
+			"notCreated": "The shared buffer for object \"{objectId}\" has not been created",
+			"capacityExceeded": "The payload size of {required} bytes exceeds the maximum capacity of {capacity} bytes for object \"{objectId}\"",
+			"bufferFetchFailed": "Failed to retrieve shared buffer for object \"{objectId}\" from the main thread"
 		}
 	},
 	"errorNames": {
