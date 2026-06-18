@@ -186,4 +186,104 @@ describe("Coerce", () => {
 	test("uint8array can coerce if value is hex upper", () => {
 		expect(Coerce.uint8Array("0x0A0B0C")).toEqual(new Uint8Array([10, 11, 12]));
 	});
+
+	test("duration can coerce if value is undefined", () => {
+		expect(Coerce.duration(undefined)).toEqual(undefined);
+	});
+
+	test("duration can coerce if value is a number", () => {
+		expect(Coerce.duration(3600)).toEqual({
+			years: 0,
+			months: 0,
+			weeks: 0,
+			days: 0,
+			hours: 0,
+			minutes: 0,
+			seconds: 3600
+		});
+	});
+
+	test("duration can coerce if value is an ISO 8601 hour string", () => {
+		expect(Coerce.duration("PT1H")).toEqual({
+			years: 0,
+			months: 0,
+			weeks: 0,
+			days: 0,
+			hours: 1,
+			minutes: 0,
+			seconds: 0
+		});
+	});
+
+	test("duration can coerce if value is an ISO 8601 minute string", () => {
+		expect(Coerce.duration("PT30M")).toEqual({
+			years: 0,
+			months: 0,
+			weeks: 0,
+			days: 0,
+			hours: 0,
+			minutes: 30,
+			seconds: 0
+		});
+	});
+
+	test("duration can coerce if value is an ISO 8601 day string", () => {
+		expect(Coerce.duration("P1D")).toEqual({
+			years: 0,
+			months: 0,
+			weeks: 0,
+			days: 1,
+			hours: 0,
+			minutes: 0,
+			seconds: 0
+		});
+	});
+
+	test("duration can coerce if value is a composite ISO 8601 string", () => {
+		expect(Coerce.duration("P1DT2H30M")).toEqual({
+			years: 0,
+			months: 0,
+			weeks: 0,
+			days: 1,
+			hours: 2,
+			minutes: 30,
+			seconds: 0
+		});
+	});
+
+	test("duration can coerce if value is an ISO 8601 week string", () => {
+		expect(Coerce.duration("P1W")).toEqual({
+			years: 0,
+			months: 0,
+			weeks: 1,
+			days: 0,
+			hours: 0,
+			minutes: 0,
+			seconds: 0
+		});
+	});
+
+	test("duration can coerce if value is a full ISO 8601 string", () => {
+		expect(Coerce.duration("P1Y2M3DT4H5M6S")).toEqual({
+			years: 1,
+			months: 2,
+			weeks: 0,
+			days: 3,
+			hours: 4,
+			minutes: 5,
+			seconds: 6
+		});
+	});
+
+	test("duration can fail if value is an invalid string", () => {
+		expect(Coerce.duration("foo")).toEqual(undefined);
+	});
+
+	test("duration can fail if value is a bare P string", () => {
+		expect(Coerce.duration("P")).toEqual(undefined);
+	});
+
+	test("duration can fail if value is an object", () => {
+		expect(Coerce.duration({})).toEqual(undefined);
+	});
 });

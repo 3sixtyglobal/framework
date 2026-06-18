@@ -54,7 +54,12 @@ export const CoerceType = {
 	/**
 	 * Uint8Array.
 	 */
-	Uint8Array: "uint8array"
+	Uint8Array: "uint8array",
+
+	/**
+	 * Duration in seconds.
+	 */
+	Duration: "duration"
 } as const;
 
 /**

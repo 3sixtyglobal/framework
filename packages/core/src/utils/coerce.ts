@@ -3,6 +3,8 @@
 import { Converter } from "./converter.js";
 import { Is } from "./is.js";
 import { CoerceType } from "../models/coerceType.js";
+import type { IDuration } from "../models/IDuration.js";
+import { Duration } from "../types/duration.js";
 
 /**
  * Coerce an object from one type to another.
@@ -212,6 +214,25 @@ export class Coerce {
 	}
 
 	/**
+	 * Coerce the value to a duration object.
+	 * Accepts ISO 8601 duration strings (e.g. "PT1H", "P1Y2M3DT4H5M6S") or numeric
+	 * values already expressed as seconds (stored in the seconds field).
+	 * @param value The value to coerce.
+	 * @returns The duration object, or undefined if the value cannot be coerced.
+	 */
+	public static duration(value: unknown): IDuration | undefined {
+		if (Is.undefined(value)) {
+			return undefined;
+		}
+		if (Is.number(value)) {
+			return { years: 0, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: value };
+		}
+		if (Is.string(value)) {
+			return Duration.parse(value);
+		}
+	}
+
+	/**
 	 * Coerce the value to an object.
 	 * @param value The value to coerce.
 	 * @returns The coerced object, or undefined if the value cannot be coerced.
@@ -277,6 +298,8 @@ export class Coerce {
 				return Coerce.object(value);
 			case CoerceType.Uint8Array:
 				return Coerce.uint8Array(value);
+			case CoerceType.Duration:
+				return Coerce.duration(value);
 			default:
 				return value;
 		}

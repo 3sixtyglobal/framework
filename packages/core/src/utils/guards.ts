@@ -563,4 +563,21 @@ export class Guards {
 			throw new GuardError(source, "guard.uuidV7", property, value);
 		}
 	}
+
+	/**
+	 * Is the property a valid ISO 8601 duration string.
+	 * @param source The source of the error.
+	 * @param property The name of the property.
+	 * @param value The value to test.
+	 * @throws GuardError If the value does not match the assertion.
+	 */
+	public static duration(
+		source: string,
+		property: string,
+		value: unknown
+	): asserts value is string {
+		if (!Is.duration(value)) {
+			throw new GuardError(source, "guard.duration", property, value);
+		}
+	}
 }

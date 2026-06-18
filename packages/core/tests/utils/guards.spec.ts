@@ -493,4 +493,30 @@ describe("Guards", () => {
 			expect.objectContaining({ name: "GuardError", message: "guard.uuidV7Compact" })
 		);
 	});
+
+	test("duration can fail if value is undefined", () => {
+		expect(() => Guards.duration("source", "propName", undefined)).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.duration" })
+		);
+	});
+
+	test("duration can fail if value is a number", () => {
+		expect(() => Guards.duration("source", "propName", 3600)).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.duration" })
+		);
+	});
+
+	test("duration can fail if value is an invalid string", () => {
+		expect(() => Guards.duration("source", "propName", "foo")).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.duration" })
+		);
+	});
+
+	test("duration can succeed if value is a valid ISO 8601 duration string", () => {
+		expect(Guards.duration("source", "propName", "PT1H")).toBeUndefined();
+	});
+
+	test("duration can succeed if value is a full ISO 8601 duration string", () => {
+		expect(Guards.duration("source", "propName", "P1Y2M3DT4H5M6S")).toBeUndefined();
+	});
 });

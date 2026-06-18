@@ -439,4 +439,20 @@ export class Is {
 			/^[\da-f]{8}-[\da-f]{4}-7[\da-f]{3}-[89ab][\da-f]{3}-[\da-f]{12}$/i.test(value)
 		);
 	}
+
+	/**
+	 * Is the value a valid ISO 8601 duration string.
+	 * @param value The value to test.
+	 * @returns True if the value is a valid ISO 8601 duration string.
+	 */
+	public static duration(value: unknown): value is string {
+		if (!Is.stringValue(value)) {
+			return false;
+		}
+		const match =
+			/^P(?:(\d+(?:\.\d+)?)Y)?(?:(\d+(?:\.\d+)?)M)?(?:(\d+(?:\.\d+)?)W)?(?:(\d+(?:\.\d+)?)D)?(?:T(?:(\d+(?:\.\d+)?)H)?(?:(\d+(?:\.\d+)?)M)?(?:(\d+(?:\.\d+)?)S)?)?$/.exec(
+				value
+			);
+		return Boolean(match?.slice(1).some(Boolean));
+	}
 }

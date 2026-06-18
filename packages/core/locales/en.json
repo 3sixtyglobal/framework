@@ -74,7 +74,8 @@
 			"url": "Property \"{property}\" must be a URL formatted string, it is \"{value}\"",
 			"email": "Property \"{property}\" must be string in e-mail format, it is \"{value}\"",
 			"uuidV7": "Property \"{property}\" must be a UUIDv7 formatted string, it is \"{value}\"",
-			"uuidV7Compact": "Property \"{property}\" must be a UUIDv7 formatted string in compact mode, it is \"{value}\""
+			"uuidV7Compact": "Property \"{property}\" must be a UUIDv7 formatted string in compact mode, it is \"{value}\"",
+			"duration": "Property \"{property}\" must be an ISO 8601 duration string, it is \"{value}\""
 		},
 		"objectHelper": {
 			"failedBytesToJSON": "Failed converting bytes to JSON",

@@ -537,4 +537,28 @@ describe("Is", () => {
 		const badVariant = `${uuid.slice(0, 19)}0${uuid.slice(20)}`;
 		expect(Is.uuidV7(badVariant)).toEqual(false);
 	});
+
+	test("duration can fail if value is undefined", () => {
+		expect(Is.duration(undefined)).toEqual(false);
+	});
+
+	test("duration can fail if value is a number", () => {
+		expect(Is.duration(3600)).toEqual(false);
+	});
+
+	test("duration can fail if value is an invalid string", () => {
+		expect(Is.duration("foo")).toEqual(false);
+	});
+
+	test("duration can fail if value is a bare P string", () => {
+		expect(Is.duration("P")).toEqual(false);
+	});
+
+	test("duration can succeed for an ISO 8601 hours string", () => {
+		expect(Is.duration("PT1H")).toEqual(true);
+	});
+
+	test("duration can succeed for a composite ISO 8601 string", () => {
+		expect(Is.duration("P1Y2M3DT4H5M6S")).toEqual(true);
+	});
 });
