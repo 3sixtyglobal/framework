@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { HexHelper } from "../helpers/hexHelper.js";
 import type { IDuration } from "../models/IDuration.js";
+import { DURATION_REG_EXP } from "../types/durationRegExp.js";
 
 /**
  * Class to check types of objects.
@@ -448,23 +449,52 @@ export class Is {
 	 */
 	public static duration(value: unknown): value is string | IDuration {
 		if (Is.object<IDuration>(value)) {
-			return (
-				Is.number(value.years) &&
-				Is.number(value.months) &&
-				Is.number(value.weeks) &&
-				Is.number(value.days) &&
-				Is.number(value.hours) &&
-				Is.number(value.minutes) &&
-				Is.number(value.seconds)
-			);
+			if (
+				!Is.number(value.years) ||
+				!Is.number(value.months) ||
+				!Is.number(value.weeks) ||
+				!Is.number(value.days) ||
+				!Is.number(value.hours) ||
+				!Is.number(value.minutes) ||
+				!Is.number(value.seconds) ||
+				(!Is.undefined(value.milliseconds) &&
+					(!Is.integer(value.milliseconds) || Math.abs(value.milliseconds) > 999)) ||
+				(!Is.undefined(value.microseconds) &&
+					(!Is.integer(value.microseconds) || Math.abs(value.microseconds) > 999)) ||
+				(!Is.undefined(value.nanoseconds) &&
+					(!Is.integer(value.nanoseconds) || Math.abs(value.nanoseconds) > 999))
+			) {
+				return false;
+			}
+
+			let sign = 0;
+			for (const component of [
+				value.years,
+				value.months,
+				value.weeks,
+				value.days,
+				value.hours,
+				value.minutes,
+				value.seconds,
+				value.milliseconds ?? 0,
+				value.microseconds ?? 0,
+				value.nanoseconds ?? 0
+			]) {
+				if (component !== 0) {
+					const componentSign = component < 0 ? -1 : 1;
+					if (sign === 0) {
+						sign = componentSign;
+					} else if (sign !== componentSign) {
+						return false;
+					}
+				}
+			}
+			return true;
 		}
 		if (!Is.stringValue(value)) {
 			return false;
 		}
-		const match =
-			/^P(?:(\d+(?:\.\d+)?)Y)?(?:(\d+(?:\.\d+)?)M)?(?:(\d+(?:\.\d+)?)W)?(?:(\d+(?:\.\d+)?)D)?(?:T(?:(\d+(?:\.\d+)?)H)?(?:(\d+(?:\.\d+)?)M)?(?:(\d+(?:\.\d+)?)S)?)?$/.exec(
-				value
-			);
-		return Boolean(match?.slice(1).some(Boolean));
+		const match = DURATION_REG_EXP.exec(value);
+		return Boolean(match?.slice(2).some(Boolean));
 	}
 }

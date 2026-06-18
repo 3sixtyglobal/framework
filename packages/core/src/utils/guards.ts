@@ -4,6 +4,7 @@ import { Is } from "./is.js";
 import { GuardError } from "../errors/guardError.js";
 import { ArrayHelper } from "../helpers/arrayHelper.js";
 import { HexHelper } from "../helpers/hexHelper.js";
+import type { IDuration } from "../models/IDuration.js";
 import type { ObjectOrArray } from "../types/objectOrArray.js";
 
 /**
@@ -565,7 +566,7 @@ export class Guards {
 	}
 
 	/**
-	 * Is the property a valid ISO 8601 duration string.
+	 * Is the property a valid ISO 8601 duration string or IDuration object.
 	 * @param source The source of the error.
 	 * @param property The name of the property.
 	 * @param value The value to test.
@@ -575,7 +576,7 @@ export class Guards {
 		source: string,
 		property: string,
 		value: unknown
-	): asserts value is string {
+	): asserts value is string | IDuration {
 		if (!Is.duration(value)) {
 			throw new GuardError(source, "guard.duration", property, value);
 		}

@@ -51,6 +51,7 @@ export * from "./models/mutexMessageTypes.js";
 export * from "./models/sharedObjectBufferMessageTypes.js";
 export * from "./types/bitString.js";
 export * from "./types/duration.js";
+export * from "./types/durationRegExp.js";
 export * from "./types/objectOrArray.js";
 export * from "./types/singleOccurrenceArray.js";
 export * from "./types/singleOccurrenceArrayDepthHelper.js";

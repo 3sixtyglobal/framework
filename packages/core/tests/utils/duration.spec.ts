@@ -107,6 +107,33 @@ describe("Duration", () => {
 				seconds: 6
 			});
 		});
+
+		test("parses a negative duration with a minus prefix", () => {
+			expect(Duration.parse("-P1DT2H3M4S")).toEqual({
+				years: 0,
+				months: 0,
+				weeks: 0,
+				days: -1,
+				hours: -2,
+				minutes: -3,
+				seconds: -4
+			});
+		});
+
+		test("parses fractional seconds into sub-second fields", () => {
+			expect(Duration.parse("PT1.23456789S")).toEqual({
+				years: 0,
+				months: 0,
+				weeks: 0,
+				days: 0,
+				hours: 0,
+				minutes: 0,
+				seconds: 1,
+				milliseconds: 234,
+				microseconds: 567,
+				nanoseconds: 890
+			});
+		});
 	});
 
 	describe("toSeconds", () => {
@@ -238,6 +265,23 @@ describe("Duration", () => {
 					seconds: 6
 				})
 			).toEqual(31_557_600 + twoMonths + threeDays + fourHours + fiveMinutes + 6);
+		});
+
+		test("includes milliseconds, microseconds and nanoseconds", () => {
+			expect(
+				Duration.toSeconds({
+					years: 0,
+					months: 0,
+					weeks: 0,
+					days: 0,
+					hours: 0,
+					minutes: 0,
+					seconds: 1,
+					milliseconds: 250,
+					microseconds: 500,
+					nanoseconds: 250
+				})
+			).toEqual(1.25050025);
 		});
 	});
 
@@ -403,6 +447,37 @@ describe("Duration", () => {
 				throw new Error("Expected parse to succeed");
 			}
 			expect(Duration.toString(parsed)).toEqual(original);
+		});
+
+		test("formats milliseconds, microseconds and nanoseconds as fractional seconds", () => {
+			expect(
+				Duration.toString({
+					years: 0,
+					months: 0,
+					weeks: 0,
+					days: 0,
+					hours: 0,
+					minutes: 0,
+					seconds: 1,
+					milliseconds: 234,
+					microseconds: 567,
+					nanoseconds: 890
+				})
+			).toEqual("PT1.23456789S");
+		});
+
+		test("formats negative values with a minus prefix", () => {
+			expect(
+				Duration.toString({
+					years: 0,
+					months: 0,
+					weeks: 0,
+					days: -1,
+					hours: -2,
+					minutes: -3,
+					seconds: -4
+				})
+			).toEqual("-P1DT2H3M4S");
 		});
 	});
 });

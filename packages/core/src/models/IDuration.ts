@@ -39,4 +39,19 @@ export interface IDuration {
 	 * The number of seconds.
 	 */
 	seconds: number;
+
+	/**
+	 * The number of milliseconds.
+	 */
+	milliseconds?: number;
+
+	/**
+	 * The number of microseconds.
+	 */
+	microseconds?: number;
+
+	/**
+	 * The number of nanoseconds.
+	 */
+	nanoseconds?: number;
 }

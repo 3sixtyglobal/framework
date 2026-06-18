@@ -275,6 +275,33 @@ describe("Coerce", () => {
 		});
 	});
 
+	test("duration can coerce if value is a negative ISO 8601 string", () => {
+		expect(Coerce.duration("-P1DT2H3M4S")).toEqual({
+			years: 0,
+			months: 0,
+			weeks: 0,
+			days: -1,
+			hours: -2,
+			minutes: -3,
+			seconds: -4
+		});
+	});
+
+	test("duration can coerce if value has fractional seconds", () => {
+		expect(Coerce.duration("PT1.23456789S")).toEqual({
+			years: 0,
+			months: 0,
+			weeks: 0,
+			days: 0,
+			hours: 0,
+			minutes: 0,
+			seconds: 1,
+			milliseconds: 234,
+			microseconds: 567,
+			nanoseconds: 890
+		});
+	});
+
 	test("duration can fail if value is an invalid string", () => {
 		expect(Coerce.duration("foo")).toEqual(undefined);
 	});
@@ -289,6 +316,22 @@ describe("Coerce", () => {
 
 	test("duration can coerce if value is an IDuration object", () => {
 		const input = { years: 0, months: 0, weeks: 0, days: 1, hours: 2, minutes: 30, seconds: 0 };
+		expect(Coerce.duration(input)).toEqual(input);
+	});
+
+	test("duration can coerce if value is an IDuration object with sub-second fields", () => {
+		const input = {
+			years: 0,
+			months: 0,
+			weeks: 0,
+			days: 0,
+			hours: 0,
+			minutes: 0,
+			seconds: 1,
+			milliseconds: 250,
+			microseconds: 500,
+			nanoseconds: 250
+		};
 		expect(Coerce.duration(input)).toEqual(input);
 	});
 });
