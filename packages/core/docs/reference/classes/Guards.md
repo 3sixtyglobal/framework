@@ -1186,9 +1186,9 @@ GuardError If the value does not match the assertion.
 
 ### duration() {#duration}
 
-> `static` **duration**(`source`, `property`, `value`): `asserts value is string`
+> `static` **duration**(`source`, `property`, `value`): asserts value is string \| IDuration
 
-Is the property a valid ISO 8601 duration string.
+Is the property a valid ISO 8601 duration string or IDuration object.
 
 #### Parameters
 
@@ -1212,7 +1212,7 @@ The value to test.
 
 #### Returns
 
-`asserts value is string`
+asserts value is string \| IDuration
 
 #### Throws
 

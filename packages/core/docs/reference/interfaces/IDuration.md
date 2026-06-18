@@ -57,3 +57,27 @@ The number of minutes.
 > **seconds**: `number`
 
 The number of seconds.
+
+***
+
+### milliseconds? {#milliseconds}
+
+> `optional` **milliseconds?**: `number`
+
+The number of milliseconds.
+
+***
+
+### microseconds? {#microseconds}
+
+> `optional` **microseconds?**: `number`
+
+The number of microseconds.
+
+***
+
+### nanoseconds? {#nanoseconds}
+
+> `optional` **nanoseconds?**: `number`
+
+The number of nanoseconds.

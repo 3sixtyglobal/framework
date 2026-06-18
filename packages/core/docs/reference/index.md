@@ -83,3 +83,4 @@
 - [HealthStatus](variables/HealthStatus.md)
 - [MutexMessageTypes](variables/MutexMessageTypes.md)
 - [SharedObjectBufferMessageTypes](variables/SharedObjectBufferMessageTypes.md)
+- [DURATION\_REG\_EXP](variables/DURATION_REG_EXP.md)
