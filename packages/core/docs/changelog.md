@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.4-next.14](https://github.com/iotaledger/twin-framework/compare/core-v0.0.4-next.13...core-v0.0.4-next.14) (2026-06-18)
+
+
+### Features
+
+* add partial second support ([39bf087](https://github.com/iotaledger/twin-framework/commit/39bf087ddc113a9bf73e0d0e99f738f6f60c2f2d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.4-next.13 to 0.0.4-next.14
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.13 to 0.0.4-next.14
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.13 to 0.0.4-next.14
+
 ## [0.0.4-next.13](https://github.com/iotaledger/twin-framework/compare/core-v0.0.4-next.12...core-v0.0.4-next.13) (2026-06-18)
 
 
