@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.4-next.12](https://github.com/iotaledger/twin-framework/compare/nameof-vitest-plugin-v0.0.4-next.11...nameof-vitest-plugin-v0.0.4-next.12) (2026-06-18)
+
+
+### Miscellaneous Chores
+
+* **nameof-vitest-plugin:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.11 to 0.0.4-next.12
+
 ## [0.0.4-next.11](https://github.com/iotaledger/twin-framework/compare/nameof-vitest-plugin-v0.0.4-next.10...nameof-vitest-plugin-v0.0.4-next.11) (2026-06-15)
 
 

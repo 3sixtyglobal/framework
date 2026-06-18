@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.4-next.12](https://github.com/iotaledger/twin-framework/compare/core-v0.0.4-next.11...core-v0.0.4-next.12) (2026-06-18)
+
+
+### Features
+
+* add duration support ([#362](https://github.com/iotaledger/twin-framework/issues/362)) ([24dbe8b](https://github.com/iotaledger/twin-framework/commit/24dbe8b208eb127a52024cb219d31d27731e9ae3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.4-next.11 to 0.0.4-next.12
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.11 to 0.0.4-next.12
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.11 to 0.0.4-next.12
+
 ## [0.0.4-next.11](https://github.com/iotaledger/twin-framework/compare/core-v0.0.4-next.10...core-v0.0.4-next.11) (2026-06-15)
 
 
