@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.0.4-next.13](https://github.com/iotaledger/twin-framework/compare/modules-v0.0.4-next.12...modules-v0.0.4-next.13) (2026-06-18)
+
+
+### Miscellaneous Chores
+
+* **modules:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.12 to 0.0.4-next.13
+    * @twin.org/context bumped from 0.0.4-next.12 to 0.0.4-next.13
+    * @twin.org/nameof bumped from 0.0.4-next.12 to 0.0.4-next.13
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.12 to 0.0.4-next.13
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.12 to 0.0.4-next.13
+    * @twin.org/validate-locales bumped from 0.0.4-next.12 to 0.0.4-next.13
+
 ## [0.0.4-next.12](https://github.com/iotaledger/twin-framework/compare/modules-v0.0.4-next.11...modules-v0.0.4-next.12) (2026-06-18)
 
 
