@@ -215,8 +215,8 @@ export class Coerce {
 
 	/**
 	 * Coerce the value to a duration object.
-	 * Accepts ISO 8601 duration strings (e.g. "PT1H", "P1Y2M3DT4H5M6S") or numeric
-	 * values already expressed as seconds (stored in the seconds field).
+	 * Accepts an IDuration object, ISO 8601 duration strings (e.g. "PT1H", "P1Y2M3DT4H5M6S"),
+	 * or numeric values already expressed as seconds (stored in the seconds field).
 	 * @param value The value to coerce.
 	 * @returns The duration object, or undefined if the value cannot be coerced.
 	 */
@@ -224,10 +224,13 @@ export class Coerce {
 		if (Is.undefined(value)) {
 			return undefined;
 		}
+		if (Is.duration(value) && !Is.string(value)) {
+			return value;
+		}
 		if (Is.number(value)) {
 			return { years: 0, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: value };
 		}
-		if (Is.string(value)) {
+		if (Is.stringValue(value)) {
 			return Duration.parse(value);
 		}
 	}

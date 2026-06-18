@@ -286,4 +286,9 @@ describe("Coerce", () => {
 	test("duration can fail if value is an object", () => {
 		expect(Coerce.duration({})).toEqual(undefined);
 	});
+
+	test("duration can coerce if value is an IDuration object", () => {
+		const input = { years: 0, months: 0, weeks: 0, days: 1, hours: 2, minutes: 30, seconds: 0 };
+		expect(Coerce.duration(input)).toEqual(input);
+	});
 });

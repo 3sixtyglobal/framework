@@ -561,4 +561,14 @@ describe("Is", () => {
 	test("duration can succeed for a composite ISO 8601 string", () => {
 		expect(Is.duration("P1Y2M3DT4H5M6S")).toEqual(true);
 	});
+
+	test("duration can succeed for an IDuration object", () => {
+		expect(
+			Is.duration({ years: 0, months: 0, weeks: 0, days: 1, hours: 2, minutes: 30, seconds: 0 })
+		).toEqual(true);
+	});
+
+	test("duration can fail for an object missing required fields", () => {
+		expect(Is.duration({ years: 0, months: 0 })).toEqual(false);
+	});
 });

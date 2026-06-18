@@ -1,6 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { HexHelper } from "../helpers/hexHelper.js";
+import type { IDuration } from "../models/IDuration.js";
 
 /**
  * Class to check types of objects.
@@ -441,11 +442,22 @@ export class Is {
 	}
 
 	/**
-	 * Is the value a valid ISO 8601 duration string.
+	 * Is the value a valid ISO 8601 duration string or an IDuration object.
 	 * @param value The value to test.
-	 * @returns True if the value is a valid ISO 8601 duration string.
+	 * @returns True if the value is a valid ISO 8601 duration string or an IDuration object.
 	 */
-	public static duration(value: unknown): value is string {
+	public static duration(value: unknown): value is string | IDuration {
+		if (Is.object<IDuration>(value)) {
+			return (
+				Is.number(value.years) &&
+				Is.number(value.months) &&
+				Is.number(value.weeks) &&
+				Is.number(value.days) &&
+				Is.number(value.hours) &&
+				Is.number(value.minutes) &&
+				Is.number(value.seconds)
+			);
+		}
 		if (!Is.stringValue(value)) {
 			return false;
 		}
