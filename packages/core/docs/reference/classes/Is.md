@@ -881,3 +881,25 @@ The format of the UUIDv7 string.
 `value is string`
 
 True if the value is a uuidV7 string.
+
+***
+
+### duration() {#duration}
+
+> `static` **duration**(`value`): `value is string`
+
+Is the value a valid ISO 8601 duration string.
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+The value to test.
+
+#### Returns
+
+`value is string`
+
+True if the value is a valid ISO 8601 duration string.

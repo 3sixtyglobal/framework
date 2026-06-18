@@ -1181,3 +1181,39 @@ The format of the uuidV7, either standard or compact.
 #### Throws
 
 GuardError If the value does not match the assertion.
+
+***
+
+### duration() {#duration}
+
+> `static` **duration**(`source`, `property`, `value`): `asserts value is string`
+
+Is the property a valid ISO 8601 duration string.
+
+#### Parameters
+
+##### source
+
+`string`
+
+The source of the error.
+
+##### property
+
+`string`
+
+The name of the property.
+
+##### value
+
+`unknown`
+
+The value to test.
+
+#### Returns
+
+`asserts value is string`
+
+#### Throws
+
+GuardError If the value does not match the assertion.

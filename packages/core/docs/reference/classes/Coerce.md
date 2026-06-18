@@ -190,6 +190,30 @@ The coerced time, or undefined if the value cannot be coerced.
 
 ***
 
+### duration() {#duration}
+
+> `static` **duration**(`value`): [`IDuration`](../interfaces/IDuration.md) \| `undefined`
+
+Coerce the value to a duration object.
+Accepts ISO 8601 duration strings (e.g. "PT1H", "P1Y2M3DT4H5M6S") or numeric
+values already expressed as seconds (stored in the seconds field).
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+The value to coerce.
+
+#### Returns
+
+[`IDuration`](../interfaces/IDuration.md) \| `undefined`
+
+The duration object, or undefined if the value cannot be coerced.
+
+***
+
 ### object() {#object}
 
 > `static` **object**\<`T`\>(`value`): `T` \| `undefined`

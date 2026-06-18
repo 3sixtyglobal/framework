@@ -30,6 +30,7 @@
 - [StringHelper](classes/StringHelper.md)
 - [Uint8ArrayHelper](classes/Uint8ArrayHelper.md)
 - [BitString](classes/BitString.md)
+- [Duration](classes/Duration.md)
 - [Url](classes/Url.md)
 - [Urn](classes/Urn.md)
 - [AsyncCache](classes/AsyncCache.md)
@@ -47,6 +48,7 @@
 ## Interfaces
 
 - [IComponent](interfaces/IComponent.md)
+- [IDuration](interfaces/IDuration.md)
 - [IError](interfaces/IError.md)
 - [IHealth](interfaces/IHealth.md)
 - [II18nShared](interfaces/II18nShared.md)
