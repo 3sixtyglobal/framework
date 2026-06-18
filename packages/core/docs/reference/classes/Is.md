@@ -886,9 +886,9 @@ True if the value is a uuidV7 string.
 
 ### duration() {#duration}
 
-> `static` **duration**(`value`): `value is string`
+> `static` **duration**(`value`): value is string \| IDuration
 
-Is the value a valid ISO 8601 duration string.
+Is the value a valid ISO 8601 duration string or an IDuration object.
 
 #### Parameters
 
@@ -900,6 +900,6 @@ The value to test.
 
 #### Returns
 
-`value is string`
+value is string \| IDuration
 
-True if the value is a valid ISO 8601 duration string.
+True if the value is a valid ISO 8601 duration string or an IDuration object.
