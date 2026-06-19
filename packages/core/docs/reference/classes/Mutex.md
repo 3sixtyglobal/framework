@@ -35,6 +35,44 @@ Runtime name for the class.
 
 ## Methods
 
+### getDefaultTimeoutMs() {#getdefaulttimeoutms}
+
+> `static` **getDefaultTimeoutMs**(): `number`
+
+Gets the default timeout in milliseconds for lock acquisition.
+
+#### Returns
+
+`number`
+
+The default timeout in milliseconds.
+
+***
+
+### setDefaultTimeoutMs() {#setdefaulttimeoutms}
+
+> `static` **setDefaultTimeoutMs**(`timeoutMs`): `void`
+
+Sets the default timeout in milliseconds for lock acquisition.
+
+#### Parameters
+
+##### timeoutMs
+
+`number`
+
+The default timeout in milliseconds.
+
+#### Returns
+
+`void`
+
+#### Throws
+
+GeneralError if timeoutMs is not a non-negative integer.
+
+***
+
 ### lock() {#lock}
 
 > `static` **lock**(`key`, `options?`): `Promise`\<`boolean`\>
@@ -62,7 +100,7 @@ Lock options.
 
 `number`
 
-The maximum time to wait for the lock in milliseconds, default is 5000.
+The maximum time to wait for the lock in milliseconds, defaults to getDefaultTimeoutMs().
 
 ###### throwOnTimeout?
 
