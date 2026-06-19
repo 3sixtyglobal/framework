@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.4-next.15](https://github.com/iotaledger/twin-framework/compare/core-v0.0.4-next.14...core-v0.0.4-next.15) (2026-06-19)
+
+
+### Features
+
+* configurable timeout for mutex ([2087e04](https://github.com/iotaledger/twin-framework/commit/2087e04464a110a3f009fbc8b066696ed6784fc2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.0.4-next.14 to 0.0.4-next.15
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.14 to 0.0.4-next.15
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.14 to 0.0.4-next.15
+
 ## [0.0.4-next.14](https://github.com/iotaledger/twin-framework/compare/core-v0.0.4-next.13...core-v0.0.4-next.14) (2026-06-18)
 
 
