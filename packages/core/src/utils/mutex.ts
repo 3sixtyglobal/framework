@@ -38,12 +38,39 @@ export class Mutex {
 	private static readonly _LOCKS_KEY = "mutexLocks";
 
 	/**
+	 * SharedStore key for the default timeout in milliseconds.
+	 * @internal
+	 */
+	private static readonly _DEFAULT_TIMEOUT_KEY = "mutexDefaultTimeoutMs";
+
+	/**
 	 * Cached reference to the node:worker_threads module, null if unavailable (browser).
 	 * @internal
 	 */
 	// false positive: this is a type not an actual import
 	// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 	private static _workerThreadsModule: typeof import("node:worker_threads") | null | undefined;
+
+	/**
+	 * Gets the default timeout in milliseconds for lock acquisition.
+	 * @returns The default timeout in milliseconds.
+	 */
+	public static getDefaultTimeoutMs(): number {
+		return SharedStore.get<number>(Mutex._DEFAULT_TIMEOUT_KEY) ?? 5000;
+	}
+
+	/**
+	 * Sets the default timeout in milliseconds for lock acquisition.
+	 * @param timeoutMs The default timeout in milliseconds.
+	 * @throws GeneralError if timeoutMs is not a non-negative integer.
+	 */
+	public static setDefaultTimeoutMs(timeoutMs: number): void {
+		Guards.integer(Mutex.CLASS_NAME, nameof(timeoutMs), timeoutMs);
+		if (timeoutMs < 0) {
+			throw new GeneralError(Mutex.CLASS_NAME, "invalidTimeout", { timeoutMs });
+		}
+		SharedStore.set(Mutex._DEFAULT_TIMEOUT_KEY, timeoutMs);
+	}
 
 	/**
 	 * Acquires a lock for the given key without blocking the event loop. If the lock is already
@@ -54,7 +81,7 @@ export class Mutex {
 	 * the same key, it will suspend until the timeout elapses.
 	 * @param key The key to lock on.
 	 * @param options Lock options.
-	 * @param options.timeoutMs The maximum time to wait for the lock in milliseconds, default is 5000.
+	 * @param options.timeoutMs The maximum time to wait for the lock in milliseconds, defaults to getDefaultTimeoutMs().
 	 * @param options.throwOnTimeout Whether to throw an error if the lock could not be acquired within the timeout, default is false.
 	 * @returns True if the lock was acquired, false if it timed out and throwOnTimeout is false.
 	 * @throws GeneralError if the key is invalid or if the lock could not be acquired within the timeout and throwOnTimeout is true.
@@ -64,8 +91,16 @@ export class Mutex {
 		options?: { timeoutMs?: number; throwOnTimeout?: boolean }
 	): Promise<boolean> {
 		Guards.stringValue(Mutex.CLASS_NAME, nameof(key), key);
+		if (!Is.empty(options?.timeoutMs)) {
+			Guards.integer(Mutex.CLASS_NAME, nameof(options.timeoutMs), options.timeoutMs);
+			if (options.timeoutMs < 0) {
+				throw new GeneralError(Mutex.CLASS_NAME, "invalidTimeout", {
+					timeoutMs: options.timeoutMs
+				});
+			}
+		}
 
-		const timeoutMs = options?.timeoutMs ?? 5000;
+		const timeoutMs = options?.timeoutMs ?? Mutex.getDefaultTimeoutMs();
 		const throwOnTimeout = options?.throwOnTimeout ?? false;
 		const deadline = Date.now() + timeoutMs;
 

@@ -31,9 +31,56 @@ const mutexSimulateHeldLock = (key: string): Int32Array => {
 	return arr;
 };
 
+const mutexResetDefaultTimeout = (): void => {
+	SharedStore.remove("mutexDefaultTimeoutMs");
+};
+
 describe("Mutex", () => {
 	afterEach(() => {
 		mutexClearPrivateLocks();
+		mutexResetDefaultTimeout();
+	});
+
+	describe("getDefaultTimeoutMs / setDefaultTimeoutMs", () => {
+		test("getDefaultTimeoutMs returns 5000 when no value has been set", () => {
+			expect(Mutex.getDefaultTimeoutMs()).toEqual(5000);
+		});
+
+		test("setDefaultTimeoutMs changes the value returned by getDefaultTimeoutMs", () => {
+			Mutex.setDefaultTimeoutMs(1000);
+			expect(Mutex.getDefaultTimeoutMs()).toEqual(1000);
+		});
+
+		test("setDefaultTimeoutMs accepts 0", () => {
+			Mutex.setDefaultTimeoutMs(0);
+			expect(Mutex.getDefaultTimeoutMs()).toEqual(0);
+		});
+
+		test("setDefaultTimeoutMs throws on a non-integer value", () => {
+			expect(() => Mutex.setDefaultTimeoutMs(1.5)).toThrow();
+		});
+
+		test("setDefaultTimeoutMs throws on a negative value", () => {
+			expect(() => Mutex.setDefaultTimeoutMs(-1)).toThrow();
+		});
+
+		test("lock uses the default timeout when options.timeoutMs is not provided", async () => {
+			Mutex.setDefaultTimeoutMs(50);
+			const arr = mutexSimulateHeldLock("default-timeout");
+			const start = Date.now();
+			expect(await Mutex.lock("default-timeout")).toEqual(false);
+			expect(Date.now() - start).toBeGreaterThanOrEqual(50);
+			Atomics.store(arr, 0, 0);
+		});
+
+		test("lock options.timeoutMs overrides the default timeout", async () => {
+			Mutex.setDefaultTimeoutMs(5000);
+			const arr = mutexSimulateHeldLock("override-timeout");
+			const start = Date.now();
+			expect(await Mutex.lock("override-timeout", { timeoutMs: 50 })).toEqual(false);
+			expect(Date.now() - start).toBeLessThan(500);
+			Atomics.store(arr, 0, 0);
+		});
 	});
 
 	describe("lock", () => {
@@ -102,20 +149,11 @@ describe("Mutex", () => {
 			}
 		});
 
-		test("returns false immediately with negative timeoutMs when the lock is held", async () => {
-			const arr = mutexSimulateHeldLock("neg-timeout");
-			const start = Date.now();
-			expect(await Mutex.lock("neg-timeout", { timeoutMs: -1 })).toEqual(false);
-			expect(Date.now() - start).toBeLessThan(50);
-			Atomics.store(arr, 0, 0);
-		});
-
-		test("throws immediately with negative timeoutMs when throwOnTimeout is true", async () => {
-			const arr = mutexSimulateHeldLock("neg-throw");
+		test("throws immediately with negative timeoutMs regardless of throwOnTimeout", async () => {
+			await expect(Mutex.lock("neg-timeout", { timeoutMs: -1 })).rejects.toThrow();
 			await expect(
-				Mutex.lock("neg-throw", { timeoutMs: -1, throwOnTimeout: true })
+				Mutex.lock("neg-timeout", { timeoutMs: -1, throwOnTimeout: true })
 			).rejects.toThrow();
-			Atomics.store(arr, 0, 0);
 		});
 
 		test("creates a shared store entry when a key is first locked", async () => {
