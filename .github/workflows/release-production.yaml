@@ -260,6 +260,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
 
       - name: Resolve semver type
         id: resolve-semver
@@ -734,6 +736,8 @@ jobs:
     steps:
       - name: Checkout workflow ref
         uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
 
       - name: Versions Prepare for next
         uses: ./.github/workflows/versions-prepare
