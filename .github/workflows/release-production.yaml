@@ -493,7 +493,7 @@ jobs:
           echo "The Release workflow is now:"
           echo "  • Publishing packages to npm (latest tag)"
           echo "  • Creating GitHub releases"
-          echo "  • Realigning the next branch via Versions Prepare (PR will be opened for review)"
+          echo "  • Realigning the next branch (auto-merge enabled; merges when checks pass)"
 
   # ──────────────────────────────────────────────────────────────────────────
   # PHASE 3 – PUBLISH
@@ -732,6 +732,10 @@ jobs:
       contents: write
       pull-requests: write
       id-token: write
+    outputs:
+      pr_number: ${{ steps.versions-prepare.outputs.pr_number }}
+      pr_url: ${{ steps.versions-prepare.outputs.pr_url }}
+      has_changes: ${{ steps.versions-prepare.outputs.has_changes }}
 
     steps:
       - name: Checkout workflow ref
@@ -740,6 +744,7 @@ jobs:
           token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
 
       - name: Versions Prepare for next
+        id: versions-prepare
         uses: ./.github/workflows/versions-prepare
         with:
           branch: next
@@ -748,3 +753,45 @@ jobs:
           test_env_vars: ${{ secrets.TWIN_TEST_ENV_VARS }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+
+      - name: Enable auto-merge on next alignment PR
+        if: ${{ steps.versions-prepare.outputs.pr_number != '' }}
+        run: |
+          gh pr merge ${{ steps.versions-prepare.outputs.pr_number }} --auto --squash
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # GATE 3 – WAIT FOR NEXT ALIGNMENT PR
+  # Polls until the realignment PR for the next branch is merged. The PR is
+  # pre-approved and auto-merge is enabled, so it merges as soon as all
+  # required status checks pass. Skipped when versions-prepare was a no-op.
+  # ──────────────────────────────────────────────────────────────────────────
+  gate-realign-next:
+    name: 'Gate 3 · Merge next alignment PR'
+    needs: realign-next
+    if: ${{ needs.realign-next.outputs.has_changes == 'true' }}
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    timeout-minutes: 360
+    permissions:
+      contents: read
+      pull-requests: read
+
+    steps:
+      - name: Checkout workflow ref
+        uses: actions/checkout@v6
+
+      - name: Poll until next alignment PR is merged
+        uses: ./.github/workflows/wait-for-pr
+        with:
+          repo: ${{ github.repository }}
+          pr_number: ${{ needs.realign-next.outputs.pr_number }}
+          pr_url: ${{ needs.realign-next.outputs.pr_url }}
+          waiting_message: Waiting for next alignment PR #__PR_NUMBER__ to merge (auto-merge enabled)...
+          success_message: Next alignment PR #__PR_NUMBER__ merged. Next branch is realigned to the released version.
+          closed_error_title: Gate 3 Failed
+          closed_error_message: Next alignment PR #__PR_NUMBER__ (__PR_URL__) was closed without merging. Next branch realignment incomplete.
+          closed_follow_up: Re-run the Realign Next Branch job or manually merge the next alignment PR.
+          github_token: ${{ secrets.TWIN_GHA_RELEASE_TOKEN }}
