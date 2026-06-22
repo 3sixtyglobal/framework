@@ -17,7 +17,7 @@
  * next checks:
  *   • Format must be X.Y.Z with each component ≤ 999
  *   • Must be strictly greater than the current development base version,
- *     ensuring <base>-next.1 is ahead of the already-published prerelease
+ *     ensuring <base>-next.0 is ahead of the already-published prerelease
  *   • Major version may only increment by 1 from the current development base
  */
 import { loadJson } from './common.mjs';
@@ -102,11 +102,11 @@ async function run() {
 		process.stdout.write(`  Published prod : ${prodVersion}\n`);
 		process.stdout.write(`  Current dev    : ${currentPrerelease} (base: ${devBase})\n`);
 	} else {
-		// Must be strictly greater than the current dev base so that <custom>-next.1
+		// Must be strictly greater than the current dev base so that <custom>-next.0
 		// is ahead of the current <devBase>-next.X for any X.
 		if (!semverGt(cv, [rMaj, rMin, rPat])) {
 			throw new Error(
-				`customVersion ${custom} must be strictly greater than the current development base ${devBase} (from ${currentPrerelease}). The resulting ${custom}-next.1 would be behind the already-published ${currentPrerelease}.`
+				`customVersion ${custom} must be strictly greater than the current development base ${devBase} (from ${currentPrerelease}). The resulting ${custom}-next.0 would be behind the already-published ${currentPrerelease}.`
 			);
 		}
 
@@ -116,7 +116,7 @@ async function run() {
 			);
 		}
 
-		process.stdout.write(`Custom next version ${custom}-next.1 is valid.\n`);
+		process.stdout.write(`Custom next version ${custom}-next.0 is valid.\n`);
 		process.stdout.write(`  Current dev : ${currentPrerelease} (base: ${devBase})\n`);
 	}
 }
