@@ -336,9 +336,13 @@ Pick a subset of properties from an object.
 
 #### Param
 
+**obj**
+
 The object to pick the properties from.
 
 #### Param
+
+**keys**
 
 The property keys to pick.
 
@@ -422,9 +426,13 @@ Omit a subset of properties from an object.
 
 #### Param
 
+**obj**
+
 The object to omit the properties from.
 
 #### Param
+
+**keys**
 
 The property keys to omit.
 

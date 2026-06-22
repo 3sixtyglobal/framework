@@ -40,6 +40,14 @@ The blue element of the color.
 
 `Color`
 
+#### Throws
+
+GuardError if the parameters are invalid.
+
+#### Throws
+
+GeneralError If the values are out of range.
+
 ## Properties
 
 ### CLASS\_NAME {#class_name}
