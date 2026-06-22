@@ -136,6 +136,18 @@ runs:
           node "$VERSIONS_SCRIPT" production ${{ inputs.semver_type }}
         fi
 
+    - name: Extract version
+      shell: bash
+      run: |
+        cd "$TARGET_DIR"
+        if [ "${{ inputs.branch }}" = "next" ]; then
+          MANIFEST="release/release-please-manifest.prerelease.json"
+        else
+          MANIFEST="release/release-please-manifest.prod.json"
+        fi
+        VERSION=$(node -e "const m=JSON.parse(require('fs').readFileSync('$MANIFEST','utf8'));console.log(Object.values(m)[0])")
+        echo "RELEASE_VERSION=$VERSION" >> "$GITHUB_ENV"
+
     - name: Check for changes
       id: check-changes
       shell: bash
@@ -193,7 +205,7 @@ runs:
       run: |
         cd "$TARGET_DIR"
         git add -A
-        git commit -S -m "chore: prepare versions for ${{ inputs.branch }}"
+        git commit -S -m "chore: prepare versions for ${{ inputs.branch }} to $RELEASE_VERSION"
         git push origin $BRANCH_NAME
 
     # Create a PR with the changes
@@ -203,8 +215,8 @@ runs:
       shell: bash
       run: |
         PR_URL=$(gh pr create \
-          --title "chore: prepare versions for ${{ inputs.branch }}" \
-          --body "This PR prepares the versions of all packages for ${{ inputs.branch }}." \
+          --title "chore: prepare versions for ${{ inputs.branch }} to $RELEASE_VERSION" \
+          --body "This PR prepares the versions of all packages for ${{ inputs.branch }} to \`$RELEASE_VERSION\`." \
           --base ${{ inputs.branch }} \
           --head $BRANCH_NAME)
         PR_NUMBER=$(echo $PR_URL | grep -o '[0-9]\+$')
