@@ -6,7 +6,11 @@ inputs:
     description: 'Target branch to prepare versions on (main or next)'
     required: true
   semver_type:
-    description: 'Semver bump type for production releases (promote, patch, minor, major). Required when branch is main.'
+    description: 'Semver bump type for production releases (promote, patch, minor, major, custom). Required when branch is main.'
+    required: false
+    default: ''
+  custom_version:
+    description: 'Explicit version string, e.g. 1.2.3. Required when semver_type is custom.'
     required: false
     default: ''
   gpg_private_key:
@@ -116,8 +120,12 @@ runs:
       shell: bash
       run: |
         cd "$TARGET_DIR"
-        if [ "${{ inputs.branch }}" = "next" ]; then
+        if [ "${{ inputs.branch }}" = "next" ] && [ "${{ inputs.semver_type }}" = "custom" ]; then
+          node scripts/versions-prepare.mjs next custom "${{ inputs.custom_version }}"
+        elif [ "${{ inputs.branch }}" = "next" ]; then
           node scripts/versions-prepare.mjs next
+        elif [ "${{ inputs.semver_type }}" = "custom" ]; then
+          node scripts/versions-prepare.mjs production custom "${{ inputs.custom_version }}"
         else
           node scripts/versions-prepare.mjs production ${{ inputs.semver_type }}
         fi

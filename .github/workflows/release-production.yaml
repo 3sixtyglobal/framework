@@ -26,7 +26,7 @@ on:
   workflow_dispatch:
     inputs:
       semverBump:
-        description: 'Version bump type for this production release'
+        description: 'Version bump type for this production release (ignored when customVersion is set)'
         required: true
         type: choice
         options:
@@ -34,6 +34,11 @@ on:
           - '🔧 patch'
           - '✨ minor'
           - '🚀 major'
+      customVersion:
+        description: 'Explicit version to release, e.g. 1.2.3. When set, overrides semverBump.'
+        required: false
+        type: string
+        default: ''
 
   pull_request:
     types: [closed]
@@ -48,6 +53,39 @@ concurrency:
 
 jobs:
   # ──────────────────────────────────────────────────────────────────────────
+  # GUARD – VALIDATE CUSTOM VERSION
+  # When customVersion is provided, validates it against the current production
+  # and prerelease manifests before any PRs are created. Checks:
+  #   • X.Y.Z format with each component ≤ 999
+  #   • Strictly greater than the current published production version
+  #   • At least equal to the current development (prerelease) version stripped
+  #   • Major version does not jump by more than 1 from current prod
+  # ──────────────────────────────────────────────────────────────────────────
+  validate-custom-version:
+    name: 'Guard · Validate custom version'
+    if: github.event_name == 'workflow_dispatch' && inputs.customVersion != ''
+    runs-on:
+      labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
+      group: ${{ github.event.repository.private && 'twin' || 'default' }}
+    timeout-minutes: 5
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Validate custom version against current manifests
+        run: node scripts/validate-custom-version.mjs prod "${{ inputs.customVersion }}"
+
+  # ──────────────────────────────────────────────────────────────────────────
   # PHASE 0 – MERGE NEXT INTO MAIN
   # Creates a branch from main and applies the exact diff of main → next as a
   # single signed commit. Using diff|apply rather than a merge algorithm
@@ -59,7 +97,12 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   merge-next-to-main:
     name: 'Phase 0 · Merge next into main'
-    if: github.event_name == 'workflow_dispatch'
+    needs: [validate-custom-version]
+    if: |
+      github.event_name == 'workflow_dispatch' &&
+      always() &&
+      !cancelled() &&
+      (needs.validate-custom-version.result == 'success' || needs.validate-custom-version.result == 'skipped')
     runs-on:
       labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
       group: ${{ github.event.repository.private && 'twin' || 'default' }}
@@ -221,17 +264,26 @@ jobs:
       - name: Resolve semver type
         id: resolve-semver
         run: |
-          INPUT="${{ inputs.semverBump }}"
-          case "$INPUT" in
-            *promote*) SEMVER_TYPE='promote' ;;
-            *patch*) SEMVER_TYPE='patch' ;;
-            *minor*) SEMVER_TYPE='minor' ;;
-            *major*) SEMVER_TYPE='major' ;;
-            *)
-              echo "::error::Unrecognised semver bump: $INPUT"
+          CUSTOM="${{ inputs.customVersion }}"
+          if [ -n "$CUSTOM" ]; then
+            if ! echo "$CUSTOM" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+              echo "::error::customVersion must be a valid semver string, e.g. 1.2.3 (got: $CUSTOM)"
               exit 1
-              ;;
-          esac
+            fi
+            SEMVER_TYPE='custom'
+          else
+            INPUT="${{ inputs.semverBump }}"
+            case "$INPUT" in
+              *promote*) SEMVER_TYPE='promote' ;;
+              *patch*) SEMVER_TYPE='patch' ;;
+              *minor*) SEMVER_TYPE='minor' ;;
+              *major*) SEMVER_TYPE='major' ;;
+              *)
+                echo "::error::Unrecognised semver bump: $INPUT"
+                exit 1
+                ;;
+            esac
+          fi
           echo "semver_type=$SEMVER_TYPE" >> $GITHUB_OUTPUT
 
       - name: Versions Prepare
@@ -240,6 +292,7 @@ jobs:
         with:
           branch: main
           semver_type: ${{ steps.resolve-semver.outputs.semver_type }}
+          custom_version: ${{ inputs.customVersion }}
           gpg_private_key: ${{ secrets.TWIN_GPG_PRIVATE_KEY }}
           gpg_key_id: ${{ secrets.TWIN_GPG_KEY_ID }}
           test_env_vars: ${{ secrets.TWIN_TEST_ENV_VARS }}
@@ -322,18 +375,24 @@ jobs:
       - name: Resolve release type
         id: resolve-release
         run: |
-          INPUT="${{ inputs.semverBump }}"
-
-          case "$INPUT" in
-            *promote*) BRANCH='main'; SEMVER_TYPE='patch' ;;
-            *patch*) BRANCH='main'; SEMVER_TYPE='patch' ;;
-            *minor*) BRANCH='main'; SEMVER_TYPE='minor' ;;
-            *major*) BRANCH='main'; SEMVER_TYPE='major' ;;
-            *)
-              echo "::error::Unrecognised semver bump: $INPUT"
-              exit 1
-              ;;
-          esac
+          CUSTOM="${{ inputs.customVersion }}"
+          if [ -n "$CUSTOM" ]; then
+            # Release-As in the force commit overrides versioning strategy,
+            # so semver_type only needs to be a valid value here.
+            BRANCH='main'; SEMVER_TYPE='patch'
+          else
+            INPUT="${{ inputs.semverBump }}"
+            case "$INPUT" in
+              *promote*) BRANCH='main'; SEMVER_TYPE='patch' ;;
+              *patch*) BRANCH='main'; SEMVER_TYPE='patch' ;;
+              *minor*) BRANCH='main'; SEMVER_TYPE='minor' ;;
+              *major*) BRANCH='main'; SEMVER_TYPE='major' ;;
+              *)
+                echo "::error::Unrecognised semver bump: $INPUT"
+                exit 1
+                ;;
+            esac
+          fi
 
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
           echo "semver_type=$SEMVER_TYPE" >> $GITHUB_OUTPUT
