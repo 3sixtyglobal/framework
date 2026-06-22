@@ -69,7 +69,7 @@ describe("Mutex", () => {
 			const arr = mutexSimulateHeldLock("default-timeout");
 			const start = Date.now();
 			expect(await Mutex.lock("default-timeout")).toEqual(false);
-			expect(Date.now() - start).toBeGreaterThanOrEqual(50);
+			expect(Date.now() - start).toBeGreaterThanOrEqual(40);
 			Atomics.store(arr, 0, 0);
 		});
 

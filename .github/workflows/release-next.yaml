@@ -150,10 +150,11 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   prepare:
     name: 'Phase 1 · Prepare release PR'
-    needs: [gate-reset-pr]
+    needs: [gate-reset-pr, reset-next-versions]
     if: |
       always() &&
       !cancelled() &&
+      (needs.reset-next-versions.result == 'skipped' || needs.reset-next-versions.result == 'success') &&
       (needs.gate-reset-pr.result == 'success' || needs.gate-reset-pr.result == 'skipped')
     runs-on:
       labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
