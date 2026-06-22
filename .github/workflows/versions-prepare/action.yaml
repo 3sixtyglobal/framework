@@ -116,18 +116,22 @@ runs:
         echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
 
     # Run the custom script to align package versions for the target release type.
+    # Use the script from GITHUB_WORKSPACE (the triggering branch) rather than
+    # TARGET_DIR — after Align Next to Main, TARGET_DIR holds main's copy of the
+    # script which may predate custom-version support on the next branch.
     - name: Update Versions
       shell: bash
       run: |
         cd "$TARGET_DIR"
+        VERSIONS_SCRIPT="$GITHUB_WORKSPACE/scripts/versions-prepare.mjs"
         if [ "${{ inputs.branch }}" = "next" ] && [ "${{ inputs.semver_type }}" = "custom" ]; then
-          node scripts/versions-prepare.mjs next custom "${{ inputs.custom_version }}"
+          node "$VERSIONS_SCRIPT" next custom "${{ inputs.custom_version }}"
         elif [ "${{ inputs.branch }}" = "next" ]; then
-          node scripts/versions-prepare.mjs next
+          node "$VERSIONS_SCRIPT" next
         elif [ "${{ inputs.semver_type }}" = "custom" ]; then
-          node scripts/versions-prepare.mjs production custom "${{ inputs.custom_version }}"
+          node "$VERSIONS_SCRIPT" production custom "${{ inputs.custom_version }}"
         else
-          node scripts/versions-prepare.mjs production ${{ inputs.semver_type }}
+          node "$VERSIONS_SCRIPT" production ${{ inputs.semver_type }}
         fi
 
     - name: Check for changes

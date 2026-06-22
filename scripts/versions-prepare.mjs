@@ -231,6 +231,11 @@ async function run() {
 
 		// We also need to update any files specified in the release-please-manifest
 		process.stdout.write('Updating release-please-config extra-files\n');
+		// Read the current prod version — that is the value actually written in extra
+		// files (after alignment to main). For the custom path prodVersion is the
+		// user-supplied target version, not the value currently in those files.
+		const prodManifestForExtras = await loadJson(MANIFEST_PRODUCTION_FILENAME);
+		const currentVersionInFiles = Object.values(prodManifestForExtras)[0];
 		const releaseConfig = await loadJson(CONFIG_PRERELEASE_FILENAME);
 		if (releaseConfig.packages) {
 			for (const packageName of Object.keys(releaseConfig.packages)) {
@@ -243,7 +248,7 @@ async function run() {
 						const lines = contents.split('\n');
 						for (let i = 0; i < lines.length; i++) {
 							if (lines[i].includes('x-release-please-version')) {
-								lines[i] = lines[i].replace(prodVersion, nextVersion);
+								lines[i] = lines[i].replace(currentVersionInFiles, nextVersion);
 							}
 						}
 						await fs.writeFile(filename, lines.join('\n'), 'utf8');
