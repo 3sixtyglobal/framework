@@ -34,6 +34,7 @@ export class Sha256 {
 	/**
 	 * Create a new instance of Sha256.
 	 * @param bits The number of bits.
+	 * @throws GeneralError If the bits are not a valid size.
 	 */
 	constructor(bits: number = Sha256.SIZE_256) {
 		if (bits !== Sha256.SIZE_224 && bits !== Sha256.SIZE_256) {

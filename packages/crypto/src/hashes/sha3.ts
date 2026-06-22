@@ -45,6 +45,7 @@ export class Sha3 {
 	/**
 	 * Create a new instance of Sha3.
 	 * @param bits The number of bits.
+	 * @throws GeneralError If the bits are not a valid size.
 	 */
 	constructor(bits: number = Sha3.SIZE_256) {
 		if (

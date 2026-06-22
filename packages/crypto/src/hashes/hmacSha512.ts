@@ -48,6 +48,7 @@ export class HmacSha512 {
 	 * Create a new instance of HmacSha512.
 	 * @param key The key for the hmac.
 	 * @param bits The number of bits.
+	 * @throws GeneralError If the bits are not a valid size.
 	 */
 	constructor(key: Uint8Array, bits: number = HmacSha512.SIZE_512) {
 		if (

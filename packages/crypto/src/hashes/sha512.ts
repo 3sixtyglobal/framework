@@ -45,6 +45,7 @@ export class Sha512 {
 	/**
 	 * Create a new instance of Sha512.
 	 * @param bits The number of bits.
+	 * @throws GeneralError If the bits are not a valid size.
 	 */
 	constructor(bits: number = Sha512.SIZE_512) {
 		if (

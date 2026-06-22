@@ -36,6 +36,7 @@ export class HmacSha256 {
 	 * Create a new instance of HmacSha256.
 	 * @param key The key for the hmac.
 	 * @param bits The number of bits.
+	 * @throws GeneralError If the bits are not a valid size.
 	 */
 	constructor(key: Uint8Array, bits: number = HmacSha256.SIZE_256) {
 		if (bits !== HmacSha256.SIZE_224 && bits !== HmacSha256.SIZE_256) {

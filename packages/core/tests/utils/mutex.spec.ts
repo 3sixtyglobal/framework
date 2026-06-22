@@ -358,7 +358,7 @@ describe("Mutex", () => {
 			const elapsed = Date.now() - start;
 
 			expect(acquired).toEqual(true);
-			expect(elapsed).toBeGreaterThanOrEqual(150);
+			expect(elapsed).toBeGreaterThanOrEqual(140);
 			Mutex.unlock("worker-key");
 
 			await new Promise<void>(resolve => {

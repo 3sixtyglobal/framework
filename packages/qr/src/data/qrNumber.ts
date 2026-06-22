@@ -50,7 +50,6 @@ export class QRNumber extends QRDataBase {
 
 		if (i < data.length) {
 			if (data.length - i === 1) {
-				// eslint-disable-next-line unicorn/prefer-string-slice
 				buffer.put(this.strToNum(data.substring(i, i + 1)), 4);
 			} else if (data.length - i === 2) {
 				// eslint-disable-next-line unicorn/prefer-string-slice

@@ -95,7 +95,6 @@ export class Is {
 	public static stringBase64(value: unknown): value is string {
 		return (
 			Is.stringValue(value) &&
-			// eslint-disable-next-line unicorn/better-regex
 			/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(value)
 		);
 	}
@@ -106,11 +105,7 @@ export class Is {
 	 * @returns True if the value is a base64 string.
 	 */
 	public static stringBase64Url(value: unknown): value is string {
-		return (
-			Is.stringValue(value) &&
-			// eslint-disable-next-line unicorn/better-regex
-			/^([A-Za-z0-9-_])*$/.test(value)
-		);
+		return Is.stringValue(value) && /^([A-Za-z0-9-_])*$/.test(value);
 	}
 
 	/**
@@ -119,11 +114,7 @@ export class Is {
 	 * @returns True if the value is a base58 string.
 	 */
 	public static stringBase58(value: unknown): value is string {
-		return (
-			Is.stringValue(value) &&
-			// eslint-disable-next-line unicorn/better-regex
-			/^[A-HJ-NP-Za-km-z1-9]*$/.test(value)
-		);
+		return Is.stringValue(value) && /^[A-HJ-NP-Za-km-z1-9]*$/.test(value);
 	}
 
 	/**

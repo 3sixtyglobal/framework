@@ -40,6 +40,8 @@ export class Color {
 	 * @param red The red element of the color.
 	 * @param green The green element of the color.
 	 * @param blue The blue element of the color.
+	 * @throws GuardError if the parameters are invalid.
+	 * @throws GeneralError If the values are out of range.
 	 */
 	constructor(alpha: number, red: number, green: number, blue: number) {
 		Guards.number(Color.CLASS_NAME, nameof(alpha), alpha);
