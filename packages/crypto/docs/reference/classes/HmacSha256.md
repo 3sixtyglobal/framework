@@ -28,6 +28,10 @@ The number of bits.
 
 `HmacSha256`
 
+#### Throws
+
+GeneralError If the bits are not a valid size.
+
 ## Properties
 
 ### SIZE\_256 {#size_256}

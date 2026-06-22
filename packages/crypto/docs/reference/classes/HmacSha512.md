@@ -28,6 +28,10 @@ The number of bits.
 
 `HmacSha512`
 
+#### Throws
+
+GeneralError If the bits are not a valid size.
+
 ## Properties
 
 ### SIZE\_224 {#size_224}

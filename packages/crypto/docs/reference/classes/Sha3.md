@@ -22,6 +22,10 @@ The number of bits.
 
 `Sha3`
 
+#### Throws
+
+GeneralError If the bits are not a valid size.
+
 ## Properties
 
 ### SIZE\_224 {#size_224}
