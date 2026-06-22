@@ -93,8 +93,10 @@ runs:
     # follow-up PR does not inherit merge conflicts from divergent branch state.
     # Using diff | apply bypasses the merge algorithm entirely, so add/add
     # conflicts and other merge-time ambiguities do not block realignment.
+    # Skipped for custom version resets — those only change version numbers and
+    # should not pull in main content changes.
     - name: Align Next to Main
-      if: ${{ inputs.branch == 'next' }}
+      if: ${{ inputs.branch == 'next' && inputs.semver_type != 'custom' }}
       shell: bash
       run: |
         cd "$TARGET_DIR"

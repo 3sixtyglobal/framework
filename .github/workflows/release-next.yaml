@@ -20,7 +20,7 @@ on:
   workflow_dispatch:
     inputs:
       customVersion:
-        description: 'Reset the next branch to a specific base version, e.g. 0.1.0 → 0.1.0-next.0. Leave blank for a normal prerelease increment.'
+        description: 'Reset the next branch to a specific base version, e.g. 0.1.0 → 0.1.0-next.1. Leave blank for a normal prerelease increment.'
         required: false
         type: string
         default: ''
@@ -32,7 +32,7 @@ jobs:
   # manifest before any PRs are created. Checks:
   #   • X.Y.Z format with each component ≤ 999
   #   • Strictly greater than the current development base version so that
-  #     <custom>-next.0 is ahead of the already-published prerelease
+  #     <custom>-next.1 is ahead of the already-published prerelease
   #   • Major version does not jump by more than 1 from the current dev base
   # ──────────────────────────────────────────────────────────────────────────
   validate-custom-version:
@@ -62,7 +62,7 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   # PHASE 0 – RESET NEXT VERSIONS
   # When customVersion is provided, runs versions-prepare on the next branch to
-  # set all packages to <customVersion>-next.0 and updates the prerelease
+  # set all packages to <customVersion>-next.1 and updates the prerelease
   # manifest. Creates a PR on next for review before the release PR is opened.
   # ──────────────────────────────────────────────────────────────────────────
   reset-next-versions:

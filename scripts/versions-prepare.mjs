@@ -170,7 +170,7 @@ async function run() {
 					'custom next version requires a valid base version in X.Y.Z format, e.g. 0.1.0'
 				);
 			}
-			nextVersion = `${customBase}-next.0`;
+			nextVersion = `${customBase}-next.1`;
 			prodVersion = customBase;
 			process.stdout.write(`Custom Next Version: ${nextVersion}\n\n`);
 		} else {
