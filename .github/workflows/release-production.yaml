@@ -206,7 +206,11 @@ jobs:
   gate-next-to-main:
     name: 'Gate 0 · Merge next into main PR'
     needs: merge-next-to-main
-    if: ${{ needs.merge-next-to-main.outputs.has_changes == 'true' }}
+    if: |
+      always() &&
+      !cancelled() &&
+      needs.merge-next-to-main.result == 'success' &&
+      needs.merge-next-to-main.outputs.has_changes == 'true'
     runs-on:
       labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
       group: ${{ github.event.repository.private && 'twin' || 'default' }}
@@ -321,7 +325,11 @@ jobs:
   gate-main-alignment:
     name: 'Gate 1 · Merge main alignment PR'
     needs: prepare-main
-    if: ${{ needs.prepare-main.outputs.has_changes == 'true' }}
+    if: |
+      always() &&
+      !cancelled() &&
+      needs.prepare-main.result == 'success' &&
+      needs.prepare-main.outputs.has_changes == 'true'
     runs-on:
       labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
       group: ${{ github.event.repository.private && 'twin' || 'default' }}
@@ -430,6 +438,11 @@ jobs:
   gate-release-pr:
     name: 'Gate 2 · Merge release PR'
     needs: prepare-release
+    if: |
+      always() &&
+      !cancelled() &&
+      needs.prepare-release.result == 'success' &&
+      needs.prepare-release.outputs.pr_number != ''
     runs-on:
       labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
       group: ${{ github.event.repository.private && 'twin' || 'default' }}
