@@ -30,7 +30,7 @@ on:
         required: true
         type: choice
         options:
-          - '⬆️ promote'
+          - '⬆️ promote next'
           - '🔧 patch'
           - '✨ minor'
           - '🚀 major'
@@ -238,11 +238,12 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   prepare-main:
     name: 'Phase 1 · Prepare and build main branch'
-    needs: gate-next-to-main
+    needs: [merge-next-to-main, gate-next-to-main]
     if: |
       github.event_name == 'workflow_dispatch' &&
       always() &&
       !cancelled() &&
+      (needs.merge-next-to-main.result == 'success' || needs.merge-next-to-main.result == 'skipped') &&
       (needs.gate-next-to-main.result == 'success' || needs.gate-next-to-main.result == 'skipped')
     runs-on:
       labels: ${{ github.event.repository.private && 'self-hosted' || 'ubuntu-latest' }}
