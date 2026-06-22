@@ -18,7 +18,7 @@ export class ContextIdStore {
 	 * Execute the method wrapped in the context.
 	 * @param contextIds The context IDs.
 	 * @param asyncMethod The async method to run.
-	 * @returns Nothing.
+	 * @returns A promise that resolves with the result of the async method.
 	 */
 	public static async run<T = unknown>(contextIds: IContextIds, asyncMethod: () => T): Promise<T> {
 		const storage = await ContextIdStore.getStorage();

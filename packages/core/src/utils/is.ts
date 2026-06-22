@@ -1,6 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { HexHelper } from "../helpers/hexHelper.js";
+import type { IDuration } from "../models/IDuration.js";
+import { DURATION_REG_EXP } from "../types/durationRegExp.js";
 
 /**
  * Class to check types of objects.
@@ -9,7 +11,7 @@ export class Is {
 	/**
 	 * Is the property undefined.
 	 * @param value The value to test.
-	 * @returns True if the value is a empty.
+	 * @returns True if the value is undefined.
 	 */
 	public static undefined(value: unknown): value is undefined {
 		return value === undefined;
@@ -18,7 +20,7 @@ export class Is {
 	/**
 	 * Is the property null.
 	 * @param value The value to test.
-	 * @returns True if the value is a empty.
+	 * @returns True if the value is null.
 	 */
 	public static null(value: unknown): value is null {
 		return value === null;
@@ -27,16 +29,16 @@ export class Is {
 	/**
 	 * Is the property null or undefined.
 	 * @param value The value to test.
-	 * @returns True if the value is a empty.
+	 * @returns True if the value is null or undefined.
 	 */
 	public static empty(value: unknown): value is undefined | null {
 		return value === null || value === undefined;
 	}
 
 	/**
-	 * Is the property is not null or undefined.
+	 * Is the property not null or undefined.
 	 * @param value The value to test.
-	 * @returns True if the value is a not empty.
+	 * @returns True if the value is not null or undefined.
 	 */
 	public static notEmpty(value: unknown): boolean {
 		return value !== null && value !== undefined;
@@ -52,9 +54,9 @@ export class Is {
 	}
 
 	/**
-	 * Is the value a string.
+	 * Is the value a non-empty string.
 	 * @param value The value to test.
-	 * @returns True if the value is a string.
+	 * @returns True if the value is a non-empty string.
 	 */
 	public static stringValue(value: unknown): value is string {
 		return Is.string(value) && value.trim().length > 0;
@@ -93,7 +95,6 @@ export class Is {
 	public static stringBase64(value: unknown): value is string {
 		return (
 			Is.stringValue(value) &&
-			// eslint-disable-next-line unicorn/better-regex
 			/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(value)
 		);
 	}
@@ -104,11 +105,7 @@ export class Is {
 	 * @returns True if the value is a base64 string.
 	 */
 	public static stringBase64Url(value: unknown): value is string {
-		return (
-			Is.stringValue(value) &&
-			// eslint-disable-next-line unicorn/better-regex
-			/^([A-Za-z0-9-_])*$/.test(value)
-		);
+		return Is.stringValue(value) && /^([A-Za-z0-9-_])*$/.test(value);
 	}
 
 	/**
@@ -117,11 +114,7 @@ export class Is {
 	 * @returns True if the value is a base58 string.
 	 */
 	public static stringBase58(value: unknown): value is string {
-		return (
-			Is.stringValue(value) &&
-			// eslint-disable-next-line unicorn/better-regex
-			/^[A-HJ-NP-Za-km-z1-9]*$/.test(value)
-		);
+		return Is.stringValue(value) && /^[A-HJ-NP-Za-km-z1-9]*$/.test(value);
 	}
 
 	/**
@@ -248,7 +241,7 @@ export class Is {
 	/**
 	 * Is the value a timestamp in seconds.
 	 * @param value The value to test.
-	 * @returns True if the value is a date.
+	 * @returns True if the value is a timestamp in seconds.
 	 */
 	public static timestampSeconds(value: unknown): value is number {
 		if (!Is.integer(value)) {
@@ -261,7 +254,7 @@ export class Is {
 	/**
 	 * Is the value a timestamp in milliseconds.
 	 * @param value The value to test.
-	 * @returns True if the value is a date.
+	 * @returns True if the value is a timestamp in milliseconds.
 	 */
 	public static timestampMilliseconds(value: unknown): value is number {
 		if (!Is.integer(value)) {
@@ -438,5 +431,61 @@ export class Is {
 			Is.stringValue(value) &&
 			/^[\da-f]{8}-[\da-f]{4}-7[\da-f]{3}-[89ab][\da-f]{3}-[\da-f]{12}$/i.test(value)
 		);
+	}
+
+	/**
+	 * Is the value a valid ISO 8601 duration string or an IDuration object.
+	 * @param value The value to test.
+	 * @returns True if the value is a valid ISO 8601 duration string or an IDuration object.
+	 */
+	public static duration(value: unknown): value is string | IDuration {
+		if (Is.object<IDuration>(value)) {
+			if (
+				!Is.number(value.years) ||
+				!Is.number(value.months) ||
+				!Is.number(value.weeks) ||
+				!Is.number(value.days) ||
+				!Is.number(value.hours) ||
+				!Is.number(value.minutes) ||
+				!Is.number(value.seconds) ||
+				(!Is.undefined(value.milliseconds) &&
+					(!Is.integer(value.milliseconds) || Math.abs(value.milliseconds) > 999)) ||
+				(!Is.undefined(value.microseconds) &&
+					(!Is.integer(value.microseconds) || Math.abs(value.microseconds) > 999)) ||
+				(!Is.undefined(value.nanoseconds) &&
+					(!Is.integer(value.nanoseconds) || Math.abs(value.nanoseconds) > 999))
+			) {
+				return false;
+			}
+
+			let sign = 0;
+			for (const component of [
+				value.years,
+				value.months,
+				value.weeks,
+				value.days,
+				value.hours,
+				value.minutes,
+				value.seconds,
+				value.milliseconds ?? 0,
+				value.microseconds ?? 0,
+				value.nanoseconds ?? 0
+			]) {
+				if (component !== 0) {
+					const componentSign = component < 0 ? -1 : 1;
+					if (sign === 0) {
+						sign = componentSign;
+					} else if (sign !== componentSign) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		if (!Is.stringValue(value)) {
+			return false;
+		}
+		const match = DURATION_REG_EXP.exec(value);
+		return Boolean(match?.slice(2).some(Boolean));
 	}
 }

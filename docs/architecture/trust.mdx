@@ -1,0 +1,88 @@
+---
+category: framework
+order: 8
+---
+
+# Trust
+
+Trust is the mechanism by which nodes and services verify the origin of an incoming call without requiring a user session. Where `AuthHeaderProcessor` authenticates interactive users via JWT bearer tokens tied to user accounts, the trust system authenticates machine-to-machine calls between nodes, organisations, and federated services using caller-supplied payloads that are verified by a pluggable chain of verifiers.
+
+## When Trust Is Used
+
+Trust verification applies to routes that serve inter-node or cross-organisation calls. These routes are marked `skipAuth: true`, which means `AuthHeaderProcessor` does not run and no user context is populated. Tenant context may still be established by `TenantProcessor` from the `organization` query parameter.
+
+Services that currently apply trust verification include Dataspace (data plane activity notifications and contract negotiation), Federated Catalogue (peer queries), and Rights Management (policy negotiation). In each case the caller is a remote node or service acting on behalf of an organisation, not a human user.
+
+## Trust Payload
+
+The trust system treats the payload as an opaque `unknown` value. `ITrustComponent.verify()` accepts any value and passes it to the verifier chain; each verifier inspects the payload and returns `undefined` if it does not recognise the format, allowing other verifiers to handle it. This means the payload format is not mandated by the framework and can vary between deployments.
+
+The current default implementation uses a JWT Verifiable Credential sent as an `Authorization: Bearer <token>` header. Other mechanisms (mutual TLS certificates, API tokens, signed structured data, or future trust hierarchy assertions) can be supported by registering additional verifiers and generators without changing the framework or the calling service code.
+
+## How Verification Works
+
+Route handlers that require trust extract the bearer token from the `Authorization` header and pass it into the service method as a `trustPayload` parameter. The service calls `TrustHelper.verifyTrust(trustComponent, payload, action)`, which delegates to `ITrustComponent.verify()`.
+
+`TrustService` then runs all registered verifiers in sequence, passing a shared `ITrustVerificationInfo` object through the chain. Each verifier receives the full payload, the current `info` state accumulated by previous verifiers, and a shared `errors` array. A verifier that recognises the payload type processes it and returns `true` (accepted) or `false` (rejected). A verifier that does not recognise the payload returns `undefined` to skip and pass control to the next verifier in the chain. If no verifier accepts the payload, or if any verifier returns `false`, `TrustHelper.verifyTrust` throws an `UnauthorizedError`.
+
+## Current Verifiers
+
+### JwtVerifiableCredentialVerifier
+
+This is the primary verifier and should be registered first in the chain. It handles JWT Verifiable Credential payloads with the following steps.
+
+1. Confirms the payload is a string in JWT format.
+2. Decodes the JWT and validates the expiration: the `exp` claim must be in the future. Expired tokens are rejected immediately with a `tokenExpired` error.
+3. Calls `identityComponent.verifiableCredentialVerify()` to verify the cryptographic signature against the issuer's published DID document.
+4. Extracts the issuer DID into `info.identity`, making it available to all subsequent verifiers in the chain.
+5. Extracts the credential subject into `info.data.subject` for downstream use.
+
+Verification fails with `tokenMissingCredential`, `tokenMissingIssuer`, `tokenMissingSubject`, or `tokenDecodingFailed` errors as appropriate.
+
+### IdentityAllowDenyVerifier
+
+This verifier applies an access control list to the identity established by a previous verifier. It reads `info.identity` (the issuer DID extracted by `JwtVerifiableCredentialVerifier`) and checks it against two optional configuration lists.
+
+- `allowIdentities`: if configured, only identity DIDs in this list are permitted. All others are rejected with an `identityNotAllowed` error.
+- `denyIdentities`: identity DIDs in this list are always rejected with an `identityDenied` error, regardless of the allow list.
+
+If neither list is configured, the verifier returns `undefined` and is skipped entirely. This makes it a no-op in open deployments and a fine-grained access gate in restricted ones without requiring any code change.
+
+## Current Generators
+
+### JwtVerifiableCredentialGenerator
+
+This generator creates outgoing trust payloads for calls to remote nodes or services. It uses `identityComponent.verifiableCredentialCreate()` with a configured `verificationMethodId` to sign a verifiable credential under the node's or organisation's DID. The resulting JWT string is included as the `Authorization: Bearer <token>` header on the outgoing request.
+
+Key configuration:
+
+- `verificationMethodId`: the DID verification method used for signing. This should correspond to an active method in the node's DID document.
+- `tokenTtlInSeconds`: lifetime of the issued credential (default: 60 seconds). A short TTL limits the replay window for intercepted tokens.
+
+An optional `info.subject` value can be passed to `generate()` to embed additional context in the credential subject.
+
+## Pipeline Integration
+
+Trust verification is intentionally applied in the service layer rather than as a framework route processor. Routes that use trust set `skipAuth: true`, extract the bearer token in the route handler, and pass it into the service as a parameter. The service calls `TrustHelper.verifyTrust()` at the point where the verified caller identity is needed.
+
+This design keeps verification close to the business logic and avoids populating framework-level context IDs with trust information that may not be valid across all route types. The `TrustService` is registered in the engine as the `"trust"` component and retrieved by services via `ComponentFactory.get<ITrustComponent>("trust")`.
+
+## Relationship to User Authentication
+
+Trust and user authentication are complementary but independent mechanisms.
+
+| Aspect          | User Authentication                                | Trust Verification                                                        |
+| --------------- | -------------------------------------------------- | ------------------------------------------------------------------------- |
+| Payload         | JWT signed by node signing key                     | Opaque value; format determined by registered verifiers (default: JWT VC) |
+| Header          | `Authorization: Bearer` or `access_token` cookie   | `Authorization: Bearer`                                                   |
+| Processor       | `AuthHeaderProcessor` (framework level)            | `TrustHelper.verifyTrust` in service layer                                |
+| Identity output | `contextIds[User]`, `contextIds[UserOrganization]` | `ITrustVerificationInfo.identity`                                         |
+| Route flag      | `skipAuth: false` (default)                        | `skipAuth: true`                                                          |
+
+Some routes combine both: an end-user JWT populates the user context while a trust payload authenticates the originating service. Others use only trust for calls that have no user session at all.
+
+## Future Extensibility
+
+The verifier and generator chains are designed for extension. Registering a new implementation via `TrustVerifierFactory` or `TrustGeneratorFactory` makes it immediately available to all services using `TrustService`, without modifying existing code.
+
+Planned future additions include trust hierarchy verification, which will allow chains of delegated trust to be validated across organisations. Additional credential formats, on-chain revocation checking, and cross-network federation with external identity systems are also under consideration as the interoperability requirements of the platform evolve.

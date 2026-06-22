@@ -26,6 +26,7 @@ export class Url {
 	/**
 	 * Create a new instance of Url.
 	 * @param url The url string.
+	 * @throws GuardError if the url is not valid.
 	 */
 	constructor(url: string) {
 		Guards.stringValue(Url.CLASS_NAME, nameof(url), url);

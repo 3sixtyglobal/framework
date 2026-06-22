@@ -536,6 +536,114 @@ GuardError If the value does not match the assertion.
 
 ***
 
+### dateString() {#datestring}
+
+> `static` **dateString**(`source`, `property`, `value`): `asserts value is string`
+
+Is the property a date-only string (ISO 8601 date, no time component).
+
+#### Parameters
+
+##### source
+
+`string`
+
+The source of the error.
+
+##### property
+
+`string`
+
+The name of the property.
+
+##### value
+
+`unknown`
+
+The value to test.
+
+#### Returns
+
+`asserts value is string`
+
+#### Throws
+
+GuardError If the value does not match the assertion.
+
+***
+
+### dateTimeString() {#datetimestring}
+
+> `static` **dateTimeString**(`source`, `property`, `value`): `asserts value is string`
+
+Is the property a date-time string (ISO 8601 with T separator).
+
+#### Parameters
+
+##### source
+
+`string`
+
+The source of the error.
+
+##### property
+
+`string`
+
+The name of the property.
+
+##### value
+
+`unknown`
+
+The value to test.
+
+#### Returns
+
+`asserts value is string`
+
+#### Throws
+
+GuardError If the value does not match the assertion.
+
+***
+
+### timeString() {#timestring}
+
+> `static` **timeString**(`source`, `property`, `value`): `asserts value is string`
+
+Is the property a time-only string (ISO 8601 time, no date component).
+
+#### Parameters
+
+##### source
+
+`string`
+
+The source of the error.
+
+##### property
+
+`string`
+
+The name of the property.
+
+##### value
+
+`unknown`
+
+The value to test.
+
+#### Returns
+
+`asserts value is string`
+
+#### Throws
+
+GuardError If the value does not match the assertion.
+
+***
+
 ### timestampMilliseconds() {#timestampmilliseconds}
 
 > `static` **timestampMilliseconds**(`source`, `property`, `value`): `asserts value is number`
@@ -1069,6 +1177,42 @@ The format of the uuidV7, either standard or compact.
 #### Returns
 
 `asserts value is string`
+
+#### Throws
+
+GuardError If the value does not match the assertion.
+
+***
+
+### duration() {#duration}
+
+> `static` **duration**(`source`, `property`, `value`): asserts value is string \| IDuration
+
+Is the property a valid ISO 8601 duration string or IDuration object.
+
+#### Parameters
+
+##### source
+
+`string`
+
+The source of the error.
+
+##### property
+
+`string`
+
+The name of the property.
+
+##### value
+
+`unknown`
+
+The value to test.
+
+#### Returns
+
+asserts value is string \| IDuration
 
 #### Throws
 

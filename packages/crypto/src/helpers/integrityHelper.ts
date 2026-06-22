@@ -67,7 +67,7 @@ export class IntegrityHelper {
 	 * Generate a hash for the given content using the specified type.
 	 * @param type The hash algorithm to use, either "sha256", "sha384" or "sha512".
 	 * @param content The content to hash as a Uint8Array.
-	 * @returns The integrity signature in the format "type-base64hash".
+	 * @returns The base64-encoded hash of the content.
 	 * @internal
 	 */
 	private static generateHash(type: IntegrityAlgorithm, content: Uint8Array): string {

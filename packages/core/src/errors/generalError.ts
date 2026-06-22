@@ -4,7 +4,7 @@ import { nameof } from "@twin.org/nameof";
 import { BaseError } from "./baseError.js";
 
 /**
- * Class to handle errors.
+ * Class to handle general-purpose errors.
  */
 export class GeneralError extends BaseError {
 	/**

@@ -32,7 +32,7 @@ The value to test.
 
 `value is undefined`
 
-True if the value is a empty.
+True if the value is undefined.
 
 ***
 
@@ -54,7 +54,7 @@ The value to test.
 
 `value is null`
 
-True if the value is a empty.
+True if the value is null.
 
 ***
 
@@ -76,7 +76,7 @@ The value to test.
 
 value is null \| undefined
 
-True if the value is a empty.
+True if the value is null or undefined.
 
 ***
 
@@ -84,7 +84,7 @@ True if the value is a empty.
 
 > `static` **notEmpty**(`value`): `boolean`
 
-Is the property is not null or undefined.
+Is the property not null or undefined.
 
 #### Parameters
 
@@ -98,7 +98,7 @@ The value to test.
 
 `boolean`
 
-True if the value is a not empty.
+True if the value is not null or undefined.
 
 ***
 
@@ -128,7 +128,7 @@ True if the value is a string.
 
 > `static` **stringValue**(`value`): `value is string`
 
-Is the value a string.
+Is the value a non-empty string.
 
 #### Parameters
 
@@ -142,7 +142,7 @@ The value to test.
 
 `value is string`
 
-True if the value is a string.
+True if the value is a non-empty string.
 
 ***
 
@@ -512,7 +512,7 @@ The value to test.
 
 `value is number`
 
-True if the value is a date.
+True if the value is a timestamp in seconds.
 
 ***
 
@@ -534,7 +534,7 @@ The value to test.
 
 `value is number`
 
-True if the value is a date.
+True if the value is a timestamp in milliseconds.
 
 ***
 
@@ -881,3 +881,25 @@ The format of the UUIDv7 string.
 `value is string`
 
 True if the value is a uuidV7 string.
+
+***
+
+### duration() {#duration}
+
+> `static` **duration**(`value`): value is string \| IDuration
+
+Is the value a valid ISO 8601 duration string or an IDuration object.
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+The value to test.
+
+#### Returns
+
+value is string \| IDuration
+
+True if the value is a valid ISO 8601 duration string or an IDuration object.

@@ -537,4 +537,59 @@ describe("Is", () => {
 		const badVariant = `${uuid.slice(0, 19)}0${uuid.slice(20)}`;
 		expect(Is.uuidV7(badVariant)).toEqual(false);
 	});
+
+	test("duration can fail if value is undefined", () => {
+		expect(Is.duration(undefined)).toEqual(false);
+	});
+
+	test("duration can fail if value is a number", () => {
+		expect(Is.duration(3600)).toEqual(false);
+	});
+
+	test("duration can fail if value is an invalid string", () => {
+		expect(Is.duration("foo")).toEqual(false);
+	});
+
+	test("duration can fail if value is a bare P string", () => {
+		expect(Is.duration("P")).toEqual(false);
+	});
+
+	test("duration can succeed for an ISO 8601 hours string", () => {
+		expect(Is.duration("PT1H")).toEqual(true);
+	});
+
+	test("duration can succeed for a composite ISO 8601 string", () => {
+		expect(Is.duration("P1Y2M3DT4H5M6S")).toEqual(true);
+	});
+
+	test("duration can succeed for a negative ISO 8601 string", () => {
+		expect(Is.duration("-P1DT2H3M4S")).toEqual(true);
+	});
+
+	test("duration can succeed for an IDuration object", () => {
+		expect(
+			Is.duration({ years: 0, months: 0, weeks: 0, days: 1, hours: 2, minutes: 30, seconds: 0 })
+		).toEqual(true);
+	});
+
+	test("duration can succeed for an IDuration object with sub-second fields", () => {
+		expect(
+			Is.duration({
+				years: 0,
+				months: 0,
+				weeks: 0,
+				days: 0,
+				hours: 0,
+				minutes: 0,
+				seconds: 1,
+				milliseconds: 250,
+				microseconds: 500,
+				nanoseconds: 250
+			})
+		).toEqual(true);
+	});
+
+	test("duration can fail for an object missing required fields", () => {
+		expect(Is.duration({ years: 0, months: 0 })).toEqual(false);
+	});
 });

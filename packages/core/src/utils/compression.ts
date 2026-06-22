@@ -14,7 +14,7 @@ export class Compression {
 	public static readonly CLASS_NAME: string = nameof<Compression>();
 
 	/**
-	 * Compress bytes using GZIP.
+	 * Compress bytes using the specified compression type.
 	 * @param bytes The bytes to compress.
 	 * @param type The type of compression to use.
 	 * @returns The compressed bytes.

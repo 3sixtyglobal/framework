@@ -15,7 +15,9 @@ export function entity(options?: IEntitySchemaOptions): any {
 	return (target: any) => {
 		const entitySchema = DecoratorHelper.getSchema(target);
 		entitySchema.type = target.name;
-		entitySchema.options = options;
+		entitySchema.description = options?.description;
+		entitySchema.version = options?.version;
+
 		DecoratorHelper.setSchema(target, entitySchema);
 	};
 }

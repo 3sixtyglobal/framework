@@ -95,3 +95,11 @@ Description of the object.
 > `optional` **examples?**: `unknown`[]
 
 Examples of the property values.
+
+***
+
+### defaultValue? {#defaultvalue}
+
+> `optional` **defaultValue?**: `unknown`
+
+A default value which can be used in migrations when the property value is not provided.

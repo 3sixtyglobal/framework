@@ -310,6 +310,11 @@ export class RSBlock {
 	}
 
 	/**
+	 * Get the Reed-Solomon block table entry for the QR type and correction level.
+	 * @param typeNumber The QR code type number.
+	 * @param errorCorrectLevel The error correction level.
+	 * @returns The Reed-Solomon block table entry.
+	 * @throws GeneralError if the error correction level is invalid.
 	 * @internal
 	 */
 	private static getRsBlockTable(

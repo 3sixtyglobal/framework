@@ -22,7 +22,8 @@ export class TestEntity2 {
 		optional: true,
 		isPrimary: true,
 		isSecondary: true,
-		sortDirection: SortDirection.Ascending
+		sortDirection: SortDirection.Ascending,
+		defaultValue: "foo"
 	})
 	public prop1: number = 0;
 }
@@ -48,7 +49,8 @@ describe("PropertyDecorator", () => {
 					optional: true,
 					isPrimary: true,
 					isSecondary: true,
-					sortDirection: SortDirection.Ascending
+					sortDirection: SortDirection.Ascending,
+					defaultValue: "foo"
 				}
 			]
 		});

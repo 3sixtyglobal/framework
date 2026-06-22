@@ -91,7 +91,9 @@ export class JpegEncoder {
 		0xf9, 0xfa
 	];
 
-	/** @internal */
+	/**
+	 * @internal
+	 */
 	private static readonly _SIG_ZAG: number[] = [
 		0, 1, 5, 6, 14, 15, 27, 28, 2, 4, 7, 13, 16, 26, 29, 42, 3, 8, 12, 17, 25, 30, 41, 43, 9, 11,
 		18, 24, 31, 40, 44, 53, 10, 19, 23, 32, 39, 45, 52, 54, 20, 22, 33, 38, 46, 51, 55, 60, 21, 34,
@@ -355,6 +357,9 @@ export class JpegEncoder {
 	}
 
 	/**
+	 * Set the JPEG quantization quality.
+	 * @param quality The quality value to apply.
+	 * @throws GeneralError if the quality is outside the supported range.
 	 * @internal
 	 */
 	private setQuality(quality: number): void {
@@ -373,6 +378,8 @@ export class JpegEncoder {
 	}
 
 	/**
+	 * Initialize the quantization tables for the supplied scale factor.
+	 * @param sf The quantization scale factor.
 	 * @internal
 	 */
 	private initQuantTables(sf: number): void {
@@ -417,6 +424,10 @@ export class JpegEncoder {
 	}
 
 	/**
+	 * Build a Huffman lookup table from the supplied code counts and values.
+	 * @param nrCodes The number of codes for each bit length.
+	 * @param stdTable The symbol values to assign in code order.
+	 * @returns The generated Huffman table.
 	 * @internal
 	 */
 	private computeHuffmanTbl(nrCodes: number[], stdTable: number[]): number[][] {
@@ -437,6 +448,7 @@ export class JpegEncoder {
 	}
 
 	/**
+	 * Initialize the standard JPEG Huffman tables used during encoding.
 	 * @internal
 	 */
 	private initHuffmanTbl(): void {
@@ -459,6 +471,7 @@ export class JpegEncoder {
 	}
 
 	/**
+	 * Initialize the category and bitcode lookup tables for coefficient encoding.
 	 * @internal
 	 */
 	private initCategoryNumber(): void {
@@ -485,6 +498,7 @@ export class JpegEncoder {
 	}
 
 	/**
+	 * Initialize the RGB to YUV conversion lookup table.
 	 * @internal
 	 */
 	private initRGBYUVTable(): void {
@@ -501,6 +515,8 @@ export class JpegEncoder {
 	}
 
 	/**
+	 * Write a variable-length bit sequence into the JPEG output buffer.
+	 * @param bs The bit value and bit length pair to write.
 	 * @internal
 	 */
 	private writeBits(bs: number[]): void {
@@ -526,6 +542,8 @@ export class JpegEncoder {
 	}
 
 	/**
+	 * Write a single byte to the JPEG output buffer.
+	 * @param value The byte value to write.
 	 * @internal
 	 */
 	private writeByte(value: number): void {
@@ -533,6 +551,8 @@ export class JpegEncoder {
 	}
 
 	/**
+	 * Write a 16-bit word to the JPEG output buffer.
+	 * @param value The word value to write.
 	 * @internal
 	 */
 	private writeWord(value: number): void {
@@ -541,6 +561,10 @@ export class JpegEncoder {
 	}
 
 	/**
+	 * Apply the forward DCT and quantization table to an 8x8 block.
+	 * @param data The source coefficient block.
+	 * @param fdTbl The quantization scaling table.
+	 * @returns The quantized coefficient block.
 	 * @internal
 	 */
 	private fDCTQuant(data: number[], fdTbl: number[]): number[] {
@@ -679,6 +703,7 @@ export class JpegEncoder {
 	}
 
 	/**
+	 * Write the JFIF APP0 segment.
 	 * @internal
 	 */
 	private writeAPP0(): void {
@@ -700,6 +725,9 @@ export class JpegEncoder {
 	}
 
 	/**
+	 * Write the baseline frame header.
+	 * @param width The image width.
+	 * @param height The image height.
 	 * @internal
 	 */
 	private writeSOF0(width: number, height: number): void {
@@ -721,6 +749,7 @@ export class JpegEncoder {
 	}
 
 	/**
+	 * Write the quantization tables segment.
 	 * @internal
 	 */
 	private writeDQT(): void {
@@ -737,6 +766,7 @@ export class JpegEncoder {
 	}
 
 	/**
+	 * Write the Huffman tables segment.
 	 * @internal
 	 */
 	private writeDHT(): void {
@@ -777,6 +807,7 @@ export class JpegEncoder {
 	}
 
 	/**
+	 * Write the start-of-scan segment.
 	 * @internal
 	 */
 	private writeSOS(): void {
@@ -795,6 +826,13 @@ export class JpegEncoder {
 	}
 
 	/**
+	 * Encode a single 8x8 data unit.
+	 * @param cdu The coefficient data unit to encode.
+	 * @param fdTbl The quantization scaling table for the component.
+	 * @param passedDC The previous DC coefficient.
+	 * @param htdc The Huffman table for DC coefficients.
+	 * @param htac The Huffman table for AC coefficients.
+	 * @returns The encoded DC coefficient for the next block.
 	 * @internal
 	 */
 	private processDU(

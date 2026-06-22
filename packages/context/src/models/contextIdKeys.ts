@@ -24,7 +24,12 @@ export const ContextIdKeys = {
 	/**
 	 * Standard property type definition for user.
 	 */
-	User: "user"
+	User: "user",
+
+	/**
+	 * Standard property type definition for user organization.
+	 */
+	UserOrganization: "userOrganization"
 } as const;
 
 /**

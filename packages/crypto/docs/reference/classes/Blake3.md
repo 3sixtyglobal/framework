@@ -142,4 +142,4 @@ Get the digest for the hash.
 
 `Uint8Array`
 
-The instance for chaining.
+The computed hash as bytes.

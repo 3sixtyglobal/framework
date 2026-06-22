@@ -68,7 +68,7 @@ Error if the private key is not the correct length.
 
 > `static` **sign**(`privateKey`, `block`): `Uint8Array`
 
-Sign the block with privateKey and returns a signature.
+Signs the block with the private key and returns a signature.
 
 #### Parameters
 

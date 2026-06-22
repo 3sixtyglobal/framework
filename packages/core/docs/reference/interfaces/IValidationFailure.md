@@ -16,7 +16,7 @@ The property that failed validation.
 
 > **reason**: `string`
 
-The reason the validation failed as an i18 resource error.
+The reason the validation failed as an i18n resource key.
 
 ***
 

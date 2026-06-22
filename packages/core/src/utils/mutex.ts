@@ -1,12 +1,6 @@
 // Copyright 2026 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import {
-	MessageChannel,
-	type MessagePort,
-	isMainThread,
-	parentPort,
-	receiveMessageOnPort
-} from "node:worker_threads";
+import type { MessagePort } from "node:worker_threads";
 import { nameof } from "@twin.org/nameof";
 import { Guards } from "./guards.js";
 import { Is } from "./is.js";
@@ -44,30 +38,75 @@ export class Mutex {
 	private static readonly _LOCKS_KEY = "mutexLocks";
 
 	/**
-	 * Acquires a lock for the given key. If the lock is already held, it will wait until it is released or until the timeout is reached.
-	 * The lock is not re-entrant: if the same thread tries to acquire the same lock again, it will deadlock until the timeout is reached.
-	 *
-	 * WARNING: this method calls Atomics.wait internally. On the main thread this blocks the Node.js event loop for the
-	 * duration of the wait. Do not call from the main thread while a worker thread may simultaneously need to fetch a
-	 * buffer for a new mutex key, as that fetch requires the main thread's message loop to be running and will deadlock.
+	 * SharedStore key for the default timeout in milliseconds.
+	 * @internal
+	 */
+	private static readonly _DEFAULT_TIMEOUT_KEY = "mutexDefaultTimeoutMs";
+
+	/**
+	 * Cached reference to the node:worker_threads module, null if unavailable (browser).
+	 * @internal
+	 */
+	// false positive: this is a type not an actual import
+	// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+	private static _workerThreadsModule: typeof import("node:worker_threads") | null | undefined;
+
+	/**
+	 * Gets the default timeout in milliseconds for lock acquisition.
+	 * @returns The default timeout in milliseconds.
+	 */
+	public static getDefaultTimeoutMs(): number {
+		return SharedStore.get<number>(Mutex._DEFAULT_TIMEOUT_KEY) ?? 5000;
+	}
+
+	/**
+	 * Sets the default timeout in milliseconds for lock acquisition.
+	 * @param timeoutMs The default timeout in milliseconds.
+	 * @throws GeneralError if timeoutMs is not a non-negative integer.
+	 */
+	public static setDefaultTimeoutMs(timeoutMs: number): void {
+		Guards.integer(Mutex.CLASS_NAME, nameof(timeoutMs), timeoutMs);
+		if (timeoutMs < 0) {
+			throw new GeneralError(Mutex.CLASS_NAME, "invalidTimeout", { timeoutMs });
+		}
+		SharedStore.set(Mutex._DEFAULT_TIMEOUT_KEY, timeoutMs);
+	}
+
+	/**
+	 * Acquires a lock for the given key without blocking the event loop. If the lock is already
+	 * held, it suspends the current async task until the lock is released or the timeout is reached.
+	 * Use this in async single-threaded contexts (e.g. the main thread or a Fastify route handler)
+	 * where calling the synchronous lock() would freeze the event loop and deadlock.
+	 * The lock is not re-entrant: if the same context holds the key and calls lockAsync() again on
+	 * the same key, it will suspend until the timeout elapses.
 	 * @param key The key to lock on.
 	 * @param options Lock options.
-	 * @param options.timeoutMs The maximum time to wait for the lock in milliseconds, default is 5000.
+	 * @param options.timeoutMs The maximum time to wait for the lock in milliseconds, defaults to getDefaultTimeoutMs().
 	 * @param options.throwOnTimeout Whether to throw an error if the lock could not be acquired within the timeout, default is false.
 	 * @returns True if the lock was acquired, false if it timed out and throwOnTimeout is false.
 	 * @throws GeneralError if the key is invalid or if the lock could not be acquired within the timeout and throwOnTimeout is true.
 	 */
-	public static lock(
+	public static async lock(
 		key: string,
 		options?: { timeoutMs?: number; throwOnTimeout?: boolean }
-	): boolean {
+	): Promise<boolean> {
 		Guards.stringValue(Mutex.CLASS_NAME, nameof(key), key);
+		if (!Is.empty(options?.timeoutMs)) {
+			Guards.integer(Mutex.CLASS_NAME, nameof(options.timeoutMs), options.timeoutMs);
+			if (options.timeoutMs < 0) {
+				throw new GeneralError(Mutex.CLASS_NAME, "invalidTimeout", {
+					timeoutMs: options.timeoutMs
+				});
+			}
+		}
 
-		const timeoutMs = options?.timeoutMs ?? 5000;
+		const timeoutMs = options?.timeoutMs ?? Mutex.getDefaultTimeoutMs();
 		const throwOnTimeout = options?.throwOnTimeout ?? false;
 		const deadline = Date.now() + timeoutMs;
 
-		const lock = Mutex.getOrFetchLock(key, deadline);
+		// getOrFetchLock may block once per key on worker threads to negotiate the
+		// shared buffer with the main thread; that one-time fetch is acceptable here.
+		const lock = await Mutex.getOrFetchLock(key, deadline);
 
 		for (;;) {
 			// Atomically swap 0 → 1; if the previous value was 0 we acquired the lock.
@@ -76,7 +115,7 @@ export class Mutex {
 				return true;
 			}
 
-			// Otherwise, the lock is held by someone else. Check if we've already timed out before blocking.
+			// Otherwise, the lock is held by someone else. Check if we've already timed out.
 			const remaining = deadline - Date.now();
 			if (remaining <= 0) {
 				if (throwOnTimeout) {
@@ -85,10 +124,11 @@ export class Mutex {
 				return false;
 			}
 
-			// Block until the value changes away from 1 (i.e. the holder calls unlock)
-			// or until the remaining timeout elapses.
-			const waitResult = Atomics.wait(lock, 0, 1, remaining);
-			if (waitResult === "timed-out") {
+			// Suspend without blocking the event loop so the lock holder's async
+			// continuations can run and eventually call unlock().
+			const waitResult = Atomics.waitAsync(lock, 0, 1, remaining);
+			const outcome = waitResult.async ? await waitResult.value : waitResult.value;
+			if (outcome === "timed-out") {
 				if (throwOnTimeout) {
 					throw new GeneralError(Mutex.CLASS_NAME, "lockTimeout", { key, timeoutMs });
 				}
@@ -136,10 +176,17 @@ export class Mutex {
 
 		const locks = Mutex.getLocks();
 		locks[msg.key] ??= new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
-		// Send the buffer to the worker before notifying so that it is guaranteed
-		// to be in port1's receive queue when Atomics.wait returns on the worker side.
+		// Send the buffer before updating the signal so it is guaranteed to be in
+		// port1's receive queue when Atomics.wait returns on the worker side.
 		msg.port.postMessage({ buffer: locks[msg.key].buffer });
-		Atomics.notify(new Int32Array(msg.signal), 0, 1);
+		// Set signal[0] = 1 before notifying. If the OS scheduled the main thread
+		// to process this request before the worker reached Atomics.wait, the notify
+		// would fire with no waiters (lost wakeup). Setting the value first means
+		// Atomics.wait(signal, 0, 0) sees a non-zero value and returns "not-equal"
+		// immediately instead of blocking indefinitely.
+		const signalArr = new Int32Array(msg.signal);
+		Atomics.store(signalArr, 0, 1);
+		Atomics.notify(signalArr, 0, 1);
 		msg.port.close();
 
 		return true;
@@ -149,28 +196,37 @@ export class Mutex {
 	 * Returns the Int32Array for the given key, fetching it from the main thread if this
 	 * is a worker thread and the key is not yet in the local cache.
 	 * @param key The lock key.
+	 * @param deadline The deadline to use while waiting for the main thread to provide the lock.
 	 * @returns The Int32Array backed by a SharedArrayBuffer for this key.
 	 * @internal
 	 */
-	private static getOrFetchLock(key: string, deadline: number): Int32Array {
+	private static async getOrFetchLock(key: string, deadline: number): Promise<Int32Array> {
 		const locks = Mutex.getLocks();
 		if (!Is.empty(locks[key])) {
 			return locks[key];
 		}
 
-		if (isMainThread) {
-			// Main thread or fork-mode process: own the registry entry.
+		const wt = await Mutex.loadWorkerThreads();
+
+		// Re-check after the await: another coroutine that was also waiting on
+		// loadWorkerThreads() may have allocated the buffer while we yielded.
+		if (!Is.empty(locks[key])) {
+			return locks[key];
+		}
+
+		if (Is.empty(wt) || wt.isMainThread) {
+			// Main thread, fork-mode process, or browser: own the registry entry.
 			locks[key] = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
 			return locks[key];
 		}
 
 		// Worker thread: synchronously request the SharedArrayBuffer from the main thread.
 		// Mutex.handleWorkerMessage(msg) must be called on the main thread's worker message handler.
-		if (Is.empty(parentPort)) {
+		if (Is.empty(wt.parentPort)) {
 			throw new GeneralError(Mutex.CLASS_NAME, "bufferFetchFailed", { key });
 		}
 
-		const { port1, port2 } = new MessageChannel();
+		const { port1, port2 } = new wt.MessageChannel();
 		const signal = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
 
 		const msg: IMutexWorkerMessage = {
@@ -180,19 +236,21 @@ export class Mutex {
 			port: port2
 		};
 
-		parentPort.postMessage(msg, [port2]);
+		wt.parentPort.postMessage(msg, [port2]);
 
 		try {
-			// Block until the main thread posts the response and fires Atomics.notify.
-			// The response is guaranteed to be in port1's queue at this point because
-			// port.postMessage executes before Atomics.notify on the main thread.
+			// Block until the main thread signals readiness. The main thread sets
+			// signal[0] = 1 before calling notify, so if the notify fired before this
+			// wait call (lost-wakeup scenario with concurrent workers), Atomics.wait
+			// sees a non-zero value and returns "not-equal" immediately.
+			// Either way the port message is already in port1's receive queue.
 			// Use the lock deadline so the buffer fetch is bounded by the same timeout.
 			const waitResult = Atomics.wait(signal, 0, 0, Math.max(0, deadline - Date.now()));
 			if (waitResult === "timed-out") {
 				throw new GeneralError(Mutex.CLASS_NAME, "bufferFetchFailed", { key });
 			}
 
-			const response = receiveMessageOnPort(port1) as {
+			const response = wt.receiveMessageOnPort(port1) as {
 				message: { buffer: SharedArrayBuffer };
 			} | null;
 
@@ -219,5 +277,23 @@ export class Mutex {
 			SharedStore.set(Mutex._LOCKS_KEY, locks);
 		}
 		return locks;
+	}
+
+	/**
+	 * Lazily loads node:worker_threads, returning null in environments where it is unavailable.
+	 * @returns The worker_threads module or null.
+	 * @internal
+	 */
+	// false positive: this is a type not an actual import
+	// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+	private static async loadWorkerThreads(): Promise<typeof import("node:worker_threads") | null> {
+		if (Mutex._workerThreadsModule === undefined) {
+			try {
+				Mutex._workerThreadsModule = await import("node:worker_threads");
+			} catch {
+				Mutex._workerThreadsModule = null;
+			}
+		}
+		return Mutex._workerThreadsModule;
 	}
 }

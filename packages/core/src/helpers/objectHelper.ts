@@ -316,7 +316,7 @@ export class ObjectHelper {
 	}
 
 	/**
-	 * Converter the non JSON primitives to extended types.
+	 * Convert the non JSON primitives to extended types.
 	 * @param obj The object to convert.
 	 * @returns The object with extended properties.
 	 */
@@ -327,7 +327,7 @@ export class ObjectHelper {
 	}
 
 	/**
-	 * Converter the extended types to non JSON primitives.
+	 * Convert the extended types to non JSON primitives.
 	 * @param obj The object to convert.
 	 * @returns The object with regular properties.
 	 */

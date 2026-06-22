@@ -28,7 +28,7 @@ export class CLI extends CLIBase {
 			{
 				title: "TWIN Crypto",
 				appName: "twin-crypto",
-				version: "0.0.3", // x-release-please-version
+				version: "0.9.0-next.1", // x-release-please-version
 				icon: "🔒",
 				supportsEnvFiles: true,
 				overrideOutputWidth: options?.overrideOutputWidth,
@@ -42,6 +42,7 @@ export class CLI extends CLIBase {
 	/**
 	 * Get the commands for the CLI.
 	 * @param program The main program to add the commands to.
+	 * @returns The commands to register with the CLI program.
 	 * @internal
 	 */
 	protected getCommands(program: Command): Command[] {

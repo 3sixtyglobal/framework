@@ -29,3 +29,9 @@ Standard property type definition for organization.
 > `readonly` **User**: `"user"` = `"user"`
 
 Standard property type definition for user.
+
+### UserOrganization {#userorganization}
+
+> `readonly` **UserOrganization**: `"userOrganization"` = `"userOrganization"`
+
+Standard property type definition for user organization.

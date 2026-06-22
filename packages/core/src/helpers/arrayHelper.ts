@@ -10,7 +10,7 @@ export class ArrayHelper {
 	 * Do the two arrays match.
 	 * @param arr1 The first array.
 	 * @param arr2 The second array.
-	 * @returns True if both arrays are empty of have the same values.
+	 * @returns True if both arrays are empty or have the same values.
 	 */
 	public static matches(arr1: unknown, arr2: unknown): boolean {
 		if (Is.empty(arr1) && Is.empty(arr2)) {

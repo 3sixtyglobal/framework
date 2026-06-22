@@ -189,7 +189,7 @@ export class AsyncCache {
 	 * @param key The key to set in the cache.
 	 * @param value The value to set in the cache.
 	 * @param ttlMs The TTL of the entry in the cache in milliseconds. Defaults to 1000 (1 second).
-	 * @returns Nothing.
+	 * @returns A promise that resolves when the entry has been stored.
 	 */
 	public static async set<T = unknown>(key: string, value: T, ttlMs?: number): Promise<void> {
 		const expires = Date.now() + (ttlMs ?? 1000);
@@ -310,6 +310,7 @@ export class AsyncCache {
 	 * @param requestMethod The method to execute.
 	 * @param resolve The resolver for the waiter.
 	 * @param reject The rejector for the waiter.
+	 * @internal
 	 */
 	private static async resolveWaiter<T>(
 		requestMethod: () => Promise<T>,
@@ -369,6 +370,7 @@ export class AsyncCache {
 	 * Deletes the given key from the cache if it has expired and is not in-progress.
 	 * Returns true if the entry was evicted.
 	 * @param key The cache entry key to check.
+	 * @returns True if the expired entry was removed; otherwise, false.
 	 * @internal
 	 */
 	private static evictIfExpired(key: string): boolean {
@@ -384,6 +386,7 @@ export class AsyncCache {
 	/**
 	 * Returns the expiry timestamp of the tracked next-expiry entry, or undefined if there
 	 * is no tracked entry or it is no longer present in the cache.
+	 * @returns The next tracked expiry timestamp, if one is still available.
 	 * @internal
 	 */
 	private static getNextExpiry(): number | undefined {

@@ -23,7 +23,7 @@ export class Argon2id {
 	 * @param options.p Number of parallel threads to use, default 1.
 	 * @param options.dkLen The length of the derived key in bytes, default 32.
 	 * @param options.maxmem The maximum amount of memory to use in bytes, default 2^30.
-	 * @returns The derived key.
+	 * @returns A promise that resolves with the derived key bytes.
 	 */
 	public static async hash(
 		password: Uint8Array,

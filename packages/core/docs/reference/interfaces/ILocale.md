@@ -1,6 +1,6 @@
 # Interface: ILocale
 
-Model for a local.
+Model for a locale.
 
 ## Properties
 

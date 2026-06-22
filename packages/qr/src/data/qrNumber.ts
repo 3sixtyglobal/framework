@@ -50,7 +50,6 @@ export class QRNumber extends QRDataBase {
 
 		if (i < data.length) {
 			if (data.length - i === 1) {
-				// eslint-disable-next-line unicorn/prefer-string-slice
 				buffer.put(this.strToNum(data.substring(i, i + 1)), 4);
 			} else if (data.length - i === 2) {
 				// eslint-disable-next-line unicorn/prefer-string-slice
@@ -60,6 +59,9 @@ export class QRNumber extends QRDataBase {
 	}
 
 	/**
+	 * Convert a numeric string segment into its numeric value.
+	 * @param s The numeric string segment.
+	 * @returns The parsed numeric value.
 	 * @internal
 	 */
 	private strToNum(s: string): number {
@@ -71,6 +73,10 @@ export class QRNumber extends QRDataBase {
 	}
 
 	/**
+	 * Convert a numeric QR character into its encoded digit value.
+	 * @param c The character to convert.
+	 * @returns The numeric value of the character.
+	 * @throws GeneralError if the character is not a decimal digit.
 	 * @internal
 	 */
 	private charToNum(c: string): number {

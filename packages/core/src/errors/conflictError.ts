@@ -19,7 +19,7 @@ export class ConflictError extends BaseError {
 	 * @param conflictId The id that has conflicts.
 	 * @param conflicts The conflicts that occurred.
 	 * @param properties Any additional information for the error.
-	 * @param cause The cause or the error if we have wrapped another error.
+	 * @param cause The cause of the error if we have wrapped another error.
 	 */
 	constructor(
 		source: string,

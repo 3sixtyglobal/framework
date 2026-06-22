@@ -4,7 +4,7 @@
 
 TypeScript transformers are code generation plugins that run during the TypeScript compilation process. They can examine and rewrite the abstract syntax tree (AST) to transform code before it reaches the JavaScript output stage. Unlike runtime reflection which evaluates code after it executes, transformers work at compile time, enabling complex code generation and verification without runtime overhead or the need to keep type information alive in JavaScript.
 
-For the framework, transformers serve as a critical architecture enforcement mechanism. Type-safe refactoring and symbolic correctness are not just developer conveniences—they are reliability features. By encoding architectural invariants in compile-time transformations, we ensure that nominal relationships between code identifiers and their string representations cannot drift.
+For the framework, transformers serve as a critical architecture enforcement mechanism. Type-safe refactoring and symbolic correctness are not just developer conveniences; they are reliability features. By encoding architectural invariants in compile-time transformations, we ensure that nominal relationships between code identifiers and their string representations cannot drift.
 
 This document explains how the framework uses TypeScript transformers to turn typed `nameof` expressions into string literals at build and test time, and the architectural guarantees this approach provides.
 

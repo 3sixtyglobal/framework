@@ -1,5 +1,341 @@
 # Changelog
 
+## [0.9.0-next.1](https://github.com/iotaledger/twin-framework/compare/context-v0.9.0-next.0...context-v0.9.0-next.1) (2026-06-22)
+
+
+### Features
+
+* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* add user organization context key ([a3da436](https://github.com/iotaledger/twin-framework/commit/a3da4360451860052a508bdc147255a0b9ca8410))
+* context id handler derives from component ([c868ec2](https://github.com/iotaledger/twin-framework/commit/c868ec21d3a576d4faa222bf130270a21936e50e))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* use singleton pattern for context storage ([c69f358](https://github.com/iotaledger/twin-framework/commit/c69f358e45361b45d4e46f19846cd5b8c99b0ccd))
+* use singleton pattern for context storage ([5cc706a](https://github.com/iotaledger/twin-framework/commit/5cc706a2bbfc601fa3d00f3efd8b764052e9f91d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.9.0-next.0 to 0.9.0-next.1
+    * @twin.org/nameof bumped from 0.9.0-next.0 to 0.9.0-next.1
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.0-next.0 to 0.9.0-next.1
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.0-next.0 to 0.9.0-next.1
+    * @twin.org/validate-locales bumped from 0.9.0-next.0 to 0.9.0-next.1
+
+## [0.0.4-next.15](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.14...context-v0.0.4-next.15) (2026-06-19)
+
+
+### Miscellaneous Chores
+
+* **context:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.14 to 0.0.4-next.15
+    * @twin.org/nameof bumped from 0.0.4-next.14 to 0.0.4-next.15
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.14 to 0.0.4-next.15
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.14 to 0.0.4-next.15
+    * @twin.org/validate-locales bumped from 0.0.4-next.14 to 0.0.4-next.15
+
+## [0.0.4-next.14](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.13...context-v0.0.4-next.14) (2026-06-18)
+
+
+### Miscellaneous Chores
+
+* **context:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.13 to 0.0.4-next.14
+    * @twin.org/nameof bumped from 0.0.4-next.13 to 0.0.4-next.14
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.13 to 0.0.4-next.14
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.13 to 0.0.4-next.14
+    * @twin.org/validate-locales bumped from 0.0.4-next.13 to 0.0.4-next.14
+
+## [0.0.4-next.13](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.12...context-v0.0.4-next.13) (2026-06-18)
+
+
+### Miscellaneous Chores
+
+* **context:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.12 to 0.0.4-next.13
+    * @twin.org/nameof bumped from 0.0.4-next.12 to 0.0.4-next.13
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.12 to 0.0.4-next.13
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.12 to 0.0.4-next.13
+    * @twin.org/validate-locales bumped from 0.0.4-next.12 to 0.0.4-next.13
+
+## [0.0.4-next.12](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.11...context-v0.0.4-next.12) (2026-06-18)
+
+
+### Miscellaneous Chores
+
+* **context:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.11 to 0.0.4-next.12
+    * @twin.org/nameof bumped from 0.0.4-next.11 to 0.0.4-next.12
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.11 to 0.0.4-next.12
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.11 to 0.0.4-next.12
+    * @twin.org/validate-locales bumped from 0.0.4-next.11 to 0.0.4-next.12
+
+## [0.0.4-next.11](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.10...context-v0.0.4-next.11) (2026-06-15)
+
+
+### Miscellaneous Chores
+
+* **context:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.10 to 0.0.4-next.11
+    * @twin.org/nameof bumped from 0.0.4-next.10 to 0.0.4-next.11
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.10 to 0.0.4-next.11
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.10 to 0.0.4-next.11
+    * @twin.org/validate-locales bumped from 0.0.4-next.10 to 0.0.4-next.11
+
+## [0.0.4-next.10](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.9...context-v0.0.4-next.10) (2026-06-15)
+
+
+### Features
+
+* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* add user organization context key ([a3da436](https://github.com/iotaledger/twin-framework/commit/a3da4360451860052a508bdc147255a0b9ca8410))
+* context id handler derives from component ([c868ec2](https://github.com/iotaledger/twin-framework/commit/c868ec21d3a576d4faa222bf130270a21936e50e))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* use singleton pattern for context storage ([c69f358](https://github.com/iotaledger/twin-framework/commit/c69f358e45361b45d4e46f19846cd5b8c99b0ccd))
+* use singleton pattern for context storage ([5cc706a](https://github.com/iotaledger/twin-framework/commit/5cc706a2bbfc601fa3d00f3efd8b764052e9f91d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.9 to 0.0.4-next.10
+    * @twin.org/nameof bumped from 0.0.4-next.9 to 0.0.4-next.10
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.9 to 0.0.4-next.10
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.9 to 0.0.4-next.10
+    * @twin.org/validate-locales bumped from 0.0.4-next.9 to 0.0.4-next.10
+
+## [0.0.4-next.9](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.8...context-v0.0.4-next.9) (2026-06-15)
+
+
+### Miscellaneous Chores
+
+* **context:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.8 to 0.0.4-next.9
+    * @twin.org/nameof bumped from 0.0.4-next.8 to 0.0.4-next.9
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.8 to 0.0.4-next.9
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.8 to 0.0.4-next.9
+    * @twin.org/validate-locales bumped from 0.0.4-next.8 to 0.0.4-next.9
+
+## [0.0.4-next.8](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.7...context-v0.0.4-next.8) (2026-06-10)
+
+
+### Features
+
+* add user organization context key ([a3da436](https://github.com/iotaledger/twin-framework/commit/a3da4360451860052a508bdc147255a0b9ca8410))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.7 to 0.0.4-next.8
+    * @twin.org/nameof bumped from 0.0.4-next.7 to 0.0.4-next.8
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.7 to 0.0.4-next.8
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.7 to 0.0.4-next.8
+    * @twin.org/validate-locales bumped from 0.0.4-next.7 to 0.0.4-next.8
+
+## [0.0.4-next.7](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.6...context-v0.0.4-next.7) (2026-06-10)
+
+
+### Miscellaneous Chores
+
+* **context:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.6 to 0.0.4-next.7
+    * @twin.org/nameof bumped from 0.0.4-next.6 to 0.0.4-next.7
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.6 to 0.0.4-next.7
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.6 to 0.0.4-next.7
+    * @twin.org/validate-locales bumped from 0.0.4-next.6 to 0.0.4-next.7
+
+## [0.0.4-next.6](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.5...context-v0.0.4-next.6) (2026-06-05)
+
+
+### Miscellaneous Chores
+
+* **context:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.5 to 0.0.4-next.6
+    * @twin.org/nameof bumped from 0.0.4-next.5 to 0.0.4-next.6
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.5 to 0.0.4-next.6
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.5 to 0.0.4-next.6
+    * @twin.org/validate-locales bumped from 0.0.4-next.5 to 0.0.4-next.6
+
+## [0.0.4-next.5](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.4...context-v0.0.4-next.5) (2026-06-04)
+
+
+### Miscellaneous Chores
+
+* **context:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.4 to 0.0.4-next.5
+    * @twin.org/nameof bumped from 0.0.4-next.4 to 0.0.4-next.5
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.4 to 0.0.4-next.5
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.4 to 0.0.4-next.5
+    * @twin.org/validate-locales bumped from 0.0.4-next.4 to 0.0.4-next.5
+
+## [0.0.4-next.4](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.3...context-v0.0.4-next.4) (2026-06-02)
+
+
+### Miscellaneous Chores
+
+* **context:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.3 to 0.0.4-next.4
+    * @twin.org/nameof bumped from 0.0.4-next.3 to 0.0.4-next.4
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.3 to 0.0.4-next.4
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.3 to 0.0.4-next.4
+    * @twin.org/validate-locales bumped from 0.0.4-next.3 to 0.0.4-next.4
+
+## [0.0.4-next.3](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.2...context-v0.0.4-next.3) (2026-05-28)
+
+
+### Miscellaneous Chores
+
+* **context:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.2 to 0.0.4-next.3
+    * @twin.org/nameof bumped from 0.0.4-next.2 to 0.0.4-next.3
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.2 to 0.0.4-next.3
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.2 to 0.0.4-next.3
+    * @twin.org/validate-locales bumped from 0.0.4-next.2 to 0.0.4-next.3
+
+## [0.0.4-next.2](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.1...context-v0.0.4-next.2) (2026-05-28)
+
+
+### Miscellaneous Chores
+
+* **context:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.1 to 0.0.4-next.2
+    * @twin.org/nameof bumped from 0.0.4-next.1 to 0.0.4-next.2
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.1 to 0.0.4-next.2
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.1 to 0.0.4-next.2
+    * @twin.org/validate-locales bumped from 0.0.4-next.1 to 0.0.4-next.2
+
+## [0.0.4-next.1](https://github.com/iotaledger/twin-framework/compare/context-v0.0.4-next.0...context-v0.0.4-next.1) (2026-05-27)
+
+
+### Features
+
+* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* context id handler derives from component ([c868ec2](https://github.com/iotaledger/twin-framework/commit/c868ec21d3a576d4faa222bf130270a21936e50e))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* use singleton pattern for context storage ([c69f358](https://github.com/iotaledger/twin-framework/commit/c69f358e45361b45d4e46f19846cd5b8c99b0ccd))
+* use singleton pattern for context storage ([5cc706a](https://github.com/iotaledger/twin-framework/commit/5cc706a2bbfc601fa3d00f3efd8b764052e9f91d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.0.4-next.0 to 0.0.4-next.1
+    * @twin.org/nameof bumped from 0.0.4-next.0 to 0.0.4-next.1
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.0.4-next.0 to 0.0.4-next.1
+    * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.0 to 0.0.4-next.1
+    * @twin.org/validate-locales bumped from 0.0.4-next.0 to 0.0.4-next.1
+
 ## [0.0.3](https://github.com/iotaledger/twin-framework/compare/context-v0.0.3...context-v0.0.3) (2026-05-27)
 
 

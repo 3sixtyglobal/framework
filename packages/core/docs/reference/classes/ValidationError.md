@@ -88,7 +88,7 @@ The cause of the error.
 
 > `readonly` `static` **CLASS\_NAME**: `string`
 
-Runtime name for the class.s
+Runtime name for the class.
 
 ## Methods
 

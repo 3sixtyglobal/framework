@@ -28,6 +28,10 @@ The number of bits.
 
 `HmacSha256`
 
+#### Throws
+
+GeneralError If the bits are not a valid size.
+
 ## Properties
 
 ### SIZE\_256 {#size_256}
@@ -142,4 +146,4 @@ Get the digest for the hash.
 
 `Uint8Array`
 
-The instance for chaining.
+The computed hash as bytes.

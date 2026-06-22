@@ -28,6 +28,38 @@ export class EntitySchemaHelper {
 	}
 
 	/**
+	 * Get the version of the entity schema, defaulting to 0 when absent.
+	 * This is the single source of truth for the "absent version = v0" convention.
+	 * When a version is present it must be a non-negative integer >= 0.
+	 * @param entitySchema The entity schema to read the version from.
+	 * @returns The declared version, or 0 if no version was set.
+	 * @throws GuardError if entitySchema is undefined or version is not an integer.
+	 * @throws GeneralError if version is present but less than 0.
+	 */
+	public static getVersion(entitySchema: IEntitySchema): number {
+		Guards.object<IEntitySchema>(EntitySchemaHelper.CLASS_NAME, nameof(entitySchema), entitySchema);
+
+		if (!Is.empty(entitySchema?.version)) {
+			Guards.integer(
+				EntitySchemaHelper.CLASS_NAME,
+				nameof(entitySchema?.version),
+				entitySchema?.version
+			);
+			if (entitySchema.version < 0) {
+				throw new GeneralError(
+					EntitySchemaHelper.CLASS_NAME,
+					"versionMustBeGreaterThanOrEqualZero",
+					{
+						version: entitySchema.version
+					}
+				);
+			}
+		}
+
+		return entitySchema.version ?? 0;
+	}
+
+	/**
 	 * Get the primary key from the entity schema.
 	 * @param entitySchema The entity schema to find the primary key from.
 	 * @returns The key if only one was found.

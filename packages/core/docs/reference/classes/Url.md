@@ -22,6 +22,10 @@ The url string.
 
 `Url`
 
+#### Throws
+
+GuardError if the url is not valid.
+
 ## Properties
 
 ### CLASS\_NAME {#class_name}

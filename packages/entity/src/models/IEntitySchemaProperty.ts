@@ -62,4 +62,9 @@ export interface IEntitySchemaProperty<T = unknown> {
 	 * Examples of the property values.
 	 */
 	examples?: unknown[];
+
+	/**
+	 * A default value which can be used in migrations when the property value is not provided.
+	 */
+	defaultValue?: unknown;
 }

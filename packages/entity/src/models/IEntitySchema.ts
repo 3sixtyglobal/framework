@@ -6,16 +6,11 @@ import type { IEntitySchemaProperty } from "./IEntitySchemaProperty.js";
 /**
  * Definition for an entity schema.
  */
-export interface IEntitySchema<T = unknown> {
+export interface IEntitySchema<T = unknown> extends IEntitySchemaOptions {
 	/**
 	 * The type of the entity.
 	 */
 	type: string | undefined;
-
-	/**
-	 * The options for the entity.
-	 */
-	options?: IEntitySchemaOptions;
 
 	/**
 	 * The properties of the entity.

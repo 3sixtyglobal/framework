@@ -37,7 +37,7 @@ Each operational domain within the platform defines a connector interface that e
 
 `IIdentityConnector` covers the full DID (Decentralised Identifier) document lifecycle, including creation, resolution, update, and removal of DID documents, as well as verifiable credential and verifiable presentation issuance, verification, and revocation.
 
-`IBlobStorageConnector`, `IEventBusConnector`, `INftConnector`, `IWalletConnector`, `IFaucetConnector`, `IMessagingEmailConnector`, `IMessagingSmsConnector`, and `IMessagingPushNotificationConnector` follow the same pattern of extending `IComponent` with the members needed for their respective domains.
+`IBlobStorageConnector`, `IEventBusConnector`, `INftConnector`, `IWalletConnector`, `IFaucetConnector`, `IMessagingEmailConnector`, `IMessagingSmsConnector`, and `IMessagingPushNotificationsConnector` follow the same pattern of extending `IComponent` with the members needed for their respective domains.
 
 ## Concrete Implementations
 
@@ -122,5 +122,10 @@ The table below lists the connector packages available across the platform. Pack
 | Attestation        | Open Attestation   | `@twin.org/attestation-connector-open-attestation`      |
 | Event Bus          | In-process         | `@twin.org/event-bus-connector-local`                   |
 | Telemetry          | Entity Storage     | `@twin.org/telemetry-connector-entity-storage`          |
+| Telemetry          | OpenTelemetry      | `@twin.org/telemetry-connector-opentelemetry`           |
+| Notarization       | IOTA               | `@twin.org/notarization-connector-iota`                 |
+| Notarization       | Entity Storage     | `@twin.org/notarization-connector-entity-storage`       |
+| Hierarchies        | IOTA               | `@twin.org/hierarchies-connector-iota`                  |
+| Hierarchies        | Entity Storage     | `@twin.org/hierarchies-connector-entity-storage`        |
 | Messaging          | AWS                | `@twin.org/messaging-connector-aws`                     |
 | Messaging          | Entity Storage     | `@twin.org/messaging-connector-entity-storage`          |

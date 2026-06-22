@@ -30,6 +30,7 @@
 - [StringHelper](classes/StringHelper.md)
 - [Uint8ArrayHelper](classes/Uint8ArrayHelper.md)
 - [BitString](classes/BitString.md)
+- [Duration](classes/Duration.md)
 - [Url](classes/Url.md)
 - [Urn](classes/Urn.md)
 - [AsyncCache](classes/AsyncCache.md)
@@ -40,12 +41,14 @@
 - [I18n](classes/I18n.md)
 - [Is](classes/Is.md)
 - [Mutex](classes/Mutex.md)
+- [SharedObjectBuffer](classes/SharedObjectBuffer.md)
 - [SharedStore](classes/SharedStore.md)
 - [Validation](classes/Validation.md)
 
 ## Interfaces
 
 - [IComponent](interfaces/IComponent.md)
+- [IDuration](interfaces/IDuration.md)
 - [IError](interfaces/IError.md)
 - [IHealth](interfaces/IHealth.md)
 - [II18nShared](interfaces/II18nShared.md)
@@ -56,6 +59,8 @@
 - [ILocalesIndex](interfaces/ILocalesIndex.md)
 - [IMutexWorkerMessage](interfaces/IMutexWorkerMessage.md)
 - [IPatchOperation](interfaces/IPatchOperation.md)
+- [ISharedObjectBufferOptions](interfaces/ISharedObjectBufferOptions.md)
+- [ISharedObjectBufferWorkerMessage](interfaces/ISharedObjectBufferWorkerMessage.md)
 - [IUrlParts](interfaces/IUrlParts.md)
 - [IValidationFailure](interfaces/IValidationFailure.md)
 
@@ -65,6 +70,7 @@
 - [CompressionType](type-aliases/CompressionType.md)
 - [HealthStatus](type-aliases/HealthStatus.md)
 - [MutexMessageTypes](type-aliases/MutexMessageTypes.md)
+- [SharedObjectBufferMessageTypes](type-aliases/SharedObjectBufferMessageTypes.md)
 - [ObjectOrArray](type-aliases/ObjectOrArray.md)
 - [SingleOccurrenceArray](type-aliases/SingleOccurrenceArray.md)
 - [SingleOccurrenceArrayDepthHelper](type-aliases/SingleOccurrenceArrayDepthHelper.md)
@@ -76,3 +82,5 @@
 - [CompressionType](variables/CompressionType.md)
 - [HealthStatus](variables/HealthStatus.md)
 - [MutexMessageTypes](variables/MutexMessageTypes.md)
+- [SharedObjectBufferMessageTypes](variables/SharedObjectBufferMessageTypes.md)
+- [DURATION\_REG\_EXP](variables/DURATION_REG_EXP.md)

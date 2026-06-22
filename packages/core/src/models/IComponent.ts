@@ -29,14 +29,14 @@ export interface IComponent {
 	/**
 	 * The component needs to be started when the node is initialized.
 	 * @param nodeLoggingComponentType The node logging component type.
-	 * @returns Nothing.
+	 * @returns A promise that resolves when the component has started.
 	 */
 	start?(nodeLoggingComponentType?: string): Promise<void>;
 
 	/**
 	 * The component needs to be stopped when the node is closed.
 	 * @param nodeLoggingComponentType The node logging component type.
-	 * @returns Nothing.
+	 * @returns A promise that resolves when the component has stopped.
 	 */
 	stop?(nodeLoggingComponentType?: string): Promise<void>;
 

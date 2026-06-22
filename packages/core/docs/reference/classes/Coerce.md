@@ -32,11 +32,7 @@ The value to coerce.
 
 `string` \| `undefined`
 
-The value if it can be coerced.
-
-#### Throws
-
-TypeError If the value can not be coerced.
+The coerced string, or undefined if the value cannot be coerced.
 
 ***
 
@@ -58,11 +54,7 @@ The value to coerce.
 
 `number` \| `undefined`
 
-The value if it can be coerced.
-
-#### Throws
-
-TypeError If the value can not be coerced.
+The coerced number, or undefined if the value cannot be coerced.
 
 ***
 
@@ -84,11 +76,7 @@ The value to coerce.
 
 `number` \| `undefined`
 
-The value if it can be coerced.
-
-#### Throws
-
-TypeError If the value can not be coerced.
+The coerced integer, or undefined if the value cannot be coerced.
 
 ***
 
@@ -110,11 +98,7 @@ The value to coerce.
 
 `bigint` \| `undefined`
 
-The value if it can be coerced.
-
-#### Throws
-
-TypeError If the value can not be coerced.
+The coerced bigint, or undefined if the value cannot be coerced.
 
 ***
 
@@ -136,11 +120,7 @@ The value to coerce.
 
 `boolean` \| `undefined`
 
-The value if it can be coerced.
-
-#### Throws
-
-TypeError If the value can not be coerced.
+The coerced boolean, or undefined if the value cannot be coerced.
 
 ***
 
@@ -162,11 +142,7 @@ The value to coerce.
 
 `Date` \| `undefined`
 
-The value if it can be coerced.
-
-#### Throws
-
-TypeError If the value can not be coerced.
+The coerced date, or undefined if the value cannot be coerced.
 
 ***
 
@@ -188,11 +164,7 @@ The value to coerce.
 
 `Date` \| `undefined`
 
-The value if it can be coerced.
-
-#### Throws
-
-TypeError If the value can not be coerced.
+The coerced date/time, or undefined if the value cannot be coerced.
 
 ***
 
@@ -214,11 +186,31 @@ The value to coerce.
 
 `Date` \| `undefined`
 
-The value if it can be coerced.
+The coerced time, or undefined if the value cannot be coerced.
 
-#### Throws
+***
 
-TypeError If the value can not be coerced.
+### duration() {#duration}
+
+> `static` **duration**(`value`): [`IDuration`](../interfaces/IDuration.md) \| `undefined`
+
+Coerce the value to a duration object.
+Accepts an IDuration object, ISO 8601 duration strings (e.g. "PT1H", "P1Y2M3DT4H5M6S"),
+or numeric values already expressed as seconds (stored in the seconds field).
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+The value to coerce.
+
+#### Returns
+
+[`IDuration`](../interfaces/IDuration.md) \| `undefined`
+
+The duration object, or undefined if the value cannot be coerced.
 
 ***
 
@@ -246,11 +238,7 @@ The value to coerce.
 
 `T` \| `undefined`
 
-The value if it can be coerced.
-
-#### Throws
-
-TypeError If the value can not be coerced.
+The coerced object, or undefined if the value cannot be coerced.
 
 ***
 
@@ -272,11 +260,7 @@ The value to coerce.
 
 `Uint8Array`\<`ArrayBufferLike`\> \| `undefined`
 
-The value if it can be coerced.
-
-#### Throws
-
-TypeError If the value can not be coerced.
+The coerced Uint8Array, or undefined if the value cannot be coerced.
 
 ***
 

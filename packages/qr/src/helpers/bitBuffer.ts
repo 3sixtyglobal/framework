@@ -78,6 +78,9 @@ export class BitBuffer {
 	}
 
 	/**
+	 * Determine whether a bit at the given index is set.
+	 * @param index The bit index to inspect.
+	 * @returns True if the bit is set; otherwise, false.
 	 * @internal
 	 */
 	private getBit(index: number): boolean {

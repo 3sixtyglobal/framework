@@ -26,7 +26,7 @@ Runtime name for the class.
 
 > `static` **compress**(`bytes`, `type`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
-Compress bytes using GZIP.
+Compress bytes using the specified compression type.
 
 #### Parameters
 

@@ -90,7 +90,7 @@ export class Slip0010 {
 	 * Get the public key from the private key.
 	 * @param privateKey The private key.
 	 * @param keyType The key type.
-	 * @param withZeroByte Include a zero bute prefix.
+	 * @param withZeroByte Include a zero byte prefix.
 	 * @returns The public key.
 	 */
 	public static getPublicKey(

@@ -35,16 +35,54 @@ Runtime name for the class.
 
 ## Methods
 
+### getDefaultTimeoutMs() {#getdefaulttimeoutms}
+
+> `static` **getDefaultTimeoutMs**(): `number`
+
+Gets the default timeout in milliseconds for lock acquisition.
+
+#### Returns
+
+`number`
+
+The default timeout in milliseconds.
+
+***
+
+### setDefaultTimeoutMs() {#setdefaulttimeoutms}
+
+> `static` **setDefaultTimeoutMs**(`timeoutMs`): `void`
+
+Sets the default timeout in milliseconds for lock acquisition.
+
+#### Parameters
+
+##### timeoutMs
+
+`number`
+
+The default timeout in milliseconds.
+
+#### Returns
+
+`void`
+
+#### Throws
+
+GeneralError if timeoutMs is not a non-negative integer.
+
+***
+
 ### lock() {#lock}
 
-> `static` **lock**(`key`, `options?`): `boolean`
+> `static` **lock**(`key`, `options?`): `Promise`\<`boolean`\>
 
-Acquires a lock for the given key. If the lock is already held, it will wait until it is released or until the timeout is reached.
-The lock is not re-entrant: if the same thread tries to acquire the same lock again, it will deadlock until the timeout is reached.
-
-WARNING: this method calls Atomics.wait internally. On the main thread this blocks the Node.js event loop for the
-duration of the wait. Do not call from the main thread while a worker thread may simultaneously need to fetch a
-buffer for a new mutex key, as that fetch requires the main thread's message loop to be running and will deadlock.
+Acquires a lock for the given key without blocking the event loop. If the lock is already
+held, it suspends the current async task until the lock is released or the timeout is reached.
+Use this in async single-threaded contexts (e.g. the main thread or a Fastify route handler)
+where calling the synchronous lock() would freeze the event loop and deadlock.
+The lock is not re-entrant: if the same context holds the key and calls lockAsync() again on
+the same key, it will suspend until the timeout elapses.
 
 #### Parameters
 
@@ -62,7 +100,7 @@ Lock options.
 
 `number`
 
-The maximum time to wait for the lock in milliseconds, default is 5000.
+The maximum time to wait for the lock in milliseconds, defaults to getDefaultTimeoutMs().
 
 ###### throwOnTimeout?
 
@@ -72,7 +110,7 @@ Whether to throw an error if the lock could not be acquired within the timeout, 
 
 #### Returns
 
-`boolean`
+`Promise`\<`boolean`\>
 
 True if the lock was acquired, false if it timed out and throwOnTimeout is false.
 

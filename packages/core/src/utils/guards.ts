@@ -4,6 +4,7 @@ import { Is } from "./is.js";
 import { GuardError } from "../errors/guardError.js";
 import { ArrayHelper } from "../helpers/arrayHelper.js";
 import { HexHelper } from "../helpers/hexHelper.js";
+import type { IDuration } from "../models/IDuration.js";
 import type { ObjectOrArray } from "../types/objectOrArray.js";
 
 /**
@@ -234,6 +235,57 @@ export class Guards {
 	public static date(source: string, property: string, value: unknown): asserts value is Date {
 		if (!Is.date(value)) {
 			throw new GuardError(source, "guard.date", property, value);
+		}
+	}
+
+	/**
+	 * Is the property a date-only string (ISO 8601 date, no time component).
+	 * @param source The source of the error.
+	 * @param property The name of the property.
+	 * @param value The value to test.
+	 * @throws GuardError If the value does not match the assertion.
+	 */
+	public static dateString(
+		source: string,
+		property: string,
+		value: unknown
+	): asserts value is string {
+		if (!Is.dateString(value)) {
+			throw new GuardError(source, "guard.dateString", property, value);
+		}
+	}
+
+	/**
+	 * Is the property a date-time string (ISO 8601 with T separator).
+	 * @param source The source of the error.
+	 * @param property The name of the property.
+	 * @param value The value to test.
+	 * @throws GuardError If the value does not match the assertion.
+	 */
+	public static dateTimeString(
+		source: string,
+		property: string,
+		value: unknown
+	): asserts value is string {
+		if (!Is.dateTimeString(value)) {
+			throw new GuardError(source, "guard.dateTimeString", property, value);
+		}
+	}
+
+	/**
+	 * Is the property a time-only string (ISO 8601 time, no date component).
+	 * @param source The source of the error.
+	 * @param property The name of the property.
+	 * @param value The value to test.
+	 * @throws GuardError If the value does not match the assertion.
+	 */
+	public static timeString(
+		source: string,
+		property: string,
+		value: unknown
+	): asserts value is string {
+		if (!Is.timeString(value)) {
+			throw new GuardError(source, "guard.timeString", property, value);
 		}
 	}
 
@@ -510,6 +562,23 @@ export class Guards {
 				throw new GuardError(source, "guard.uuidV7Compact", property, value);
 			}
 			throw new GuardError(source, "guard.uuidV7", property, value);
+		}
+	}
+
+	/**
+	 * Is the property a valid ISO 8601 duration string or IDuration object.
+	 * @param source The source of the error.
+	 * @param property The name of the property.
+	 * @param value The value to test.
+	 * @throws GuardError If the value does not match the assertion.
+	 */
+	public static duration(
+		source: string,
+		property: string,
+		value: unknown
+	): asserts value is string | IDuration {
+		if (!Is.duration(value)) {
+			throw new GuardError(source, "guard.duration", property, value);
 		}
 	}
 }

@@ -240,7 +240,7 @@ describe("ModuleHelper", () => {
 		});
 
 		test("execModuleMethodThread worker blocks on a mutex held by the main thread", async () => {
-			Mutex.lock("mutex-main-holds");
+			await Mutex.lock("mutex-main-holds");
 
 			const workerPromise = ModuleHelper.execModuleMethodThread(
 				TEST_MODULE,
@@ -281,7 +281,7 @@ describe("ModuleHelper", () => {
 			expect(Atomics.load(signal, 0)).toEqual(1);
 
 			const start = Date.now();
-			Mutex.lock("mutex-worker-holds", { timeoutMs: 5000 });
+			await Mutex.lock("mutex-worker-holds", { timeoutMs: 5000 });
 			const elapsed = Date.now() - start;
 			Mutex.unlock("mutex-worker-holds");
 
@@ -290,7 +290,7 @@ describe("ModuleHelper", () => {
 		});
 
 		test("execModuleMethodThread worker times out waiting for a mutex held by the main thread", async () => {
-			Mutex.lock("mutex-timeout");
+			await Mutex.lock("mutex-timeout");
 
 			const result = await ModuleHelper.execModuleMethodThread(
 				TEST_MODULE,
@@ -335,7 +335,7 @@ describe("ModuleHelper", () => {
 			);
 
 			for (let i = 0; i < mainIncrements; i++) {
-				Mutex.lock("mixed-parallel", { timeoutMs: 10000 });
+				await Mutex.lock("mixed-parallel", { timeoutMs: 10000 });
 				const val = Atomics.load(counter, 0);
 				Atomics.store(counter, 0, val + 1);
 				Mutex.unlock("mixed-parallel");

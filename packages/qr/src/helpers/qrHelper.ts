@@ -282,6 +282,9 @@ export class QRHelper {
 	}
 
 	/**
+	 * Count how many bits are required to represent a BCH value.
+	 * @param data The value to inspect.
+	 * @returns The number of bits required.
 	 * @internal
 	 */
 	private static getBCHDigit(data: number): number {

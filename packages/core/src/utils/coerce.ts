@@ -3,6 +3,8 @@
 import { Converter } from "./converter.js";
 import { Is } from "./is.js";
 import { CoerceType } from "../models/coerceType.js";
+import type { IDuration } from "../models/IDuration.js";
+import { Duration } from "../types/duration.js";
 
 /**
  * Coerce an object from one type to another.
@@ -11,8 +13,7 @@ export class Coerce {
 	/**
 	 * Coerce the value to a string.
 	 * @param value The value to coerce.
-	 * @throws TypeError If the value can not be coerced.
-	 * @returns The value if it can be coerced.
+	 * @returns The coerced string, or undefined if the value cannot be coerced.
 	 */
 	public static string(value: unknown): string | undefined {
 		if (Is.undefined(value)) {
@@ -35,8 +36,7 @@ export class Coerce {
 	/**
 	 * Coerce the value to a number.
 	 * @param value The value to coerce.
-	 * @throws TypeError If the value can not be coerced.
-	 * @returns The value if it can be coerced.
+	 * @returns The coerced number, or undefined if the value cannot be coerced.
 	 */
 	public static number(value: unknown): number | undefined {
 		if (Is.undefined(value)) {
@@ -62,8 +62,7 @@ export class Coerce {
 	/**
 	 * Coerce the value to an integer.
 	 * @param value The value to coerce.
-	 * @throws TypeError If the value can not be coerced.
-	 * @returns The value if it can be coerced.
+	 * @returns The coerced integer, or undefined if the value cannot be coerced.
 	 */
 	public static integer(value: unknown): number | undefined {
 		const num = Coerce.number(value);
@@ -75,8 +74,7 @@ export class Coerce {
 	/**
 	 * Coerce the value to a bigint.
 	 * @param value The value to coerce.
-	 * @throws TypeError If the value can not be coerced.
-	 * @returns The value if it can be coerced.
+	 * @returns The coerced bigint, or undefined if the value cannot be coerced.
 	 */
 	public static bigint(value: unknown): bigint | undefined {
 		if (Is.undefined(value)) {
@@ -102,8 +100,7 @@ export class Coerce {
 	/**
 	 * Coerce the value to a boolean.
 	 * @param value The value to coerce.
-	 * @throws TypeError If the value can not be coerced.
-	 * @returns The value if it can be coerced.
+	 * @returns The coerced boolean, or undefined if the value cannot be coerced.
 	 */
 	public static boolean(value: unknown): boolean | undefined {
 		if (Is.undefined(value)) {
@@ -129,8 +126,7 @@ export class Coerce {
 	/**
 	 * Coerce the value to a date.
 	 * @param value The value to coerce.
-	 * @throws TypeError If the value can not be coerced.
-	 * @returns The value if it can be coerced.
+	 * @returns The coerced date, or undefined if the value cannot be coerced.
 	 */
 	public static date(value: unknown): Date | undefined {
 		if (Is.undefined(value)) {
@@ -154,8 +150,7 @@ export class Coerce {
 	/**
 	 * Coerce the value to a date/time.
 	 * @param value The value to coerce.
-	 * @throws TypeError If the value can not be coerced.
-	 * @returns The value if it can be coerced.
+	 * @returns The coerced date/time, or undefined if the value cannot be coerced.
 	 */
 	public static dateTime(value: unknown): Date | undefined {
 		if (Is.undefined(value)) {
@@ -187,8 +182,7 @@ export class Coerce {
 	/**
 	 * Coerce the value to a time.
 	 * @param value The value to coerce.
-	 * @throws TypeError If the value can not be coerced.
-	 * @returns The value if it can be coerced.
+	 * @returns The coerced time, or undefined if the value cannot be coerced.
 	 */
 	public static time(value: unknown): Date | undefined {
 		if (Is.undefined(value)) {
@@ -220,10 +214,31 @@ export class Coerce {
 	}
 
 	/**
+	 * Coerce the value to a duration object.
+	 * Accepts an IDuration object, ISO 8601 duration strings (e.g. "PT1H", "P1Y2M3DT4H5M6S"),
+	 * or numeric values already expressed as seconds (stored in the seconds field).
+	 * @param value The value to coerce.
+	 * @returns The duration object, or undefined if the value cannot be coerced.
+	 */
+	public static duration(value: unknown): IDuration | undefined {
+		if (Is.undefined(value)) {
+			return undefined;
+		}
+		if (Is.duration(value) && !Is.string(value)) {
+			return value;
+		}
+		if (Is.number(value)) {
+			return { years: 0, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: value };
+		}
+		if (Is.stringValue(value)) {
+			return Duration.parse(value);
+		}
+	}
+
+	/**
 	 * Coerce the value to an object.
 	 * @param value The value to coerce.
-	 * @throws TypeError If the value can not be coerced.
-	 * @returns The value if it can be coerced.
+	 * @returns The coerced object, or undefined if the value cannot be coerced.
 	 */
 	public static object<T = unknown>(value: unknown): T | undefined {
 		if (Is.undefined(value)) {
@@ -242,8 +257,7 @@ export class Coerce {
 	/**
 	 * Coerce the value to a Uint8Array.
 	 * @param value The value to coerce.
-	 * @throws TypeError If the value can not be coerced.
-	 * @returns The value if it can be coerced.
+	 * @returns The coerced Uint8Array, or undefined if the value cannot be coerced.
 	 */
 	public static uint8Array(value: unknown): Uint8Array | undefined {
 		if (Is.undefined(value)) {
@@ -287,6 +301,8 @@ export class Coerce {
 				return Coerce.object(value);
 			case CoerceType.Uint8Array:
 				return Coerce.uint8Array(value);
+			case CoerceType.Duration:
+				return Coerce.duration(value);
 			default:
 				return value;
 		}

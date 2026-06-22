@@ -11,7 +11,6 @@ export interface IModuleWorker {
 	 * @param method The method to execute.
 	 * @param args The arguments for the method.
 	 * @param contextIds The context IDs.
-	 * @returns The result of the method.
 	 */
 	executeMethod(method: string, args?: unknown, contextIds?: IContextIds): void;
 
