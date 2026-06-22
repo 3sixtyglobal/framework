@@ -27,7 +27,7 @@ export class CLI extends CLIBase {
 			{
 				title: "TWIN Validate Locales",
 				appName: "validate-locales",
-				version: "0.0.4-next.15", // x-release-please-version
+				version: "0.9.0-next.1", // x-release-please-version
 				icon: "⚙️ ",
 				supportsEnvFiles: false,
 				overrideOutputWidth: options?.overrideOutputWidth

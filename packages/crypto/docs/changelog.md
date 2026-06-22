@@ -1,5 +1,47 @@
 # Changelog
 
+## [0.9.0-next.1](https://github.com/iotaledger/twin-framework/compare/crypto-v0.9.0-next.0...crypto-v0.9.0-next.1) (2026-06-22)
+
+
+### Features
+
+* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* add crypto argon2id ([#255](https://github.com/iotaledger/twin-framework/issues/255)) ([27fe3a7](https://github.com/iotaledger/twin-framework/commit/27fe3a72eeb0f398a278ebb3f1cb9c4dd459743c))
+* add mnemonic validation ([4b43491](https://github.com/iotaledger/twin-framework/commit/4b43491cf04bb626c27faea66e5c74b3971b111d))
+* add rsa cipher support ([7af6cc6](https://github.com/iotaledger/twin-framework/commit/7af6cc67512d3363bd4a2f2e87bd7733c2800147))
+* add RSA support for public key components ([7126259](https://github.com/iotaledger/twin-framework/commit/7126259103b758c291e52a8a03818eb822d1aad1))
+* additional RSA methods and async ([1fceee2](https://github.com/iotaledger/twin-framework/commit/1fceee2d1248a24a7620846025fcf906495c07f4))
+* change method accessibility ([c1b77fc](https://github.com/iotaledger/twin-framework/commit/c1b77fcfb61c092a01c97aebb2fe2dc2bbaa221b))
+* eslint migration to flat config ([74427d7](https://github.com/iotaledger/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* factory create and integrity ([#235](https://github.com/iotaledger/twin-framework/issues/235)) ([9f98b99](https://github.com/iotaledger/twin-framework/commit/9f98b99daf46eb365346fae49cc4ffba63e74cb3))
+* improve signatures ([cdd24be](https://github.com/iotaledger/twin-framework/commit/cdd24be6fb898d33955b6f2f93c3ddbd73582269))
+* improved password generation and validation ([#232](https://github.com/iotaledger/twin-framework/issues/232)) ([ca4e18f](https://github.com/iotaledger/twin-framework/commit/ca4e18f388b1882cdfb774fc0d0921b8530fac33))
+* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* relocate core packages from tools ([bcab8f3](https://github.com/iotaledger/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/iotaledger/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+
+
+### Bug Fixes
+
+* docs ([9df46e0](https://github.com/iotaledger/twin-framework/commit/9df46e0a3940a4d1f479373f58830519262f9590))
+* docs ([67c8887](https://github.com/iotaledger/twin-framework/commit/67c888739448e753106ea067a8703d058e0ddf12))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.9.0-next.0 to 0.9.0-next.1
+    * @twin.org/nameof bumped from 0.9.0-next.0 to 0.9.0-next.1
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.0-next.0 to 0.9.0-next.1
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.0-next.0 to 0.9.0-next.1
+    * @twin.org/validate-locales bumped from 0.9.0-next.0 to 0.9.0-next.1
+
 ## [0.0.4-next.15](https://github.com/iotaledger/twin-framework/compare/crypto-v0.0.4-next.14...crypto-v0.0.4-next.15) (2026-06-19)
 
 
