@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.9.1-next.4](https://github.com/iotaledger/twin-framework/compare/entity-v0.9.1-next.3...entity-v0.9.1-next.4) (2026-06-26)
+
+
+### Bug Fixes
+
+* allow vacuous truth to match SQL semantics ([5bbc5e5](https://github.com/iotaledger/twin-framework/commit/5bbc5e53069f90bd39485a74a284eda9e5864e66))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.9.1-next.3 to 0.9.1-next.4
+    * @twin.org/core bumped from 0.9.1-next.3 to 0.9.1-next.4
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.1-next.3 to 0.9.1-next.4
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.3 to 0.9.1-next.4
+    * @twin.org/validate-locales bumped from 0.9.1-next.3 to 0.9.1-next.4
+
 ## [0.9.1-next.3](https://github.com/iotaledger/twin-framework/compare/entity-v0.9.1-next.2...entity-v0.9.1-next.3) (2026-06-26)
 
 
