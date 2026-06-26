@@ -274,18 +274,11 @@ export class I18n {
 	 * @internal
 	 */
 	private static getI18nShared(): II18nShared {
-		let i18nShared = SharedStore.get<II18nShared>("i18n");
-
-		if (Is.undefined(i18nShared)) {
-			i18nShared = {
-				localeDictionaries: {},
-				currentLocale: I18n.DEFAULT_LOCALE,
-				localeChangedHandlers: {},
-				dictionaryChangedHandlers: {}
-			};
-			SharedStore.set<II18nShared>("i18n", i18nShared);
-		}
-
-		return i18nShared;
+		return SharedStore.get<II18nShared>("i18n", () => ({
+			localeDictionaries: {},
+			currentLocale: I18n.DEFAULT_LOCALE,
+			localeChangedHandlers: {},
+			dictionaryChangedHandlers: {}
+		}));
 	}
 }

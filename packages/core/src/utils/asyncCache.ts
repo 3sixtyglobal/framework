@@ -283,7 +283,7 @@ export class AsyncCache {
 			expires: number;
 		};
 	} {
-		let sharedCache = SharedStore.get<{
+		return SharedStore.get<{
 			[url: string]: {
 				result?: T;
 				error?: unknown;
@@ -295,14 +295,7 @@ export class AsyncCache {
 				}[];
 				expires: number;
 			};
-		}>(AsyncCache._CACHE_KEY);
-
-		if (Is.undefined(sharedCache)) {
-			sharedCache = {};
-			SharedStore.set(AsyncCache._CACHE_KEY, sharedCache);
-		}
-
-		return sharedCache;
+		}>(AsyncCache._CACHE_KEY, () => ({}));
 	}
 
 	/**

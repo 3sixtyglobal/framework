@@ -363,14 +363,10 @@ export class SharedObjectBuffer {
 	 * @internal
 	 */
 	private static getBuffers(): { [objectId: string]: SharedArrayBuffer } {
-		let buffers = SharedStore.get<{ [objectId: string]: SharedArrayBuffer }>(
-			SharedObjectBuffer._STORE_KEY
+		return SharedStore.get<{ [objectId: string]: SharedArrayBuffer }>(
+			SharedObjectBuffer._STORE_KEY,
+			() => ({})
 		);
-		if (Is.undefined(buffers)) {
-			buffers = {};
-			SharedStore.set(SharedObjectBuffer._STORE_KEY, buffers);
-		}
-		return buffers;
 	}
 
 	/**

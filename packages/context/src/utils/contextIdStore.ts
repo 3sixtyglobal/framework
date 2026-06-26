@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import type { AsyncLocalStorage } from "node:async_hooks";
-import { BaseError, GeneralError, Is, SharedStore } from "@twin.org/core";
+import { BaseError, GeneralError, SharedStore } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 import type { IContextIds } from "../models/IContextIds.js";
 
@@ -39,18 +39,17 @@ export class ContextIdStore {
 	 * @returns The storage.
 	 */
 	public static async getStorage(): Promise<AsyncLocalStorage<IContextIds>> {
-		let asyncHooksStore = SharedStore.get<{ contextIds?: AsyncLocalStorage<IContextIds> }>(
-			"asyncHooks"
-		);
-
-		if (Is.empty(asyncHooksStore?.contextIds)) {
+		// get with the factory is invoked synchronously and stores the returned
+		// Promise before yielding, so concurrent callers always await the same
+		// AsyncLocalStorage instance regardless of how many module versions are loaded.
+		return SharedStore.get<Promise<AsyncLocalStorage<IContextIds>>>("asyncHooks", async () => {
 			try {
 				const hooks = await import("node:async_hooks");
-				asyncHooksStore = asyncHooksStore ?? {};
-				asyncHooksStore.contextIds = new hooks.AsyncLocalStorage<IContextIds>({
+				return new hooks.AsyncLocalStorage<IContextIds>({
 					name: "AsyncContextIdsStorage"
 				});
 			} catch (err) {
+				SharedStore.remove("asyncHooks");
 				throw new GeneralError(
 					ContextIdStore.CLASS_NAME,
 					"asyncHooksNotAvailable",
@@ -58,8 +57,6 @@ export class ContextIdStore {
 					BaseError.fromError(err)
 				);
 			}
-			SharedStore.set("asyncHooks", asyncHooksStore);
-		}
-		return asyncHooksStore.contextIds;
+		});
 	}
 }

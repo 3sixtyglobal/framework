@@ -1,6 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import path from "node:path";
+import { SharedStore } from "@twin.org/core";
 import type { IContextIds } from "../../src/models/IContextIds.js";
 import { ContextIdStore } from "../../src/utils/contextIdStore.js";
 
@@ -352,6 +353,46 @@ describe("ContextIdStore", () => {
 		// Validate worker actions
 		expect(worker.actions).toEqual(["unbound-call", "bound-call"]);
 		expect(await ContextIdStore.getContextIds()).toBeUndefined();
+	});
+
+	it("should return the same AsyncLocalStorage instance when getStorage is called concurrently", async () => {
+		// Remove the cached Promise to simulate a cold start (e.g. first call after
+		// a second copy of the module is loaded into the same runtime).
+		SharedStore.remove("asyncHooks");
+
+		// Three callers race before any has resolved. In the old implementation two
+		// would pass the Is.empty check during the await gap and produce separate
+		// AsyncLocalStorage instances; with the fix they all resolve the same Promise
+		// stored synchronously on the first call.
+		const [a, b, c] = await Promise.all([
+			ContextIdStore.getStorage(),
+			ContextIdStore.getStorage(),
+			ContextIdStore.getStorage()
+		]);
+
+		// Referential equality is the requirement: run() and getContextIds() must
+		// operate on the exact same instance or context is silently invisible.
+		expect(a).toBe(b);
+		expect(b).toBe(c);
+	});
+
+	it("should propagate context correctly when getStorage is initialised concurrently with run", async () => {
+		SharedStore.remove("asyncHooks");
+
+		const ids: IContextIds = { organization: "concurrent-init-org", user: "concurrent-init-user" };
+		let captured: IContextIds | undefined;
+
+		// Start an independent getStorage() call at the same time as run() so both
+		// race to initialise storage from a cold SharedStore. Both must resolve to
+		// the same instance or the context bound inside run() would not be visible.
+		await Promise.all([
+			ContextIdStore.getStorage(),
+			ContextIdStore.run(ids, async () => {
+				captured = await ContextIdStore.getContextIds();
+			})
+		]);
+
+		expect(captured).toEqual(ids);
 	});
 
 	it("should load a module and maintain context", async () => {

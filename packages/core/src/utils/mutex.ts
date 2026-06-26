@@ -271,12 +271,7 @@ export class Mutex {
 	 * @internal
 	 */
 	private static getLocks(): { [key: string]: Int32Array } {
-		let locks = SharedStore.get<{ [key: string]: Int32Array }>(Mutex._LOCKS_KEY);
-		if (Is.undefined(locks)) {
-			locks = {};
-			SharedStore.set(Mutex._LOCKS_KEY, locks);
-		}
-		return locks;
+		return SharedStore.get<{ [key: string]: Int32Array }>(Mutex._LOCKS_KEY, () => ({}));
 	}
 
 	/**
