@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.9.1-next.2](https://github.com/iotaledger/twin-framework/compare/context-v0.9.1-next.1...context-v0.9.1-next.2) (2026-06-26)
+
+
+### Features
+
+* concurrency in SharedStore ([#388](https://github.com/iotaledger/twin-framework/issues/388)) ([0610198](https://github.com/iotaledger/twin-framework/commit/0610198ba482273c3f6ba918e34f5875a3659571))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.9.1-next.1 to 0.9.1-next.2
+    * @twin.org/nameof bumped from 0.9.1-next.1 to 0.9.1-next.2
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.1-next.1 to 0.9.1-next.2
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.1 to 0.9.1-next.2
+    * @twin.org/validate-locales bumped from 0.9.1-next.1 to 0.9.1-next.2
+
 ## [0.9.1-next.1](https://github.com/iotaledger/twin-framework/compare/context-v0.9.1-next.0...context-v0.9.1-next.1) (2026-06-25)
 
 

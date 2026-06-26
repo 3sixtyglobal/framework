@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.9.1-next.2](https://github.com/iotaledger/twin-framework/compare/modules-v0.9.1-next.1...modules-v0.9.1-next.2) (2026-06-26)
+
+
+### Miscellaneous Chores
+
+* **modules:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.9.1-next.1 to 0.9.1-next.2
+    * @twin.org/context bumped from 0.9.1-next.1 to 0.9.1-next.2
+    * @twin.org/nameof bumped from 0.9.1-next.1 to 0.9.1-next.2
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.1-next.1 to 0.9.1-next.2
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.1 to 0.9.1-next.2
+    * @twin.org/validate-locales bumped from 0.9.1-next.1 to 0.9.1-next.2
+
 ## [0.9.1-next.1](https://github.com/iotaledger/twin-framework/compare/modules-v0.9.1-next.0...modules-v0.9.1-next.1) (2026-06-25)
 
 
