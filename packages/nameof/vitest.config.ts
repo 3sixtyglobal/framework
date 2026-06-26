@@ -19,6 +19,7 @@ export default defineConfig({
 			include: ["src/**/*.ts"],
 			exclude: ["**/index.ts", "**/models/**/*.ts"]
 		},
-		fileParallelism: false
+		fileParallelism: false,
+		isolate: false
 	}
 });
