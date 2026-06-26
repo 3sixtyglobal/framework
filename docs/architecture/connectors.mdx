@@ -43,7 +43,7 @@ Each operational domain within the platform defines a connector interface that e
 
 For each capability interface there are one or more concrete connector packages, each targeting a specific backend technology. Entity storage alone has nine concrete implementations: an in-memory variant for testing and lightweight deployments, a file-based variant for local persistence, and cloud-provider-specific variants for MongoDB, MySQL, PostgreSQL, ScyllaDB, AWS DynamoDB, Azure CosmosDB, and GCP Firestore. A synchronised storage variant adds cross-replica consistency guarantees on top of any underlying entity storage connector, making it suitable for active-active deployments where multiple nodes write to a shared dataset.
 
-Logging has implementations: a console connector that formats and writes entries to standard output with ANSI colour coding, configurable level filtering, and optional group suppression; and an entity-storage-backed connector that persists log entries through any configured entity storage backend, enabling structured log queries, retention policies, and integration with the telemetry subsystem.
+Logging has three implementations: a console connector that formats and writes entries to standard output with ANSI colour coding, configurable level filtering, and optional group suppression; an entity-storage-backed connector that persists log entries through any configured entity storage backend, enabling structured log queries, retention policies, and integration with the telemetry subsystem; and an OpenTelemetry connector that forwards log records to any OTLP-compatible observability pipeline over HTTP, with configurable batch or simple processing and per-exporter endpoint and header configuration.
 
 The vault domain offers a local entity-storage-backed connector suitable for development and testing contexts, and an integration with HashiCorp Vault for production deployments that require enterprise-grade secret management with audit trails, access policies, and high availability.
 
@@ -107,6 +107,7 @@ The table below lists the connector packages available across the platform. Pack
 | Blob Storage       | File system        | `@twin.org/blob-storage-connector-file`                 |
 | Logging            | Console            | `@twin.org/logging-connector-console`                   |
 | Logging            | Entity Storage     | `@twin.org/logging-connector-entity-storage`            |
+| Logging            | OpenTelemetry      | `@twin.org/logging-connector-opentelemetry`             |
 | Vault              | Entity Storage     | `@twin.org/vault-connector-entity-storage`              |
 | Vault              | HashiCorp Vault    | `@twin.org/vault-connector-hashicorp`                   |
 | Identity           | IOTA               | `@twin.org/identity-connector-iota`                     |
