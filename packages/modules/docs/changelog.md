@@ -1,5 +1,45 @@
 # Changelog
 
+## [0.9.1-next.3](https://github.com/iotaledger/twin-framework/compare/modules-v0.9.1-next.2...modules-v0.9.1-next.3) (2026-06-26)
+
+
+### Features
+
+* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* add mutex ([#316](https://github.com/iotaledger/twin-framework/issues/316)) ([1027e5a](https://github.com/iotaledger/twin-framework/commit/1027e5ac77aa9804178b4253abdeefd6f1c3d521))
+* automatically handle SharedObjectBuffer message in module threads ([10510ff](https://github.com/iotaledger/twin-framework/commit/10510ff4180a2cfbb51aa5a65c57362291826077))
+* eslint migration to flat config ([74427d7](https://github.com/iotaledger/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* improve Is.function and ModuleHelper.getModuleMethod signatures ([ecf968b](https://github.com/iotaledger/twin-framework/commit/ecf968b02934b3676be4bf7cd2d1e7f8e7af6ce2))
+* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* module helper can now handle long running threads with messaging ([4ecbb9a](https://github.com/iotaledger/twin-framework/commit/4ecbb9a526927d462d4fb3f95ba2a44889202753))
+* nodeIdentity optional in IComponent methods ([c78dc17](https://github.com/iotaledger/twin-framework/commit/c78dc17f4357d3e1ae40e415f468d3eae13e81f4))
+* provide module helper override ([e998a64](https://github.com/iotaledger/twin-framework/commit/e998a64842cfd18693a14444be33b084fef2bb90))
+* retain detail in Errors from background threads ([52bdeef](https://github.com/iotaledger/twin-framework/commit/52bdeef7a75fd462ed118073b9dc7612304e038d))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/iotaledger/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* module tests ([58fd497](https://github.com/iotaledger/twin-framework/commit/58fd497876aa65062001d146727e1084be891ac4))
+* module tests ([e323b7b](https://github.com/iotaledger/twin-framework/commit/e323b7b62aa430cedbeb09e83c2388cd458a6d48))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.9.1-next.2 to 0.9.1-next.3
+    * @twin.org/context bumped from 0.9.1-next.2 to 0.9.1-next.3
+    * @twin.org/nameof bumped from 0.9.1-next.2 to 0.9.1-next.3
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.1-next.2 to 0.9.1-next.3
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.2 to 0.9.1-next.3
+    * @twin.org/validate-locales bumped from 0.9.1-next.2 to 0.9.1-next.3
+
 ## [0.9.1-next.2](https://github.com/iotaledger/twin-framework/compare/modules-v0.9.1-next.1...modules-v0.9.1-next.2) (2026-06-26)
 
 
