@@ -10,7 +10,7 @@ describe("EntityConditions", () => {
 	});
 
 	test("can match if conditions are empty", async () => {
-		expect(EntityConditions.check({}, undefined)).toEqual(true);
+		expect(EntityConditions.check({}, { conditions: [] })).toEqual(true);
 	});
 
 	test("can match if undefined condition equals", async () => {
@@ -1042,7 +1042,7 @@ describe("EntityConditions", () => {
 		expect(results).toEqual(true);
 	});
 
-	test("can not match if conditions group is empty with And operator", async () => {
+	test("can match if conditions group is empty with And operator", async () => {
 		expect(
 			EntityConditions.check(
 				{ foo: "a" },
@@ -1051,10 +1051,10 @@ describe("EntityConditions", () => {
 					logicalOperator: LogicalOperator.And
 				}
 			)
-		).toEqual(false);
+		).toEqual(true);
 	});
 
-	test("can not match if conditions group is empty with default operator", async () => {
+	test("can match if conditions group is empty with default operator", async () => {
 		expect(
 			EntityConditions.check(
 				{ foo: "a" },
@@ -1062,7 +1062,7 @@ describe("EntityConditions", () => {
 					conditions: []
 				}
 			)
-		).toEqual(false);
+		).toEqual(true);
 	});
 
 	test("can fail a child condition", async () => {
