@@ -156,7 +156,7 @@ The urn with a prefix.
 
 ### guard() {#guard}
 
-> `static` **guard**(`source`, `property`, `value`): `asserts value is string`
+> `static` **guard**(`source`, `property`, `value`, `options?`): `asserts value is string`
 
 Parse a string into the urn parts.
 
@@ -179,6 +179,22 @@ The name of the property.
 `unknown`
 
 The urn to parse.
+
+##### options?
+
+Optional constraints to validate the urn namespace identifier and specific parts.
+
+###### namespaceIdentifier?
+
+`string`
+
+The namespace identifier the urn must match.
+
+###### namespaceSpecific?
+
+`string` \| `string`[]
+
+The namespace specific part(s) the urn must match.
 
 #### Returns
 
@@ -282,7 +298,7 @@ The namespace method.
 
 ### namespaceSpecificParts() {#namespacespecificparts}
 
-> **namespaceSpecificParts**(`startIndex?`): `string`[]
+> **namespaceSpecificParts**(`startIndex?`, `count?`): `string`[]
 
 Get the namespace specific parts.
 
@@ -293,6 +309,12 @@ Get the namespace specific parts.
 `number` = `0`
 
 The index to start from, defaults to 0.
+
+##### count?
+
+`number`
+
+The number of parts to return, defaults to all remaining parts.
 
 #### Returns
 
