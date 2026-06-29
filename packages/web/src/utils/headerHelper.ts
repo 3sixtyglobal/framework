@@ -32,12 +32,21 @@ export class HeaderHelper {
 	private static readonly _ACCEPT_LANGUAGE_TAG_REGEX = /^(\*|[A-Za-z]{1,8}(?:-[\dA-Za-z]{1,8})*)$/;
 
 	/**
-	 * Regex for valid Accept-Language quality parameters.
+	 * Regex for valid quality parameters in negotiation headers.
 	 * Supports quality values from `0` to `1` with up to three decimal places.
 	 * Examples: `q=1`, `q=0.9`, `q=0.875`, `q=0`, `q=1.0`.
 	 * @internal
 	 */
-	private static readonly _ACCEPT_LANGUAGE_QUALITY_REGEX = /^q=(0(?:\.\d{1,3})?|1(?:\.0{1,3})?)$/i;
+	private static readonly _QUALITY_REGEX = /^q=(0(?:\.\d{1,3})?|1(?:\.0{1,3})?)$/i;
+
+	/**
+	 * Regex for valid media type values in Accept headers.
+	 * Supports wildcards, standard types, and vendor extensions.
+	 * Examples: `text/html`, `application/json`, `image/*`, `application/vnd.api+json`.
+	 * @internal
+	 */
+	private static readonly _ACCEPT_MEDIA_TYPE_REGEX =
+		/^(\*|[A-Za-z0-9][\w.+-]*)\/(\*|[A-Za-z0-9][\w.+-]*)$/;
 
 	/**
 	 * Regex for valid IPv4 addresses.
@@ -101,56 +110,39 @@ export class HeaderHelper {
 	public static parseAcceptLanguage(
 		acceptLanguage: string | string[] | undefined
 	): { language: string; quality: number }[] | undefined {
-		let headerValues: string[] = [];
+		const parsed = HeaderHelper.parseWeightedHeader(
+			acceptLanguage,
+			HeaderHelper._ACCEPT_LANGUAGE_TAG_REGEX
+		);
+		return parsed?.map(({ value, quality }) => ({ language: value, quality }));
+	}
 
-		if (Is.array(acceptLanguage)) {
-			headerValues = acceptLanguage
-				.map(headerValue => headerValue.trim())
-				.filter(headerValue => headerValue.length > 0);
-		} else if (Is.stringValue(acceptLanguage)) {
-			headerValues = [acceptLanguage.trim()];
-		}
+	/**
+	 * Extract parsed media type preferences from the Accept header.
+	 * @param headers The HTTP request headers.
+	 * @returns The parsed media type preferences ordered by highest quality first, or undefined if missing or invalid.
+	 */
+	public static extractAccept(
+		headers?: IHttpHeaders
+	): { mimeType: string; quality: number; params?: { [key: string]: string } }[] | undefined {
+		return HeaderHelper.parseAccept(headers?.[HeaderTypes.Accept]);
+	}
 
-		if (headerValues.length > 0) {
-			const entries = headerValues
-				.flatMap(headerValue => headerValue.split(","))
-				.map(segment => segment.trim())
-				.filter(segment => segment.length > 0);
-
-			const parsedEntries: { language: string; quality: number }[] = [];
-
-			for (const entry of entries) {
-				const [languagePart, ...parameterParts] = entry.split(";").map(part => part.trim());
-
-				if (!HeaderHelper._ACCEPT_LANGUAGE_TAG_REGEX.test(languagePart)) {
-					return undefined;
-				}
-
-				let quality = 1;
-
-				for (const parameterPart of parameterParts) {
-					if (parameterPart.length > 0) {
-						if (parameterPart.startsWith("q=") || parameterPart.startsWith("Q=")) {
-							const qualityMatch = HeaderHelper._ACCEPT_LANGUAGE_QUALITY_REGEX.exec(parameterPart);
-							if (!qualityMatch?.[1]) {
-								return undefined;
-							}
-
-							quality = Number(qualityMatch[1]);
-						}
-					}
-				}
-
-				parsedEntries.push({
-					language: languagePart,
-					quality
-				});
-			}
-
-			if (parsedEntries.length > 0) {
-				return parsedEntries.sort((a, b) => b.quality - a.quality);
-			}
-		}
+	/**
+	 * Parse one or more Accept header values into media type preferences.
+	 * @param accept The Accept header value or values.
+	 * @returns The parsed media type preferences ordered by highest quality first, or undefined if missing or if any entry is invalid.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept
+	 */
+	public static parseAccept(
+		accept: string | string[] | undefined
+	): { mimeType: string; quality: number; params?: { [key: string]: string } }[] | undefined {
+		const parsed = HeaderHelper.parseWeightedHeader(accept, HeaderHelper._ACCEPT_MEDIA_TYPE_REGEX);
+		return parsed?.map(({ value, quality, params }) => ({
+			mimeType: value,
+			quality,
+			...(Object.keys(params).length > 0 ? { params } : {})
+		}));
 	}
 
 	/**
@@ -449,6 +441,72 @@ export class HeaderHelper {
 						.join("")
 				: ""
 		}`;
+	}
+
+	/**
+	 * Parse a quality-weighted comma-separated header into entries.
+	 * @param header The header value or values.
+	 * @param valueValidator Regex to validate the value portion of each entry.
+	 * @returns Entries ordered by quality descending, or undefined if any entry is invalid.
+	 */
+	public static parseWeightedHeader(
+		header: string | string[] | undefined,
+		valueValidator: RegExp
+	): { value: string; quality: number; params: { [key: string]: string } }[] | undefined {
+		let headerValues: string[] = [];
+
+		if (Is.array(header)) {
+			headerValues = header.map(v => v.trim()).filter(v => v.length > 0);
+		} else if (Is.stringValue(header)) {
+			headerValues = [header.trim()];
+		}
+
+		if (headerValues.length > 0) {
+			const entries = headerValues
+				.flatMap(v => v.split(","))
+				.map(s => s.trim())
+				.filter(s => s.length > 0);
+
+			const parsed: { value: string; quality: number; params: { [key: string]: string } }[] = [];
+
+			for (const entry of entries) {
+				const [valuePart, ...paramParts] = entry.split(";").map(p => p.trim());
+
+				if (!valueValidator.test(valuePart)) {
+					return undefined;
+				}
+
+				let quality = 1;
+				const params: { [key: string]: string } = {};
+
+				for (const paramPart of paramParts) {
+					if (paramPart.length > 0) {
+						if (paramPart.startsWith("q=") || paramPart.startsWith("Q=")) {
+							const qualityMatch = HeaderHelper._QUALITY_REGEX.exec(paramPart);
+							if (!qualityMatch?.[1]) {
+								return undefined;
+							}
+							quality = Number(qualityMatch[1]);
+						} else {
+							const eqIndex = paramPart.indexOf("=");
+							if (eqIndex > 0) {
+								const key = paramPart.slice(0, eqIndex).trim().toLowerCase();
+								const val = paramPart.slice(eqIndex + 1).trim();
+								if (key.length > 0) {
+									params[key] = val;
+								}
+							}
+						}
+					}
+				}
+
+				parsed.push({ value: valuePart, quality, params });
+			}
+
+			if (parsed.length > 0) {
+				return parsed.sort((a, b) => b.quality - a.quality);
+			}
+		}
 	}
 
 	/**

@@ -126,6 +126,87 @@ describe("Urn", () => {
 		Urn.guard("source", "foo", "aaa:bbb");
 	});
 
+	test("can succeed to guard a valid urn with matching namespaceIdentifier", () => {
+		Urn.guard("source", "foo", "aaa:bbb", { namespaceIdentifier: "aaa" });
+	});
+
+	test("can fail to guard a urn with wrong namespaceIdentifier and throw", () => {
+		expect(() => Urn.guard("source", "foo", "aaa:bbb", { namespaceIdentifier: "xxx" })).toThrow(
+			expect.objectContaining({
+				name: "GuardError",
+				message: "guard.urnNamespaceIdentifier",
+				properties: { property: "foo", value: "aaa:bbb", options: "xxx" }
+			})
+		);
+	});
+
+	test("can succeed to guard a valid urn with matching namespaceSpecific string", () => {
+		Urn.guard("source", "foo", "aaa:bbb", { namespaceSpecific: "bbb" });
+	});
+
+	test("can fail to guard a urn with wrong namespaceSpecific string and throw", () => {
+		expect(() => Urn.guard("source", "foo", "aaa:bbb:ccc", { namespaceSpecific: "xxx" })).toThrow(
+			expect.objectContaining({
+				name: "GuardError",
+				message: "guard.urnNamespaceSpecific",
+				properties: { property: "foo", value: "aaa:bbb:ccc", options: "xxx" }
+			})
+		);
+	});
+
+	test("can succeed to guard a valid urn with matching namespaceSpecific array", () => {
+		Urn.guard("source", "foo", "aaa:bbb:ccc", { namespaceSpecific: ["bbb", "ccc"] });
+	});
+
+	test("can fail to guard a urn with wrong namespaceSpecific array and throw", () => {
+		expect(() =>
+			Urn.guard("source", "foo", "aaa:bbb:ccc", { namespaceSpecific: ["xxx", "yyy"] })
+		).toThrow(
+			expect.objectContaining({
+				name: "GuardError",
+				message: "guard.urnNamespaceSpecific",
+				properties: { property: "foo", value: "aaa:bbb:ccc", options: "xxx:yyy" }
+			})
+		);
+	});
+
+	test("can succeed to guard a valid urn with both options matching", () => {
+		Urn.guard("source", "foo", "aaa:bbb", {
+			namespaceIdentifier: "aaa",
+			namespaceSpecific: "bbb"
+		});
+	});
+
+	test("can fail to guard a urn when namespaceIdentifier matches but namespaceSpecific does not", () => {
+		expect(() =>
+			Urn.guard("source", "foo", "aaa:bbb:ccc", {
+				namespaceIdentifier: "aaa",
+				namespaceSpecific: "xxx"
+			})
+		).toThrow(
+			expect.objectContaining({
+				name: "GuardError",
+				message: "guard.urnNamespaceSpecific",
+				properties: { property: "foo", value: "aaa:bbb:ccc", options: "xxx" }
+			})
+		);
+	});
+
+	test("can fail to guard a urn when namespaceSpecific matches but namespaceIdentifier does not", () => {
+		expect(() =>
+			Urn.guard("source", "foo", "aaa:bbb", {
+				namespaceIdentifier: "xxx",
+				namespaceSpecific: "bbb"
+			})
+		).toThrow(
+			expect.objectContaining({
+				name: "GuardError",
+				message: "guard.urnNamespaceIdentifier",
+				properties: { property: "foo", value: "aaa:bbb", options: "xxx" }
+			})
+		);
+	});
+
 	test("can fail to tryParseExact an empty urn", () => {
 		const urn = Urn.tryParseExact("");
 
@@ -329,5 +410,29 @@ describe("Urn", () => {
 
 	test("can get namespace specific parts with a start index 3", () => {
 		expect(new Urn("aaa", "bbb:ccc:ddd").namespaceSpecificParts(3)).toEqual([]);
+	});
+
+	test("can get namespace specific parts with a count of 1", () => {
+		expect(new Urn("aaa", "bbb:ccc:ddd").namespaceSpecificParts(0, 1)).toEqual(["bbb"]);
+	});
+
+	test("can get namespace specific parts with a count of 2", () => {
+		expect(new Urn("aaa", "bbb:ccc:ddd").namespaceSpecificParts(0, 2)).toEqual(["bbb", "ccc"]);
+	});
+
+	test("can get namespace specific parts with a count exceeding available parts", () => {
+		expect(new Urn("aaa", "bbb:ccc:ddd").namespaceSpecificParts(0, 10)).toEqual([
+			"bbb",
+			"ccc",
+			"ddd"
+		]);
+	});
+
+	test("can get namespace specific parts with a count of 0", () => {
+		expect(new Urn("aaa", "bbb:ccc:ddd").namespaceSpecificParts(0, 0)).toEqual([]);
+	});
+
+	test("can get namespace specific parts with a start index and count", () => {
+		expect(new Urn("aaa", "bbb:ccc:ddd").namespaceSpecificParts(1, 1)).toEqual(["ccc"]);
 	});
 });
