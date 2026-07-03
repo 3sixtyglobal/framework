@@ -49,15 +49,21 @@ export class EnvHelper {
 
 	/**
 	 * Convert an environment variable key to a JSON key.
+	 * A trailing _* or * is preserved as a wildcard suffix (e.g. TWIN_REST_PATH_* → "restPath*").
 	 * @param envVarKey The environment variable key.
 	 * @param prefix The prefix of the environment variable key, if not provided gets all.
 	 * @returns The JSON key.
 	 */
 	public static envVarKeyToJsonKey(envVarKey: string, prefix?: string): string {
+		const isWildcard = envVarKey.endsWith("*");
+		if (isWildcard) {
+			envVarKey = envVarKey.replace(/_?\*$/, "");
+		}
 		if (Is.stringValue(prefix) && envVarKey.startsWith(prefix)) {
 			envVarKey = envVarKey.replace(prefix, "");
 		}
-		return StringHelper.camelCase(envVarKey.toLowerCase());
+		const camelKey = StringHelper.camelCase(envVarKey.toLowerCase());
+		return isWildcard ? `${camelKey}*` : camelKey;
 	}
 
 	/**

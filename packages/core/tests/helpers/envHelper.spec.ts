@@ -31,6 +31,26 @@ describe("EnvHelper", () => {
 		test("returns empty string when key equals prefix exactly", () => {
 			expect(EnvHelper.envVarKeyToJsonKey("APP_", "APP_")).toEqual("");
 		});
+
+		test("preserves wildcard suffix on a bare key", () => {
+			expect(EnvHelper.envVarKeyToJsonKey("REST_PATH_*")).toEqual("restPath*");
+		});
+
+		test("preserves wildcard suffix when prefix is stripped", () => {
+			expect(EnvHelper.envVarKeyToJsonKey("TWIN_REST_PATH_*", "TWIN_")).toEqual("restPath*");
+		});
+
+		test("preserves wildcard suffix when prefix has multiple segments", () => {
+			expect(EnvHelper.envVarKeyToJsonKey("APP_SERVER_HOST_*", "APP_SERVER_")).toEqual("host*");
+		});
+
+		test("handles wildcard with no underscore separator before asterisk", () => {
+			expect(EnvHelper.envVarKeyToJsonKey("FOO*")).toEqual("foo*");
+		});
+
+		test("handles wildcard when only the prefix segment precedes the asterisk", () => {
+			expect(EnvHelper.envVarKeyToJsonKey("APP_*", "APP_")).toEqual("app*");
+		});
 	});
 
 	describe("jsonKeyToEnvVarKey", () => {
