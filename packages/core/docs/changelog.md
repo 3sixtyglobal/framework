@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.9.1-next.6](https://github.com/iotaledger/twin-framework/compare/core-v0.9.1-next.5...core-v0.9.1-next.6) (2026-07-03)
+
+
+### Features
+
+* add wildcard support to the envhelper ([c064d46](https://github.com/iotaledger/twin-framework/commit/c064d46d36bbee8022a741b985d2b64c8f9572e4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.9.1-next.5 to 0.9.1-next.6
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.1-next.5 to 0.9.1-next.6
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.5 to 0.9.1-next.6
+
 ## [0.9.1-next.5](https://github.com/iotaledger/twin-framework/compare/core-v0.9.1-next.4...core-v0.9.1-next.5) (2026-06-29)
 
 
