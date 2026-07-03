@@ -51,6 +51,7 @@ The object with camel cased names.
 > `static` **envVarKeyToJsonKey**(`envVarKey`, `prefix?`): `string`
 
 Convert an environment variable key to a JSON key.
+A trailing _* or * is preserved as a wildcard suffix (e.g. TWIN_REST_PATH_* → "restPath*").
 
 #### Parameters
 
