@@ -18,7 +18,9 @@ Cache the results from asynchronous requests.
 
 > `static` **exec**\<`T`\>(`key`, `ttlMs`, `requestMethod`, `cacheFailures?`): `Promise`\<`T`\>
 
-Execute an async request and cache the result.
+Execute an async request and cache the result. A result that resolves to
+undefined or null is treated as a cache miss for later callers, who re-run
+requestMethod themselves instead of waiting on the empty value.
 
 #### Type Parameters
 

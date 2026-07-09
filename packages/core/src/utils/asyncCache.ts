@@ -32,7 +32,9 @@ export class AsyncCache {
 	private static readonly _CLEANUP_INTERVAL_MS = 5000;
 
 	/**
-	 * Execute an async request and cache the result.
+	 * Execute an async request and cache the result. A result that resolves to
+	 * undefined or null is treated as a cache miss for later callers, who re-run
+	 * requestMethod themselves instead of waiting on the empty value.
 	 * @param key The key for the entry in the cache.
 	 * @param ttlMs The TTL of the entry in the cache.
 	 * @param requestMethod The method to call if not cached.
@@ -67,6 +69,17 @@ export class AsyncCache {
 			} else if (!Is.empty(cachedEntry.error)) {
 				// If the cache has already resulted in an error, reject it
 				return Promise.reject(cachedEntry.error);
+			} else if (!cachedEntry.inProgress) {
+				// The request already settled with an empty/nullish result. Both result
+				// and error are empty here, which would otherwise look identical to
+				// "still in progress" - but inProgress tells us the one-time settlement
+				// callback below already fired, so nothing would ever drain a new queue
+				// entry for this stale record. Treat it as a miss and re-run fresh,
+				// mirroring how an uncached failure is handled just below.
+				if (cache[key] === cachedEntry) {
+					delete cache[key];
+				}
+				return AsyncCache.exec(key, ttlMs, requestMethod, cacheFailures);
 			}
 
 			// Otherwise create a promise to return and store the resolver

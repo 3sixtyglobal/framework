@@ -599,4 +599,36 @@ describe("FetchHelper", () => {
 		);
 		expect(response2.foo).toEqual(1);
 	});
+
+	test("a cached response body of literal JSON null does not hang a later caller", async () => {
+		// A 200 response whose JSON body is literally `null` resolves the cached
+		// requestMethod to `null` - the exact nullish-success case that used to make
+		// AsyncCache.exec queue later callers forever (twin-framework issue #400).
+		fetchMock.mockResolvedValue({
+			ok: true,
+			json: async () => null
+		});
+
+		const first = await FetchHelper.fetchJson<never, null>("source", "url", "GET", undefined, {
+			cacheTtlMs: 100000
+		});
+		expect(first).toBeNull();
+
+		const secondPromise = FetchHelper.fetchJson<never, null>("source", "url", "GET", undefined, {
+			cacheTtlMs: 100000
+		});
+
+		const TIMEOUT = Symbol("timeout");
+		const raceResult = await Promise.race([
+			secondPromise,
+			new Promise(resolve => setTimeout(() => resolve(TIMEOUT), 300))
+		]);
+
+		// Before the AsyncCache fix, this call never settles and the timeout sentinel
+		// always wins - proving the framework fix protects this real consumer too, not
+		// just the isolated AsyncCache unit tests.
+		expect(raceResult).not.toBe(TIMEOUT);
+		expect(raceResult).toBeNull();
+		expect(fetchMock).toHaveBeenCalledTimes(2);
+	});
 });

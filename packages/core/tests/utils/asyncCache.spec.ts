@@ -673,4 +673,166 @@ describe("AsyncCache", () => {
 			}
 		});
 	});
+
+	describe("nullish success does not hang later callers", () => {
+		test("a later caller does not hang after an earlier request settles with undefined", async () => {
+			vi.useFakeTimers();
+			try {
+				const requestMethod = vi.fn().mockResolvedValue(undefined);
+				const key = "hang-repro";
+
+				// First call settles normally with `undefined`.
+				const first = await AsyncCache.exec(key, 100000, requestMethod);
+				expect(first).toBeUndefined();
+				expect(requestMethod).toHaveBeenCalledTimes(1);
+
+				// Second call, made *after* the first has already fully settled (not
+				// concurrently) — this is exactly the scenario where AsyncCache mistakes
+				// "settled but empty" for "still in progress" and queues a waiter that
+				// nothing will ever drain.
+				const second = AsyncCache.exec(key, 100000, requestMethod);
+
+				const TIMEOUT = Symbol("timeout");
+				const timeoutPromise = new Promise(resolve => {
+					setTimeout(() => resolve(TIMEOUT), 200);
+				});
+				const racePromise = Promise.race([second, timeoutPromise]);
+
+				// Advance virtual time so the timeout sentinel has a chance to fire.
+				// Before the fix, `second` never settles, so the sentinel always wins.
+				await vi.advanceTimersByTimeAsync(200);
+				const raceResult = await racePromise;
+
+				// This assertion fails before the fix (raceResult is the TIMEOUT sentinel)
+				// and passes after it (raceResult is `undefined`, from a fresh re-run).
+				expect(raceResult).not.toBe(TIMEOUT);
+				expect(raceResult).toBeUndefined();
+			} finally {
+				vi.useRealTimers();
+			}
+		});
+
+		test("concurrent callers with a nullish eventual result are both served once it settles", async () => {
+			const deferred = createDeferred<undefined>();
+			const requestMethod = vi.fn(async () => deferred.promise);
+
+			// Both calls are issued synchronously, in the same tick, before requestMethod's
+			// promise ever settles — genuinely still in flight regardless of how long it
+			// takes, so no real wall-clock wait is needed to exercise this.
+			const res = AsyncCache.exec("hang-concurrent", 100000, requestMethod);
+			const res2 = AsyncCache.exec("hang-concurrent", 100000, requestMethod);
+
+			deferred.resolve(undefined);
+
+			const settledResult = await Promise.allSettled([res, res2]);
+			expect(
+				settledResult[0].status === "fulfilled" && settledResult[0].value === undefined
+			).toEqual(true);
+			expect(
+				settledResult[1].status === "fulfilled" && settledResult[1].value === undefined
+			).toEqual(true);
+			// Still a single underlying call — the fix must not affect genuinely-concurrent
+			// queuing while the original request is actually still in flight.
+			expect(requestMethod).toHaveBeenCalledTimes(1);
+		});
+
+		test("a later call after a nullish settle genuinely re-invokes requestMethod", async () => {
+			const requestMethod = vi.fn().mockResolvedValue(undefined);
+			const key = "hang-reinvoke";
+
+			const first = await AsyncCache.exec(key, 100000, requestMethod);
+			expect(first).toBeUndefined();
+
+			const second = await AsyncCache.exec(key, 100000, requestMethod);
+			expect(second).toBeUndefined();
+
+			// Proves the second caller was served by a genuine fresh invocation, not by
+			// some other accidental resolution path.
+			expect(requestMethod).toHaveBeenCalledTimes(2);
+		});
+
+		test("a caller arriving while the retry itself is in flight queues rather than recursing again", async () => {
+			const key = "hang-retry-queue";
+			let callCount = 0;
+			const retryDeferred = createDeferred<string>();
+			const requestMethod = vi.fn(async () => {
+				callCount++;
+				if (callCount === 1) {
+					// First call settles nullish — this is what triggers the retry below.
+					return undefined;
+				}
+				// The retry (second invocation) stays in flight until retryDeferred
+				// resolves, giving a third caller a deterministic window to queue
+				// against it, with no dependency on real elapsed time.
+				return retryDeferred.promise;
+			});
+
+			const first = await AsyncCache.exec(key, 100000, requestMethod);
+			expect(first).toBeUndefined();
+
+			// Triggers the fresh retry (call #2) synchronously — requestMethod is
+			// invoked immediately, in this same tick, so it's already in flight by the
+			// time the next statement runs, regardless of how long it takes to settle.
+			const second = AsyncCache.exec(key, 100000, requestMethod);
+
+			// Arrives in the same tick, right after the retry started (no await in
+			// between) — must queue against it, not recurse into a third invocation.
+			const third = AsyncCache.exec(key, 100000, requestMethod);
+
+			retryDeferred.resolve("real-value");
+
+			const [secondResult, thirdResult] = await Promise.all([second, third]);
+			expect(secondResult).toEqual("real-value");
+			expect(thirdResult).toEqual("real-value");
+			expect(requestMethod).toHaveBeenCalledTimes(2);
+		});
+
+		test("cacheFailures does not change nullish-success retry behavior", async () => {
+			const requestMethod = vi.fn().mockResolvedValue(undefined);
+			const key = "hang-cachefailures-interplay";
+
+			const first = await AsyncCache.exec(key, 100000, requestMethod, true);
+			expect(first).toBeUndefined();
+
+			const second = await AsyncCache.exec(key, 100000, requestMethod, true);
+			expect(second).toBeUndefined();
+
+			// A nullish success is never eligible for the cacheFailures failure-caching
+			// path — confirms the two concepts stay orthogonal after the fix.
+			expect(requestMethod).toHaveBeenCalledTimes(2);
+		});
+
+		test("an expired nullish entry is evicted via the normal TTL mechanism, not the new retry branch", async () => {
+			const requestMethod = vi.fn().mockResolvedValue(undefined);
+			const key = "hang-ttl-expiry";
+
+			const first = await AsyncCache.exec(key, 1, requestMethod);
+			expect(first).toBeUndefined();
+
+			// Let the entry's 1ms TTL actually expire, so evictIfExpired (not the new
+			// settled-but-empty branch) is what removes it on the next call.
+			await new Promise<void>(resolve => setTimeout(resolve, 10));
+
+			const second = await AsyncCache.exec(key, 100000, requestMethod);
+			expect(second).toBeUndefined();
+			expect(requestMethod).toHaveBeenCalledTimes(2);
+		});
+
+		test("exec does not hang on a nullish entry created via set, where inProgress is undefined rather than false", async () => {
+			// AsyncCache.set never assigns inProgress at all, so a set(key, undefined)
+			// entry has inProgress === undefined, not false. The fix's `!cachedEntry.inProgress`
+			// check only catches this because it tests falsiness rather than strict
+			// equality — pinning that here so a future "tidy-up" to
+			// `cachedEntry.inProgress === false` can't silently reintroduce the hang for
+			// entries created this way.
+			const key = "hang-set-created";
+			await AsyncCache.set(key, undefined, 100000);
+
+			const requestMethod = vi.fn().mockResolvedValue("fresh-value");
+			const result = await AsyncCache.exec(key, 100000, requestMethod);
+
+			expect(result).toEqual("fresh-value");
+			expect(requestMethod).toHaveBeenCalledTimes(1);
+		});
+	});
 });
