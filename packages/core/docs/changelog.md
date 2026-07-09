@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.9.1-next.7](https://github.com/iotaledger/twin-framework/compare/core-v0.9.1-next.6...core-v0.9.1-next.7) (2026-07-09)
+
+
+### Bug Fixes
+
+* settle AsyncCache waiters correctly when a request resolves undefined or null ([#401](https://github.com/iotaledger/twin-framework/issues/401)) ([6ae3f8a](https://github.com/iotaledger/twin-framework/commit/6ae3f8aca688ca76d93ec3964178a3b1a8895453))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.9.1-next.6 to 0.9.1-next.7
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.1-next.6 to 0.9.1-next.7
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.6 to 0.9.1-next.7
+
 ## [0.9.1-next.6](https://github.com/iotaledger/twin-framework/compare/core-v0.9.1-next.5...core-v0.9.1-next.6) (2026-07-03)
 
 

@@ -1,6 +1,6 @@
 {
 	"name": "@twin.org/qr",
-	"version": "0.9.1-next.6",
+	"version": "0.9.1-next.7",
 	"description": "Creating QR codes",
 	"repository": {
 		"type": "git",
@@ -28,14 +28,14 @@
 		"dist:no-test": "npm run clean && npm run build && npm run test:build"
 	},
 	"dependencies": {
-		"@twin.org/core": "0.9.1-next.6",
-		"@twin.org/image": "0.9.1-next.6",
-		"@twin.org/nameof": "0.9.1-next.6"
+		"@twin.org/core": "0.9.1-next.7",
+		"@twin.org/image": "0.9.1-next.7",
+		"@twin.org/nameof": "0.9.1-next.7"
 	},
 	"devDependencies": {
-		"@twin.org/nameof-transformer": "0.9.1-next.6",
-		"@twin.org/nameof-vitest-plugin": "0.9.1-next.6",
-		"@twin.org/validate-locales": "0.9.1-next.6",
+		"@twin.org/nameof-transformer": "0.9.1-next.7",
+		"@twin.org/nameof-vitest-plugin": "0.9.1-next.7",
+		"@twin.org/validate-locales": "0.9.1-next.7",
 		"@vitest/coverage-v8": "4.1.9",
 		"copyfiles": "2.4.1",
 		"rimraf": "6.1.3",
