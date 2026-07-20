@@ -191,6 +191,11 @@ describe("Coerce", () => {
 		expect(Coerce.date(123.45)?.getTime()).toEqual(123);
 	});
 
+	test("date can coerce if value is an ISO date/time string with timezone offset", () => {
+		// "2021-09-28T13:25:09.249+02:00" = "2021-09-28T11:25:09.249Z" - date portion is still 2021-09-28
+		expect(Coerce.date("2021-09-28T13:25:09.249+02:00")?.getTime()).toEqual(1632787200000);
+	});
+
 	test("date can fail if value is an object", () => {
 		expect(Coerce.date({})).toEqual(undefined);
 	});
@@ -205,6 +210,20 @@ describe("Coerce", () => {
 
 	test("dateTime can coerce if value is a number", () => {
 		expect(Coerce.dateTime(1632835509249)?.getTime()).toEqual(1632835509249);
+	});
+
+	test("dateTime can coerce if value is an ISO date-only string", () => {
+		// Date-only strings are treated as UTC midnight by new Date()
+		expect(Coerce.dateTime("2021-09-28")?.getTime()).toEqual(1632787200000);
+	});
+
+	test("dateTime can coerce if value is an ISO date/time string", () => {
+		expect(Coerce.dateTime("2021-09-28T13:25:09.249Z")?.getTime()).toEqual(1632835509249);
+	});
+
+	test("dateTime can coerce if value is an ISO date/time string with timezone offset", () => {
+		// "2021-09-28T13:25:09.249+02:00" = "2021-09-28T11:25:09.249Z"
+		expect(Coerce.dateTime("2021-09-28T13:25:09.249+02:00")?.getTime()).toEqual(1632828309249);
 	});
 
 	test("dateTime can fail if value is an invalid string", () => {
@@ -223,12 +242,55 @@ describe("Coerce", () => {
 		expect(Coerce.time(new Date(0))?.getTime()).toEqual(0);
 	});
 
+	test("time can coerce if value is a number", () => {
+		// Mirror the implementation (setFullYear is local-time based) to keep the assertion timezone-safe
+		const ref = new Date(1632835509249);
+		ref.setFullYear(1970, 0, 1);
+		expect(Coerce.time(1632835509249)?.getTime()).toEqual(ref.getTime());
+	});
+
+	test("time can coerce if value is an ISO date/time string", () => {
+		expect(Coerce.time("2021-09-28T13:25:09.249Z")?.getTime()).toEqual(48309249);
+	});
+
+	test("time can coerce if value is an ISO date/time string with timezone offset", () => {
+		// "2021-09-28T13:25:09.249+02:00" = "2021-09-28T11:25:09.249Z" - time portion is 11:25:09.249 UTC
+		expect(Coerce.time("2021-09-28T13:25:09.249+02:00")?.getTime()).toEqual(41109249);
+	});
+
 	test("time can fail if value is an invalid string", () => {
 		expect(Coerce.time("foo")).toEqual(undefined);
 	});
 
 	test("time can fail if value is an object", () => {
 		expect(Coerce.time({})).toEqual(undefined);
+	});
+
+	test("time can coerce if value is a bare HH:MM:SS string", () => {
+		// No timezone suffix - implementation prepends epoch date and parses as local time.
+		// Derive expected UTC components the same way so the assertion is exact but timezone-safe.
+		const ref = new Date("1970-01-01T09:30:00");
+		const result = Coerce.time("09:30:00");
+		expect(result?.getUTCFullYear()).toEqual(1970);
+		expect(result?.getUTCMonth()).toEqual(0);
+		expect(result?.getUTCDate()).toEqual(1);
+		expect(result?.getUTCHours()).toEqual(ref.getUTCHours());
+		expect(result?.getUTCMinutes()).toEqual(ref.getUTCMinutes());
+		expect(result?.getUTCSeconds()).toEqual(ref.getUTCSeconds());
+	});
+
+	test("time can coerce if value is a bare HH:MM:SS string with Z suffix", () => {
+		expect(Coerce.time("09:30:00Z")?.getTime()).toEqual(34200000);
+	});
+
+	test("time can coerce if value is a bare HH:MM:SS.mmm string", () => {
+		// 09:30:00.123Z UTC = 34200000 + 123 ms
+		expect(Coerce.time("09:30:00.123Z")?.getTime()).toEqual(34200123);
+	});
+
+	test("time can coerce if value is a bare HH:MM:SS string with timezone offset", () => {
+		// 14:00:00+05:30 = 08:30:00 UTC = 8*3600000 + 30*60000 = 30600000 ms
+		expect(Coerce.time("14:00:00+05:30")?.getTime()).toEqual(30600000);
 	});
 
 	test("uint8array can coerce if value is undefined", () => {
