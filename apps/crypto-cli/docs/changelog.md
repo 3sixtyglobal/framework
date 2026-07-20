@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.9.1-next.10](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.9.1-next.9...crypto-cli-v0.9.1-next.10) (2026-07-20)
+
+
+### Miscellaneous Chores
+
+* **crypto-cli:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.1-next.9 to 0.9.1-next.10
+    * @twin.org/core bumped from 0.9.1-next.9 to 0.9.1-next.10
+    * @twin.org/crypto bumped from 0.9.1-next.9 to 0.9.1-next.10
+    * @twin.org/nameof bumped from 0.9.1-next.9 to 0.9.1-next.10
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.1-next.9 to 0.9.1-next.10
+    * @twin.org/nameof-transformer bumped from 0.9.1-next.9 to 0.9.1-next.10
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.9 to 0.9.1-next.10
+    * @twin.org/validate-locales bumped from 0.9.1-next.9 to 0.9.1-next.10
+
 ## [0.9.1-next.9](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.9.1-next.8...crypto-cli-v0.9.1-next.9) (2026-07-20)
 
 
