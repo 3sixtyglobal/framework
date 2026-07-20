@@ -114,10 +114,10 @@ export class Coerce {
 			return value ? true : false;
 		}
 		if (Is.string(value)) {
-			if (/true/i.test(value)) {
+			if (/^true$/i.test(value)) {
 				return true;
 			}
-			if (/false/i.test(value)) {
+			if (/^false$/i.test(value)) {
 				return false;
 			}
 		}
@@ -261,6 +261,9 @@ export class Coerce {
 	 */
 	public static uint8Array(value: unknown): Uint8Array | undefined {
 		if (Is.undefined(value)) {
+			return value;
+		}
+		if (Is.uint8Array(value)) {
 			return value;
 		}
 		if (Is.string(value)) {
