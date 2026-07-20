@@ -36,6 +36,26 @@ describe("Is", () => {
 		expect(Is.notEmpty(null)).toEqual(false);
 	});
 
+	test("notEmpty can succeed if value is zero", () => {
+		expect(Is.notEmpty(0)).toEqual(true);
+	});
+
+	test("notEmpty can succeed if value is an empty string", () => {
+		expect(Is.notEmpty("")).toEqual(true);
+	});
+
+	test("notEmpty can succeed if value is false", () => {
+		expect(Is.notEmpty(false)).toEqual(true);
+	});
+
+	test("notEmpty narrows the type removing null and undefined", () => {
+		const value: string | null | undefined = "hello";
+		if (Is.notEmpty(value)) {
+			const narrowed: string = value;
+			expect(narrowed).toEqual("hello");
+		}
+	});
+
 	test("string can fail if value is undefined", () => {
 		expect(Is.string(undefined)).toEqual(false);
 	});
@@ -152,6 +172,28 @@ describe("Is", () => {
 		expect(Is.stringBase64Url("Pio6bkd2KmQpc3I-VUc6IGE2bnI_MWlfXFw")).toEqual(true);
 	});
 
+	test("stringBase58 can fail if value is an empty string", () => {
+		expect(Is.stringBase58("")).toEqual(false);
+	});
+
+	test("stringBase58 can fail if value contains excluded characters (0, O, I, l)", () => {
+		expect(Is.stringBase58("0OIl")).toEqual(false);
+	});
+
+	test("stringBase58 can fail if value contains non-base58 characters", () => {
+		expect(Is.stringBase58("abc!")).toEqual(false);
+	});
+
+	test("stringBase58 can succeed with a valid base58 string", () => {
+		expect(Is.stringBase58("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")).toEqual(
+			true
+		);
+	});
+
+	test("stringBase58 can succeed with a short base58 string", () => {
+		expect(Is.stringBase58("5HueCGU8rMjxECyDiawujznty")).toEqual(true);
+	});
+
 	test("stringHex can fail if value is an empty string", () => {
 		expect(Is.stringHex("")).toEqual(false);
 	});
@@ -172,12 +214,28 @@ describe("Is", () => {
 		expect(Is.stringHex("aa")).toEqual(true);
 	});
 
+	test("stringHex can succeed if value contains hex characters with allowed prefix", () => {
+		expect(Is.stringHex("0xaa", true)).toEqual(true);
+	});
+
+	test("stringHex can fail if value contains invalid hex characters with allowed prefix", () => {
+		expect(Is.stringHex("0xzz", true)).toEqual(false);
+	});
+
 	test("stringHexLength can fail if value contains hex characters but is the wrong length", () => {
 		expect(Is.stringHexLength("aaaa", 2)).toEqual(false);
 	});
 
 	test("stringHexLength can succeed if value contains hex characters and matches the length", () => {
 		expect(Is.stringHexLength("aa", 2)).toEqual(true);
+	});
+
+	test("stringHexLength can succeed with prefix when length includes the prefix", () => {
+		expect(Is.stringHexLength("0xaa", 4, true)).toEqual(true);
+	});
+
+	test("stringHexLength can fail with prefix when length does not include the prefix", () => {
+		expect(Is.stringHexLength("0xaa", 2, true)).toEqual(false);
 	});
 
 	test("number can fail if value is not a number", () => {
@@ -256,6 +314,18 @@ describe("Is", () => {
 		expect(Is.dateEmpty(new Date(""))).toEqual(true);
 	});
 
+	test("dateString can fail if value is undefined", () => {
+		expect(Is.dateString(undefined)).toEqual(false);
+	});
+
+	test("dateString can fail if value is null", () => {
+		expect(Is.dateString(null)).toEqual(false);
+	});
+
+	test("dateString can fail if value is an empty string", () => {
+		expect(Is.dateString("")).toEqual(false);
+	});
+
 	test("dateString can fail if value is not a date string", () => {
 		expect(Is.dateString("jhkh")).toEqual(false);
 	});
@@ -264,16 +334,127 @@ describe("Is", () => {
 		expect(Is.dateString("2021-09-28T13:25:09.249Z")).toEqual(false);
 	});
 
+	test("dateString can fail if value uses slashes instead of hyphens", () => {
+		expect(Is.dateString("2021/09/28")).toEqual(false);
+	});
+
+	test("dateString can fail if value uses day-month-year order", () => {
+		expect(Is.dateString("28-09-2021")).toEqual(false);
+	});
+
+	test("dateString can fail if value is compact with no separators", () => {
+		expect(Is.dateString("20210928")).toEqual(false);
+	});
+
+	test("dateString can fail if month is out of range", () => {
+		expect(Is.dateString("2021-13-01")).toEqual(false);
+	});
+
+	test("dateString can fail if day is out of range", () => {
+		expect(Is.dateString("2021-01-32")).toEqual(false);
+	});
+
+	test("dateString can fail for Feb 29 on a non-leap year", () => {
+		expect(Is.dateString("2021-02-29")).toEqual(false);
+	});
+
 	test("dateString can succeed if value is a date string", () => {
 		expect(Is.dateString("2021-09-28")).toEqual(true);
+	});
+
+	test("dateString can succeed for Feb 29 on a leap year", () => {
+		expect(Is.dateString("2000-02-29")).toEqual(true);
+	});
+
+	test("dateTimeString can fail if value is undefined", () => {
+		expect(Is.dateTimeString(undefined)).toEqual(false);
+	});
+
+	test("dateTimeString can fail if value is null", () => {
+		expect(Is.dateTimeString(null)).toEqual(false);
+	});
+
+	test("dateTimeString can fail if value is an empty string", () => {
+		expect(Is.dateTimeString("")).toEqual(false);
 	});
 
 	test("dateTimeString can fail if value is not a time string", () => {
 		expect(Is.dateTimeString("jhkh")).toEqual(false);
 	});
 
+	test("dateTimeString can fail if value is a date-only string", () => {
+		expect(Is.dateTimeString("2021-09-28")).toEqual(false);
+	});
+
+	test("dateTimeString can fail if value is missing seconds", () => {
+		expect(Is.dateTimeString("2021-09-28T13:25")).toEqual(false);
+	});
+
+	test("dateTimeString can fail for Feb 29 on a non-leap year", () => {
+		expect(Is.dateTimeString("2021-02-29T13:25:09Z")).toEqual(false);
+	});
+
+	test("dateTimeString can succeed for Feb 29 on a leap year", () => {
+		expect(Is.dateTimeString("2000-02-29T13:25:09Z")).toEqual(true);
+	});
+
+	test("dateTimeString can fail if month is out of range", () => {
+		expect(Is.dateTimeString("2021-13-28T13:25:09.249Z")).toEqual(false);
+	});
+
+	test("dateTimeString can fail if hour is out of range", () => {
+		expect(Is.dateTimeString("2021-09-28T25:25:09.249Z")).toEqual(false);
+	});
+
 	test("dateTimeString can succeed if value is a date string", () => {
 		expect(Is.dateTimeString("2021-09-28T13:25:09.249Z")).toEqual(true);
+	});
+
+	test("dateTimeString can succeed without milliseconds or timezone", () => {
+		expect(Is.dateTimeString("2021-09-28T13:25:09")).toEqual(true);
+	});
+
+	test("dateTimeString can succeed with a positive timezone offset", () => {
+		expect(Is.dateTimeString("2021-09-28T13:25:09+05:30")).toEqual(true);
+	});
+
+	test("dateTimeString can succeed with a negative timezone offset", () => {
+		expect(Is.dateTimeString("2021-09-28T13:25:09-08:00")).toEqual(true);
+	});
+
+	test("dateTimeString can fail for Feb 29 on a non-leap year with a timezone offset", () => {
+		expect(Is.dateTimeString("2021-02-29T13:25:09+05:30")).toEqual(false);
+	});
+
+	test("dateTimeString can succeed for Feb 29 on a leap year with a timezone offset", () => {
+		expect(Is.dateTimeString("2000-02-29T13:25:09+05:30")).toEqual(true);
+	});
+
+	test("dateTimeString can succeed when a positive offset crosses the previous UTC day", () => {
+		// 2021-03-01T00:30:00+05:30 is 2021-02-28T19:00:00Z in UTC - date in string is still valid
+		expect(Is.dateTimeString("2021-03-01T00:30:00+05:30")).toEqual(true);
+	});
+
+	test("dateTimeString can succeed when a negative offset crosses the next UTC day", () => {
+		// 2021-02-28T23:30:00-05:30 is 2021-03-01T05:00:00Z in UTC - date in string is still valid
+		expect(Is.dateTimeString("2021-02-28T23:30:00-05:30")).toEqual(true);
+	});
+
+	test("dateTimeString can succeed at a year boundary with a negative offset", () => {
+		// 2021-12-31T23:00:00-02:00 is 2022-01-01T01:00:00Z in UTC - date in string is still valid
+		expect(Is.dateTimeString("2021-12-31T23:00:00-02:00")).toEqual(true);
+	});
+
+	test("timeString can fail if value is undefined", () => {
+		expect(Is.timeString(undefined)).toEqual(false);
+	});
+
+	test("timeString can fail if value is null", () => {
+		expect(Is.timeString(null)).toEqual(false);
+	});
+
+	test("timeString can fail if value is an empty string", () => {
+		expect(Is.timeString("")).toEqual(false);
 	});
 
 	test("timeString can fail if value is not a time string", () => {
@@ -284,8 +465,28 @@ describe("Is", () => {
 		expect(Is.timeString("2021-09-28T13:25:09.249Z")).toEqual(false);
 	});
 
+	test("timeString can fail if value is missing seconds", () => {
+		expect(Is.timeString("13:25")).toEqual(false);
+	});
+
+	test("timeString can fail if hour is out of range", () => {
+		expect(Is.timeString("25:00:00")).toEqual(false);
+	});
+
 	test("timeString can succeed if value is a time string", () => {
 		expect(Is.timeString("13:25:09.249Z")).toEqual(true);
+	});
+
+	test("timeString can succeed without milliseconds or timezone", () => {
+		expect(Is.timeString("13:25:09")).toEqual(true);
+	});
+
+	test("timeString can succeed with a positive timezone offset", () => {
+		expect(Is.timeString("13:25:09+05:30")).toEqual(true);
+	});
+
+	test("timeString can succeed with a negative timezone offset", () => {
+		expect(Is.timeString("13:25:09-08:00")).toEqual(true);
 	});
 
 	test("seconds timestamp can fail if value is not a number", () => {
@@ -296,8 +497,16 @@ describe("Is", () => {
 		expect(Is.timestampSeconds(100000000000)).toEqual(false);
 	});
 
+	test("seconds timestamp can fail if value is a float", () => {
+		expect(Is.timestampSeconds(1.5)).toEqual(false);
+	});
+
 	test("seconds timestamp can succeed if value contains a number with less than 12 digits", () => {
 		expect(Is.timestampSeconds(0)).toEqual(true);
+	});
+
+	test("seconds timestamp can succeed for a negative value", () => {
+		expect(Is.timestampSeconds(-1)).toEqual(true);
 	});
 
 	test("milliseconds timestamp can fail if value is not a number", () => {
@@ -308,8 +517,16 @@ describe("Is", () => {
 		expect(Is.timestampMilliseconds(10000000000)).toEqual(false);
 	});
 
+	test("milliseconds timestamp can fail if value is a float", () => {
+		expect(Is.timestampMilliseconds(1.5)).toEqual(false);
+	});
+
 	test("milliseconds timestamp can succeed if value contains a number with greater than or equal to 12 digits", () => {
 		expect(Is.timestampMilliseconds(100000000000)).toEqual(true);
+	});
+
+	test("milliseconds timestamp can succeed for a negative value", () => {
+		expect(Is.timestampMilliseconds(-100000000000)).toEqual(true);
 	});
 
 	test("object can fail if value is undefined", () => {
@@ -368,6 +585,10 @@ describe("Is", () => {
 		expect(Is.arrayOneOf(0, [1, 2, 3])).toEqual(false);
 	});
 
+	test("arrayOneOf can fail if the options array is empty", () => {
+		expect(Is.arrayOneOf(1, [])).toEqual(false);
+	});
+
 	test("arrayOneOf can succeed if value is in the array with numbers", () => {
 		expect(Is.arrayOneOf(1, [1, 2, 3])).toEqual(true);
 	});
@@ -380,8 +601,56 @@ describe("Is", () => {
 		expect(Is.uint8Array(undefined)).toEqual(false);
 	});
 
+	test("uint8Array can fail if value is a regular array", () => {
+		expect(Is.uint8Array([1, 2, 3])).toEqual(false);
+	});
+
+	test("uint8Array can fail if value is a different typed array", () => {
+		expect(Is.uint8Array(new Int8Array())).toEqual(false);
+	});
+
 	test("uint8Array can succeed if value is a Uint8Array", () => {
 		expect(Is.uint8Array(new Uint8Array())).toEqual(true);
+	});
+
+	test("typedArray can fail if value is undefined", () => {
+		expect(Is.typedArray(undefined)).toEqual(false);
+	});
+
+	test("typedArray can fail if value is a regular array", () => {
+		expect(Is.typedArray([1, 2, 3])).toEqual(false);
+	});
+
+	test("typedArray can succeed if value is a Uint8Array", () => {
+		expect(Is.typedArray(new Uint8Array())).toEqual(true);
+	});
+
+	test("typedArray can succeed if value is an Int8Array", () => {
+		expect(Is.typedArray(new Int8Array())).toEqual(true);
+	});
+
+	test("typedArray can succeed if value is a Uint16Array", () => {
+		expect(Is.typedArray(new Uint16Array())).toEqual(true);
+	});
+
+	test("typedArray can succeed if value is an Int16Array", () => {
+		expect(Is.typedArray(new Int16Array())).toEqual(true);
+	});
+
+	test("typedArray can succeed if value is a Uint32Array", () => {
+		expect(Is.typedArray(new Uint32Array())).toEqual(true);
+	});
+
+	test("typedArray can succeed if value is an Int32Array", () => {
+		expect(Is.typedArray(new Int32Array())).toEqual(true);
+	});
+
+	test("typedArray can succeed if value is a Float32Array", () => {
+		expect(Is.typedArray(new Float32Array())).toEqual(true);
+	});
+
+	test("typedArray can succeed if value is a Float64Array", () => {
+		expect(Is.typedArray(new Float64Array())).toEqual(true);
 	});
 
 	test("function can fail if value is not a function", () => {
@@ -591,5 +860,56 @@ describe("Is", () => {
 
 	test("duration can fail for an object missing required fields", () => {
 		expect(Is.duration({ years: 0, months: 0 })).toEqual(false);
+	});
+
+	test("duration can fail for an IDuration object with mixed signs", () => {
+		expect(
+			Is.duration({ years: 1, months: 0, weeks: 0, days: -1, hours: 0, minutes: 0, seconds: 0 })
+		).toEqual(false);
+	});
+
+	test("duration can fail for an IDuration object with milliseconds out of range", () => {
+		expect(
+			Is.duration({
+				years: 0,
+				months: 0,
+				weeks: 0,
+				days: 0,
+				hours: 0,
+				minutes: 0,
+				seconds: 0,
+				milliseconds: 1000
+			})
+		).toEqual(false);
+	});
+
+	test("duration can fail for an IDuration object with microseconds out of range", () => {
+		expect(
+			Is.duration({
+				years: 0,
+				months: 0,
+				weeks: 0,
+				days: 0,
+				hours: 0,
+				minutes: 0,
+				seconds: 0,
+				microseconds: -1000
+			})
+		).toEqual(false);
+	});
+
+	test("duration can fail for an IDuration object with nanoseconds out of range", () => {
+		expect(
+			Is.duration({
+				years: 0,
+				months: 0,
+				weeks: 0,
+				days: 0,
+				hours: 0,
+				minutes: 0,
+				seconds: 0,
+				nanoseconds: 1000
+			})
+		).toEqual(false);
 	});
 });
