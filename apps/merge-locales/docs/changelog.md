@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.9.1-next.8](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.1-next.7...merge-locales-v0.9.1-next.8) (2026-07-20)
+
+
+### Miscellaneous Chores
+
+* **merge-locales:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.1-next.7 to 0.9.1-next.8
+    * @twin.org/core bumped from 0.9.1-next.7 to 0.9.1-next.8
+    * @twin.org/nameof bumped from 0.9.1-next.7 to 0.9.1-next.8
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.1-next.7 to 0.9.1-next.8
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.7 to 0.9.1-next.8
+
 ## [0.9.1-next.7](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.1-next.6...merge-locales-v0.9.1-next.7) (2026-07-09)
 
 

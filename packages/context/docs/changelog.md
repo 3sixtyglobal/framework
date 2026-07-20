@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.9.1-next.8](https://github.com/iotaledger/twin-framework/compare/context-v0.9.1-next.7...context-v0.9.1-next.8) (2026-07-20)
+
+
+### Bug Fixes
+
+* context id backwards compatibility ([#406](https://github.com/iotaledger/twin-framework/issues/406)) ([afab5fa](https://github.com/iotaledger/twin-framework/commit/afab5fa2a876b01736e117e4992536627837afde))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.9.1-next.7 to 0.9.1-next.8
+    * @twin.org/nameof bumped from 0.9.1-next.7 to 0.9.1-next.8
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.1-next.7 to 0.9.1-next.8
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.7 to 0.9.1-next.8
+    * @twin.org/validate-locales bumped from 0.9.1-next.7 to 0.9.1-next.8
+
 ## [0.9.1-next.7](https://github.com/iotaledger/twin-framework/compare/context-v0.9.1-next.6...context-v0.9.1-next.7) (2026-07-09)
 
 
