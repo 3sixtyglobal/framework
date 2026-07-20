@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.9.1-next.9](https://github.com/iotaledger/twin-framework/compare/core-v0.9.1-next.8...core-v0.9.1-next.9) (2026-07-20)
+
+
+### Features
+
+* improved coercion ([fcc7d98](https://github.com/iotaledger/twin-framework/commit/fcc7d9826f5405be5e3b5414ea53be42f974f9d5))
+
+
+### Bug Fixes
+
+* iso 8601 checks ([#409](https://github.com/iotaledger/twin-framework/issues/409)) ([4427101](https://github.com/iotaledger/twin-framework/commit/442710109b63ec67ca5ee7cb948df742500d0151))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.9.1-next.8 to 0.9.1-next.9
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.1-next.8 to 0.9.1-next.9
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.8 to 0.9.1-next.9
+
 ## [0.9.1-next.8](https://github.com/iotaledger/twin-framework/compare/core-v0.9.1-next.7...core-v0.9.1-next.8) (2026-07-20)
 
 
