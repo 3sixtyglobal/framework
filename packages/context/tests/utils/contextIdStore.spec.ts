@@ -395,6 +395,100 @@ describe("ContextIdStore", () => {
 		expect(captured).toEqual(ids);
 	});
 
+	it("should handle legacy context@0.9.0 wrapper shape { contextIds: AsyncLocalStorage }", async () => {
+		SharedStore.remove("asyncHooks");
+
+		// Simulate old context@0.9.0 populating SharedStore with the wrapper shape before
+		// this (newer) version has a chance to initialise.
+		const hooks = await import("node:async_hooks");
+		const legacyStorage = new hooks.AsyncLocalStorage<IContextIds>({
+			name: "AsyncContextIdsStorage"
+		});
+		SharedStore.set("asyncHooks", { contextIds: legacyStorage });
+
+		const storage = await ContextIdStore.getStorage();
+		expect(storage).toBe(legacyStorage);
+
+		// Verify run/getContextIds still work end-to-end with the legacy-populated storage.
+		const ids: IContextIds = { organization: "legacy-org", user: "legacy-user" };
+		let captured: IContextIds | undefined;
+		await ContextIdStore.run(ids, async () => {
+			captured = await ContextIdStore.getContextIds();
+		});
+		expect(captured).toEqual(ids);
+		expect(await ContextIdStore.getContextIds()).toBeUndefined();
+
+		SharedStore.remove("asyncHooks");
+	});
+
+	it("should leave SharedStore unchanged when legacy wrapper shape is detected", async () => {
+		SharedStore.remove("asyncHooks");
+
+		const hooks = await import("node:async_hooks");
+		const legacyStorage = new hooks.AsyncLocalStorage<IContextIds>({
+			name: "AsyncContextIdsStorage"
+		});
+		const wrapper = { contextIds: legacyStorage };
+		SharedStore.set("asyncHooks", wrapper);
+
+		await ContextIdStore.getStorage();
+
+		// SharedStore must still hold the original wrapper - not upgraded to the Promise
+		// shape - so that concurrent old context@0.9.0 code can continue to read contextIds.
+		expect(SharedStore.get("asyncHooks")).toBe(wrapper);
+
+		SharedStore.remove("asyncHooks");
+	});
+
+	it("should return the same AsyncLocalStorage instance for concurrent getStorage calls with legacy shape", async () => {
+		SharedStore.remove("asyncHooks");
+
+		const hooks = await import("node:async_hooks");
+		const legacyStorage = new hooks.AsyncLocalStorage<IContextIds>({
+			name: "AsyncContextIdsStorage"
+		});
+		SharedStore.set("asyncHooks", { contextIds: legacyStorage });
+
+		const [a, b, c] = await Promise.all([
+			ContextIdStore.getStorage(),
+			ContextIdStore.getStorage(),
+			ContextIdStore.getStorage()
+		]);
+
+		expect(a).toBe(legacyStorage);
+		expect(b).toBe(legacyStorage);
+		expect(c).toBe(legacyStorage);
+
+		SharedStore.remove("asyncHooks");
+	});
+
+	it("should propagate context correctly when getStorage is called concurrently with run under legacy shape", async () => {
+		SharedStore.remove("asyncHooks");
+
+		const hooks = await import("node:async_hooks");
+		const legacyStorage = new hooks.AsyncLocalStorage<IContextIds>({
+			name: "AsyncContextIdsStorage"
+		});
+		SharedStore.set("asyncHooks", { contextIds: legacyStorage });
+
+		const ids: IContextIds = {
+			organization: "legacy-concurrent-org",
+			user: "legacy-concurrent-user"
+		};
+		let captured: IContextIds | undefined;
+
+		await Promise.all([
+			ContextIdStore.getStorage(),
+			ContextIdStore.run(ids, async () => {
+				captured = await ContextIdStore.getContextIds();
+			})
+		]);
+
+		expect(captured).toEqual(ids);
+
+		SharedStore.remove("asyncHooks");
+	});
+
 	it("should load a module and maintain context", async () => {
 		const { hasNodeContext } = await import(path.join(__dirname, "module.js"));
 

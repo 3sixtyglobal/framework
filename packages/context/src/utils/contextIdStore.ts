@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import type { AsyncLocalStorage } from "node:async_hooks";
-import { BaseError, GeneralError, SharedStore } from "@twin.org/core";
+import { BaseError, GeneralError, Is, SharedStore } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 import type { IContextIds } from "../models/IContextIds.js";
 
@@ -42,7 +42,9 @@ export class ContextIdStore {
 		// get with the factory is invoked synchronously and stores the returned
 		// Promise before yielding, so concurrent callers always await the same
 		// AsyncLocalStorage instance regardless of how many module versions are loaded.
-		return SharedStore.get<Promise<AsyncLocalStorage<IContextIds>>>("asyncHooks", async () => {
+		const stored = SharedStore.get<
+			Promise<AsyncLocalStorage<IContextIds>> | { contextIds: AsyncLocalStorage<IContextIds> }
+		>("asyncHooks", async () => {
 			try {
 				const hooks = await import("node:async_hooks");
 				return new hooks.AsyncLocalStorage<IContextIds>({
@@ -58,5 +60,14 @@ export class ContextIdStore {
 				);
 			}
 		});
+
+		// Back-compat with context@0.9.0: that version stored { contextIds: AsyncLocalStorage }
+		// (a plain wrapper object, not a Promise). Leave SharedStore untouched - upgrading to
+		// the Promise shape would cause old code to see no contextIds, create a second
+		// AsyncLocalStorage, and silently split context between versions.
+		if (!Is.promise<AsyncLocalStorage<IContextIds>>(stored)) {
+			return stored.contextIds;
+		}
+		return stored;
 	}
 }
