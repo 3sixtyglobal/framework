@@ -110,6 +110,54 @@ The parsed language preferences ordered by highest quality first, or undefined i
 
 ***
 
+### extractAccept() {#extractaccept}
+
+> `static` **extractAccept**(`headers?`): `object`[] \| `undefined`
+
+Extract parsed media type preferences from the Accept header.
+
+#### Parameters
+
+##### headers?
+
+[`IHttpHeaders`](../interfaces/IHttpHeaders.md)
+
+The HTTP request headers.
+
+#### Returns
+
+`object`[] \| `undefined`
+
+The parsed media type preferences ordered by highest quality first, or undefined if missing or invalid.
+
+***
+
+### parseAccept() {#parseaccept}
+
+> `static` **parseAccept**(`accept`): `object`[] \| `undefined`
+
+Parse one or more Accept header values into media type preferences.
+
+#### Parameters
+
+##### accept
+
+`string` \| `string`[] \| `undefined`
+
+The Accept header value or values.
+
+#### Returns
+
+`object`[] \| `undefined`
+
+The parsed media type preferences ordered by highest quality first, or undefined if missing or if any entry is invalid.
+
+#### See
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept
+
+***
+
 ### extractClientIps() {#extractclientips}
 
 > `static` **extractClientIps**(`headers?`): `string`[]
@@ -438,3 +486,31 @@ GeneralError if the URL or rel are invalid.
 #### See
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
+
+***
+
+### parseWeightedHeader() {#parseweightedheader}
+
+> `static` **parseWeightedHeader**(`header`, `valueValidator`): `object`[] \| `undefined`
+
+Parse a quality-weighted comma-separated header into entries.
+
+#### Parameters
+
+##### header
+
+`string` \| `string`[] \| `undefined`
+
+The header value or values.
+
+##### valueValidator
+
+`RegExp`
+
+Regex to validate the value portion of each entry.
+
+#### Returns
+
+`object`[] \| `undefined`
+
+Entries ordered by quality descending, or undefined if any entry is invalid.

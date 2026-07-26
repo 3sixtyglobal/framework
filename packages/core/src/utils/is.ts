@@ -40,7 +40,7 @@ export class Is {
 	 * @param value The value to test.
 	 * @returns True if the value is not null or undefined.
 	 */
-	public static notEmpty(value: unknown): boolean {
+	public static notEmpty<T>(value: T): value is NonNullable<T> {
 		return value !== null && value !== undefined;
 	}
 
@@ -195,7 +195,7 @@ export class Is {
 	 * @param value The value to test.
 	 * @returns True if the value is an empty date.
 	 */
-	public static dateEmpty(value: unknown): boolean {
+	public static dateEmpty(value: unknown): value is Date {
 		return (
 			Object.prototype.toString.call(value) === "[object Date]" &&
 			Number.isNaN((value as Date).getTime())
@@ -207,11 +207,20 @@ export class Is {
 	 * @param value The value to test.
 	 * @returns True if the value is a string in ISO 8601 date format.
 	 */
-	public static dateString(value: unknown): boolean {
-		if (typeof value !== "string" || value.length === 0 || value.includes("T")) {
+	public static dateString(value: unknown): value is string {
+		if (typeof value !== "string") {
 			return false;
 		}
-		return !Number.isNaN(Date.parse(value));
+		if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+			return false;
+		}
+		const [year, month, day] = value.split("-").map(Number);
+		const date = new Date(value);
+		return (
+			date.getUTCFullYear() === year &&
+			date.getUTCMonth() + 1 === month &&
+			date.getUTCDate() === day
+		);
 	}
 
 	/**
@@ -219,11 +228,22 @@ export class Is {
 	 * @param value The value to test.
 	 * @returns True if the value is a string in ISO 8601 date/time format.
 	 */
-	public static dateTimeString(value: unknown): boolean {
-		if (typeof value !== "string" || value.length === 0 || !value.includes("T")) {
+	public static dateTimeString(value: unknown): value is string {
+		if (typeof value !== "string") {
 			return false;
 		}
-		return !Number.isNaN(Date.parse(value));
+		if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})?$/.test(value)) {
+			return false;
+		}
+		const datePart = value.slice(0, 10);
+		const [year, month, day] = datePart.split("-").map(Number);
+		const date = new Date(datePart);
+		return (
+			!Number.isNaN(Date.parse(value)) &&
+			date.getUTCFullYear() === year &&
+			date.getUTCMonth() + 1 === month &&
+			date.getUTCDate() === day
+		);
 	}
 
 	/**
@@ -231,11 +251,14 @@ export class Is {
 	 * @param value The value to test.
 	 * @returns True if the value is a string in ISO 8601 time format.
 	 */
-	public static timeString(value: unknown): boolean {
-		if (typeof value !== "string" || value.length === 0 || value.includes("T")) {
+	public static timeString(value: unknown): value is string {
+		if (typeof value !== "string") {
 			return false;
 		}
-		return !Number.isNaN(Date.parse(`1970-01-01T${value}`));
+		return (
+			/^\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})?$/.test(value) &&
+			!Number.isNaN(Date.parse(`1970-01-01T${value}`))
+		);
 	}
 
 	/**

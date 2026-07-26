@@ -101,16 +101,9 @@ export class Factory<T> {
 	 * @returns All the factories.
 	 */
 	public static getFactories(): { [typeName: string]: Factory<unknown> } {
-		let factories = SharedStore.get<{
+		return SharedStore.get<{
 			[typeName: string]: Factory<unknown>;
-		}>("factories");
-
-		if (Is.undefined(factories)) {
-			factories = {};
-			SharedStore.set("factories", factories);
-		}
-
-		return factories;
+		}>("factories", () => ({}));
 	}
 
 	/**

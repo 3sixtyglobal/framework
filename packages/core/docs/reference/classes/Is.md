@@ -82,21 +82,27 @@ True if the value is null or undefined.
 
 ### notEmpty() {#notempty}
 
-> `static` **notEmpty**(`value`): `boolean`
+> `static` **notEmpty**\<`T`\>(`value`): `value is NonNullable<T>`
 
 Is the property not null or undefined.
+
+#### Type Parameters
+
+##### T
+
+`T`
 
 #### Parameters
 
 ##### value
 
-`unknown`
+`T`
 
 The value to test.
 
 #### Returns
 
-`boolean`
+`value is NonNullable<T>`
 
 True if the value is not null or undefined.
 
@@ -408,7 +414,7 @@ True if the value is a date.
 
 ### dateEmpty() {#dateempty}
 
-> `static` **dateEmpty**(`value`): `boolean`
+> `static` **dateEmpty**(`value`): `value is Date`
 
 Is the value an empty date.
 
@@ -422,7 +428,7 @@ The value to test.
 
 #### Returns
 
-`boolean`
+`value is Date`
 
 True if the value is an empty date.
 
@@ -430,7 +436,7 @@ True if the value is an empty date.
 
 ### dateString() {#datestring}
 
-> `static` **dateString**(`value`): `boolean`
+> `static` **dateString**(`value`): `value is string`
 
 Is the value a date string.
 
@@ -444,7 +450,7 @@ The value to test.
 
 #### Returns
 
-`boolean`
+`value is string`
 
 True if the value is a string in ISO 8601 date format.
 
@@ -452,7 +458,7 @@ True if the value is a string in ISO 8601 date format.
 
 ### dateTimeString() {#datetimestring}
 
-> `static` **dateTimeString**(`value`): `boolean`
+> `static` **dateTimeString**(`value`): `value is string`
 
 Is the value a date string.
 
@@ -466,7 +472,7 @@ The value to test.
 
 #### Returns
 
-`boolean`
+`value is string`
 
 True if the value is a string in ISO 8601 date/time format.
 
@@ -474,7 +480,7 @@ True if the value is a string in ISO 8601 date/time format.
 
 ### timeString() {#timestring}
 
-> `static` **timeString**(`value`): `boolean`
+> `static` **timeString**(`value`): `value is string`
 
 Is the value a time string.
 
@@ -488,7 +494,7 @@ The value to test.
 
 #### Returns
 
-`boolean`
+`value is string`
 
 True if the value is a string in ISO 8601 time format.
 

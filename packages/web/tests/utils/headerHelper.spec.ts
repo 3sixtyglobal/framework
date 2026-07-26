@@ -166,6 +166,63 @@ describe("HeaderHelper", () => {
 		expect(locale).toBeUndefined();
 	});
 
+	test("can parse a weighted header with a custom validator and return value, quality and params", async () => {
+		const result = HeaderHelper.parseWeightedHeader("foo;q=0.8;ext=bar", /^foo$/);
+
+		expect(result).toEqual([{ value: "foo", quality: 0.8, params: { ext: "bar" } }]);
+	});
+
+	test("can parse multiple weighted header entries and order by quality", async () => {
+		const result = HeaderHelper.parseWeightedHeader("b;q=0.5, a, c;q=0.9", /^[a-z]$/);
+
+		expect(result).toEqual([
+			{ value: "a", quality: 1, params: {} },
+			{ value: "c", quality: 0.9, params: {} },
+			{ value: "b", quality: 0.5, params: {} }
+		]);
+	});
+
+	test("can parse a weighted header array and merge all entries", async () => {
+		const result = HeaderHelper.parseWeightedHeader(["a;q=0.8", "b;q=0.9"], /^[a-z]$/);
+
+		expect(result).toEqual([
+			{ value: "b", quality: 0.9, params: {} },
+			{ value: "a", quality: 0.8, params: {} }
+		]);
+	});
+
+	test("can parse multiple params from a weighted header entry", async () => {
+		const result = HeaderHelper.parseWeightedHeader("foo;charset=UTF-8;boundary=edge", /^foo$/);
+
+		expect(result).toEqual([
+			{ value: "foo", quality: 1, params: { charset: "UTF-8", boundary: "edge" } }
+		]);
+	});
+
+	test("returns undefined from a weighted header when the value fails the validator", async () => {
+		const result = HeaderHelper.parseWeightedHeader("invalid", /^foo$/);
+
+		expect(result).toBeUndefined();
+	});
+
+	test("returns undefined from a weighted header when any entry fails the validator", async () => {
+		const result = HeaderHelper.parseWeightedHeader("foo, bar", /^foo$/);
+
+		expect(result).toBeUndefined();
+	});
+
+	test("returns undefined from a weighted header when the quality value is out of range", async () => {
+		const result = HeaderHelper.parseWeightedHeader("foo;q=1.5", /^foo$/);
+
+		expect(result).toBeUndefined();
+	});
+
+	test("returns undefined from a weighted header for undefined input", async () => {
+		const result = HeaderHelper.parseWeightedHeader(undefined, /^foo$/);
+
+		expect(result).toBeUndefined();
+	});
+
 	test("can validate a valid IPv4 address", async () => {
 		const isValid = HeaderHelper.isIpAddressV4("127.0.0.1");
 		expect(isValid).toBe(true);
@@ -783,5 +840,122 @@ describe("HeaderHelper", () => {
 		expect(() =>
 			HeaderHelper.createLinkHeader("https://example.com", undefined, ["next prev"])
 		).toThrow("headerHelper.invalidLinkHeaderRel");
+	});
+
+	test("can parse accept header entries with quality values", async () => {
+		const result = HeaderHelper.parseAccept(
+			"text/html, application/xhtml+xml, application/xml;q=0.9, image/webp, */*;q=0.8"
+		);
+
+		expect(result).toEqual([
+			{ mimeType: "text/html", quality: 1 },
+			{ mimeType: "application/xhtml+xml", quality: 1 },
+			{ mimeType: "image/webp", quality: 1 },
+			{ mimeType: "application/xml", quality: 0.9 },
+			{ mimeType: "*/*", quality: 0.8 }
+		]);
+	});
+
+	test("can order parsed accept entries by highest quality first", async () => {
+		const result = HeaderHelper.parseAccept(
+			"application/xml;q=0.9, text/html, */*;q=0.8, image/webp"
+		);
+
+		expect(result).toEqual([
+			{ mimeType: "text/html", quality: 1 },
+			{ mimeType: "image/webp", quality: 1 },
+			{ mimeType: "application/xml", quality: 0.9 },
+			{ mimeType: "*/*", quality: 0.8 }
+		]);
+	});
+
+	test("can parse a single media type from an accept header", async () => {
+		const result = HeaderHelper.parseAccept("application/json");
+
+		expect(result).toEqual([{ mimeType: "application/json", quality: 1 }]);
+	});
+
+	test("can parse a wildcard subtype from an accept header", async () => {
+		const result = HeaderHelper.parseAccept("image/*");
+
+		expect(result).toEqual([{ mimeType: "image/*", quality: 1 }]);
+	});
+
+	test("can parse a vendor extension media type from an accept header", async () => {
+		const result = HeaderHelper.parseAccept("application/vnd.api+json");
+
+		expect(result).toEqual([{ mimeType: "application/vnd.api+json", quality: 1 }]);
+	});
+
+	test("can parse accept header media type parameters and preserve them in params", async () => {
+		const result = HeaderHelper.parseAccept("text/html;charset=UTF-8, application/json;q=0.9");
+
+		expect(result).toEqual([
+			{ mimeType: "text/html", quality: 1, params: { charset: "UTF-8" } },
+			{ mimeType: "application/json", quality: 0.9 }
+		]);
+	});
+
+	test("can parse multiple accept header values passed as an array", async () => {
+		const result = HeaderHelper.parseAccept([
+			"text/html, application/xml;q=0.9",
+			"image/webp, */*;q=0.8"
+		]);
+
+		expect(result).toEqual([
+			{ mimeType: "text/html", quality: 1 },
+			{ mimeType: "image/webp", quality: 1 },
+			{ mimeType: "application/xml", quality: 0.9 },
+			{ mimeType: "*/*", quality: 0.8 }
+		]);
+	});
+
+	test("returns undefined for an invalid media type in an accept header", async () => {
+		const result = HeaderHelper.parseAccept("not-a-valid-type");
+
+		expect(result).toBeUndefined();
+	});
+
+	test("returns undefined when any accept header entry is invalid", async () => {
+		const result = HeaderHelper.parseAccept("text/html, invalid");
+
+		expect(result).toBeUndefined();
+	});
+
+	test("returns undefined for an empty accept header", async () => {
+		const result = HeaderHelper.parseAccept(undefined);
+
+		expect(result).toBeUndefined();
+	});
+
+	test("can extract parsed media types from request headers", async () => {
+		const result = HeaderHelper.extractAccept({
+			accept: "text/html, application/json;q=0.9"
+		});
+
+		expect(result).toEqual([
+			{ mimeType: "text/html", quality: 1 },
+			{ mimeType: "application/json", quality: 0.9 }
+		]);
+	});
+
+	test("can extract parsed media types from all accept header values", async () => {
+		const result = HeaderHelper.extractAccept({
+			accept: ["text/html, image/webp", "application/json;q=0.9"]
+		});
+
+		expect(result).toEqual([
+			{ mimeType: "text/html", quality: 1 },
+			{ mimeType: "image/webp", quality: 1 },
+			{ mimeType: "application/json", quality: 0.9 }
+		]);
+	});
+
+	test("returns undefined when the request accept header is invalid", async () => {
+		const result = HeaderHelper.extractAccept({
+			accept: "not-valid"
+		});
+
+		expect(result).toBeUndefined();
 	});
 });

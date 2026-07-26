@@ -10,7 +10,7 @@ describe("EntityConditions", () => {
 	});
 
 	test("can match if conditions are empty", async () => {
-		expect(EntityConditions.check({}, undefined)).toEqual(true);
+		expect(EntityConditions.check({}, { conditions: [] })).toEqual(true);
 	});
 
 	test("can match if undefined condition equals", async () => {
@@ -1042,6 +1042,29 @@ describe("EntityConditions", () => {
 		expect(results).toEqual(true);
 	});
 
+	test("can match if conditions group is empty with And operator", async () => {
+		expect(
+			EntityConditions.check(
+				{ foo: "a" },
+				{
+					conditions: [],
+					logicalOperator: LogicalOperator.And
+				}
+			)
+		).toEqual(true);
+	});
+
+	test("can match if conditions group is empty with default operator", async () => {
+		expect(
+			EntityConditions.check(
+				{ foo: "a" },
+				{
+					conditions: []
+				}
+			)
+		).toEqual(true);
+	});
+
 	test("can fail a child condition", async () => {
 		const results = EntityConditions.check(
 			{
@@ -1285,6 +1308,111 @@ describe("EntityConditions", () => {
 		);
 
 		expect(results).toEqual(true);
+	});
+
+	test("can not match nested property when condition value is empty string", async () => {
+		expect(
+			EntityConditions.check(
+				{ annotationObject: { globalId: "real-id" } },
+				{
+					property: "annotationObject.globalId",
+					value: "",
+					comparison: ComparisonOperator.Equals
+				}
+			)
+		).toEqual(false);
+	});
+
+	test("can match nested property when both value and property are empty string", async () => {
+		expect(
+			EntityConditions.check(
+				{ annotationObject: { globalId: "" } },
+				{
+					property: "annotationObject.globalId",
+					value: "",
+					comparison: ComparisonOperator.Equals
+				}
+			)
+		).toEqual(true);
+	});
+
+	test("can not match nested property when condition value is whitespace", async () => {
+		expect(
+			EntityConditions.check(
+				{ annotationObject: { globalId: "real-id" } },
+				{
+					property: "annotationObject.globalId",
+					value: "   ",
+					comparison: ComparisonOperator.Equals
+				}
+			)
+		).toEqual(false);
+	});
+
+	test("can not match when or-group built from empty string entityId does not match entity", async () => {
+		// Mirrors: entityIds=[""] pushed without Is.stringValue guard, queried with Or
+		expect(
+			EntityConditions.check(
+				{ annotationObject: { globalId: "real-id" } },
+				{
+					conditions: [
+						{
+							property: "annotationObject.globalId",
+							value: "",
+							comparison: ComparisonOperator.Equals
+						}
+					],
+					logicalOperator: LogicalOperator.Or
+				}
+			)
+		).toEqual(false);
+	});
+
+	test("can match correct entity when or-group mixes real and empty string entityIds", async () => {
+		// Mirrors: entityIds=["real-id", ""] — real-id entity should still match
+		expect(
+			EntityConditions.check(
+				{ annotationObject: { globalId: "real-id" } },
+				{
+					conditions: [
+						{
+							property: "annotationObject.globalId",
+							value: "real-id",
+							comparison: ComparisonOperator.Equals
+						},
+						{
+							property: "annotationObject.globalId",
+							value: "",
+							comparison: ComparisonOperator.Equals
+						}
+					],
+					logicalOperator: LogicalOperator.Or
+				}
+			)
+		).toEqual(true);
+	});
+
+	test("can not match unrelated entity when or-group mixes real and empty string entityIds", async () => {
+		expect(
+			EntityConditions.check(
+				{ annotationObject: { globalId: "other-id" } },
+				{
+					conditions: [
+						{
+							property: "annotationObject.globalId",
+							value: "real-id",
+							comparison: ComparisonOperator.Equals
+						},
+						{
+							property: "annotationObject.globalId",
+							value: "",
+							comparison: ComparisonOperator.Equals
+						}
+					],
+					logicalOperator: LogicalOperator.Or
+				}
+			)
+		).toEqual(false);
 	});
 
 	test("can fail to check a child condition with object properties", async () => {

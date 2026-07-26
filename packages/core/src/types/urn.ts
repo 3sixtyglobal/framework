@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@twin.org/nameof";
 import { GuardError } from "../errors/guardError.js";
+import { ArrayHelper } from "../helpers/arrayHelper.js";
 import { RandomHelper } from "../helpers/randomHelper.js";
 import type { IValidationFailure } from "../models/IValidationFailure.js";
 import { Guards } from "../utils/guards.js";
@@ -139,15 +140,50 @@ export class Urn {
 	 * @param source The source of the error.
 	 * @param property The name of the property.
 	 * @param value The urn to parse.
+	 * @param options Optional constraints to validate the urn namespace identifier and specific parts.
+	 * @param options.namespaceIdentifier The namespace identifier the urn must match.
+	 * @param options.namespaceSpecific The namespace specific part(s) the urn must match.
 	 * @throws GuardError If the value does not match the assertion.
 	 */
-	public static guard(source: string, property: string, value: unknown): asserts value is string {
+	public static guard(
+		source: string,
+		property: string,
+		value: unknown,
+		options?: { namespaceIdentifier?: string; namespaceSpecific?: string | string[] }
+	): asserts value is string {
 		Guards.stringValue(source, property, value);
 
 		const result = Urn.tryParseExact(value);
 
 		if (!result) {
 			throw new GuardError(source, "guard.urn", property, value);
+		}
+
+		if (!Is.empty(options)) {
+			if (
+				Is.stringValue(options.namespaceIdentifier) &&
+				result.namespaceIdentifier() !== options.namespaceIdentifier
+			) {
+				throw new GuardError(
+					source,
+					"guard.urnNamespaceIdentifier",
+					property,
+					value,
+					options.namespaceIdentifier
+				);
+			}
+			if (!Is.empty(options.namespaceSpecific)) {
+				const expected = ArrayHelper.fromObjectOrArray(options.namespaceSpecific);
+				if (!ArrayHelper.matches(result.namespaceSpecificParts(), expected)) {
+					throw new GuardError(
+						source,
+						"guard.urnNamespaceSpecific",
+						property,
+						value,
+						expected?.join(":")
+					);
+				}
+			}
 		}
 	}
 
@@ -218,10 +254,17 @@ export class Urn {
 	/**
 	 * Get the namespace specific parts.
 	 * @param startIndex The index to start from, defaults to 0.
+	 * @param count The number of parts to return, defaults to all remaining parts.
 	 * @returns The namespace specific parts.
 	 */
-	public namespaceSpecificParts(startIndex: number = 0): string[] {
-		return this._urnParts.length > 1 ? this._urnParts.slice(startIndex + 1) : [];
+	public namespaceSpecificParts(startIndex: number = 0, count?: number): string[] {
+		if (this._urnParts.length <= 1) {
+			return [];
+		}
+		const start = startIndex + 1;
+		return Is.undefined(count)
+			? this._urnParts.slice(start)
+			: this._urnParts.slice(start, start + count);
 	}
 
 	/**

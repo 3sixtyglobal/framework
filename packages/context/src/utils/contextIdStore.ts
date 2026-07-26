@@ -39,18 +39,19 @@ export class ContextIdStore {
 	 * @returns The storage.
 	 */
 	public static async getStorage(): Promise<AsyncLocalStorage<IContextIds>> {
-		let asyncHooksStore = SharedStore.get<{ contextIds?: AsyncLocalStorage<IContextIds> }>(
-			"asyncHooks"
-		);
-
-		if (Is.empty(asyncHooksStore?.contextIds)) {
+		// get with the factory is invoked synchronously and stores the returned
+		// Promise before yielding, so concurrent callers always await the same
+		// AsyncLocalStorage instance regardless of how many module versions are loaded.
+		const stored = SharedStore.get<
+			Promise<AsyncLocalStorage<IContextIds>> | { contextIds: AsyncLocalStorage<IContextIds> }
+		>("asyncHooks", async () => {
 			try {
 				const hooks = await import("node:async_hooks");
-				asyncHooksStore = asyncHooksStore ?? {};
-				asyncHooksStore.contextIds = new hooks.AsyncLocalStorage<IContextIds>({
+				return new hooks.AsyncLocalStorage<IContextIds>({
 					name: "AsyncContextIdsStorage"
 				});
 			} catch (err) {
+				SharedStore.remove("asyncHooks");
 				throw new GeneralError(
 					ContextIdStore.CLASS_NAME,
 					"asyncHooksNotAvailable",
@@ -58,8 +59,15 @@ export class ContextIdStore {
 					BaseError.fromError(err)
 				);
 			}
-			SharedStore.set("asyncHooks", asyncHooksStore);
+		});
+
+		// Back-compat with context@0.9.0: that version stored { contextIds: AsyncLocalStorage }
+		// (a plain wrapper object, not a Promise). Leave SharedStore untouched - upgrading to
+		// the Promise shape would cause old code to see no contextIds, create a second
+		// AsyncLocalStorage, and silently split context between versions.
+		if (!Is.promise<AsyncLocalStorage<IContextIds>>(stored)) {
+			return stored.contextIds;
 		}
-		return asyncHooksStore.contextIds;
+		return stored;
 	}
 }

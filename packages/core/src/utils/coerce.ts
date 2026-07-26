@@ -114,10 +114,10 @@ export class Coerce {
 			return value ? true : false;
 		}
 		if (Is.string(value)) {
-			if (/true/i.test(value)) {
+			if (/^true$/i.test(value)) {
 				return true;
 			}
-			if (/false/i.test(value)) {
+			if (/^false$/i.test(value)) {
 				return false;
 			}
 		}
@@ -197,7 +197,11 @@ export class Coerce {
 			return dt;
 		}
 		if (Is.string(value)) {
-			const dt = new Date(value);
+			// Bare time strings like "09:30:00" or "09:30:00Z" are not valid ISO 8601
+			// datetime strings so new Date() returns Invalid Date for them. Prepend the
+			// epoch date to form a parseable datetime string.
+			const raw = Is.timeString(value) ? `1970-01-01T${value}` : value;
+			const dt = new Date(raw);
 			if (!Number.isNaN(dt.getTime())) {
 				const utc = Date.UTC(
 					1970,
@@ -261,6 +265,9 @@ export class Coerce {
 	 */
 	public static uint8Array(value: unknown): Uint8Array | undefined {
 		if (Is.undefined(value)) {
+			return value;
+		}
+		if (Is.uint8Array(value)) {
 			return value;
 		}
 		if (Is.string(value)) {
