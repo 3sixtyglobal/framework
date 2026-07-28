@@ -95,6 +95,16 @@ describe("actionCommandValidateLocales", () => {
 		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
 	});
 
+	test("Can validate source with ModuleHelper.execModuleMethod ignoring its parameters", async () => {
+		const fixture = path.join(testDir, "fixtures", "valid-exec-module-method");
+		await actionCommandValidateLocales({
+			source: path.join(fixture, "src/**/*.ts"),
+			locales: path.join(fixture, "locales/**/*.json"),
+			ignoreFile: path.join(fixture, "locales/.validate-ignore")
+		});
+		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
+	});
+
 	test("Fails validation when a locale key referenced in source is missing from the locale file", async () => {
 		const fixture = path.join(testDir, "fixtures", "missing-key");
 		await expect(

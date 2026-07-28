@@ -53,6 +53,11 @@ const SKIP_LITERALS = [
 
 const SKIP_METHODS = [/^generateRest/, /^generateSocket/];
 
+const SKIP_CALL_EXPRESSIONS = [
+	/^console\.(log|error|warn|info|debug)$/,
+	/^ModuleHelper\.(execModuleMethod|getModuleEntry|getModuleMethod|execModuleMethod|execModuleMethodThread)$/
+];
+
 const CAPTURE_VARIABLES = [/ROUTES_SOURCE/];
 
 /**
@@ -500,7 +505,7 @@ function processCallExpression(
 ): boolean {
 	if (ts.isPropertyAccessExpression(node.expression)) {
 		const functionName = node.expression.name.getText();
-		if (node.expression.getText() === "console.log") {
+		if (SKIP_CALL_EXPRESSIONS.some(re => re.test(node.expression.getText()))) {
 			return true;
 		} else if (
 			functionName === "log" &&
