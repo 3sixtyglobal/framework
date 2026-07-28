@@ -1,5 +1,93 @@
 # Changelog
 
+## [0.9.2-next.1](https://github.com/iotaledger/twin-framework/compare/core-v0.9.2-next.0...core-v0.9.2-next.1) (2026-07-28)
+
+
+### Features
+
+* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* add duration support ([#362](https://github.com/iotaledger/twin-framework/issues/362)) ([24dbe8b](https://github.com/iotaledger/twin-framework/commit/24dbe8b208eb127a52024cb219d31d27731e9ae3))
+* add factory.createIfExists ([aad5a53](https://github.com/iotaledger/twin-framework/commit/aad5a53cef1b1c2e04344ea46244d41e371dff9b))
+* add Factory.getFactory ([ad6cd2d](https://github.com/iotaledger/twin-framework/commit/ad6cd2d30351c145c70212f8cce1b66d5e8a5235))
+* add guard.dateString ([#335](https://github.com/iotaledger/twin-framework/issues/335)) ([a26a166](https://github.com/iotaledger/twin-framework/commit/a26a166eb1f62ece05b2432730cb7354feacecfc))
+* add health method to components ([a88016d](https://github.com/iotaledger/twin-framework/commit/a88016d90d172413e5bc5238dc1b3e35f82fcc2c))
+* add Is.class method ([4988205](https://github.com/iotaledger/twin-framework/commit/498820543e256a130b4888c958fe1d87ca865d7f))
+* add isDefault option to factory registration ([a8a700b](https://github.com/iotaledger/twin-framework/commit/a8a700bb8ddaf7dd5097869a358b8fc5f7c40ce7))
+* add mutex ([#316](https://github.com/iotaledger/twin-framework/issues/316)) ([1027e5a](https://github.com/iotaledger/twin-framework/commit/1027e5ac77aa9804178b4253abdeefd6f1c3d521))
+* add objectHelper.split ([386830a](https://github.com/iotaledger/twin-framework/commit/386830a77f8e842a5b119be0983708e042c3b14b))
+* add partial second support ([39bf087](https://github.com/iotaledger/twin-framework/commit/39bf087ddc113a9bf73e0d0e99f738f6f60c2f2d))
+* add rsa cipher support ([7af6cc6](https://github.com/iotaledger/twin-framework/commit/7af6cc67512d3363bd4a2f2e87bd7733c2800147))
+* add single occurrence array type ([e890e43](https://github.com/iotaledger/twin-framework/commit/e890e4399e75ae5097f3ad8b1007321cbb1ed4ac))
+* add single occurrence array type ([#245](https://github.com/iotaledger/twin-framework/issues/245)) ([771dc78](https://github.com/iotaledger/twin-framework/commit/771dc78025b5546c9c9681be9494a76ab71171c6))
+* add support for health i18n validation ([7a286dd](https://github.com/iotaledger/twin-framework/commit/7a286ddb0c1bfa498bf3a77126cd589042bad6de))
+* add teardown to IComponent interface ([32c173c](https://github.com/iotaledger/twin-framework/commit/32c173cda115c20d3b4cee14b8a29cdc08e91555))
+* add teardown to IComponent interface ([98ce864](https://github.com/iotaledger/twin-framework/commit/98ce8648e709310c4435de334825b381fb4e32cb))
+* add typeName method to factory ([699fcbd](https://github.com/iotaledger/twin-framework/commit/699fcbd1168228401ddb81fdacb959b8cdc4206a))
+* add uuidv7 support ([#219](https://github.com/iotaledger/twin-framework/issues/219)) ([916c657](https://github.com/iotaledger/twin-framework/commit/916c657d270ce99fafe554233739fdd9ca28635b))
+* add wildcard support to the envhelper ([c064d46](https://github.com/iotaledger/twin-framework/commit/c064d46d36bbee8022a741b985d2b64c8f9572e4))
+* adding link header helper ([#225](https://github.com/iotaledger/twin-framework/issues/225)) ([703c072](https://github.com/iotaledger/twin-framework/commit/703c0725aceac6b6ec0c4fa729ef832d12fb3fd7))
+* additional nameof operators ([a5aab60](https://github.com/iotaledger/twin-framework/commit/a5aab60bf66a86f1b7ff8af7c4f044cb03706d50))
+* additional RSA methods and async ([1fceee2](https://github.com/iotaledger/twin-framework/commit/1fceee2d1248a24a7620846025fcf906495c07f4))
+* bump version ([c5354fa](https://github.com/iotaledger/twin-framework/commit/c5354fa906f4493c70f2642a9175a66780a10636))
+* concurrency in SharedStore ([#388](https://github.com/iotaledger/twin-framework/issues/388)) ([0610198](https://github.com/iotaledger/twin-framework/commit/0610198ba482273c3f6ba918e34f5875a3659571))
+* configurable timeout for mutex ([2087e04](https://github.com/iotaledger/twin-framework/commit/2087e04464a110a3f009fbc8b066696ed6784fc2))
+* env helper conversion methods ([e8c607e](https://github.com/iotaledger/twin-framework/commit/e8c607e59f6f79d4b1d562e9313babe348778835))
+* eslint migration to flat config ([74427d7](https://github.com/iotaledger/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* expand error params to accept properties ([032e9fd](https://github.com/iotaledger/twin-framework/commit/032e9fd1388e457cde32ca1005dfe014a5a9c077))
+* factory create and integrity ([#235](https://github.com/iotaledger/twin-framework/issues/235)) ([9f98b99](https://github.com/iotaledger/twin-framework/commit/9f98b99daf46eb365346fae49cc4ffba63e74cb3))
+* health status grouping ([5007c29](https://github.com/iotaledger/twin-framework/commit/5007c29fe4123fe56f754450b993dbe5dc32a057))
+* improve async cache edge cases ([4e57a6e](https://github.com/iotaledger/twin-framework/commit/4e57a6ec4113533b0ea903eae7d469200fa1348c))
+* improve error formatting ([#313](https://github.com/iotaledger/twin-framework/issues/313)) ([5a19623](https://github.com/iotaledger/twin-framework/commit/5a196231bcbf088bf9ba92a93b7478d3b8c5593f))
+* improve Is.function and ModuleHelper.getModuleMethod signatures ([ecf968b](https://github.com/iotaledger/twin-framework/commit/ecf968b02934b3676be4bf7cd2d1e7f8e7af6ce2))
+* improve Is.function definition to retain types ([f20b6b0](https://github.com/iotaledger/twin-framework/commit/f20b6b0dd16e74b75dc359be72b05989305c6410))
+* improve signatures ([45a7d58](https://github.com/iotaledger/twin-framework/commit/45a7d58baa5b6abc8c0735656f393d402fabb4ad))
+* improve signatures ([cdd24be](https://github.com/iotaledger/twin-framework/commit/cdd24be6fb898d33955b6f2f93c3ddbd73582269))
+* improve signatures ([2041ae2](https://github.com/iotaledger/twin-framework/commit/2041ae214cbd8d472d5e8be8d3403cd06a114040))
+* improve signatures ([d8a0ee1](https://github.com/iotaledger/twin-framework/commit/d8a0ee16542134a3f8b0653065239f42045125b4))
+* improve signatures ([1d084c5](https://github.com/iotaledger/twin-framework/commit/1d084c58c7eb41ae50b0ce80ce57e48a22dd3102))
+* improve signatures ([#287](https://github.com/iotaledger/twin-framework/issues/287)) ([c9f38f0](https://github.com/iotaledger/twin-framework/commit/c9f38f00e1cea8759e1105b41872a650c66c00f4))
+* improved coercion ([fcc7d98](https://github.com/iotaledger/twin-framework/commit/fcc7d9826f5405be5e3b5414ea53be42f974f9d5))
+* is and coerce accept duration object ([51dffa1](https://github.com/iotaledger/twin-framework/commit/51dffa18066eb86a14c700d90d3c1bd8b322c0fc))
+* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* mutex safe usage in browser ([#339](https://github.com/iotaledger/twin-framework/issues/339)) ([02d409f](https://github.com/iotaledger/twin-framework/commit/02d409f211e91267964208d58a27f29791715086))
+* nodeIdentity optional in IComponent methods ([c78dc17](https://github.com/iotaledger/twin-framework/commit/c78dc17f4357d3e1ae40e415f468d3eae13e81f4))
+* shared object buffer ([#355](https://github.com/iotaledger/twin-framework/issues/355)) ([70d82ea](https://github.com/iotaledger/twin-framework/commit/70d82ea8f43f01aa840ae90ee0b1f23b064a07c6))
+* simplify factory options ([7f85a85](https://github.com/iotaledger/twin-framework/commit/7f85a8553dd3008364e8e1104f2e6f6b6595d77e))
+* simplify StringHelper signature ([0390403](https://github.com/iotaledger/twin-framework/commit/039040344952f91ee3c671249bc0e1c8f3b38e17))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* urn and header helper extensions ([#395](https://github.com/iotaledger/twin-framework/issues/395)) ([5976756](https://github.com/iotaledger/twin-framework/commit/5976756886d22e5063671052abc4dfa04ce23a53))
+* urn random switched to using uuidv7 ([606c9a2](https://github.com/iotaledger/twin-framework/commit/606c9a2ed68a10fc7fc2bc5f93388c1b71033154))
+* urn random switched to using uuidv7 ([6a29f8b](https://github.com/iotaledger/twin-framework/commit/6a29f8bd573d06992b7eaa027b1daf4c2a2e1e85))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/iotaledger/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+
+
+### Bug Fixes
+
+* async thread lock ([97a96a5](https://github.com/iotaledger/twin-framework/commit/97a96a57f60c7b45a0ccbbfa1c43199b6e7512f9))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* improve exception handling in asyncCache ([c81b29b](https://github.com/iotaledger/twin-framework/commit/c81b29b660b152d2f0757d323430287e6491bf59))
+* improve jsdoc comments ([f7c8e43](https://github.com/iotaledger/twin-framework/commit/f7c8e43fab9803dffa6461950d5b9979e25bcd24))
+* iso 8601 checks ([#409](https://github.com/iotaledger/twin-framework/issues/409)) ([4427101](https://github.com/iotaledger/twin-framework/commit/442710109b63ec67ca5ee7cb948df742500d0151))
+* linting ([b77511d](https://github.com/iotaledger/twin-framework/commit/b77511de8781707088b1beb4c92f12d7d6e0fd5f))
+* mutex locking ([d5af3c1](https://github.com/iotaledger/twin-framework/commit/d5af3c1e66070f86408ba1410809689c6d22958b))
+* pick non iterable keys ([399399a](https://github.com/iotaledger/twin-framework/commit/399399abfb8947c4eb235df527532ffe186986b3))
+* prevent TOCTOU race in Mutex.getOrFetchLock for concurrent async callers ([#343](https://github.com/iotaledger/twin-framework/issues/343)) ([5238ad1](https://github.com/iotaledger/twin-framework/commit/5238ad1a68e24c69162204b02030c6686c15e9f4))
+* remove misleading undefined from AsyncCache return type ([05b3291](https://github.com/iotaledger/twin-framework/commit/05b32914e03a63c7daf7b77952a2ebedb7ca7f6b))
+* settle AsyncCache waiters correctly when a request resolves undefined or null ([#401](https://github.com/iotaledger/twin-framework/issues/401)) ([6ae3f8a](https://github.com/iotaledger/twin-framework/commit/6ae3f8aca688ca76d93ec3964178a3b1a8895453))
+* time coercion ([8ac43f8](https://github.com/iotaledger/twin-framework/commit/8ac43f85fbd521ff54786d92df3e432d7f738b0c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.9.2-next.0 to 0.9.2-next.1
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.2-next.0 to 0.9.2-next.1
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.0 to 0.9.2-next.1
+
 ## [0.9.1](https://github.com/iotaledger/twin-framework/compare/core-v0.9.1...core-v0.9.1) (2026-07-26)
 
 
