@@ -30,6 +30,28 @@ The short form version of the context ID.
 
 ***
 
+### long()? {#long}
+
+> `optional` **long**(`value`): `string`
+
+The long form version of the context ID, expanded from a short version.
+
+#### Parameters
+
+##### value
+
+`string`
+
+The short form context ID value.
+
+#### Returns
+
+`string`
+
+The long form version of the context ID.
+
+***
+
 ### guard()? {#guard}
 
 > `optional` **guard**(`value`): `void`

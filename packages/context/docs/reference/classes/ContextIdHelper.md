@@ -134,6 +134,66 @@ Guard error if the value is invalid.
 
 ***
 
+### long() {#long}
+
+> `static` **long**(`contextIds`, `key`): `string`
+
+Gets the long version of a context ID, expanding from a short form if a handler is registered.
+
+#### Parameters
+
+##### contextIds
+
+[`IContextIds`](../interfaces/IContextIds.md) \| `undefined`
+
+The context IDs to get the long version from.
+
+##### key
+
+`string`
+
+The context ID key to get the long version for.
+
+#### Returns
+
+`string`
+
+The long version of the context ID.
+
+#### Throws
+
+Guard error if the value is invalid.
+
+***
+
+### longAll() {#longall}
+
+> `static` **longAll**(`contextIds`, `keys`): [`IContextIds`](../interfaces/IContextIds.md)
+
+Gets the long versions of multiple context IDs.
+
+#### Parameters
+
+##### contextIds
+
+[`IContextIds`](../interfaces/IContextIds.md) \| `undefined`
+
+The context IDs to get the long versions from.
+
+##### keys
+
+`string`[] \| `undefined`
+
+The context ID keys to get the long versions for.
+
+#### Returns
+
+[`IContextIds`](../interfaces/IContextIds.md)
+
+The long versions of the context IDs.
+
+***
+
 ### shortAll() {#shortall}
 
 > `static` **shortAll**(`contextIds`, `keys`): [`IContextIds`](../interfaces/IContextIds.md)
