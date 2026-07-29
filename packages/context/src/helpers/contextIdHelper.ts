@@ -76,6 +76,45 @@ export class ContextIdHelper {
 	}
 
 	/**
+	 * Gets the long version of a context ID, expanding from a short form if a handler is registered.
+	 * @param contextIds The context IDs to get the long version from.
+	 * @param key The context ID key to get the long version for.
+	 * @returns The long version of the context ID.
+	 * @throws Guard error if the value is invalid.
+	 */
+	public static long(contextIds: IContextIds | undefined, key: string): string {
+		Guards.stringValue(ContextIdHelper.CLASS_NAME, nameof(key), key);
+		if (Is.undefined(contextIds?.[key])) {
+			throw new GeneralError(ContextIdHelper.CLASS_NAME, "contextIdMissing", { key });
+		}
+
+		const handler = ContextIdHandlerFactory.getIfExists(key);
+		if (handler?.long) {
+			return handler.long(contextIds[key]);
+		}
+		return contextIds[key];
+	}
+
+	/**
+	 * Gets the long versions of multiple context IDs.
+	 * @param contextIds The context IDs to get the long versions from.
+	 * @param keys The context ID keys to get the long versions for.
+	 * @returns The long versions of the context IDs.
+	 */
+	public static longAll(
+		contextIds: IContextIds | undefined,
+		keys: string[] | undefined
+	): IContextIds {
+		const long: IContextIds = {};
+		if (Is.arrayValue(keys)) {
+			for (const key of keys) {
+				long[key] = ContextIdHelper.long(contextIds, key);
+			}
+		}
+		return long;
+	}
+
+	/**
 	 * Gets the short versions of multiple context IDs.
 	 * @param contextIds The context IDs to get the short versions from.
 	 * @param keys The context ID keys to get the short versions for.

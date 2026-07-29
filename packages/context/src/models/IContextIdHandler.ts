@@ -14,6 +14,13 @@ export interface IContextIdHandler extends IComponent {
 	short?(value: string): string;
 
 	/**
+	 * The long form version of the context ID, expanded from a short version.
+	 * @param value The short form context ID value.
+	 * @returns The long form version of the context ID.
+	 */
+	long?(value: string): string;
+
+	/**
 	 * Performs a runtime guard on the provided context ID value.
 	 * @param value The context ID value to guard.
 	 * @throws Guard error if the value is invalid.
