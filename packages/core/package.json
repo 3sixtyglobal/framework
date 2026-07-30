@@ -1,6 +1,6 @@
 {
 	"name": "@twin.org/core",
-	"version": "0.9.2-next.2",
+	"version": "0.9.2-next.3",
 	"description": "Helper methods/classes for data type checking/validation/guarding/error handling",
 	"repository": {
 		"type": "git",
@@ -28,13 +28,13 @@
 		"dist:no-test": "npm run clean && npm run build && npm run test:build"
 	},
 	"dependencies": {
-		"@twin.org/nameof": "0.9.2-next.2",
+		"@twin.org/nameof": "0.9.2-next.3",
 		"intl-messageformat": "11.2.12",
 		"rfc6902": "5.2.0"
 	},
 	"devDependencies": {
-		"@twin.org/nameof-transformer": "0.9.2-next.2",
-		"@twin.org/nameof-vitest-plugin": "0.9.2-next.2",
+		"@twin.org/nameof-transformer": "0.9.2-next.3",
+		"@twin.org/nameof-vitest-plugin": "0.9.2-next.3",
 		"@types/node": "26.1.1",
 		"@vitest/coverage-v8": "4.1.10",
 		"copyfiles": "2.4.1",
