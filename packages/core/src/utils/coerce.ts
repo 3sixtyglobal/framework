@@ -84,12 +84,14 @@ export class Coerce {
 			return value;
 		}
 		if (Is.number(value)) {
+			if (!Is.integer(value)) {
+				return undefined;
+			}
 			return BigInt(value);
 		}
 		if (Is.string(value)) {
-			const parsed = Number.parseFloat(value);
-			if (Is.integer(parsed)) {
-				return BigInt(parsed);
+			if (/^-?\d+$/.test(value)) {
+				return BigInt(value);
 			}
 		}
 		if (Is.boolean(value)) {

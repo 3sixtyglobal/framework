@@ -115,6 +115,26 @@ describe("Coerce", () => {
 		expect(Coerce.bigint({})).toEqual(undefined);
 	});
 
+	test("bigint can coerce an integer number", () => {
+		expect(Coerce.bigint(42)).toEqual(42n);
+	});
+
+	test("bigint returns undefined for a non-integer number", () => {
+		expect(Coerce.bigint(1.9)).toEqual(undefined);
+	});
+
+	test("bigint converts large integer string exactly without precision loss", () => {
+		expect(Coerce.bigint("9007199254740993")).toEqual(9007199254740993n);
+	});
+
+	test("bigint returns undefined for a string with trailing non-digit characters", () => {
+		expect(Coerce.bigint("12abc")).toEqual(undefined);
+	});
+
+	test("bigint returns undefined for a hex string", () => {
+		expect(Coerce.bigint("0x10")).toEqual(undefined);
+	});
+
 	test("boolean can coerce if value is undefined", () => {
 		expect(Coerce.boolean(undefined)).toEqual(undefined);
 	});
