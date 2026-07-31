@@ -95,6 +95,36 @@ describe("actionCommandValidateLocales", () => {
 		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
 	});
 
+	test("Can validate source where locale properties come from a spread of a typed function return", async () => {
+		const fixture = path.join(testDir, "fixtures", "valid-spread-properties");
+		await actionCommandValidateLocales({
+			source: path.join(fixture, "src/**/*.ts"),
+			locales: path.join(fixture, "locales/**/*.json"),
+			ignoreFile: path.join(fixture, "locales/.validate-ignore")
+		});
+		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
+	});
+
+	test("Can validate source where locale properties come from a spread of a same-file function or this.method()", async () => {
+		const fixture = path.join(testDir, "fixtures", "valid-spread-this-method");
+		await actionCommandValidateLocales({
+			source: path.join(fixture, "src/**/*.ts"),
+			locales: path.join(fixture, "locales/**/*.json"),
+			ignoreFile: path.join(fixture, "locales/.validate-ignore")
+		});
+		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
+	});
+
+	test("Can validate source where locale properties come from a spread of an inline object literal", async () => {
+		const fixture = path.join(testDir, "fixtures", "valid-spread-object-literal");
+		await actionCommandValidateLocales({
+			source: path.join(fixture, "src/**/*.ts"),
+			locales: path.join(fixture, "locales/**/*.json"),
+			ignoreFile: path.join(fixture, "locales/.validate-ignore")
+		});
+		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
+	});
+
 	test("Can validate source with ModuleHelper.execModuleMethod ignoring its parameters", async () => {
 		const fixture = path.join(testDir, "fixtures", "valid-exec-module-method");
 		await actionCommandValidateLocales({
