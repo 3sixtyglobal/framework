@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.9.2-next.4](https://github.com/iotaledger/twin-framework/compare/qr-v0.9.2-next.3...qr-v0.9.2-next.4) (2026-07-31)
+
+
+### Miscellaneous Chores
+
+* **qr:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.9.2-next.3 to 0.9.2-next.4
+    * @twin.org/image bumped from 0.9.2-next.3 to 0.9.2-next.4
+    * @twin.org/nameof bumped from 0.9.2-next.3 to 0.9.2-next.4
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.2-next.3 to 0.9.2-next.4
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.3 to 0.9.2-next.4
+    * @twin.org/validate-locales bumped from 0.9.2-next.3 to 0.9.2-next.4
+
 ## [0.9.2-next.3](https://github.com/iotaledger/twin-framework/compare/qr-v0.9.2-next.2...qr-v0.9.2-next.3) (2026-07-30)
 
 

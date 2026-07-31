@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.9.2-next.4](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.9.2-next.3...validate-locales-v0.9.2-next.4) (2026-07-31)
+
+
+### Features
+
+* validate-locales add spread support for data ([#432](https://github.com/iotaledger/twin-framework/issues/432)) ([d746e3a](https://github.com/iotaledger/twin-framework/commit/d746e3a3ceeedfb6b4ce17f8fbdd00771649dfd3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.2-next.3 to 0.9.2-next.4
+    * @twin.org/core bumped from 0.9.2-next.3 to 0.9.2-next.4
+    * @twin.org/nameof bumped from 0.9.2-next.3 to 0.9.2-next.4
+    * @twin.org/nameof-transformer bumped from 0.9.2-next.3 to 0.9.2-next.4
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.2-next.3 to 0.9.2-next.4
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.3 to 0.9.2-next.4
+
 ## [0.9.2-next.3](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.9.2-next.2...validate-locales-v0.9.2-next.3) (2026-07-30)
 
 
