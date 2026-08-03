@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.9.2-next.5](https://github.com/iotaledger/twin-framework/compare/core-v0.9.2-next.4...core-v0.9.2-next.5) (2026-08-03)
+
+
+### Features
+
+* move health support to api repo ([#435](https://github.com/iotaledger/twin-framework/issues/435)) ([867f766](https://github.com/iotaledger/twin-framework/commit/867f766afc86607bec6b5cf9c3ab5bd5c41d0b3c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.9.2-next.4 to 0.9.2-next.5
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.2-next.4 to 0.9.2-next.5
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.4 to 0.9.2-next.5
+
 ## [0.9.2-next.4](https://github.com/iotaledger/twin-framework/compare/core-v0.9.2-next.3...core-v0.9.2-next.4) (2026-07-31)
 
 
