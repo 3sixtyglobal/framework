@@ -1,6 +1,5 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { IHealth } from "./IHealth.js";
 
 /**
  * Interface describing a component which can be bootstrapped, started and stopped.
@@ -39,10 +38,4 @@ export interface IComponent {
 	 * @returns A promise that resolves when the component has stopped.
 	 */
 	stop?(nodeLoggingComponentType?: string): Promise<void>;
-
-	/**
-	 * Returns the health status of the component.
-	 * @returns The health status of the component, can return multiple entries for elements within the component.
-	 */
-	health?(): Promise<IHealth[]>;
 }
