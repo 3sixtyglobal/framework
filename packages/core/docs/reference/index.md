@@ -50,7 +50,6 @@
 - [IComponent](interfaces/IComponent.md)
 - [IDuration](interfaces/IDuration.md)
 - [IError](interfaces/IError.md)
-- [IHealth](interfaces/IHealth.md)
 - [II18nShared](interfaces/II18nShared.md)
 - [IKeyValue](interfaces/IKeyValue.md)
 - [ILabelledValue](interfaces/ILabelledValue.md)
@@ -68,7 +67,6 @@
 
 - [CoerceType](type-aliases/CoerceType.md)
 - [CompressionType](type-aliases/CompressionType.md)
-- [HealthStatus](type-aliases/HealthStatus.md)
 - [MutexMessageTypes](type-aliases/MutexMessageTypes.md)
 - [SharedObjectBufferMessageTypes](type-aliases/SharedObjectBufferMessageTypes.md)
 - [ObjectOrArray](type-aliases/ObjectOrArray.md)
@@ -80,7 +78,6 @@
 - [ComponentFactory](variables/ComponentFactory.md)
 - [CoerceType](variables/CoerceType.md)
 - [CompressionType](variables/CompressionType.md)
-- [HealthStatus](variables/HealthStatus.md)
 - [MutexMessageTypes](variables/MutexMessageTypes.md)
 - [SharedObjectBufferMessageTypes](variables/SharedObjectBufferMessageTypes.md)
 - [DURATION\_REG\_EXP](variables/DURATION_REG_EXP.md)

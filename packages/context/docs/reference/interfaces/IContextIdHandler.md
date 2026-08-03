@@ -195,21 +195,3 @@ A promise that resolves when the component has stopped.
 #### Inherited from
 
 `IComponent.stop`
-
-***
-
-### health()? {#health}
-
-> `optional` **health**(): `Promise`\<`IHealth`[]\>
-
-Returns the health status of the component.
-
-#### Returns
-
-`Promise`\<`IHealth`[]\>
-
-The health status of the component, can return multiple entries for elements within the component.
-
-#### Inherited from
-
-`IComponent.health`
