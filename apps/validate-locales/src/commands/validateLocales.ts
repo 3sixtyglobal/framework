@@ -541,7 +541,7 @@ function processCallExpression(
 		) {
 			let level;
 			let source;
-			let message;
+			let messages: ts.Node[] = [];
 			let dataNames;
 			for (const prop of node.arguments[0].properties) {
 				if (ts.isPropertyAssignment(prop) && ts.isIdentifier(prop.name)) {
@@ -554,39 +554,50 @@ function processCallExpression(
 							source = prop.initializer;
 						}
 					} else if (prop.name.text === "message") {
-						message = prop.initializer;
+						messages = expandTernaryBranches(prop.initializer);
 					} else if (prop.name.text === "data") {
 						dataNames = getPropertiesFromNode(prop.initializer, parsedSourceFiles);
 					} else if (prop.name.text === "level") {
-						level = getExpandedText(prop.initializer);
+						level = singleOrTernary(prop.initializer, n => {
+							const text = getExpandedText(n);
+							return Is.stringValue(text) ? text : undefined;
+						});
 					}
 				}
 			}
 
-			const localeKey = localeFromClassAndMessage(sourceFile, source, message, level, failures);
+			for (const messageNode of messages) {
+				const localeKey = localeFromClassAndMessage(
+					sourceFile,
+					source,
+					messageNode,
+					level,
+					failures
+				);
 
-			if (Is.stringValue(localeKey)) {
-				const localeEntry = findAndReferenceLocale(localeEntries, localeKey);
+				if (Is.stringValue(localeKey)) {
+					const localeEntry = findAndReferenceLocale(localeEntries, localeKey);
 
-				if (Is.object(localeEntry)) {
-					checkPropertyUsage(sourceFile, node, localeEntry, localeKey, dataNames ?? [], failures);
+					if (Is.object(localeEntry)) {
+						checkPropertyUsage(sourceFile, node, localeEntry, localeKey, dataNames ?? [], failures);
+					} else {
+						failures.push({
+							type: "key",
+							key: localeKey,
+							source: path.resolve(sourceFile.fileName),
+							...getSourcePosition(sourceFile, node)
+						});
+					}
 				} else {
-					failures.push({
-						type: "key",
-						key: localeKey,
-						source: path.resolve(sourceFile.fileName),
-						...getSourcePosition(sourceFile, node)
-					});
-				}
-			} else {
-				const messageText = message?.getText();
-				if (Is.stringValue(messageText)) {
-					failures.push({
-						type: "key",
-						key: messageText,
-						source: path.resolve(sourceFile.fileName),
-						...getSourcePosition(sourceFile, node)
-					});
+					const messageText = messageNode.getText();
+					if (Is.stringValue(messageText)) {
+						failures.push({
+							type: "key",
+							key: messageText,
+							source: path.resolve(sourceFile.fileName),
+							...getSourcePosition(sourceFile, node)
+						});
+					}
 				}
 			}
 			return true;
@@ -689,8 +700,8 @@ function processObjectLiteralExpression(
 ): boolean {
 	let sourceNode: ts.Node | undefined;
 	let prefix: string | undefined;
-	let descriptionNode: ts.Node | undefined;
-	let messageNode: ts.Node | undefined;
+	let descriptionNodes: ts.Node[] = [];
+	let messageNodes: ts.Node[] = [];
 
 	for (const prop of node.properties) {
 		if (ts.isPropertyAssignment(prop) && ts.isIdentifier(prop.name)) {
@@ -708,28 +719,38 @@ function processObjectLiteralExpression(
 						sourceNode = prop.initializer;
 					}
 					break;
-				case "status":
-					if (
-						ts.isPropertyAccessExpression(prop.initializer) &&
-						ts.isIdentifier(prop.initializer.expression) &&
-						prop.initializer.expression.text === "HealthStatus"
-					) {
+				case "status": {
+					const extractHealthPrefix = (n: ts.Node): "health" | undefined => {
+						if (
+							ts.isPropertyAccessExpression(n) &&
+							ts.isIdentifier(n.expression) &&
+							n.expression.text === "HealthStatus"
+						) {
+							return "health";
+						}
+						return undefined;
+					};
+					if (singleOrTernary(prop.initializer, extractHealthPrefix)) {
 						prefix = "health";
 					}
 					break;
+				}
 				case "level":
 					if (!Is.stringValue(prefix)) {
-						const levelText = getExpandedText(prop.initializer);
+						const levelText = singleOrTernary(prop.initializer, n => {
+							const text = getExpandedText(n);
+							return Is.stringValue(text) ? text : undefined;
+						});
 						if (Is.stringValue(levelText)) {
 							prefix = levelText;
 						}
 					}
 					break;
 				case "description":
-					descriptionNode = prop.initializer;
+					descriptionNodes = expandTernaryBranches(prop.initializer);
 					break;
 				case "message":
-					messageNode = prop.initializer;
+					messageNodes = expandTernaryBranches(prop.initializer);
 					break;
 			}
 		}
@@ -740,9 +761,7 @@ function processObjectLiteralExpression(
 	}
 
 	if (Is.stringValue(prefix)) {
-		for (const fieldNode of [descriptionNode, messageNode].filter(
-			(n): n is ts.Node => n !== undefined
-		)) {
+		for (const fieldNode of [...descriptionNodes, ...messageNodes]) {
 			const localeKey = localeFromClassAndMessage(
 				sourceFile,
 				sourceNode,
@@ -809,6 +828,40 @@ function processPropertyAssignment(
 		}
 	}
 	return false;
+}
+
+/**
+ * Expand a node into its ternary branches, or return it as a single-element array if not a ternary.
+ * Used to validate locale keys for every possible branch of a conditional expression.
+ * @param node The node to expand.
+ * @returns An array containing the node itself, or [whenTrue, whenFalse] for a conditional expression.
+ */
+function expandTernaryBranches(node: ts.Node): ts.Node[] {
+	if (ts.isConditionalExpression(node)) {
+		return [node.whenTrue, node.whenFalse];
+	}
+	return [node];
+}
+
+/**
+ * Extract a value from a node directly, or from either branch of a ternary expression,
+ * returning the first non-undefined result.
+ * @param node The node to inspect.
+ * @param extractor A function that extracts the value from a single node.
+ * @returns The extracted value, or undefined if no branch matched.
+ */
+function singleOrTernary<T>(
+	node: ts.Node,
+	extractor: (n: ts.Node) => T | undefined
+): T | undefined {
+	const direct = extractor(node);
+	if (direct !== undefined) {
+		return direct;
+	}
+	if (ts.isConditionalExpression(node)) {
+		return extractor(node.whenTrue) ?? extractor(node.whenFalse);
+	}
+	return undefined;
 }
 
 /**

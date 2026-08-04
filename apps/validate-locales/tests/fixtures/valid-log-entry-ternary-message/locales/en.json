@@ -1,0 +1,8 @@
+{
+	"info": {
+		"myClass": {
+			"operationFailed": "The operation failed",
+			"operationSucceeded": "The operation succeeded"
+		}
+	}
+}

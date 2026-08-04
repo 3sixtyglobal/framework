@@ -1,0 +1,10 @@
+{
+	"health": {
+		"myServer": {
+			"serverOk": "Server is healthy",
+			"serverFailed": "Server is not healthy",
+			"checkPassed": "Check passed",
+			"checkFailed": "Check failed"
+		}
+	}
+}
