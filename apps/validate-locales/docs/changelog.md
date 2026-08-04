@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.9.2-next.6](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.9.2-next.5...validate-locales-v0.9.2-next.6) (2026-08-04)
+
+
+### Features
+
+* ternary support in log and health properties ([#438](https://github.com/iotaledger/twin-framework/issues/438)) ([59859f9](https://github.com/iotaledger/twin-framework/commit/59859f985753eda5f8667bfc5d240cecbbfef905))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.2-next.5 to 0.9.2-next.6
+    * @twin.org/core bumped from 0.9.2-next.5 to 0.9.2-next.6
+    * @twin.org/nameof bumped from 0.9.2-next.5 to 0.9.2-next.6
+    * @twin.org/nameof-transformer bumped from 0.9.2-next.5 to 0.9.2-next.6
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.2-next.5 to 0.9.2-next.6
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.5 to 0.9.2-next.6
+
 ## [0.9.2-next.5](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.9.2-next.4...validate-locales-v0.9.2-next.5) (2026-08-03)
 
 
