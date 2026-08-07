@@ -1418,7 +1418,7 @@ describe("EntityConditions", () => {
 	});
 
 	test("can match correct entity when or-group mixes real and empty string entityIds", async () => {
-		// Mirrors: entityIds=["real-id", ""] — real-id entity should still match
+		// Mirrors: entityIds=["real-id", ""] - real-id entity should still match
 		expect(
 			EntityConditions.check(
 				{ annotationObject: { globalId: "real-id" } },

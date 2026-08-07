@@ -138,7 +138,7 @@ export class EntitySchemaDiffHelper {
 
 	/**
 	 * Compare two property descriptors for structural equality.
-	 * The `property` name field and documentation fields (`description`, `examples`) are intentionally excluded — callers match by name before invoking this method.
+	 * The `property` name field and documentation fields (`description`, `examples`) are intentionally excluded - callers match by name before invoking this method.
 	 * @param schema1 The first property descriptor.
 	 * @param schema2 The second property descriptor.
 	 * @returns True if all structural fields are equal.

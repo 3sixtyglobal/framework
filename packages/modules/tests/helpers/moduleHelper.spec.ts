@@ -270,7 +270,7 @@ describe("ModuleHelper", () => {
 			);
 
 			// Poll (non-blocking) until the worker signals it holds the mutex.
-			// Atomics.wait cannot be used here — it would block this thread's event loop
+			// Atomics.wait cannot be used here - it would block this thread's event loop
 			// and prevent it from servicing the worker's buffer-fetch request, causing a deadlock.
 			const deadline = Date.now() + 5000;
 			while (Atomics.load(signal, 0) === 0 && Date.now() < deadline) {

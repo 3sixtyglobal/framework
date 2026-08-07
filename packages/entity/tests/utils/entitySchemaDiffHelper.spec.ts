@@ -257,7 +257,7 @@ describe("diff with renames", () => {
 			optional: true
 		};
 
-		// "age" renamed to "score" — same type and flags
+		// "age" renamed to "score" - same type and flags
 		const diff = EntitySchemaDiffHelper.diff(
 			[idProp, ageProp],
 			[idProp, scoreProp],
@@ -334,7 +334,7 @@ describe("diff with renames", () => {
 			optional: true
 		};
 
-		// "active" doesn't exist in old schema — "score" is treated as added
+		// "active" doesn't exist in old schema - "score" is treated as added
 		const diff = EntitySchemaDiffHelper.diff(
 			[idProp],
 			[idProp, scoreProp],
@@ -348,7 +348,7 @@ describe("diff with renames", () => {
 	});
 
 	test("falls back to removed when the rename target is absent from new properties", () => {
-		// Rename declared but "score" never appears in new schema — "age" is treated as removed
+		// Rename declared but "score" never appears in new schema - "age" is treated as removed
 		const diff = EntitySchemaDiffHelper.diff(
 			[idProp, ageProp],
 			[idProp],
@@ -389,9 +389,9 @@ describe("diff with renames", () => {
 		expect(diff.unchanged[0]).toEqual(idProp);
 	});
 
-	test("rename takes priority when target name already exists in old schema — source modified, old same-named removed", () => {
+	test("rename takes priority when target name already exists in old schema - source modified, old same-named removed", () => {
 		// old has "age" and "score"; rename says age→score
-		// new only has "score" — the intent is: old "age" becomes new "score", old "score" is gone
+		// new only has "score" - the intent is: old "age" becomes new "score", old "score" is gone
 		const oldScoreProp: IEntitySchemaProperty<ITestEntity> = {
 			property: "score",
 			type: EntitySchemaPropertyType.Number,
@@ -420,7 +420,7 @@ describe("diff with renames", () => {
 		expect(diff.unchanged[0]).toEqual(idProp);
 	});
 
-	test("swap renames — both properties appear in modified with their sources swapped", () => {
+	test("swap renames - both properties appear in modified with their sources swapped", () => {
 		// old "age" (Number) and "active" (Boolean) swap names in the new schema
 		const ageSwapped: IEntitySchemaProperty<ITestEntity> = {
 			property: "active",
@@ -455,7 +455,7 @@ describe("diff with renames", () => {
 		expect(diff.unchanged[0]).toEqual(idProp);
 	});
 
-	test("duplicate rename targets — last entry wins, first source treated as removed", () => {
+	test("duplicate rename targets - last entry wins, first source treated as removed", () => {
 		// Both "age" and "active" claim to rename to "score"; last entry ("active" → "score") wins
 		const scoreProp: IEntitySchemaProperty<ITestEntity> = {
 			property: "score",
@@ -480,7 +480,7 @@ describe("diff with renames", () => {
 		expect(diff.added).toHaveLength(0);
 	});
 
-	test("duplicate rename sources — first target wins, second target treated as added", () => {
+	test("duplicate rename sources - first target wins, second target treated as added", () => {
 		// "age" claims to rename to both "score" and "active"; first target ("score") wins
 		const scoreProp: IEntitySchemaProperty<ITestEntity> = {
 			property: "score",

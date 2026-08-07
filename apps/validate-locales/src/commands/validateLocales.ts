@@ -1057,7 +1057,7 @@ function getPropertiesFromNode(node?: ts.Node, parsedSourceFiles?: ts.SourceFile
 				// { property }
 				props.push(prop.getText());
 			} else if (ts.isSpreadAssignment(prop)) {
-				// { ...expr } — resolve the property names from the expression's declared return type
+				// { ...expr } - resolve the property names from the expression's declared return type
 				props.push(...getPropertiesFromSpreadExpression(prop.expression, parsedSourceFiles));
 			}
 		}
@@ -1331,7 +1331,7 @@ function getPropertiesFromSpreadExpression(
 	parsedSourceFiles?: ts.SourceFile[]
 ): string[] {
 	if (ts.isObjectLiteralExpression(expr)) {
-		// ...{ key: value } — keys are available directly in the AST
+		// ...{ key: value } - keys are available directly in the AST
 		return getPropertiesFromNode(expr, parsedSourceFiles);
 	}
 	if (!ts.isCallExpression(expr)) {
@@ -1339,7 +1339,7 @@ function getPropertiesFromSpreadExpression(
 	}
 	const callTarget = expr.expression;
 	if (ts.isIdentifier(callTarget) && parsedSourceFiles) {
-		// ...f() — plain identifier: resolve via import or same-file definition
+		// ...f() - plain identifier: resolve via import or same-file definition
 		const returnType = findFunctionReturnType(
 			callTarget.text,
 			expr.getSourceFile(),
@@ -1352,7 +1352,7 @@ function getPropertiesFromSpreadExpression(
 		ts.isPropertyAccessExpression(callTarget) &&
 		callTarget.expression.kind === ts.SyntaxKind.ThisKeyword
 	) {
-		// ...this.method() — walk up to the enclosing class and look up the method there
+		// ...this.method() - walk up to the enclosing class and look up the method there
 		const returnType = findThisMethodReturnType(expr, callTarget.name.text);
 		if (returnType) {
 			return getPropertiesFromTypeNode(returnType);

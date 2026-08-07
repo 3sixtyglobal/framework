@@ -256,7 +256,7 @@ describe("SharedObjectBuffer", () => {
 			SharedObjectBuffer.remove("remove-rewrite");
 			await SharedObjectBuffer.create("remove-rewrite");
 			await SharedObjectBuffer.write("remove-rewrite", { b: 2 });
-			// A brand-new buffer — not the same reference as before.
+			// A brand-new buffer - not the same reference as before.
 			expect(getBuffers()["remove-rewrite"]).not.toBe(original);
 			expect(await SharedObjectBuffer.read("remove-rewrite")).toEqual({ b: 2 });
 		});
