@@ -51,7 +51,7 @@
 		"husky": "9.1.7",
 		"markdownlint-cli": "0.49.1",
 		"prettier": "3.9.6",
-		"release-please": "17.11.1"
+		"release-please": "17.10.4"
 	},
 	"workspaces": [
 		"packages/nameof-transformer",
