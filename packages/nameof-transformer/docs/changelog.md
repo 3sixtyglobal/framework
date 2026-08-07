@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.2-next.7](https://github.com/iotaledger/twin-framework/compare/nameof-transformer-v0.9.2-next.6...nameof-transformer-v0.9.2-next.7) (2026-08-07)
+
+
+### Features
+
+* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+
 ## [0.9.2-next.6](https://github.com/iotaledger/twin-framework/compare/nameof-transformer-v0.9.2-next.5...nameof-transformer-v0.9.2-next.6) (2026-08-04)
 
 
