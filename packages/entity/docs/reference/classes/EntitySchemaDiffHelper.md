@@ -114,7 +114,7 @@ True if the diff has any structural changes.
 > `static` **schemaPropertiesEqual**\<`T`, `U`\>(`schema1`, `schema2`): `boolean`
 
 Compare two property descriptors for structural equality.
-The `property` name field and documentation fields (`description`, `examples`) are intentionally excluded — callers match by name before invoking this method.
+The `property` name field and documentation fields (`description`, `examples`) are intentionally excluded - callers match by name before invoking this method.
 
 #### Type Parameters
 
