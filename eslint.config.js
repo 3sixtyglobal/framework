@@ -469,6 +469,8 @@ const importRules = {
 		{
 			devDependencies: [
 				'**/tests/**/*.ts',
+				'**/tests/**/*.js',
+				'**/scripts/**/*.mjs',
 				'**/*.config.js',
 				'**/*.config.cjs',
 				'**/*.config.mjs',
