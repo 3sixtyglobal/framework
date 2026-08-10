@@ -3,6 +3,7 @@
 import { GeneralError, Guards, Is } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 import { DecoratorHelper } from "./decoratorHelper.js";
+import { EntitySchemaPropertyType } from "../models/entitySchemaPropertyType.js";
 import type { IEntitySchema } from "../models/IEntitySchema.js";
 import type { IEntitySchemaProperty } from "../models/IEntitySchemaProperty.js";
 import type { IEntitySort } from "../models/IEntitySort.js";
@@ -182,10 +183,10 @@ export class EntitySchemaHelper {
 						type: prop.type
 					});
 				}
-			} else if (prop.type === "integer" && Is.integer(value)) {
+			} else if (prop.type === EntitySchemaPropertyType.Integer && Is.integer(value)) {
 				// If the schema expects an integer and the value is an integer, then it's valid
 			} else if (
-				prop.type === "object" &&
+				prop.type === EntitySchemaPropertyType.Object &&
 				(Is.object(value) ||
 					Is.array(value) ||
 					Is.string(value) ||
@@ -194,7 +195,7 @@ export class EntitySchemaHelper {
 					Is.null(value))
 			) {
 				// If the schema expects an object and the value is anything that can be JSON serialised, then it's valid
-			} else if (prop.type === "array" && Is.array(value)) {
+			} else if (prop.type === EntitySchemaPropertyType.Array && Is.array(value)) {
 				// If the schema expects an array and the value is an array, then it's valid
 			} else if (prop.type !== typeof value) {
 				// The schema type does not match the value type
@@ -212,5 +213,31 @@ export class EntitySchemaHelper {
 				keys: allKeys.join(", ")
 			});
 		}
+	}
+
+	/**
+	 * Find the property in the schema that is marked as the optimistic-lock version token.
+	 * @param schema The entity schema to search.
+	 * @returns The name of the version property, or undefined if none is declared.
+	 * @throws GeneralError if more than one property has isVersion set.
+	 * @throws GeneralError if the version property type is not integer.
+	 */
+	public static findVersionProperty<T>(schema: IEntitySchema<T>): string | undefined {
+		Guards.object(EntitySchemaHelper.CLASS_NAME, nameof(schema), schema);
+
+		const versionProperties = (schema.properties ?? []).filter(p => p.isVersion === true);
+		if (versionProperties.length > 1) {
+			throw new GeneralError(EntitySchemaHelper.CLASS_NAME, "multipleVersionProperties");
+		}
+		if (versionProperties.length === 1) {
+			if (versionProperties[0].type !== EntitySchemaPropertyType.Integer) {
+				throw new GeneralError(EntitySchemaHelper.CLASS_NAME, "versionPropertyMustBeInteger", {
+					property: String(versionProperties[0].property),
+					type: versionProperties[0].type
+				});
+			}
+			return versionProperties[0].property as string | undefined;
+		}
+		return undefined;
 	}
 }

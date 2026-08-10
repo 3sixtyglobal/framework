@@ -4,6 +4,7 @@ import { nameof } from "@twin.org/nameof";
 import { JsonHelper } from "./jsonHelper.js";
 import { GeneralError } from "../errors/generalError.js";
 import { Converter } from "../utils/converter.js";
+import { Guards } from "../utils/guards.js";
 import { Is } from "../utils/is.js";
 
 /**
@@ -112,14 +113,17 @@ export class ObjectHelper {
 
 	/**
 	 * Get the property of an unknown object.
-	 * @param obj The object to get the property from.
+	 * @param object The object to get the property from.
 	 * @param property The property to get, can be separated by dots for nested path.
 	 * @returns The property.
 	 */
-	public static propertyGet<T = unknown>(obj: unknown, property: string): T | undefined {
+	public static propertyGet<T = unknown>(object: unknown, property: string): T | undefined {
+		Guards.object(ObjectHelper.CLASS_NAME, nameof(object), object);
+		Guards.stringValue(ObjectHelper.CLASS_NAME, nameof(property), property);
+
 		const pathParts = property.split(".");
 
-		let pathValue: unknown = obj;
+		let pathValue: unknown = object;
 		for (const pathPart of pathParts) {
 			// Is the path part numeric i.e. an array index.
 			const arrayMatch = /^(\d+)$/.exec(pathPart);
@@ -147,15 +151,18 @@ export class ObjectHelper {
 
 	/**
 	 * Set the property of an unknown object.
-	 * @param obj The object to set the property from.
+	 * @param object The object to set the property from.
 	 * @param property The property to set.
 	 * @param value The value to set.
 	 * @throws GeneralError if the property target is not an object.
 	 */
-	public static propertySet(obj: unknown, property: string, value: unknown): void {
+	public static propertySet(object: unknown, property: string, value: unknown): void {
+		Guards.object(ObjectHelper.CLASS_NAME, nameof(object), object);
+		Guards.stringValue(ObjectHelper.CLASS_NAME, nameof(property), property);
+
 		const pathParts = property.split(".");
 
-		let pathValue: unknown = obj;
+		let pathValue: unknown = object;
 		let parentObj: unknown;
 		for (let i = 0; i < pathParts.length; i++) {
 			const pathPart = pathParts[i];
@@ -212,12 +219,14 @@ export class ObjectHelper {
 
 	/**
 	 * Delete the property of an unknown object.
-	 * @param obj The object to delete the property from.
+	 * @param object The object to delete the property from.
 	 * @param property The property to delete.
 	 */
-	public static propertyDelete(obj: unknown, property: string): void {
-		if (Is.object(obj)) {
-			delete obj[property];
+	public static propertyDelete(object: unknown, property: string): void {
+		Guards.object(ObjectHelper.CLASS_NAME, nameof(object), object);
+		Guards.stringValue(ObjectHelper.CLASS_NAME, nameof(property), property);
+		if (Is.object(object)) {
+			delete object[property];
 		}
 	}
 

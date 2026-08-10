@@ -123,6 +123,19 @@ describe("entitySchemaDiffHelper", () => {
 		expect(diff.modified[0].to.format).toBe(EntitySchemaPropertyFormat.Email);
 	});
 
+	test("detects an isVersion change in modified[]", () => {
+		const ageWithVersion: IEntitySchemaProperty<ITestEntity> = {
+			...ageProp,
+			isVersion: true
+		};
+
+		const diff = EntitySchemaDiffHelper.diff([idProp, ageProp], [idProp, ageWithVersion]);
+
+		expect(diff.modified).toHaveLength(1);
+		expect(diff.modified[0].from.isVersion).toBeUndefined();
+		expect(diff.modified[0].to.isVersion).toBe(true);
+	});
+
 	test("detects an isSecondary change (index added) in modified[]", () => {
 		const ageWithIndex: IEntitySchemaProperty<ITestEntity> = {
 			...ageProp,
@@ -611,6 +624,12 @@ describe("schemaPropertiesEqual", () => {
 	test("returns false when isSecondary differs", () => {
 		expect(
 			EntitySchemaDiffHelper.schemaPropertiesEqual(ageProp, { ...ageProp, isSecondary: true })
+		).toBe(false);
+	});
+
+	test("returns false when isVersion differs", () => {
+		expect(
+			EntitySchemaDiffHelper.schemaPropertiesEqual(ageProp, { ...ageProp, isVersion: true })
 		).toBe(false);
 	});
 
