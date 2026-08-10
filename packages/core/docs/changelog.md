@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.9.2-next.9](https://github.com/iotaledger/twin-framework/compare/core-v0.9.2-next.8...core-v0.9.2-next.9) (2026-08-10)
+
+
+### Bug Fixes
+
+* number coercion wrongly accepts alpha ([c04c1af](https://github.com/iotaledger/twin-framework/commit/c04c1af24697b6c92a180a71c0722c5673313360))
+* number coercion wrongly accepts alpha ([dd5b193](https://github.com/iotaledger/twin-framework/commit/dd5b193c2501f6d30ca94aa0fc30a6edfe405e6f))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.9.2-next.8 to 0.9.2-next.9
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.2-next.8 to 0.9.2-next.9
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.8 to 0.9.2-next.9
+
 ## [0.9.2-next.8](https://github.com/iotaledger/twin-framework/compare/core-v0.9.2-next.7...core-v0.9.2-next.8) (2026-08-10)
 
 
