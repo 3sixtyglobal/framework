@@ -196,7 +196,7 @@ True is the objects are equal.
 
 ### propertyGet() {#propertyget}
 
-> `static` **propertyGet**\<`T`\>(`obj`, `property`): `T` \| `undefined`
+> `static` **propertyGet**\<`T`\>(`object`, `property`): `T` \| `undefined`
 
 Get the property of an unknown object.
 
@@ -208,7 +208,7 @@ Get the property of an unknown object.
 
 #### Parameters
 
-##### obj
+##### object
 
 `unknown`
 
@@ -230,13 +230,13 @@ The property.
 
 ### propertySet() {#propertyset}
 
-> `static` **propertySet**(`obj`, `property`, `value`): `void`
+> `static` **propertySet**(`object`, `property`, `value`): `void`
 
 Set the property of an unknown object.
 
 #### Parameters
 
-##### obj
+##### object
 
 `unknown`
 
@@ -266,13 +266,13 @@ GeneralError if the property target is not an object.
 
 ### propertyDelete() {#propertydelete}
 
-> `static` **propertyDelete**(`obj`, `property`): `void`
+> `static` **propertyDelete**(`object`, `property`): `void`
 
 Delete the property of an unknown object.
 
 #### Parameters
 
-##### obj
+##### object
 
 `unknown`
 

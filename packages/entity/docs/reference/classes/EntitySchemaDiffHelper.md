@@ -28,7 +28,7 @@ Runtime name for the class.
 
 Compare two arrays of entity schema properties and return a structured diff.
 
-Properties are matched by their `property` key name. A property is considered modified when any structural field differs: `type`, `format`, `isPrimary`, `isSecondary`, `sortDirection`, `optional`, `itemType`, or `itemTypeRef`.
+Properties are matched by their `property` key name. A property is considered modified when any structural field differs: `type`, `format`, `isPrimary`, `isSecondary`, `isVersion`, `sortDirection`, `optional`, `itemType`, or `itemTypeRef`.
 Documentation-only fields (`description`, `examples`) are intentionally excluded from the comparison to avoid spurious diffs.
 
 Because a pure name change cannot be detected automatically, callers may supply a `renames` list mapping old names to new names. Renamed properties appear in `modified` (never in `added` or `removed`) even when no other fields changed. Rename lookups take priority over direct same-name matches, which allows swap renames to work correctly and prevents a renamed source from silently disappearing when the target name already existed in the old schema. Self-renames (`from === to`) are ignored and the property is classified normally.
