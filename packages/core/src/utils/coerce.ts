@@ -45,8 +45,8 @@ export class Coerce {
 		if (Is.number(value)) {
 			return value;
 		}
-		if (Is.string(value)) {
-			const parsed = Number.parseFloat(value);
+		if (Is.stringValue(value)) {
+			const parsed = Number(value);
 			if (Is.number(parsed)) {
 				return parsed;
 			}

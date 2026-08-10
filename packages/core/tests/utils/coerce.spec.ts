@@ -43,6 +43,10 @@ describe("Coerce", () => {
 		expect(Coerce.number("foo")).toEqual(undefined);
 	});
 
+	test("number can fail if value is a partial numeric string", () => {
+		expect(Coerce.number("1111a")).toEqual(undefined);
+	});
+
 	test("number can coerce if value is a number", () => {
 		expect(Coerce.number(123.45)).toEqual(123.45);
 	});
