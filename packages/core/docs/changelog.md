@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.9.2-next.8](https://github.com/iotaledger/twin-framework/compare/core-v0.9.2-next.7...core-v0.9.2-next.8) (2026-08-10)
+
+
+### Features
+
+* optimistic locking version property for schemas ([#443](https://github.com/iotaledger/twin-framework/issues/443)) ([1b90987](https://github.com/iotaledger/twin-framework/commit/1b909875dc915a0ec133d8424d013ae7e4ddfb48))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.9.2-next.7 to 0.9.2-next.8
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.2-next.7 to 0.9.2-next.8
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.7 to 0.9.2-next.8
+
 ## [0.9.2-next.7](https://github.com/iotaledger/twin-framework/compare/core-v0.9.2-next.6...core-v0.9.2-next.7) (2026-08-07)
 
 
