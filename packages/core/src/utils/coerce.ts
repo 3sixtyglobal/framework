@@ -45,7 +45,7 @@ export class Coerce {
 		if (Is.number(value)) {
 			return value;
 		}
-		if (Is.stringValue(value)) {
+		if (Is.stringValue(value) && /^[+-]?(\d+\.?\d*|\.\d+)([eE][+-]?\d+)?$/.test(value)) {
 			const parsed = Number(value);
 			if (Is.number(parsed)) {
 				return parsed;

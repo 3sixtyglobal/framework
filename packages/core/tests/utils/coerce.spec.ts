@@ -67,6 +67,18 @@ describe("Coerce", () => {
 		expect(Coerce.number({})).toEqual(undefined);
 	});
 
+	test("number can fail if value is a hex string", () => {
+		expect(Coerce.number("0xFF")).toEqual(undefined);
+	});
+
+	test("number can fail if value is a binary string", () => {
+		expect(Coerce.number("0b1010")).toEqual(undefined);
+	});
+
+	test("number can fail if value is an octal string", () => {
+		expect(Coerce.number("0o17")).toEqual(undefined);
+	});
+
 	test("integer can coerce if value is undefined", () => {
 		expect(Coerce.integer(undefined)).toEqual(undefined);
 	});
