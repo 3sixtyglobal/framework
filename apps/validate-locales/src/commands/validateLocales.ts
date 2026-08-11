@@ -350,15 +350,27 @@ function processErrorType(
 	const errType = ERROR_TYPES.find(e => e.name === errorType);
 
 	if (Is.object(errType)) {
-		const localeKey = localeFromClassAndMessage(
-			sourceFile,
-			node.arguments?.[0],
-			node.arguments?.[1],
-			"error",
-			failures
-		);
+		const classNodes = node.arguments?.[0] ? expandTernaryBranches(node.arguments[0]) : [];
+		const messageNodes = node.arguments?.[1] ? expandTernaryBranches(node.arguments[1]) : [];
+		const localeKeys = new Set<string>();
 
-		if (Is.stringValue(localeKey)) {
+		for (const classNode of classNodes) {
+			for (const messageNode of messageNodes) {
+				const localeKey = localeFromClassAndMessage(
+					sourceFile,
+					classNode,
+					messageNode,
+					"error",
+					failures
+				);
+
+				if (Is.stringValue(localeKey)) {
+					localeKeys.add(localeKey);
+				}
+			}
+		}
+
+		for (const localeKey of localeKeys) {
 			const localeEntry = findAndReferenceLocale(localeEntries, localeKey);
 
 			if (Is.object(localeEntry)) {

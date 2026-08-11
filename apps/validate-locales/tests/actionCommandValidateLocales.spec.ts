@@ -45,6 +45,16 @@ describe("actionCommandValidateLocales", () => {
 		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
 	});
 
+	test("Can validate source with valid error class locale usage using ternary message", async () => {
+		const fixture = path.join(testDir, "fixtures", "valid-error-class-ternary-message");
+		await actionCommandValidateLocales({
+			source: path.join(fixture, "src/**/*.ts"),
+			locales: path.join(fixture, "locales/**/*.json"),
+			ignoreFile: path.join(fixture, "locales/.validate-ignore")
+		});
+		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
+	});
+
 	test("Can validate source with valid health check locale usage", async () => {
 		const fixture = path.join(testDir, "fixtures", "valid-health-check");
 		await actionCommandValidateLocales({
