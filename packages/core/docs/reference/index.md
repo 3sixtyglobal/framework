@@ -40,6 +40,8 @@
 - [Guards](classes/Guards.md)
 - [I18n](classes/I18n.md)
 - [Is](classes/Is.md)
+- [LfuCache](classes/LfuCache.md)
+- [LruCache](classes/LruCache.md)
 - [Mutex](classes/Mutex.md)
 - [SharedObjectBuffer](classes/SharedObjectBuffer.md)
 - [SharedStore](classes/SharedStore.md)
