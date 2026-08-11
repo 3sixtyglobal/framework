@@ -56,6 +56,8 @@ export * from "./types/singleOccurrenceArrayDepthHelper.js";
 export * from "./types/url.js";
 export * from "./types/urn.js";
 export * from "./utils/asyncCache.js";
+export * from "./utils/lfuCache.js";
+export * from "./utils/lruCache.js";
 export * from "./utils/coerce.js";
 export * from "./utils/compression.js";
 export * from "./utils/converter.js";
