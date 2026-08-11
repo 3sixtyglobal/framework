@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.9.2-next.10](https://github.com/iotaledger/twin-framework/compare/core-v0.9.2-next.9...core-v0.9.2-next.10) (2026-08-11)
+
+
+### Features
+
+* add lru and lft cache ([#449](https://github.com/iotaledger/twin-framework/issues/449)) ([67d741e](https://github.com/iotaledger/twin-framework/commit/67d741eab3b89556e3c55053b5a473a4c1592fed))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.9.2-next.9 to 0.9.2-next.10
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.2-next.9 to 0.9.2-next.10
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.9 to 0.9.2-next.10
+
 ## [0.9.2-next.9](https://github.com/iotaledger/twin-framework/compare/core-v0.9.2-next.8...core-v0.9.2-next.9) (2026-08-10)
 
 

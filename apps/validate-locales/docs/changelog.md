@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.9.2-next.10](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.9.2-next.9...validate-locales-v0.9.2-next.10) (2026-08-11)
+
+
+### Features
+
+* ternary support in validate-locales errors ([142bb62](https://github.com/iotaledger/twin-framework/commit/142bb62bc35795867df13a1fac2151e90f6533bb))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.2-next.9 to 0.9.2-next.10
+    * @twin.org/core bumped from 0.9.2-next.9 to 0.9.2-next.10
+    * @twin.org/nameof bumped from 0.9.2-next.9 to 0.9.2-next.10
+    * @twin.org/nameof-transformer bumped from 0.9.2-next.9 to 0.9.2-next.10
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.2-next.9 to 0.9.2-next.10
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.9 to 0.9.2-next.10
+
 ## [0.9.2-next.9](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.9.2-next.8...validate-locales-v0.9.2-next.9) (2026-08-10)
 
 

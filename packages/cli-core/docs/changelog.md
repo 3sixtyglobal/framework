@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.9.2-next.10](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.9.2-next.9...cli-core-v0.9.2-next.10) (2026-08-11)
+
+
+### Features
+
+* timeout return type ([4b40b23](https://github.com/iotaledger/twin-framework/commit/4b40b23a7e6b073c7e96cbccc1d41ba7caed2556))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.9.2-next.9 to 0.9.2-next.10
+    * @twin.org/nameof bumped from 0.9.2-next.9 to 0.9.2-next.10
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.2-next.9 to 0.9.2-next.10
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.9 to 0.9.2-next.10
+
 ## [0.9.2-next.9](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.9.2-next.8...cli-core-v0.9.2-next.9) (2026-08-10)
 
 
