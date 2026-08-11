@@ -13,7 +13,7 @@ export class CLIDisplay {
 	 * The interval ID for the spinner.
 	 * @internal
 	 */
-	private static _spinnerIntervalId: NodeJS.Timeout | number | undefined;
+	private static _spinnerIntervalId: ReturnType<typeof setTimeout> | number | undefined;
 
 	/**
 	 * The default output method for writing standard messages.
