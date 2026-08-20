@@ -71,3 +71,9 @@ Uint8Array.
 > `readonly` **Duration**: `"duration"` = `"duration"`
 
 Duration in seconds.
+
+### Array {#array}
+
+> `readonly` **Array**: `"array"` = `"array"`
+
+Array.
