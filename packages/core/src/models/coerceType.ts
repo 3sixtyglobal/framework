@@ -59,7 +59,12 @@ export const CoerceType = {
 	/**
 	 * Duration in seconds.
 	 */
-	Duration: "duration"
+	Duration: "duration",
+
+	/**
+	 * Array.
+	 */
+	Array: "array"
 } as const;
 
 /**

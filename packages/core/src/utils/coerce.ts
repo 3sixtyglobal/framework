@@ -242,6 +242,28 @@ export class Coerce {
 	}
 
 	/**
+	 * Coerce the value to an array.
+	 * @param value The value to coerce.
+	 * @returns The coerced array, or undefined if the value cannot be coerced.
+	 */
+	public static array<T = unknown>(value: unknown): T[] | undefined {
+		if (Is.undefined(value)) {
+			return value;
+		}
+		if (Is.array<T>(value)) {
+			return value;
+		}
+		if (Is.stringValue(value)) {
+			try {
+				const parsed = JSON.parse(value) as unknown;
+				if (Is.array<T>(parsed)) {
+					return parsed;
+				}
+			} catch {}
+		}
+	}
+
+	/**
 	 * Coerce the value to an object.
 	 * @param value The value to coerce.
 	 * @returns The coerced object, or undefined if the value cannot be coerced.
@@ -255,7 +277,10 @@ export class Coerce {
 		}
 		if (Is.stringValue(value)) {
 			try {
-				return JSON.parse(value) as T;
+				const parsed = JSON.parse(value) as unknown;
+				if (Is.object<T>(parsed)) {
+					return parsed;
+				}
 			} catch {}
 		}
 	}
@@ -306,6 +331,8 @@ export class Coerce {
 				return Coerce.dateTime(value);
 			case CoerceType.Time:
 				return Coerce.time(value);
+			case CoerceType.Array:
+				return Coerce.array(value);
 			case CoerceType.Object:
 				return Coerce.object(value);
 			case CoerceType.Uint8Array:

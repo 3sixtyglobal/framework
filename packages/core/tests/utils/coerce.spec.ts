@@ -527,6 +527,71 @@ describe("Coerce", () => {
 		expect(Coerce.object(42)).toEqual(undefined);
 	});
 
+	test("object can fail if value is a JSON boolean true string", () => {
+		expect(Coerce.object("true")).toEqual(undefined);
+	});
+
+	test("object can fail if value is a JSON boolean false string", () => {
+		expect(Coerce.object("false")).toEqual(undefined);
+	});
+
+	test("object can fail if value is a JSON null string", () => {
+		expect(Coerce.object("null")).toEqual(undefined);
+	});
+
+	test("object can fail if value is a JSON number string", () => {
+		expect(Coerce.object("42")).toEqual(undefined);
+	});
+
+	test("object can fail if value is a JSON quoted string", () => {
+		expect(Coerce.object('"hello"')).toEqual(undefined);
+	});
+
+	test("object can fail if value is a JSON array string", () => {
+		expect(Coerce.object("[1,2,3]")).toEqual(undefined);
+	});
+
+	test("array can coerce if value is undefined", () => {
+		expect(Coerce.array(undefined)).toEqual(undefined);
+	});
+
+	test("array can coerce if value is an array", () => {
+		const input = [1, 2, 3];
+		expect(Coerce.array(input)).toEqual(input);
+	});
+
+	test("array can coerce if value is a valid JSON array string", () => {
+		expect(Coerce.array("[1,2,3]")).toEqual([1, 2, 3]);
+	});
+
+	test("array can coerce if value is a JSON array string with mixed types", () => {
+		expect(Coerce.array('["a",1,true]')).toEqual(["a", 1, true]);
+	});
+
+	test("array can coerce if value is a JSON empty array string", () => {
+		expect(Coerce.array("[]")).toEqual([]);
+	});
+
+	test("array can fail if value is an invalid JSON string", () => {
+		expect(Coerce.array("not-json")).toEqual(undefined);
+	});
+
+	test("array can fail if value is a JSON object string", () => {
+		expect(Coerce.array('{"a":1}')).toEqual(undefined);
+	});
+
+	test("array can fail if value is a number", () => {
+		expect(Coerce.array(42)).toEqual(undefined);
+	});
+
+	test("array can fail if value is an object", () => {
+		expect(Coerce.array({})).toEqual(undefined);
+	});
+
+	test("array can fail if value is a JSON boolean string", () => {
+		expect(Coerce.array("true")).toEqual(undefined);
+	});
+
 	test("byType can coerce a string value", () => {
 		expect(Coerce.byType(123, "string")).toEqual("123");
 	});
@@ -561,6 +626,10 @@ describe("Coerce", () => {
 		expect((Coerce.byType("2021-09-28T13:25:09.249Z", "time") as Date)?.getTime()).toEqual(
 			48309249
 		);
+	});
+
+	test("byType can coerce an array value", () => {
+		expect(Coerce.byType("[1,2,3]", "array")).toEqual([1, 2, 3]);
 	});
 
 	test("byType can coerce an object value", () => {
