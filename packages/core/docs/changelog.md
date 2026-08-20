@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.9.2-next.11](https://github.com/iotaledger/twin-framework/compare/core-v0.9.2-next.10...core-v0.9.2-next.11) (2026-08-20)
+
+
+### Features
+
+* coerce array ([#452](https://github.com/iotaledger/twin-framework/issues/452)) ([2019567](https://github.com/iotaledger/twin-framework/commit/20195673a65fe7179272ac84f37dc927218c128a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.9.2-next.10 to 0.9.2-next.11
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.2-next.10 to 0.9.2-next.11
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.10 to 0.9.2-next.11
+
 ## [0.9.2-next.10](https://github.com/iotaledger/twin-framework/compare/core-v0.9.2-next.9...core-v0.9.2-next.10) (2026-08-11)
 
 
