@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import "reflect-metadata";
 import "tslib";
+import { Is } from "@twin.org/core";
 import type { IEntitySchema } from "../models/IEntitySchema.js";
 
 const META_DATA_KEY = "EntitySchemaMetadata";
@@ -17,10 +18,7 @@ export class DecoratorHelper {
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public static getSchema<T = unknown>(target: any): IEntitySchema<T> {
-		return (
-			Reflect.getMetadata(META_DATA_KEY, typeof target === "object" ? target : target.prototype) ??
-			{}
-		);
+		return Reflect.getMetadata(META_DATA_KEY, Is.object(target) ? target : target.prototype) ?? {};
 	}
 
 	/**
@@ -33,7 +31,7 @@ export class DecoratorHelper {
 		Reflect.defineMetadata(
 			META_DATA_KEY,
 			entitySchema,
-			typeof target === "object" ? target : target.prototype
+			Is.object(target) ? target : target.prototype
 		);
 	}
 }

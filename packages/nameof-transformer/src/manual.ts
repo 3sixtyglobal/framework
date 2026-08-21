@@ -8,6 +8,8 @@ import { camelCase, kebabCase } from "./stringHelper.js";
  * @returns The content with the transformers replace.
  */
 export function manual(content: string): string {
+	// allowed to disable rule here as it is before Is is available
+	// eslint-disable-next-line no-restricted-syntax
 	if (typeof content === "string" && content.includes("nameof")) {
 		// Remove the import
 		content = content.replace(/import.*from "@twin\.org\/nameof";/g, "");

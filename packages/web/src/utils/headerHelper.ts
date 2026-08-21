@@ -141,7 +141,7 @@ export class HeaderHelper {
 		return parsed?.map(({ value, quality, params }) => ({
 			mimeType: value,
 			quality,
-			...(Object.keys(params).length > 0 ? { params } : {})
+			params: Object.keys(params).length > 0 ? params : undefined
 		}));
 	}
 

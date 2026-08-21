@@ -50,6 +50,8 @@ export class Is {
 	 * @returns True if the value is a string.
 	 */
 	public static string(value: unknown): value is string {
+		// this file is the only place typeof should be allowed, all other code should call these methods
+		// eslint-disable-next-line no-restricted-syntax
 		return typeof value === "string";
 	}
 
@@ -148,6 +150,8 @@ export class Is {
 	 * @returns True if the value is a number.
 	 */
 	public static number(value: unknown): value is number {
+		// this file is the only place typeof should be allowed, all other code should call these methods
+		// eslint-disable-next-line no-restricted-syntax
 		return typeof value === "number" && Number.isFinite(value) && !Number.isNaN(value);
 	}
 
@@ -166,6 +170,8 @@ export class Is {
 	 * @returns True if the value is a big integer.
 	 */
 	public static bigint(value: unknown): value is bigint {
+		// this file is the only place typeof should be allowed, all other code should call these methods
+		// eslint-disable-next-line no-restricted-syntax
 		return typeof value === "bigint";
 	}
 
@@ -175,6 +181,8 @@ export class Is {
 	 * @returns True if the value is a boolean.
 	 */
 	public static boolean(value: unknown): value is boolean {
+		// this file is the only place typeof should be allowed, all other code should call these methods
+		// eslint-disable-next-line no-restricted-syntax
 		return typeof value === "boolean";
 	}
 
@@ -208,6 +216,8 @@ export class Is {
 	 * @returns True if the value is a string in ISO 8601 date format.
 	 */
 	public static dateString(value: unknown): value is string {
+		// this file is the only place typeof should be allowed, all other code should call these methods
+		// eslint-disable-next-line no-restricted-syntax
 		if (typeof value !== "string") {
 			return false;
 		}
@@ -229,6 +239,8 @@ export class Is {
 	 * @returns True if the value is a string in ISO 8601 date/time format.
 	 */
 	public static dateTimeString(value: unknown): value is string {
+		// this file is the only place typeof should be allowed, all other code should call these methods
+		// eslint-disable-next-line no-restricted-syntax
 		if (typeof value !== "string") {
 			return false;
 		}
@@ -252,6 +264,8 @@ export class Is {
 	 * @returns True if the value is a string in ISO 8601 time format.
 	 */
 	public static timeString(value: unknown): value is string {
+		// this file is the only place typeof should be allowed, all other code should call these methods
+		// eslint-disable-next-line no-restricted-syntax
 		if (typeof value !== "string") {
 			return false;
 		}
@@ -293,6 +307,8 @@ export class Is {
 	 * @returns True if the value is a object.
 	 */
 	public static object<T = { [id: string]: unknown }>(value: unknown): value is T {
+		// this file is the only place typeof should be allowed, all other code should call these methods
+		// eslint-disable-next-line no-restricted-syntax
 		return typeof value === "object" && value !== null && !Array.isArray(value);
 	}
 
@@ -302,7 +318,9 @@ export class Is {
 	 * @returns True if the value is a object.
 	 */
 	public static objectValue<T = { [id: string]: unknown }>(value: unknown): value is T {
+		// this file is the only place typeof should be allowed, all other code should call these methods
 		return (
+			// eslint-disable-next-line no-restricted-syntax
 			typeof value === "object" &&
 			value !== null &&
 			!Array.isArray(value) &&
@@ -383,6 +401,8 @@ export class Is {
 	public static function<T extends (...args: any[]) => any = (...args: any[]) => any>(
 		value: unknown
 	): value is T {
+		// this file is the only place typeof should be allowed, all other code should call these methods
+		// eslint-disable-next-line no-restricted-syntax
 		return typeof value === "function";
 	}
 
@@ -429,6 +449,8 @@ export class Is {
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public static class<T = unknown>(obj: unknown): obj is new (...args: any[]) => T {
+		// this file is the only place typeof should be allowed, all other code should call these methods
+		// eslint-disable-next-line no-restricted-syntax
 		if (typeof obj !== "function") {
 			return false;
 		}

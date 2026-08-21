@@ -27,8 +27,7 @@ export class JsonHelper {
 		const buffer: string[] = [];
 
 		if (
-			object === null ||
-			typeof object !== "object" ||
+			(!Is.object(object) && !Is.array(object)) ||
 			("toJSON" in object && Is.function(object.toJSON))
 		) {
 			// Primitive data type
@@ -48,7 +47,7 @@ export class JsonHelper {
 			// Object sort properties
 			const props: string[] = [];
 			const keys = Object.keys(object).sort();
-			const o = object as { [id: string]: unknown };
+			const o = object;
 			for (const key of keys) {
 				if (o[key] !== undefined) {
 					props.push(`${JSON.stringify(key)}:${JsonHelper.canonicalize(o[key])}`);

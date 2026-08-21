@@ -174,6 +174,7 @@ export class EntitySchemaHelper {
 			}
 
 			const value = entity[prop.property];
+			const valueType = typeof value;
 
 			if (Is.empty(value)) {
 				// If the value is empty but the property is not optional, then it's invalid
@@ -197,7 +198,7 @@ export class EntitySchemaHelper {
 				// If the schema expects an object and the value is anything that can be JSON serialised, then it's valid
 			} else if (prop.type === EntitySchemaPropertyType.Array && Is.array(value)) {
 				// If the schema expects an array and the value is an array, then it's valid
-			} else if (prop.type !== typeof value) {
+			} else if (prop.type !== valueType) {
 				// The schema type does not match the value type
 				throw new GeneralError(EntitySchemaHelper.CLASS_NAME, "invalidEntityProperty", {
 					value,

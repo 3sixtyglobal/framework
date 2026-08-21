@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { MessageChannel, Worker, receiveMessageOnPort } from "node:worker_threads";
 import { MutexMessageTypes } from "../../src/models/mutexMessageTypes.js";
+import { Is } from "../../src/utils/is.js";
 import { Mutex } from "../../src/utils/mutex.js";
 import { SharedStore } from "../../src/utils/sharedStore.js";
 
@@ -452,7 +453,7 @@ describe("Mutex", () => {
 			// Intentionally NOT wiring handleWorkerMessage - the signal will never be notified.
 			const result = await new Promise<{ ok?: boolean; error?: string }>(resolve => {
 				worker.on("message", (msg: unknown) => {
-					if (msg !== null && typeof msg === "object" && !("type" in msg)) {
+					if (Is.object(msg) && !("type" in msg)) {
 						resolve(msg);
 					}
 				});
