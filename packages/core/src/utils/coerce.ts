@@ -45,8 +45,8 @@ export class Coerce {
 		if (Is.number(value)) {
 			return value;
 		}
-		if (Is.string(value)) {
-			const parsed = Number.parseFloat(value);
+		if (Is.stringValue(value) && /^[+-]?(\d+\.?\d*|\.\d+)([eE][+-]?\d+)?$/.test(value)) {
+			const parsed = Number(value);
 			if (Is.number(parsed)) {
 				return parsed;
 			}
@@ -84,12 +84,14 @@ export class Coerce {
 			return value;
 		}
 		if (Is.number(value)) {
+			if (!Is.integer(value)) {
+				return undefined;
+			}
 			return BigInt(value);
 		}
 		if (Is.string(value)) {
-			const parsed = Number.parseFloat(value);
-			if (Is.integer(parsed)) {
-				return BigInt(parsed);
+			if (/^-?\d+$/.test(value)) {
+				return BigInt(value);
 			}
 		}
 		if (Is.boolean(value)) {
@@ -240,6 +242,28 @@ export class Coerce {
 	}
 
 	/**
+	 * Coerce the value to an array.
+	 * @param value The value to coerce.
+	 * @returns The coerced array, or undefined if the value cannot be coerced.
+	 */
+	public static array<T = unknown>(value: unknown): T[] | undefined {
+		if (Is.undefined(value)) {
+			return value;
+		}
+		if (Is.array<T>(value)) {
+			return value;
+		}
+		if (Is.stringValue(value)) {
+			try {
+				const parsed = JSON.parse(value) as unknown;
+				if (Is.array<T>(parsed)) {
+					return parsed;
+				}
+			} catch {}
+		}
+	}
+
+	/**
 	 * Coerce the value to an object.
 	 * @param value The value to coerce.
 	 * @returns The coerced object, or undefined if the value cannot be coerced.
@@ -253,7 +277,10 @@ export class Coerce {
 		}
 		if (Is.stringValue(value)) {
 			try {
-				return JSON.parse(value) as T;
+				const parsed = JSON.parse(value) as unknown;
+				if (Is.object<T>(parsed)) {
+					return parsed;
+				}
 			} catch {}
 		}
 	}
@@ -304,6 +331,8 @@ export class Coerce {
 				return Coerce.dateTime(value);
 			case CoerceType.Time:
 				return Coerce.time(value);
+			case CoerceType.Array:
+				return Coerce.array(value);
 			case CoerceType.Object:
 				return Coerce.object(value);
 			case CoerceType.Uint8Array:

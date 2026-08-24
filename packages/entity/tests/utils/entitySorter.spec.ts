@@ -281,4 +281,32 @@ describe("Sorter", () => {
 		expect(result[0].id).toEqual("2");
 		expect(result[1].id).toEqual("1");
 	});
+
+	test("compare returns 0 when both entities lack the sort property", async () => {
+		const a = { id: "1" };
+		const b = { id: "2" };
+		expect(
+			EntitySorter.compare(a, b, "value1" as never, "string", SortDirection.Ascending)
+		).toEqual(0);
+		expect(
+			EntitySorter.compare(b, a, "value1" as never, "string", SortDirection.Ascending)
+		).toEqual(0);
+	});
+
+	test("sort falls back to secondary key when both entities lack the primary sort property", async () => {
+		const result = EntitySorter.sort<{ id: string; count?: number; dateCreated: string }>(
+			[
+				{ id: "1", dateCreated: "2024-01-01" },
+				{ id: "2", dateCreated: "2024-01-03" }
+			],
+			[
+				{ property: "count", type: "number", sortDirection: SortDirection.Ascending },
+				{ property: "dateCreated", type: "string", sortDirection: SortDirection.Descending }
+			]
+		);
+
+		expect(result.length).toEqual(2);
+		expect(result[0].id).toEqual("2");
+		expect(result[1].id).toEqual("1");
+	});
 });

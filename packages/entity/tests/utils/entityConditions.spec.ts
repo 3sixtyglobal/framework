@@ -325,6 +325,55 @@ describe("EntityConditions", () => {
 		).toEqual(true);
 	});
 
+	test("object array NotIncludes returns false when value is present in multi-element array", async () => {
+		expect(
+			EntityConditions.check(
+				{
+					a: [
+						{ type: "colour", value: "red" },
+						{ type: "size", value: "xl" }
+					]
+				},
+				{
+					property: "a",
+					value: { type: "colour", value: "red" },
+					comparison: ComparisonOperator.NotIncludes
+				}
+			)
+		).toEqual(false);
+	});
+
+	test("object array NotIncludes returns true when value is absent from multi-element array", async () => {
+		expect(
+			EntityConditions.check(
+				{
+					a: [
+						{ type: "colour", value: "red" },
+						{ type: "size", value: "xl" }
+					]
+				},
+				{
+					property: "a",
+					value: { type: "colour", value: "blue" },
+					comparison: ComparisonOperator.NotIncludes
+				}
+			)
+		).toEqual(true);
+	});
+
+	test("object array NotIncludes returns true for empty array", async () => {
+		expect(
+			EntityConditions.check(
+				{ a: [] },
+				{
+					property: "a",
+					value: { type: "colour", value: "red" },
+					comparison: ComparisonOperator.NotIncludes
+				}
+			)
+		).toEqual(true);
+	});
+
 	test("can not match if number condition different type", async () => {
 		expect(
 			EntityConditions.check(
@@ -1369,7 +1418,7 @@ describe("EntityConditions", () => {
 	});
 
 	test("can match correct entity when or-group mixes real and empty string entityIds", async () => {
-		// Mirrors: entityIds=["real-id", ""] — real-id entity should still match
+		// Mirrors: entityIds=["real-id", ""] - real-id entity should still match
 		expect(
 			EntityConditions.check(
 				{ annotationObject: { globalId: "real-id" } },

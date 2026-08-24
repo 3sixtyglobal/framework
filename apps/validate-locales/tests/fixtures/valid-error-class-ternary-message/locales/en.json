@@ -1,0 +1,8 @@
+{
+	"error": {
+		"fileEntityStorageConnector": {
+			"optimisticLockFailed": "Optimistic lock failed.",
+			"conditionFailed": "Condition failed."
+		}
+	}
+}

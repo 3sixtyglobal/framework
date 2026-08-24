@@ -77,7 +77,7 @@ export class EntitySorter {
 			}
 		} else if (hasProp1) {
 			res = -1;
-		} else {
+		} else if (hasProp2) {
 			res = 1;
 		}
 

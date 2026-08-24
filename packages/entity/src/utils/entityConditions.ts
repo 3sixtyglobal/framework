@@ -181,10 +181,11 @@ export class EntityConditions {
 					}
 				} else if (comparator.comparison === ComparisonOperator.NotIncludes) {
 					for (const v of val) {
-						if (!ObjectHelper.equal(v, conditionValue)) {
-							return true;
+						if (ObjectHelper.equal(v, conditionValue)) {
+							return false;
 						}
 					}
+					return true;
 				}
 			}
 			return false;

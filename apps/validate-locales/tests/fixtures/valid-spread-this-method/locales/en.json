@@ -1,0 +1,8 @@
+{
+	"error": {
+		"myClass": {
+			"doLocal": "Local error (id: {id}, status: {status})",
+			"doThis": "Method error (id: {id}, code: {code})"
+		}
+	}
+}

@@ -1,0 +1,7 @@
+{
+	"error": {
+		"myClass": {
+			"doError": "An error occurred (agreementId: {agreementId}, endpoint: {endpoint}, code: {code})"
+		}
+	}
+}

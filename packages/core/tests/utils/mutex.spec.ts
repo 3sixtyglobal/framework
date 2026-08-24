@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { MessageChannel, Worker, receiveMessageOnPort } from "node:worker_threads";
 import { MutexMessageTypes } from "../../src/models/mutexMessageTypes.js";
+import { Is } from "../../src/utils/is.js";
 import { Mutex } from "../../src/utils/mutex.js";
 import { SharedStore } from "../../src/utils/sharedStore.js";
 
@@ -222,7 +223,7 @@ describe("Mutex", () => {
 
 		test("retains the key entry in the registry after unlock with no waiters", async () => {
 			// parentPort is null in fork-mode test processes, so this process owns the
-			// registry and never deletes entries — worker threads may still hold references.
+			// registry and never deletes entries - worker threads may still hold references.
 			await Mutex.lock("cleanup");
 			Mutex.unlock("cleanup");
 			expect(mutexGetPrivateLock("cleanup")).toBeDefined();
@@ -277,7 +278,7 @@ describe("Mutex", () => {
 			const returnedArr = new Int32Array(
 				(response?.message as { buffer: SharedArrayBuffer }).buffer
 			);
-			// Verify shared memory: write through original, read through returned — same buffer.
+			// Verify shared memory: write through original, read through returned - same buffer.
 			Atomics.store(arr, 0, 99);
 			expect(Atomics.load(returnedArr, 0)).toEqual(99);
 			Atomics.store(arr, 0, 0);
@@ -421,7 +422,7 @@ describe("Mutex", () => {
 			// Key must still exist while the worker is blocked.
 			expect(mutexGetPrivateLock("contested")).toBeDefined();
 
-			// Release — worker wakes and acquires.
+			// Release - worker wakes and acquires.
 			Mutex.unlock("contested");
 			await workerAcquired;
 
@@ -449,16 +450,16 @@ describe("Mutex", () => {
 				{ eval: true }
 			);
 
-			// Intentionally NOT wiring handleWorkerMessage — the signal will never be notified.
+			// Intentionally NOT wiring handleWorkerMessage - the signal will never be notified.
 			const result = await new Promise<{ ok?: boolean; error?: string }>(resolve => {
 				worker.on("message", (msg: unknown) => {
-					if (msg !== null && typeof msg === "object" && !("type" in msg)) {
+					if (Is.object(msg) && !("type" in msg)) {
 						resolve(msg);
 					}
 				});
 			});
 
-			// Worker should exit cleanly on its own — a leaked open port would keep it alive
+			// Worker should exit cleanly on its own - a leaked open port would keep it alive
 			// and prevent the worker's event loop from draining, causing this await to hang.
 			await new Promise<void>(resolve => {
 				worker.on("exit", resolve);
@@ -475,7 +476,7 @@ describe("Mutex", () => {
 			let maxConcurrent = 0;
 			const key = "toctou-mutual-exclusion";
 
-			// Launch all N tasks at once — none of them have ever seen this key before,
+			// Launch all N tasks at once - none of them have ever seen this key before,
 			// so getOrFetchLock will hit the `await loadWorkerThreads()` yield window for all of them.
 			await Promise.all(
 				Array.from({ length: N }, async () => {

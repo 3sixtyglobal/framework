@@ -30,6 +30,28 @@ The short form version of the context ID.
 
 ***
 
+### long()? {#long}
+
+> `optional` **long**(`value`): `string`
+
+The long form version of the context ID, expanded from a short version.
+
+#### Parameters
+
+##### value
+
+`string`
+
+The short form context ID value.
+
+#### Returns
+
+`string`
+
+The long form version of the context ID.
+
+***
+
 ### guard()? {#guard}
 
 > `optional` **guard**(`value`): `void`
@@ -173,21 +195,3 @@ A promise that resolves when the component has stopped.
 #### Inherited from
 
 `IComponent.stop`
-
-***
-
-### health()? {#health}
-
-> `optional` **health**(): `Promise`\<`IHealth`[]\>
-
-Returns the health status of the component.
-
-#### Returns
-
-`Promise`\<`IHealth`[]\>
-
-The health status of the component, can return multiple entries for elements within the component.
-
-#### Inherited from
-
-`IComponent.health`

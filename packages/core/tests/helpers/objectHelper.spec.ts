@@ -21,6 +21,12 @@ describe("ObjectHelper", () => {
 		).toEqual(13);
 	});
 
+	test("toBytes can return formatted JSON bytes when format is true", () => {
+		const bytes = ObjectHelper.toBytes({ foo: "bar" }, true);
+		const text = new TextDecoder().decode(bytes);
+		expect(text).toEqual('{\n\t"foo": "bar"\n}');
+	});
+
 	test("fromBytes can return undefined with undefined array", () => {
 		expect(ObjectHelper.fromBytes(undefined)).toBeUndefined();
 	});
@@ -53,6 +59,11 @@ describe("ObjectHelper", () => {
 		});
 	});
 
+	test("pick can return an empty object when keys are undefined", () => {
+		const result = ObjectHelper.pick({ foo: "bar", val1: true });
+		expect(result).toEqual({});
+	});
+
 	test("pick can return a subset when keys are provided", () => {
 		const result = ObjectHelper.pick({ foo: "bar", val1: true, val2: false }, ["foo", "val1"]);
 
@@ -72,6 +83,17 @@ describe("ObjectHelper", () => {
 		expect(result).toBeUndefined();
 	});
 
+	test("omit can return undefined when input is undefined", () => {
+		const result = ObjectHelper.omit<{ foo: string }, "foo">(undefined, ["foo"]);
+		expect(result).toBeUndefined();
+	});
+
+	test("omit can return the original object when keys are undefined", () => {
+		const obj = { foo: "bar", val1: true };
+		const result = ObjectHelper.omit(obj);
+		expect(result).toEqual(obj);
+	});
+
 	test("omit can return the original object with empty keys provided", () => {
 		const result = ObjectHelper.omit({ foo: "bar", val1: true }, []);
 
@@ -84,6 +106,38 @@ describe("ObjectHelper", () => {
 
 		expect(result.foo).toEqual("bar");
 		expect(result.val1).toEqual(true);
+	});
+
+	test("clone can return a deep copy of an object", () => {
+		const original = { a: 1, b: { c: 2 } };
+		const cloned = ObjectHelper.clone(original);
+		expect(cloned).toEqual(original);
+		cloned.b.c = 99;
+		expect(original.b.c).toEqual(2);
+	});
+
+	test("clone can return undefined when given undefined", () => {
+		expect(ObjectHelper.clone(undefined)).toBeUndefined();
+	});
+
+	test("equal returns true for identical objects in strict order", () => {
+		expect(ObjectHelper.equal({ a: 1, b: 2 }, { a: 1, b: 2 })).toEqual(true);
+	});
+
+	test("equal returns false for different objects in strict order", () => {
+		expect(ObjectHelper.equal({ a: 1 }, { a: 2 })).toEqual(false);
+	});
+
+	test("equal returns false for same properties in different order with strict mode", () => {
+		expect(ObjectHelper.equal({ a: 1, b: 2 }, { b: 2, a: 1 }, true)).toEqual(false);
+	});
+
+	test("equal returns true for same properties in different order with non-strict mode", () => {
+		expect(ObjectHelper.equal({ a: 1, b: 2 }, { b: 2, a: 1 }, false)).toEqual(true);
+	});
+
+	test("equal returns false for different objects with non-strict mode", () => {
+		expect(ObjectHelper.equal({ a: 1 }, { a: 2 }, false)).toEqual(false);
 	});
 
 	test("can merge undefined objects", () => {
@@ -196,6 +250,18 @@ describe("ObjectHelper", () => {
 		expect(result).toEqual(0);
 	});
 
+	test("can not get the property with a numeric index on a non-array value", () => {
+		const obj = { a: "hello" };
+		const result = ObjectHelper.propertyGet(obj, "a.0");
+		expect(result).toEqual(undefined);
+	});
+
+	test("can not get the property when an intermediate value is a primitive", () => {
+		const obj = { a: { b: 5 } };
+		const result = ObjectHelper.propertyGet(obj, "a.b.c");
+		expect(result).toEqual(undefined);
+	});
+
 	test("can set the property in an object that exists", () => {
 		const obj = { a: true };
 		ObjectHelper.propertySet(obj, "a", false);
@@ -249,6 +315,43 @@ describe("ObjectHelper", () => {
 		expect(() => ObjectHelper.propertySet(obj, "b.c", 123)).toThrow(
 			expect.objectContaining({ name: "GeneralError", message: "objectHelper.cannotSetProperty" })
 		);
+	});
+
+	test("can fail to set an array index on a non-array non-object value", () => {
+		const obj: { a: boolean } = { a: true };
+		expect(() => ObjectHelper.propertySet(obj, "a.0", 123)).toThrow(
+			expect.objectContaining({ name: "GeneralError", message: "objectHelper.cannotSetArrayIndex" })
+		);
+	});
+
+	test("can delete a property from an object", () => {
+		const obj: { a: boolean; b?: boolean } = { a: true, b: false };
+		ObjectHelper.propertyDelete(obj, "b");
+		expect(obj.b).toBeUndefined();
+		expect(Object.keys(obj)).not.toContain("b");
+	});
+
+	test("can delete a non-existent property without error", () => {
+		const obj = { a: true };
+		expect(() => ObjectHelper.propertyDelete(obj, "missing")).not.toThrow();
+	});
+
+	test("Can extract a property from a non-object returns undefined", () => {
+		const result = ObjectHelper.extractProperty("not-an-object", ["key"]);
+		expect(result).toBeUndefined();
+	});
+
+	test("Can extract a property that does not exist returns undefined", () => {
+		const doc = { name: "Jane" };
+		const result = ObjectHelper.extractProperty(doc, ["missing"]);
+		expect(result).toBeUndefined();
+	});
+
+	test("Can extract a property using a single string name", () => {
+		const doc = { name: "Jane", age: 30 };
+		const val = ObjectHelper.extractProperty(doc, "name");
+		expect(val).toEqual("Jane");
+		expect(Object.keys(doc)).not.toContain("name");
 	});
 
 	test("Can extract a property from a document and don't remove it", async () => {
@@ -366,6 +469,30 @@ describe("ObjectHelper", () => {
 			object: { bar: 123 },
 			subArray: [{ bar: 123 }, { bar: 123 }]
 		});
+	});
+
+	test("can return a primitive unchanged from removeEmptyProperties", () => {
+		expect(ObjectHelper.removeEmptyProperties("hello")).toEqual("hello");
+		expect(ObjectHelper.removeEmptyProperties(42)).toEqual(42);
+		expect(ObjectHelper.removeEmptyProperties(null)).toEqual(null);
+	});
+
+	test("can keep both undefined and null when both remove options are false", () => {
+		expect(
+			ObjectHelper.removeEmptyProperties(
+				{ a: undefined, b: null, c: 1 },
+				{ removeUndefined: false, removeNull: false }
+			)
+		).toEqual({ a: undefined, b: null, c: 1 });
+	});
+
+	test("can remove both undefined and null properties when both remove options are true", () => {
+		expect(
+			ObjectHelper.removeEmptyProperties(
+				{ a: undefined, b: null, c: 1 },
+				{ removeUndefined: true, removeNull: true }
+			)
+		).toEqual({ c: 1 });
 	});
 
 	test("can remove null but not properties from an object", () => {

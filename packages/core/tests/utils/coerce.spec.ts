@@ -43,6 +43,10 @@ describe("Coerce", () => {
 		expect(Coerce.number("foo")).toEqual(undefined);
 	});
 
+	test("number can fail if value is a partial numeric string", () => {
+		expect(Coerce.number("1111a")).toEqual(undefined);
+	});
+
 	test("number can coerce if value is a number", () => {
 		expect(Coerce.number(123.45)).toEqual(123.45);
 	});
@@ -61,6 +65,18 @@ describe("Coerce", () => {
 
 	test("number can fail if value is an object", () => {
 		expect(Coerce.number({})).toEqual(undefined);
+	});
+
+	test("number can fail if value is a hex string", () => {
+		expect(Coerce.number("0xFF")).toEqual(undefined);
+	});
+
+	test("number can fail if value is a binary string", () => {
+		expect(Coerce.number("0b1010")).toEqual(undefined);
+	});
+
+	test("number can fail if value is an octal string", () => {
+		expect(Coerce.number("0o17")).toEqual(undefined);
 	});
 
 	test("integer can coerce if value is undefined", () => {
@@ -113,6 +129,26 @@ describe("Coerce", () => {
 
 	test("bigint can fail if value is an object", () => {
 		expect(Coerce.bigint({})).toEqual(undefined);
+	});
+
+	test("bigint can coerce an integer number", () => {
+		expect(Coerce.bigint(42)).toEqual(42n);
+	});
+
+	test("bigint returns undefined for a non-integer number", () => {
+		expect(Coerce.bigint(1.9)).toEqual(undefined);
+	});
+
+	test("bigint converts large integer string exactly without precision loss", () => {
+		expect(Coerce.bigint("9007199254740993")).toEqual(9007199254740993n);
+	});
+
+	test("bigint returns undefined for a string with trailing non-digit characters", () => {
+		expect(Coerce.bigint("12abc")).toEqual(undefined);
+	});
+
+	test("bigint returns undefined for a hex string", () => {
+		expect(Coerce.bigint("0x10")).toEqual(undefined);
 	});
 
 	test("boolean can coerce if value is undefined", () => {
@@ -491,6 +527,71 @@ describe("Coerce", () => {
 		expect(Coerce.object(42)).toEqual(undefined);
 	});
 
+	test("object can fail if value is a JSON boolean true string", () => {
+		expect(Coerce.object("true")).toEqual(undefined);
+	});
+
+	test("object can fail if value is a JSON boolean false string", () => {
+		expect(Coerce.object("false")).toEqual(undefined);
+	});
+
+	test("object can fail if value is a JSON null string", () => {
+		expect(Coerce.object("null")).toEqual(undefined);
+	});
+
+	test("object can fail if value is a JSON number string", () => {
+		expect(Coerce.object("42")).toEqual(undefined);
+	});
+
+	test("object can fail if value is a JSON quoted string", () => {
+		expect(Coerce.object('"hello"')).toEqual(undefined);
+	});
+
+	test("object can fail if value is a JSON array string", () => {
+		expect(Coerce.object("[1,2,3]")).toEqual(undefined);
+	});
+
+	test("array can coerce if value is undefined", () => {
+		expect(Coerce.array(undefined)).toEqual(undefined);
+	});
+
+	test("array can coerce if value is an array", () => {
+		const input = [1, 2, 3];
+		expect(Coerce.array(input)).toEqual(input);
+	});
+
+	test("array can coerce if value is a valid JSON array string", () => {
+		expect(Coerce.array("[1,2,3]")).toEqual([1, 2, 3]);
+	});
+
+	test("array can coerce if value is a JSON array string with mixed types", () => {
+		expect(Coerce.array('["a",1,true]')).toEqual(["a", 1, true]);
+	});
+
+	test("array can coerce if value is a JSON empty array string", () => {
+		expect(Coerce.array("[]")).toEqual([]);
+	});
+
+	test("array can fail if value is an invalid JSON string", () => {
+		expect(Coerce.array("not-json")).toEqual(undefined);
+	});
+
+	test("array can fail if value is a JSON object string", () => {
+		expect(Coerce.array('{"a":1}')).toEqual(undefined);
+	});
+
+	test("array can fail if value is a number", () => {
+		expect(Coerce.array(42)).toEqual(undefined);
+	});
+
+	test("array can fail if value is an object", () => {
+		expect(Coerce.array({})).toEqual(undefined);
+	});
+
+	test("array can fail if value is a JSON boolean string", () => {
+		expect(Coerce.array("true")).toEqual(undefined);
+	});
+
 	test("byType can coerce a string value", () => {
 		expect(Coerce.byType(123, "string")).toEqual("123");
 	});
@@ -525,6 +626,10 @@ describe("Coerce", () => {
 		expect((Coerce.byType("2021-09-28T13:25:09.249Z", "time") as Date)?.getTime()).toEqual(
 			48309249
 		);
+	});
+
+	test("byType can coerce an array value", () => {
+		expect(Coerce.byType("[1,2,3]", "array")).toEqual([1, 2, 3]);
 	});
 
 	test("byType can coerce an object value", () => {

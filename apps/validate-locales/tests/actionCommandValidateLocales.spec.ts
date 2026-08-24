@@ -45,6 +45,16 @@ describe("actionCommandValidateLocales", () => {
 		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
 	});
 
+	test("Can validate source with valid error class locale usage using ternary message", async () => {
+		const fixture = path.join(testDir, "fixtures", "valid-error-class-ternary-message");
+		await actionCommandValidateLocales({
+			source: path.join(fixture, "src/**/*.ts"),
+			locales: path.join(fixture, "locales/**/*.json"),
+			ignoreFile: path.join(fixture, "locales/.validate-ignore")
+		});
+		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
+	});
+
 	test("Can validate source with valid health check locale usage", async () => {
 		const fixture = path.join(testDir, "fixtures", "valid-health-check");
 		await actionCommandValidateLocales({
@@ -85,8 +95,88 @@ describe("actionCommandValidateLocales", () => {
 		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
 	});
 
+	test("Can validate source with valid health check using ternary status expression", async () => {
+		const fixture = path.join(testDir, "fixtures", "valid-health-check-ternary-status");
+		await actionCommandValidateLocales({
+			source: path.join(fixture, "src/**/*.ts"),
+			locales: path.join(fixture, "locales/**/*.json"),
+			ignoreFile: path.join(fixture, "locales/.validate-ignore")
+		});
+		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
+	});
+
+	test("Can validate source with valid health check using ternary level expression", async () => {
+		const fixture = path.join(testDir, "fixtures", "valid-health-check-ternary-level");
+		await actionCommandValidateLocales({
+			source: path.join(fixture, "src/**/*.ts"),
+			locales: path.join(fixture, "locales/**/*.json"),
+			ignoreFile: path.join(fixture, "locales/.validate-ignore")
+		});
+		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
+	});
+
+	test("Can validate source with valid health check using ternary description and message expressions", async () => {
+		const fixture = path.join(testDir, "fixtures", "valid-health-check-ternary-message");
+		await actionCommandValidateLocales({
+			source: path.join(fixture, "src/**/*.ts"),
+			locales: path.join(fixture, "locales/**/*.json"),
+			ignoreFile: path.join(fixture, "locales/.validate-ignore")
+		});
+		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
+	});
+
 	test("Can validate source with valid log entry locale usage", async () => {
 		const fixture = path.join(testDir, "fixtures", "valid-log-entry");
+		await actionCommandValidateLocales({
+			source: path.join(fixture, "src/**/*.ts"),
+			locales: path.join(fixture, "locales/**/*.json"),
+			ignoreFile: path.join(fixture, "locales/.validate-ignore")
+		});
+		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
+	});
+
+	test("Can validate source with valid log entry using ternary message expression", async () => {
+		const fixture = path.join(testDir, "fixtures", "valid-log-entry-ternary-message");
+		await actionCommandValidateLocales({
+			source: path.join(fixture, "src/**/*.ts"),
+			locales: path.join(fixture, "locales/**/*.json"),
+			ignoreFile: path.join(fixture, "locales/.validate-ignore")
+		});
+		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
+	});
+
+	test("Can validate source where locale properties come from a spread of a typed function return", async () => {
+		const fixture = path.join(testDir, "fixtures", "valid-spread-properties");
+		await actionCommandValidateLocales({
+			source: path.join(fixture, "src/**/*.ts"),
+			locales: path.join(fixture, "locales/**/*.json"),
+			ignoreFile: path.join(fixture, "locales/.validate-ignore")
+		});
+		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
+	});
+
+	test("Can validate source where locale properties come from a spread of a same-file function or this.method()", async () => {
+		const fixture = path.join(testDir, "fixtures", "valid-spread-this-method");
+		await actionCommandValidateLocales({
+			source: path.join(fixture, "src/**/*.ts"),
+			locales: path.join(fixture, "locales/**/*.json"),
+			ignoreFile: path.join(fixture, "locales/.validate-ignore")
+		});
+		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
+	});
+
+	test("Can validate source where locale properties come from a spread of an inline object literal", async () => {
+		const fixture = path.join(testDir, "fixtures", "valid-spread-object-literal");
+		await actionCommandValidateLocales({
+			source: path.join(fixture, "src/**/*.ts"),
+			locales: path.join(fixture, "locales/**/*.json"),
+			ignoreFile: path.join(fixture, "locales/.validate-ignore")
+		});
+		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
+	});
+
+	test("Can validate source with ModuleHelper.execModuleMethod ignoring its parameters", async () => {
+		const fixture = path.join(testDir, "fixtures", "valid-exec-module-method");
 		await actionCommandValidateLocales({
 			source: path.join(fixture, "src/**/*.ts"),
 			locales: path.join(fixture, "locales/**/*.json"),

@@ -17,7 +17,7 @@ export class EntitySchemaDiffHelper {
 	/**
 	 * Compare two arrays of entity schema properties and return a structured diff.
 	 *
-	 * Properties are matched by their `property` key name. A property is considered modified when any structural field differs: `type`, `format`, `isPrimary`, `isSecondary`, `sortDirection`, `optional`, `itemType`, or `itemTypeRef`.
+	 * Properties are matched by their `property` key name. A property is considered modified when any structural field differs: `type`, `format`, `isPrimary`, `isSecondary`, `isVersion`, `sortDirection`, `optional`, `itemType`, or `itemTypeRef`.
 	 * Documentation-only fields (`description`, `examples`) are intentionally excluded from the comparison to avoid spurious diffs.
 	 *
 	 * Because a pure name change cannot be detected automatically, callers may supply a `renames` list mapping old names to new names. Renamed properties appear in `modified` (never in `added` or `removed`) even when no other fields changed. Rename lookups take priority over direct same-name matches, which allows swap renames to work correctly and prevents a renamed source from silently disappearing when the target name already existed in the old schema. Self-renames (`from === to`) are ignored and the property is classified normally.
@@ -138,7 +138,7 @@ export class EntitySchemaDiffHelper {
 
 	/**
 	 * Compare two property descriptors for structural equality.
-	 * The `property` name field and documentation fields (`description`, `examples`) are intentionally excluded — callers match by name before invoking this method.
+	 * The `property` name field and documentation fields (`description`, `examples`) are intentionally excluded - callers match by name before invoking this method.
 	 * @param schema1 The first property descriptor.
 	 * @param schema2 The second property descriptor.
 	 * @returns True if all structural fields are equal.
@@ -154,6 +154,7 @@ export class EntitySchemaDiffHelper {
 			schema1.format === schema2.format &&
 			schema1.isPrimary === schema2.isPrimary &&
 			schema1.isSecondary === schema2.isSecondary &&
+			schema1.isVersion === schema2.isVersion &&
 			schema1.sortDirection === schema2.sortDirection &&
 			schema1.optional === schema2.optional &&
 			schema1.itemType === schema2.itemType &&

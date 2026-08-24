@@ -103,17 +103,3 @@ The node logging component type.
 `Promise`\<`void`\>
 
 A promise that resolves when the component has stopped.
-
-***
-
-### health()? {#health}
-
-> `optional` **health**(): `Promise`\<[`IHealth`](IHealth.md)[]\>
-
-Returns the health status of the component.
-
-#### Returns
-
-`Promise`\<[`IHealth`](IHealth.md)[]\>
-
-The health status of the component, can return multiple entries for elements within the component.

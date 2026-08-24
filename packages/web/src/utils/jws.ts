@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { GeneralError, Guards, Is } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
-import { CompactSign, flattenedVerify } from "jose";
+import { FlattenedSign, flattenedVerify } from "jose";
 import type { JwkCryptoKey } from "../models/jwkCryptoKey.js";
 
 /**
@@ -30,7 +30,7 @@ export class Jws {
 		Guards.uint8Array(Jws.CLASS_NAME, nameof(hash), hash);
 
 		try {
-			const jws = await new CompactSign(hash)
+			const jws = await new FlattenedSign(hash)
 				.setProtectedHeader({
 					alg: algOverride ?? (Is.uint8Array(privateKey) ? "EdDSA" : privateKey.algorithm.name),
 					b64: false,
@@ -38,7 +38,7 @@ export class Jws {
 				})
 				.sign(privateKey);
 
-			return jws;
+			return `${jws.protected}.${jws.payload}.${jws.signature}`;
 		} catch (err) {
 			throw new GeneralError(Jws.CLASS_NAME, "createFailed", undefined, err);
 		}

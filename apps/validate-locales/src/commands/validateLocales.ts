@@ -53,6 +53,11 @@ const SKIP_LITERALS = [
 
 const SKIP_METHODS = [/^generateRest/, /^generateSocket/];
 
+const SKIP_CALL_EXPRESSIONS = [
+	/^console\.(log|error|warn|info|debug)$/,
+	/^ModuleHelper\.(execModuleMethod|getModuleEntry|getModuleMethod|execModuleMethod|execModuleMethodThread)$/
+];
+
 const CAPTURE_VARIABLES = [/ROUTES_SOURCE/];
 
 /**
@@ -147,6 +152,16 @@ async function validateLocales(
 	let hasUnused = false;
 	let hasFailures = false;
 
+	// Pre-parse all source files once so the ASTs can be reused across all locale files without
+	// re-reading from disk. Spread-expression return types are resolved lazily at point of use.
+	const parsedSourceFiles: ts.SourceFile[] = [];
+	for (const sourceFile of sourceFiles) {
+		const source = await readFile(sourceFile, "utf8");
+		parsedSourceFiles.push(
+			ts.createSourceFile(sourceFile, source, ts.ScriptTarget.ESNext, true, ts.ScriptKind.TS)
+		);
+	}
+
 	for (const localeFile of localeFiles) {
 		const dictionary = await CLIUtils.readJsonFile<ILocaleDictionary>(localeFile);
 		const locale = path.basename(localeFile, path.extname(localeFile));
@@ -183,18 +198,8 @@ async function validateLocales(
 		let failures: ILocaleFailure[] = [];
 		const captureVariables: { [name: string]: ts.Node } = {};
 
-		for (const sourceFile of sourceFiles) {
-			const source = await readFile(sourceFile, "utf8");
-
-			const sourceTs = ts.createSourceFile(
-				sourceFile,
-				source,
-				ts.ScriptTarget.ESNext,
-				true,
-				ts.ScriptKind.TS
-			);
-
-			visit(sourceTs, sourceTs, localeEntries, failures, captureVariables);
+		for (const sourceTs of parsedSourceFiles) {
+			visit(sourceTs, sourceTs, localeEntries, failures, captureVariables, parsedSourceFiles);
 		}
 
 		failures = failures.filter(mr => !ignore.some(pattern => pattern.test(mr.key)));
@@ -259,13 +264,15 @@ async function validateLocales(
  * @param localeEntries The locale entries.
  * @param failures The failure entries.
  * @param captureVariables The capture variables.
+ * @param parsedSourceFiles All parsed source files, for on-demand spread type resolution.
  */
 function visit(
 	sourceFile: ts.SourceFile,
 	node: ts.Node,
 	localeEntries: ILocaleDictionaryEntry[],
 	failures: ILocaleFailure[],
-	captureVariables: { [name: string]: ts.Node }
+	captureVariables: { [name: string]: ts.Node },
+	parsedSourceFiles: ts.SourceFile[]
 ): void {
 	let handled = false;
 	if (
@@ -273,16 +280,30 @@ function visit(
 		ts.isIdentifier(node.expression) &&
 		ERROR_TYPES.some(errorType => errorType.name === node.expression.getText())
 	) {
-		processErrorType(sourceFile, node, node.expression.text, localeEntries, failures);
+		processErrorType(
+			sourceFile,
+			node,
+			node.expression.text,
+			localeEntries,
+			failures,
+			parsedSourceFiles
+		);
 		handled = true;
 	} else if (ts.isStringLiteral(node)) {
-		processStringLiteral(sourceFile, node, localeEntries, failures);
+		processStringLiteral(sourceFile, node, localeEntries, failures, parsedSourceFiles);
 		handled = true;
 	} else if (ts.isTemplateExpression(node)) {
-		processTemplateExpression(sourceFile, node, localeEntries, failures);
+		processTemplateExpression(sourceFile, node, localeEntries, failures, parsedSourceFiles);
 		handled = true;
 	} else if (ts.isCallExpression(node)) {
-		handled = processCallExpression(sourceFile, node, localeEntries, failures, captureVariables);
+		handled = processCallExpression(
+			sourceFile,
+			node,
+			localeEntries,
+			failures,
+			captureVariables,
+			parsedSourceFiles
+		);
 	} else if (ts.isFunctionDeclaration(node)) {
 		handled = processFunctionDeclaration(sourceFile, node, localeEntries, failures);
 	} else if (ts.isVariableDeclaration(node)) {
@@ -304,7 +325,7 @@ function visit(
 
 	if (!handled) {
 		ts.forEachChild(node, child =>
-			visit(sourceFile, child, localeEntries, failures, captureVariables)
+			visit(sourceFile, child, localeEntries, failures, captureVariables, parsedSourceFiles)
 		);
 	}
 }
@@ -316,26 +337,40 @@ function visit(
  * @param errorType The error type.
  * @param localeEntries The locale entries.
  * @param failures The failure entries.
+ * @param parsedSourceFiles All parsed source files, for on-demand spread type resolution.
  */
 function processErrorType(
 	sourceFile: ts.SourceFile,
 	node: ts.NewExpression,
 	errorType: string,
 	localeEntries: ILocaleDictionaryEntry[],
-	failures: ILocaleFailure[]
+	failures: ILocaleFailure[],
+	parsedSourceFiles: ts.SourceFile[]
 ): void {
 	const errType = ERROR_TYPES.find(e => e.name === errorType);
 
 	if (Is.object(errType)) {
-		const localeKey = localeFromClassAndMessage(
-			sourceFile,
-			node.arguments?.[0],
-			node.arguments?.[1],
-			"error",
-			failures
-		);
+		const classNodes = node.arguments?.[0] ? expandTernaryBranches(node.arguments[0]) : [];
+		const messageNodes = node.arguments?.[1] ? expandTernaryBranches(node.arguments[1]) : [];
+		const localeKeys = new Set<string>();
 
-		if (Is.stringValue(localeKey)) {
+		for (const classNode of classNodes) {
+			for (const messageNode of messageNodes) {
+				const localeKey = localeFromClassAndMessage(
+					sourceFile,
+					classNode,
+					messageNode,
+					"error",
+					failures
+				);
+
+				if (Is.stringValue(localeKey)) {
+					localeKeys.add(localeKey);
+				}
+			}
+		}
+
+		for (const localeKey of localeKeys) {
 			const localeEntry = findAndReferenceLocale(localeEntries, localeKey);
 
 			if (Is.object(localeEntry)) {
@@ -344,7 +379,10 @@ function processErrorType(
 
 					if (errType.dynamicPropertyIndex !== -1) {
 						usedProperties.push(
-							...getPropertiesFromNode(node.arguments?.[errType.dynamicPropertyIndex])
+							...getPropertiesFromNode(
+								node.arguments?.[errType.dynamicPropertyIndex],
+								parsedSourceFiles
+							)
 						);
 					}
 
@@ -392,12 +430,14 @@ function findAndReferenceLocale(
  * @param node The node to process.
  * @param localeEntries The locale entries.
  * @param failures The failure entries.
+ * @param parsedSourceFiles All parsed source files, for on-demand spread type resolution.
  */
 function processStringLiteral(
 	sourceFile: ts.SourceFile,
 	node: ts.StringLiteral,
 	localeEntries: ILocaleDictionaryEntry[],
-	failures: ILocaleFailure[]
+	failures: ILocaleFailure[],
+	parsedSourceFiles: ts.SourceFile[]
 ): void {
 	if (
 		node.text.length > 3 &&
@@ -413,7 +453,7 @@ function processStringLiteral(
 			if (localeEntry) {
 				localeEntry.referenced = true;
 
-				const usedProperties = getPropertiesFromNode(node);
+				const usedProperties = getPropertiesFromNode(node, parsedSourceFiles);
 				checkPropertyUsage(sourceFile, node, localeEntry, node.text, usedProperties, failures);
 			}
 
@@ -421,7 +461,7 @@ function processStringLiteral(
 				localeEntry = findAndReferenceLocale(localeEntries, `error.${node.text}`);
 				if (localeEntry) {
 					localeEntry.referenced = true;
-					const usedProperties = getPropertiesFromNode(node);
+					const usedProperties = getPropertiesFromNode(node, parsedSourceFiles);
 					checkPropertyUsage(
 						sourceFile,
 						node,
@@ -451,12 +491,14 @@ function processStringLiteral(
  * @param node The node to process.
  * @param localeEntries The locale entries.
  * @param failures The failure entries.
+ * @param parsedSourceFiles All parsed source files, for on-demand spread type resolution.
  */
 function processTemplateExpression(
 	sourceFile: ts.SourceFile,
 	node: ts.TemplateExpression,
 	localeEntries: ILocaleDictionaryEntry[],
-	failures: ILocaleFailure[]
+	failures: ILocaleFailure[],
+	parsedSourceFiles: ts.SourceFile[]
 ): void {
 	// This case handles templates like `error.${nameof(Class)}.message`
 	const templateParts = extractTemplatePartsWithExpressions(node);
@@ -467,14 +509,14 @@ function processTemplateExpression(
 
 		let localeEntry = findAndReferenceLocale(localeEntries, key);
 		if (localeEntry) {
-			const usedProperties = getPropertiesFromNode(node);
+			const usedProperties = getPropertiesFromNode(node, parsedSourceFiles);
 			checkPropertyUsage(sourceFile, node, localeEntry, localeEntry.key, usedProperties, failures);
 		} else if (["validation.", "common."].some(t => key.startsWith(t))) {
 			localeEntry = findAndReferenceLocale(localeEntries, `error.${key}`);
 
 			if (localeEntry) {
 				localeEntry.referenced = true;
-				const usedProperties = getPropertiesFromNode(node.parent.parent);
+				const usedProperties = getPropertiesFromNode(node.parent.parent, parsedSourceFiles);
 
 				checkPropertyUsage(sourceFile, node, localeEntry, `error.${key}`, usedProperties, failures);
 			}
@@ -489,6 +531,7 @@ function processTemplateExpression(
  * @param localeEntries The locale entries.
  * @param failures The failure entries.
  * @param captureVariables The capture variables.
+ * @param parsedSourceFiles All parsed source files, for on-demand spread type resolution.
  * @returns True if processed, false otherwise.
  */
 function processCallExpression(
@@ -496,11 +539,12 @@ function processCallExpression(
 	node: ts.CallExpression,
 	localeEntries: ILocaleDictionaryEntry[],
 	failures: ILocaleFailure[],
-	captureVariables: { [name: string]: ts.Node }
+	captureVariables: { [name: string]: ts.Node },
+	parsedSourceFiles: ts.SourceFile[]
 ): boolean {
 	if (ts.isPropertyAccessExpression(node.expression)) {
 		const functionName = node.expression.name.getText();
-		if (node.expression.getText() === "console.log") {
+		if (SKIP_CALL_EXPRESSIONS.some(re => re.test(node.expression.getText()))) {
 			return true;
 		} else if (
 			functionName === "log" &&
@@ -509,7 +553,7 @@ function processCallExpression(
 		) {
 			let level;
 			let source;
-			let message;
+			let messages: ts.Node[] = [];
 			let dataNames;
 			for (const prop of node.arguments[0].properties) {
 				if (ts.isPropertyAssignment(prop) && ts.isIdentifier(prop.name)) {
@@ -522,39 +566,50 @@ function processCallExpression(
 							source = prop.initializer;
 						}
 					} else if (prop.name.text === "message") {
-						message = prop.initializer;
+						messages = expandTernaryBranches(prop.initializer);
 					} else if (prop.name.text === "data") {
-						dataNames = getPropertiesFromNode(prop.initializer);
+						dataNames = getPropertiesFromNode(prop.initializer, parsedSourceFiles);
 					} else if (prop.name.text === "level") {
-						level = getExpandedText(prop.initializer);
+						level = singleOrTernary(prop.initializer, n => {
+							const text = getExpandedText(n);
+							return Is.stringValue(text) ? text : undefined;
+						});
 					}
 				}
 			}
 
-			const localeKey = localeFromClassAndMessage(sourceFile, source, message, level, failures);
+			for (const messageNode of messages) {
+				const localeKey = localeFromClassAndMessage(
+					sourceFile,
+					source,
+					messageNode,
+					level,
+					failures
+				);
 
-			if (Is.stringValue(localeKey)) {
-				const localeEntry = findAndReferenceLocale(localeEntries, localeKey);
+				if (Is.stringValue(localeKey)) {
+					const localeEntry = findAndReferenceLocale(localeEntries, localeKey);
 
-				if (Is.object(localeEntry)) {
-					checkPropertyUsage(sourceFile, node, localeEntry, localeKey, dataNames ?? [], failures);
+					if (Is.object(localeEntry)) {
+						checkPropertyUsage(sourceFile, node, localeEntry, localeKey, dataNames ?? [], failures);
+					} else {
+						failures.push({
+							type: "key",
+							key: localeKey,
+							source: path.resolve(sourceFile.fileName),
+							...getSourcePosition(sourceFile, node)
+						});
+					}
 				} else {
-					failures.push({
-						type: "key",
-						key: localeKey,
-						source: path.resolve(sourceFile.fileName),
-						...getSourcePosition(sourceFile, node)
-					});
-				}
-			} else {
-				const messageText = message?.getText();
-				if (Is.stringValue(messageText)) {
-					failures.push({
-						type: "key",
-						key: messageText,
-						source: path.resolve(sourceFile.fileName),
-						...getSourcePosition(sourceFile, node)
-					});
+					const messageText = messageNode.getText();
+					if (Is.stringValue(messageText)) {
+						failures.push({
+							type: "key",
+							key: messageText,
+							source: path.resolve(sourceFile.fileName),
+							...getSourcePosition(sourceFile, node)
+						});
+					}
 				}
 			}
 			return true;
@@ -567,7 +622,7 @@ function processCallExpression(
 			const localeKey = getExpandedText(node.arguments[0]);
 
 			if (Is.stringValue(localeKey)) {
-				const dataNames = getPropertiesFromNode(node.arguments[1]);
+				const dataNames = getPropertiesFromNode(node.arguments[1], parsedSourceFiles);
 				const localeEntry = findAndReferenceLocale(localeEntries, localeKey);
 
 				if (Is.object(localeEntry)) {
@@ -657,8 +712,8 @@ function processObjectLiteralExpression(
 ): boolean {
 	let sourceNode: ts.Node | undefined;
 	let prefix: string | undefined;
-	let descriptionNode: ts.Node | undefined;
-	let messageNode: ts.Node | undefined;
+	let descriptionNodes: ts.Node[] = [];
+	let messageNodes: ts.Node[] = [];
 
 	for (const prop of node.properties) {
 		if (ts.isPropertyAssignment(prop) && ts.isIdentifier(prop.name)) {
@@ -676,28 +731,38 @@ function processObjectLiteralExpression(
 						sourceNode = prop.initializer;
 					}
 					break;
-				case "status":
-					if (
-						ts.isPropertyAccessExpression(prop.initializer) &&
-						ts.isIdentifier(prop.initializer.expression) &&
-						prop.initializer.expression.text === "HealthStatus"
-					) {
+				case "status": {
+					const extractHealthPrefix = (n: ts.Node): "health" | undefined => {
+						if (
+							ts.isPropertyAccessExpression(n) &&
+							ts.isIdentifier(n.expression) &&
+							n.expression.text === "HealthStatus"
+						) {
+							return "health";
+						}
+						return undefined;
+					};
+					if (singleOrTernary(prop.initializer, extractHealthPrefix)) {
 						prefix = "health";
 					}
 					break;
+				}
 				case "level":
 					if (!Is.stringValue(prefix)) {
-						const levelText = getExpandedText(prop.initializer);
+						const levelText = singleOrTernary(prop.initializer, n => {
+							const text = getExpandedText(n);
+							return Is.stringValue(text) ? text : undefined;
+						});
 						if (Is.stringValue(levelText)) {
 							prefix = levelText;
 						}
 					}
 					break;
 				case "description":
-					descriptionNode = prop.initializer;
+					descriptionNodes = expandTernaryBranches(prop.initializer);
 					break;
 				case "message":
-					messageNode = prop.initializer;
+					messageNodes = expandTernaryBranches(prop.initializer);
 					break;
 			}
 		}
@@ -708,9 +773,7 @@ function processObjectLiteralExpression(
 	}
 
 	if (Is.stringValue(prefix)) {
-		for (const fieldNode of [descriptionNode, messageNode].filter(
-			(n): n is ts.Node => n !== undefined
-		)) {
+		for (const fieldNode of [...descriptionNodes, ...messageNodes]) {
 			const localeKey = localeFromClassAndMessage(
 				sourceFile,
 				sourceNode,
@@ -777,6 +840,40 @@ function processPropertyAssignment(
 		}
 	}
 	return false;
+}
+
+/**
+ * Expand a node into its ternary branches, or return it as a single-element array if not a ternary.
+ * Used to validate locale keys for every possible branch of a conditional expression.
+ * @param node The node to expand.
+ * @returns An array containing the node itself, or [whenTrue, whenFalse] for a conditional expression.
+ */
+function expandTernaryBranches(node: ts.Node): ts.Node[] {
+	if (ts.isConditionalExpression(node)) {
+		return [node.whenTrue, node.whenFalse];
+	}
+	return [node];
+}
+
+/**
+ * Extract a value from a node directly, or from either branch of a ternary expression,
+ * returning the first non-undefined result.
+ * @param node The node to inspect.
+ * @param extractor A function that extracts the value from a single node.
+ * @returns The extracted value, or undefined if no branch matched.
+ */
+function singleOrTernary<T>(
+	node: ts.Node,
+	extractor: (n: ts.Node) => T | undefined
+): T | undefined {
+	const direct = extractor(node);
+	if (direct !== undefined) {
+		return direct;
+	}
+	if (ts.isConditionalExpression(node)) {
+		return extractor(node.whenTrue) ?? extractor(node.whenFalse);
+	}
+	return undefined;
 }
 
 /**
@@ -943,9 +1040,10 @@ function getSourcePosition(
 /**
  * Get property names from a node.
  * @param node The node to get property names from.
+ * @param parsedSourceFiles Map of function name to declared return type, used to resolve spread expressions.
  * @returns The property names.
  */
-function getPropertiesFromNode(node?: ts.Node): string[] {
+function getPropertiesFromNode(node?: ts.Node, parsedSourceFiles?: ts.SourceFile[]): string[] {
 	if (!node) {
 		return [];
 	}
@@ -964,12 +1062,15 @@ function getPropertiesFromNode(node?: ts.Node): string[] {
 				// { property: { nestedProperty: value } }
 				if (ts.isObjectLiteralExpression(prop.initializer)) {
 					// Recursively get properties from nested object literals
-					const nestedProps = getPropertiesFromNode(prop.initializer);
+					const nestedProps = getPropertiesFromNode(prop.initializer, parsedSourceFiles);
 					props.push(...nestedProps);
 				}
 			} else if (ts.isShorthandPropertyAssignment(prop)) {
 				// { property }
 				props.push(prop.getText());
+			} else if (ts.isSpreadAssignment(prop)) {
+				// { ...expr } - resolve the property names from the expression's declared return type
+				props.push(...getPropertiesFromSpreadExpression(prop.expression, parsedSourceFiles));
 			}
 		}
 	} else if (ts.isStringLiteral(node)) {
@@ -982,14 +1083,14 @@ function getPropertiesFromNode(node?: ts.Node): string[] {
 			if (args && args.length > 0) {
 				const index = args.findIndex(a => a === node);
 				if (index !== -1 && index + 1 < args.length) {
-					return getPropertiesFromNode(args[index + 1]);
+					return getPropertiesFromNode(args[index + 1], parsedSourceFiles);
 				}
 			}
 		} else if (ts.isPropertyAssignment(parent)) {
 			// This is part of a property assignment in an object
 			// so we can check the parent object for other properties
 			if (ts.isObjectLiteralExpression(parent.parent)) {
-				return getPropertiesFromNode(parent.parent);
+				return getPropertiesFromNode(parent.parent, parsedSourceFiles);
 			}
 		}
 	}
@@ -1097,4 +1198,177 @@ function localeFromClassAndMessage(
 	}
 
 	return undefined;
+}
+
+/**
+ * Recursively search an AST node for a named function's declared return type.
+ * Returns the TypeNode on first match, undefined otherwise (ts.forEachChild propagates this
+ * return value so the walk stops as soon as a result is found).
+ * @param node The AST node to inspect.
+ * @param funcName The function name to search for.
+ * @returns The return TypeNode if the function is found here, undefined otherwise.
+ */
+function findReturnTypeInNode(node: ts.Node, funcName: string): ts.TypeNode | undefined {
+	if (ts.isFunctionDeclaration(node) && node.name?.text === funcName && node.type) {
+		return node.type;
+	}
+	if ((ts.isArrowFunction(node) || ts.isFunctionExpression(node)) && node.type) {
+		const parent = node.parent;
+		if (
+			ts.isVariableDeclaration(parent) &&
+			ts.isIdentifier(parent.name) &&
+			parent.name.text === funcName
+		) {
+			return node.type;
+		}
+	}
+	return ts.forEachChild(node, child => findReturnTypeInNode(child, funcName));
+}
+
+/**
+ * Extract the property names declared directly in a TypeScript type literal node.
+ * Returns an empty array for anything other than an inline object type literal, because
+ * resolving type aliases and references requires a full type-checker.
+ * @param typeNode The type node to inspect.
+ * @returns The property names, or an empty array if the type cannot be resolved statically.
+ */
+function getPropertiesFromTypeNode(typeNode: ts.TypeNode): string[] {
+	if (ts.isTypeLiteralNode(typeNode)) {
+		const names: string[] = [];
+		for (const member of typeNode.members) {
+			if (ts.isPropertySignature(member) && ts.isIdentifier(member.name)) {
+				names.push(member.name.text);
+			}
+		}
+		return names;
+	}
+	return [];
+}
+
+/**
+ * Find which parsed source file exports a given function name, by reading the import declarations
+ * in the current source file. Returns the parsed source file that the identifier is imported from,
+ * or undefined if the function is locally defined or the import cannot be resolved.
+ * @param funcName The function name to look up.
+ * @param currentSourceFile The source file that contains the call site.
+ * @param parsedSourceFiles All parsed source files available for lookup.
+ * @returns The parsed source file that defines the function, or undefined.
+ */
+function resolveImportSourceFile(
+	funcName: string,
+	currentSourceFile: ts.SourceFile,
+	parsedSourceFiles: ts.SourceFile[]
+): ts.SourceFile | undefined {
+	for (const stmt of currentSourceFile.statements) {
+		if (
+			ts.isImportDeclaration(stmt) &&
+			ts.isStringLiteral(stmt.moduleSpecifier) &&
+			stmt.importClause?.namedBindings &&
+			ts.isNamedImports(stmt.importClause.namedBindings) &&
+			stmt.importClause.namedBindings.elements.some(
+				el => (el.propertyName ?? el.name).text === funcName
+			)
+		) {
+			// Resolve the module specifier to an absolute path, mapping .js → .ts
+			const currentDir = path.dirname(currentSourceFile.fileName);
+			const resolvedPath = path
+				.resolve(currentDir, stmt.moduleSpecifier.text)
+				.replace(/\.js$/, ".ts");
+			return parsedSourceFiles.find(sf => path.resolve(sf.fileName) === resolvedPath);
+		}
+	}
+	return undefined;
+}
+
+/**
+ * Find the declared return TypeNode of a named function. Uses the import declarations in
+ * the current source file to determine which file to search, falling back to the current
+ * file itself for locally-defined functions. Only a single file is ever scanned.
+ * @param funcName The function name to search for.
+ * @param currentSourceFile The source file containing the call site.
+ * @param parsedSourceFiles All parsed source files available for lookup.
+ * @returns The return TypeNode if found, undefined otherwise.
+ */
+function findFunctionReturnType(
+	funcName: string,
+	currentSourceFile: ts.SourceFile,
+	parsedSourceFiles: ts.SourceFile[]
+): ts.TypeNode | undefined {
+	const targetFile =
+		resolveImportSourceFile(funcName, currentSourceFile, parsedSourceFiles) ?? currentSourceFile;
+	return findReturnTypeInNode(targetFile, funcName);
+}
+
+/**
+ * Walk up the parent chain from a node to find the nearest enclosing class declaration or
+ * expression, then return the declared return type of the named method within that class.
+ * @param node The starting node (the call expression containing the spread).
+ * @param methodName The method name to look up.
+ * @returns The return TypeNode if the method is found with an explicit type, undefined otherwise.
+ */
+function findThisMethodReturnType(node: ts.Node, methodName: string): ts.TypeNode | undefined {
+	let current: ts.Node = node;
+	while (current.parent) {
+		current = current.parent;
+		if (ts.isClassDeclaration(current) || ts.isClassExpression(current)) {
+			for (const member of current.members) {
+				if (
+					ts.isMethodDeclaration(member) &&
+					ts.isIdentifier(member.name) &&
+					member.name.text === methodName &&
+					member.type
+				) {
+					return member.type;
+				}
+			}
+			return undefined;
+		}
+	}
+	return undefined;
+}
+
+/**
+ * Resolve the property names contributed by a spread expression. Handles two forms:
+ * - `...f(args)` where `f` is a plain identifier (imported or locally defined function)
+ * - `...this.method(args)` where the method is declared on the enclosing class
+ * In both cases the declared return type must be an explicit inline object type literal.
+ * Returns an empty array for any other form, causing missing-property errors to be reported
+ * as normal rather than silently suppressed.
+ * @param expr The expression being spread (the node after the `...`).
+ * @param parsedSourceFiles All parsed source files, for on-demand spread type resolution.
+ * @returns The resolved property names, or an empty array when the type cannot be determined.
+ */
+function getPropertiesFromSpreadExpression(
+	expr: ts.Expression,
+	parsedSourceFiles?: ts.SourceFile[]
+): string[] {
+	if (ts.isObjectLiteralExpression(expr)) {
+		// ...{ key: value } - keys are available directly in the AST
+		return getPropertiesFromNode(expr, parsedSourceFiles);
+	}
+	if (!ts.isCallExpression(expr)) {
+		return [];
+	}
+	const callTarget = expr.expression;
+	if (ts.isIdentifier(callTarget) && parsedSourceFiles) {
+		// ...f() - plain identifier: resolve via import or same-file definition
+		const returnType = findFunctionReturnType(
+			callTarget.text,
+			expr.getSourceFile(),
+			parsedSourceFiles
+		);
+		if (returnType) {
+			return getPropertiesFromTypeNode(returnType);
+		}
+	} else if (
+		ts.isPropertyAccessExpression(callTarget) &&
+		callTarget.expression.kind === ts.SyntaxKind.ThisKeyword
+	) {
+		// ...this.method() - walk up to the enclosing class and look up the method there
+		const returnType = findThisMethodReturnType(expr, callTarget.name.text);
+		if (returnType) {
+			return getPropertiesFromTypeNode(returnType);
+		}
+	}
+	return [];
 }

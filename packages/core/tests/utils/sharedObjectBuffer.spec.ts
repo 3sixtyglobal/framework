@@ -3,6 +3,7 @@
 import { MessageChannel, Worker, receiveMessageOnPort } from "node:worker_threads";
 import { ObjectHelper } from "../../src/helpers/objectHelper.js";
 import { SharedObjectBufferMessageTypes } from "../../src/models/sharedObjectBufferMessageTypes.js";
+import { Is } from "../../src/utils/is.js";
 import { SharedObjectBuffer } from "../../src/utils/sharedObjectBuffer.js";
 import { SharedStore } from "../../src/utils/sharedStore.js";
 
@@ -256,7 +257,7 @@ describe("SharedObjectBuffer", () => {
 			SharedObjectBuffer.remove("remove-rewrite");
 			await SharedObjectBuffer.create("remove-rewrite");
 			await SharedObjectBuffer.write("remove-rewrite", { b: 2 });
-			// A brand-new buffer — not the same reference as before.
+			// A brand-new buffer - not the same reference as before.
 			expect(getBuffers()["remove-rewrite"]).not.toBe(original);
 			expect(await SharedObjectBuffer.read("remove-rewrite")).toEqual({ b: 2 });
 		});
@@ -523,7 +524,7 @@ describe("SharedObjectBuffer", () => {
 
 			const report = await new Promise<{ byteLength: number; dataLen: number }>(resolve => {
 				worker.on("message", (msg: unknown) => {
-					if (msg !== null && typeof msg === "object" && "byteLength" in msg) {
+					if (Is.object(msg) && "byteLength" in msg) {
 						resolve(msg as { byteLength: number; dataLen: number });
 					}
 				});
@@ -545,7 +546,7 @@ describe("SharedObjectBuffer", () => {
 
 			const report = await new Promise<{ dataLen: number }>(resolve => {
 				worker.on("message", (msg: unknown) => {
-					if (msg !== null && typeof msg === "object" && "dataLen" in msg) {
+					if (Is.object(msg) && "dataLen" in msg) {
 						resolve(msg as { dataLen: number });
 					}
 				});
@@ -609,7 +610,7 @@ describe("SharedObjectBuffer", () => {
 				const w = new Worker(makeFetchAndReportScript(objectId), { eval: true });
 				w.on("message", (msg: unknown) => {
 					SharedObjectBuffer.handleWorkerMessage(msg);
-					if (msg !== null && typeof msg === "object" && "dataLen" in msg) {
+					if (Is.object(msg) && "dataLen" in msg) {
 						reports.push(msg as { dataLen: number });
 					}
 				});
@@ -652,7 +653,7 @@ describe("SharedObjectBuffer", () => {
 
 			const result = await new Promise<{ waitResult: string }>(resolve => {
 				worker.on("message", (msg: unknown) => {
-					if (msg !== null && typeof msg === "object" && "waitResult" in msg) {
+					if (Is.object(msg) && "waitResult" in msg) {
 						resolve(msg as { waitResult: string });
 					}
 				});

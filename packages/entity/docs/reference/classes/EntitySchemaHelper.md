@@ -209,3 +209,39 @@ The schema to validate against.
 #### Throws
 
 If the entity is invalid.
+
+***
+
+### findVersionProperty() {#findversionproperty}
+
+> `static` **findVersionProperty**\<`T`\>(`schema`): `string` \| `undefined`
+
+Find the property in the schema that is marked as the optimistic-lock version token.
+
+#### Type Parameters
+
+##### T
+
+`T`
+
+#### Parameters
+
+##### schema
+
+[`IEntitySchema`](../interfaces/IEntitySchema.md)\<`T`\>
+
+The entity schema to search.
+
+#### Returns
+
+`string` \| `undefined`
+
+The name of the version property, or undefined if none is declared.
+
+#### Throws
+
+GeneralError if more than one property has isVersion set.
+
+#### Throws
+
+GeneralError if the version property type is not integer.

@@ -50,6 +50,18 @@ Is this a secondary index property.
 
 ***
 
+### isVersion? {#isversion}
+
+> `optional` **isVersion?**: `boolean`
+
+Is this property used as the optimistic-lock version token.
+When true, connectors automatically manage the field: the value is
+incremented on every successful write, and a write is rejected with a
+ConflictError when the submitted value does not match the stored value.
+Must be an integer property.
+
+***
+
 ### sortDirection? {#sortdirection}
 
 > `optional` **sortDirection?**: [`SortDirection`](../type-aliases/SortDirection.md)

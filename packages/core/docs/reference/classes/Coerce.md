@@ -214,6 +214,34 @@ The duration object, or undefined if the value cannot be coerced.
 
 ***
 
+### array() {#array}
+
+> `static` **array**\<`T`\>(`value`): `T`[] \| `undefined`
+
+Coerce the value to an array.
+
+#### Type Parameters
+
+##### T
+
+`T` = `unknown`
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+The value to coerce.
+
+#### Returns
+
+`T`[] \| `undefined`
+
+The coerced array, or undefined if the value cannot be coerced.
+
+***
+
 ### object() {#object}
 
 > `static` **object**\<`T`\>(`value`): `T` \| `undefined`

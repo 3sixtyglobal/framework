@@ -27,6 +27,15 @@ class TestContextIdHandler implements IContextIdHandler {
 	}
 
 	/**
+	 * Expand a short form context id by appending "-EXPANDED".
+	 * @param value The short context id value.
+	 * @returns Long form string.
+	 */
+	public long(value: string): string {
+		return `${value}-EXPANDED`;
+	}
+
+	/**
 	 * Guard the value ensuring length.
 	 * @param value The value to guard.
 	 * @throws GeneralError if the value is too short.
@@ -36,11 +45,51 @@ class TestContextIdHandler implements IContextIdHandler {
 	}
 }
 
+/**
+ * Handler that mirrors the DID handler pattern: short strips a known prefix,
+ * long restores it, making the pair a true inverse.
+ */
+class PrefixContextIdHandler implements IContextIdHandler {
+	private static readonly _PREFIX = "did:twin:";
+
+	private static readonly _PREFIX_INTERNAL = "did:internal:";
+
+	/**
+	 * The class name of the component.
+	 * @returns The class name.
+	 */
+	public className(): string {
+		return "PrefixContextIdHandler";
+	}
+
+	/**
+	 * Strip the "did:twin:" prefix to produce a short ID.
+	 * @param value The full context id value.
+	 * @returns The bare ID without the prefix.
+	 */
+	public short(value: string): string {
+		return value.startsWith(PrefixContextIdHandler._PREFIX)
+			? value.slice(PrefixContextIdHandler._PREFIX.length)
+			: value;
+	}
+
+	/**
+	 * Prepend "did:twin:" to expand a short ID back to the full form.
+	 * @param value The short context id value.
+	 * @returns The full context id with the prefix restored.
+	 */
+	public long(value: string): string {
+		return `${PrefixContextIdHandler._PREFIX_INTERNAL}${value}`;
+	}
+}
+
 describe("ContextIdHelper", () => {
 	beforeAll(() => {
 		ContextIdHandlerFactory.register("organization", () => new TestContextIdHandler());
 		ContextIdHandlerFactory.register("user", () => new TestContextIdHandler());
 		ContextIdHandlerFactory.register("node", () => new TestContextIdHandler());
+		ContextIdHandlerFactory.register("identity", () => new PrefixContextIdHandler());
+		ContextIdHandlerFactory.register("tenant", () => new PrefixContextIdHandler());
 	});
 
 	it("guard throws when key missing", () => {
@@ -65,6 +114,39 @@ describe("ContextIdHelper", () => {
 	it("short returns handler short value", () => {
 		const ctx = { organization: "ORG-ACCOUNT-123" };
 		expect(ContextIdHelper.short(ctx, "organization")).toEqual("ORG-");
+	});
+
+	it("long returns handler long value", () => {
+		const ctx = { organization: "ORG-" };
+		expect(ContextIdHelper.long(ctx, "organization")).toEqual("ORG--EXPANDED");
+	});
+
+	it("long falls back to raw value when handler has no long method", () => {
+		const ctx = { unregistered: "RAW-VALUE" };
+		expect(ContextIdHelper.long(ctx, "unregistered")).toEqual("RAW-VALUE");
+	});
+
+	it("long throws when key is missing", () => {
+		const ctx = { organization: "ORG1234" };
+		expect(() => ContextIdHelper.long(ctx, "user")).toThrow(
+			expect.objectContaining({ name: "GeneralError", message: "contextIdHelper.contextIdMissing" })
+		);
+	});
+
+	it("longAll returns object of long versions", () => {
+		const ctx = { organization: "ORG-", user: "USER" };
+		const longs = ContextIdHelper.longAll(ctx, ["organization", "user"]);
+		expect(longs).toEqual({ organization: "ORG--EXPANDED", user: "USER-EXPANDED" });
+	});
+
+	it("longAll returns empty object when keys is undefined", () => {
+		const ctx = { organization: "ORG-" };
+		expect(ContextIdHelper.longAll(ctx, undefined)).toEqual({});
+	});
+
+	it("longAll returns empty object when keys is empty", () => {
+		const ctx = { organization: "ORG-" };
+		expect(ContextIdHelper.longAll(ctx, [])).toEqual({});
 	});
 
 	it("shortAll returns object of shorts", () => {
@@ -175,6 +257,46 @@ describe("ContextIdHelper", () => {
 			expect(() => ContextIdHelper.guardAll(ctx, ["organization", "user"])).toThrow(
 				expect.objectContaining({ name: "GuardError", message: "guard.stringEmpty" })
 			);
+		});
+	});
+
+	describe("round-trip", () => {
+		it("short value is preserved inside the expanded long form for a single key", () => {
+			const fullId = "did:twin:abc123xyz";
+			const shortened = ContextIdHelper.short({ identity: fullId }, "identity");
+			const expanded = ContextIdHelper.long({ identity: shortened }, "identity");
+			expect(expanded).toContain(shortened);
+		});
+
+		it("short value is preserved inside the expanded long form for a different ID", () => {
+			const fullId = "did:twin:0xdeadbeef";
+			const shortened = ContextIdHelper.short({ identity: fullId }, "identity");
+			const expanded = ContextIdHelper.long({ identity: shortened }, "identity");
+			expect(expanded).toContain(shortened);
+		});
+
+		it("shortAll then longAll embeds each short value in the expanded form", () => {
+			const originals = {
+				identity: "did:twin:alice",
+				tenant: "did:twin:acme-corp"
+			};
+			const shorts = ContextIdHelper.shortAll(originals, ["identity", "tenant"]);
+			const expanded = ContextIdHelper.longAll(shorts, ["identity", "tenant"]);
+			expect(expanded.identity).toContain(shorts.identity);
+			expect(expanded.tenant).toContain(shorts.tenant);
+		});
+
+		it("short produces a value shorter than the original", () => {
+			const fullId = "did:twin:abc123";
+			const shortened = ContextIdHelper.short({ identity: fullId }, "identity");
+			expect(shortened.length).toBeLessThan(fullId.length);
+		});
+
+		it("long of short expands to a value longer than the short form", () => {
+			const fullId = "did:twin:abc123";
+			const shortened = ContextIdHelper.short({ identity: fullId }, "identity");
+			const expanded = ContextIdHelper.long({ identity: shortened }, "identity");
+			expect(expanded.length).toBeGreaterThan(shortened.length);
 		});
 	});
 });

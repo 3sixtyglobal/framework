@@ -557,4 +557,55 @@ describe("EntitySchemaHelper", () => {
 			})
 		);
 	});
+
+	test("can return undefined from findVersionProperty when no property has isVersion set", () => {
+		const result = EntitySchemaHelper.findVersionProperty<{ id: string }>({
+			type: "test",
+			properties: [{ property: "id", type: "string", isPrimary: true }]
+		});
+		expect(result).toBeUndefined();
+	});
+
+	test("can return the property name from findVersionProperty when one integer version property exists", () => {
+		const result = EntitySchemaHelper.findVersionProperty<{ id: string; rev: number }>({
+			type: "test",
+			properties: [
+				{ property: "id", type: "string", isPrimary: true },
+				{ property: "rev", type: "integer", isVersion: true }
+			]
+		});
+		expect(result).toEqual("rev");
+	});
+
+	test("can fail findVersionProperty when multiple properties have isVersion set", () => {
+		expect(() =>
+			EntitySchemaHelper.findVersionProperty<{ rev: number; rev2: number }>({
+				type: "test",
+				properties: [
+					{ property: "rev", type: "integer", isVersion: true },
+					{ property: "rev2", type: "integer", isVersion: true }
+				]
+			})
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.multipleVersionProperties"
+			})
+		);
+	});
+
+	test("can fail findVersionProperty when the version property is not an integer", () => {
+		expect(() =>
+			EntitySchemaHelper.findVersionProperty<{ rev: string }>({
+				type: "test",
+				properties: [{ property: "rev", type: "string", isVersion: true }]
+			})
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.versionPropertyMustBeInteger",
+				properties: { property: "rev", type: "string" }
+			})
+		);
+	});
 });
