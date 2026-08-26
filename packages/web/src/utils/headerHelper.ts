@@ -472,7 +472,7 @@ export class HeaderHelper {
 			for (const entry of entries) {
 				const [valuePart, ...paramParts] = entry.split(";").map(p => p.trim());
 
-				if (!valueValidator.test(valuePart)) {
+				if (valuePart.length > 512 || !valueValidator.test(valuePart)) {
 					return undefined;
 				}
 

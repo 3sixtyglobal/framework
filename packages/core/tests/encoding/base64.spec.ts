@@ -26,4 +26,12 @@ describe("Base64", () => {
 			expect(Converter.bytesToUtf8(Base64.decode(test.encoded))).toEqual(test.decoded);
 		}
 	});
+
+	test("Can encode and decode a large buffer without error", () => {
+		const input = new Uint8Array(6 * 1024 * 1024);
+		const encoded = Base64.encode(input);
+		expect(encoded.length).toEqual(8 * 1024 * 1024);
+		const decoded = Base64.decode(encoded);
+		expect(decoded).toEqual(input);
+	});
 });
