@@ -1,5 +1,44 @@
 # Changelog
 
+## [0.9.3-next.1](https://github.com/iotaledger/twin-framework/compare/entity-v0.9.3-next.0...entity-v0.9.3-next.1) (2026-08-26)
+
+
+### Features
+
+* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* add IEntitySchemaDiff and entitySchemaDiff utility ([#282](https://github.com/iotaledger/twin-framework/issues/282)) ([9d63e94](https://github.com/iotaledger/twin-framework/commit/9d63e94021ee2ffc138004ee68cf53d08a6b17f9))
+* add support for null in EntityConditions.compare ([922c4ba](https://github.com/iotaledger/twin-framework/commit/922c4ba8af578b4e7eaaf21b3c37a9d788941487))
+* add version field to IEntitySchema and EntitySchemaHelper.getVersion for migration support ([#346](https://github.com/iotaledger/twin-framework/issues/346)) ([e74557e](https://github.com/iotaledger/twin-framework/commit/e74557e4ccbda5b9971f4cfcd0852ba5957cead0))
+* entity schema decorators default value ([33397c2](https://github.com/iotaledger/twin-framework/commit/33397c2e24978a91257371a4c63ce7f6a7125d0c))
+* entity schema diff updates ([#294](https://github.com/iotaledger/twin-framework/issues/294)) ([7a7a94d](https://github.com/iotaledger/twin-framework/commit/7a7a94d14ea5e785dd68fd6de1c5a84941721d28))
+* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* optimistic locking version property for schemas ([#443](https://github.com/iotaledger/twin-framework/issues/443)) ([1b90987](https://github.com/iotaledger/twin-framework/commit/1b909875dc915a0ec133d8424d013ae7e4ddfb48))
+* support for object comparisons in entity conditions ([edae91d](https://github.com/iotaledger/twin-framework/commit/edae91d3205524080188a35e0ab04da036fa4f39))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* allow vacuous truth to match SQL semantics ([5bbc5e5](https://github.com/iotaledger/twin-framework/commit/5bbc5e53069f90bd39485a74a284eda9e5864e66))
+* coerce and includes ([#429](https://github.com/iotaledger/twin-framework/issues/429)) ([98c9132](https://github.com/iotaledger/twin-framework/commit/98c9132316c0393ede9d6e634bbae9e5ece2d6b9))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* update copyright year ([#260](https://github.com/iotaledger/twin-framework/issues/260)) ([c4ad930](https://github.com/iotaledger/twin-framework/commit/c4ad930fcc84ba6b5447a8074574329870b4c3f5))
+* vacuous entity condition ([#385](https://github.com/iotaledger/twin-framework/issues/385)) ([e1082bf](https://github.com/iotaledger/twin-framework/commit/e1082bff4a66ac270efc9c6654d974c19f889d2d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.9.3-next.0 to 0.9.3-next.1
+    * @twin.org/nameof bumped from 0.9.3-next.0 to 0.9.3-next.1
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.0 to 0.9.3-next.1
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.0 to 0.9.3-next.1
+    * @twin.org/validate-locales bumped from 0.9.3-next.0 to 0.9.3-next.1
+
 ## [0.9.2](https://github.com/iotaledger/twin-framework/compare/entity-v0.9.2...entity-v0.9.2) (2026-08-24)
 
 
