@@ -203,9 +203,44 @@ export const MimeTypes = {
 	Zip: "application/zip",
 
 	/**
+	 * Application 7-Zip - application/x-7z-compressed
+	 */
+	SevenZip: "application/x-7z-compressed",
+
+	/**
+	 * Application RAR - application/vnd.rar
+	 */
+	Rar: "application/vnd.rar",
+
+	/**
+	 * Application SQLite3 - application/x-sqlite3
+	 */
+	Sqlite: "application/x-sqlite3",
+
+	/**
 	 * Application PDF - application/pdf
 	 */
 	Pdf: "application/pdf",
+
+	/**
+	 * Rich Text Format - application/rtf
+	 */
+	Rtf: "application/rtf",
+
+	/**
+	 * Word Document - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+	 */
+	Docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+
+	/**
+	 * Excel Spreadsheet - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+	 */
+	Xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+
+	/**
+	 * PowerPoint Presentation - application/vnd.openxmlformats-officedocument.presentationml.presentation
+	 */
+	Pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
 
 	/**
 	 * Image GIF - image/gif
@@ -253,6 +288,11 @@ export const MimeTypes = {
 	Avif: "image/avif",
 
 	/**
+	 * Image HEIC - image/heic
+	 */
+	Heic: "image/heic",
+
+	/**
 	 * Image APNG - image/apng
 	 */
 	Apng: "image/apng",
@@ -276,6 +316,16 @@ export const MimeTypes = {
 	 * Font OTF - font/otf
 	 */
 	Otf: "font/otf",
+
+	/**
+	 * Audio FLAC - audio/flac
+	 */
+	Flac: "audio/flac",
+
+	/**
+	 * Audio MIDI - audio/midi
+	 */
+	Midi: "audio/midi",
 
 	/**
 	 * Audio MP3 - audio/mpeg

@@ -65,7 +65,12 @@
 		"JFIF",
 		"htdc",
 		"htac",
-		"scanline"
+		"scanline",
+		"openxmlformats",
+		"officedocument",
+		"wordprocessingml",
+		"spreadsheetml",
+		"presentationml"
 	],
 	"ignoreRegExpList": [
 		"/from\\s+(['\"]).*\\1/",
