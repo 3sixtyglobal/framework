@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.9.3-next.2](https://github.com/iotaledger/twin-framework/compare/web-v0.9.3-next.1...web-v0.9.3-next.2) (2026-08-28)
+
+
+### Features
+
+* improve mime type detection ([#467](https://github.com/iotaledger/twin-framework/issues/467)) ([e465a5c](https://github.com/iotaledger/twin-framework/commit/e465a5cf0926f0ba9c779bed14bdbcc409f478d5))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.9.3-next.1 to 0.9.3-next.2
+    * @twin.org/crypto bumped from 0.9.3-next.1 to 0.9.3-next.2
+    * @twin.org/nameof bumped from 0.9.3-next.1 to 0.9.3-next.2
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.1 to 0.9.3-next.2
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.1 to 0.9.3-next.2
+    * @twin.org/validate-locales bumped from 0.9.3-next.1 to 0.9.3-next.2
+
 ## [0.9.3-next.1](https://github.com/iotaledger/twin-framework/compare/web-v0.9.3-next.0...web-v0.9.3-next.1) (2026-08-26)
 
 
