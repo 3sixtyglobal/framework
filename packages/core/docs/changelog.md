@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.9.3-next.3](https://github.com/iotaledger/twin-framework/compare/core-v0.9.3-next.2...core-v0.9.3-next.3) (2026-09-02)
+
+
+### Features
+
+* factory facades ([#470](https://github.com/iotaledger/twin-framework/issues/470)) ([004aade](https://github.com/iotaledger/twin-framework/commit/004aade8340ff640f24dbe2f05330e8f5920d3a9))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.9.3-next.2 to 0.9.3-next.3
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.2 to 0.9.3-next.3
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.2 to 0.9.3-next.3
+
 ## [0.9.3-next.2](https://github.com/iotaledger/twin-framework/compare/core-v0.9.3-next.1...core-v0.9.3-next.2) (2026-08-28)
 
 
