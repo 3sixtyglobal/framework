@@ -70,7 +70,8 @@
 		"officedocument",
 		"wordprocessingml",
 		"spreadsheetml",
-		"presentationml"
+		"presentationml",
+		"unuse"
 	],
 	"ignoreRegExpList": [
 		"/from\\s+(['\"]).*\\1/",
