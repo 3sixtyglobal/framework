@@ -366,11 +366,74 @@ Remove all the instances and the generators.
 
 ***
 
+### useFacade() {#usefacade}
+
+> **useFacade**(`name`): `void`
+
+Activate a facade for this factory, so every instance it produces is wrapped by it.
+An instance is passed through the facades in the order they were activated, so the facade
+activated first is the outermost. Activating a facade which is already active does nothing.
+
+#### Parameters
+
+##### name
+
+`string`
+
+The name of the facade, as registered with the facade factory.
+
+#### Returns
+
+`void`
+
+#### Throws
+
+GuardError if the parameters are invalid.
+
+#### Throws
+
+GeneralError if no facade is registered with the name, or the factory is the facade
+factory itself.
+
+***
+
+### unuseFacade() {#unusefacade}
+
+> **unuseFacade**(`name`): `void`
+
+Deactivate a facade for this factory. Deactivating a facade which is not active does nothing.
+
+#### Parameters
+
+##### name
+
+`string`
+
+The name of the facade to deactivate.
+
+#### Returns
+
+`void`
+
+#### Throws
+
+GuardError if the parameters are invalid.
+
+***
+
 ### instancesMap() {#instancesmap}
 
-> **instancesMap**(): `object`
+> **instancesMap**(`withFacade?`): `object`
 
 Get all the instances as a map.
+
+#### Parameters
+
+##### withFacade?
+
+`boolean`
+
+Return the instances with the active facades applied, defaults to false.
 
 #### Returns
 
@@ -382,9 +445,17 @@ The instances as a map.
 
 ### instancesList() {#instanceslist}
 
-> **instancesList**(): `T`[]
+> **instancesList**(`withFacade?`): `T`[]
 
 Get all the instances as a list in the order they were registered.
+
+#### Parameters
+
+##### withFacade?
+
+`boolean`
+
+Return the instances with the active facades applied, defaults to false.
 
 #### Returns
 

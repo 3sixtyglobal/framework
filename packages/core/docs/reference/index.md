@@ -52,6 +52,7 @@
 - [IComponent](interfaces/IComponent.md)
 - [IDuration](interfaces/IDuration.md)
 - [IError](interfaces/IError.md)
+- [IFacade](interfaces/IFacade.md)
 - [II18nShared](interfaces/II18nShared.md)
 - [IKeyValue](interfaces/IKeyValue.md)
 - [ILabelledValue](interfaces/ILabelledValue.md)
@@ -78,6 +79,7 @@
 ## Variables
 
 - [ComponentFactory](variables/ComponentFactory.md)
+- [FacadeFactory](variables/FacadeFactory.md)
 - [CoerceType](variables/CoerceType.md)
 - [CompressionType](variables/CompressionType.md)
 - [MutexMessageTypes](variables/MutexMessageTypes.md)
