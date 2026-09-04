@@ -25,6 +25,11 @@ const mutexClearPrivateLocks = (): void => {
 	SharedStore.set("mutexLocks", {});
 };
 
+const mutexClearPrivateQueues = (): void => {
+	SharedStore.set("mutexWaiters", {});
+	SharedStore.set("mutexWatchers", {});
+};
+
 const mutexSimulateHeldLock = (key: string): Int32Array => {
 	const arr = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
 	Atomics.store(arr, 0, 1);
@@ -39,6 +44,7 @@ const mutexResetDefaultTimeout = (): void => {
 describe("Mutex", () => {
 	afterEach(() => {
 		mutexClearPrivateLocks();
+		mutexClearPrivateQueues();
 		mutexResetDefaultTimeout();
 	});
 
@@ -523,6 +529,85 @@ describe("Mutex", () => {
 			);
 
 			expect(counter).toEqual(N);
+		});
+	});
+
+	describe("fairness", () => {
+		test("serves queued callers in the order they arrived", async () => {
+			const key = "fair-order";
+			const order: number[] = [];
+
+			await Mutex.lock(key, { throwOnTimeout: true });
+
+			const acquire = async (index: number): Promise<boolean> => {
+				const acquired = await Mutex.lock(key, { timeoutMs: 10_000 });
+				order.push(index);
+				if (acquired) {
+					Mutex.unlock(key);
+				}
+				return acquired;
+			};
+
+			const queued: Promise<boolean>[] = [];
+			for (let i = 0; i < 5; i++) {
+				queued.push(acquire(i));
+				// Let each call reach the queue before the next one is made, so the
+				// arrival order under test is the call order.
+				await new Promise<void>(resolve => {
+					setImmediate(resolve);
+				});
+			}
+
+			Mutex.unlock(key);
+
+			expect(await Promise.all(queued)).toEqual([true, true, true, true, true]);
+			expect(order).toEqual([0, 1, 2, 3, 4]);
+		});
+
+		test("a queued caller is not starved by callers that arrive after it", async () => {
+			const N = 20;
+			const key = "fair-starvation";
+			const state = { stopped: false };
+			let acquisitions = 0;
+
+			// Sustained contention on the key. Each task releases and immediately asks for
+			// the lock again, which is what lets a barging mutex pass over a queued caller.
+			const contend = async (): Promise<void> => {
+				while (!state.stopped) {
+					if (await Mutex.lock(key, { timeoutMs: 30_000 })) {
+						acquisitions++;
+						await new Promise<void>(resolve => {
+							setImmediate(resolve);
+						});
+						Mutex.unlock(key);
+					}
+				}
+			};
+
+			const contenders: Promise<void>[] = [];
+			for (let i = 0; i < N; i++) {
+				contenders.push(contend());
+			}
+
+			// Let the contention establish itself so this caller joins the back of a
+			// queue that is already busy, rather than an empty one.
+			await new Promise<void>(resolve => {
+				setTimeout(resolve, 50);
+			});
+
+			const acquisitionsWhenQueued = acquisitions;
+			const acquired = await Mutex.lock(key, { timeoutMs: 30_000 });
+			const grantsWhileQueued = acquisitions - acquisitionsWhenQueued;
+			state.stopped = true;
+			if (acquired) {
+				Mutex.unlock(key);
+			}
+			await Promise.all(contenders);
+
+			expect(acquired).toEqual(true);
+			// At most one grant per task already queued ahead of this caller, plus the
+			// holder at the time it queued. A barging mutex serves orders of magnitude more.
+			expect(grantsWhileQueued).toBeLessThanOrEqual(N + 2);
 		});
 	});
 

@@ -6,6 +6,7 @@ import { Guards } from "./guards.js";
 import { Is } from "./is.js";
 import { SharedStore } from "./sharedStore.js";
 import { GeneralError } from "../errors/generalError.js";
+import type { IMutexWaiter } from "../models/IMutexWaiter.js";
 import type { IMutexWorkerMessage } from "../models/IMutexWorkerMessage.js";
 import { MutexMessageTypes } from "../models/mutexMessageTypes.js";
 
@@ -21,6 +22,13 @@ import { MutexMessageTypes } from "../models/mutexMessageTypes.js";
  * the shared buffer with the main thread on first use of each key, then caches it locally.
  * The main thread must call Mutex.handleWorkerMessage(msg) from its worker message handler
  * before that worker first calls Mutex.lock().
+ *
+ * Callers on the same thread are served in the order they arrived. Each key has a FIFO
+ * queue of waiters, unlock() hands the lock directly to the waiter at the front, and a new
+ * caller only takes the lock outright when that queue is empty. Without this a caller that
+ * arrives while a waiter is being woken can take the lock first, which lets a busy key
+ * starve a waiter until its timeout elapses. Threads still contend with each other for the
+ * shared lock, so the ordering guarantee is per thread rather than global.
  *
  * The lock is not re-entrant: a thread that already holds a key and calls lock() again on
  * the same key will block until the timeout elapses.
@@ -42,6 +50,26 @@ export class Mutex {
 	 * @internal
 	 */
 	private static readonly _DEFAULT_TIMEOUT_KEY = "mutexDefaultTimeoutMs";
+
+	/**
+	 * SharedStore key for the per-thread map from lock key strings to FIFO waiter queues.
+	 * @internal
+	 */
+	private static readonly _WAITERS_KEY = "mutexWaiters";
+
+	/**
+	 * SharedStore key for the per-thread map from lock key strings to the running watch task.
+	 * @internal
+	 */
+	private static readonly _WATCHERS_KEY = "mutexWatchers";
+
+	/**
+	 * How long the watch task waits on the shared lock before re-reading the queue, in
+	 * milliseconds. It only bounds how quickly the task notices that the queue has drained,
+	 * releases from other threads wake it immediately.
+	 * @internal
+	 */
+	private static readonly _WATCH_TIMEOUT_MS = 250;
 
 	/**
 	 * Cached reference to the node:worker_threads module, null if unavailable (browser).
@@ -77,6 +105,8 @@ export class Mutex {
 	 * held, it suspends the current async task until the lock is released or the timeout is reached.
 	 * Use this in async single-threaded contexts (e.g. the main thread or a Fastify route handler)
 	 * where calling the synchronous lock() would freeze the event loop and deadlock.
+	 * Callers on the same thread are served in the order they arrived, so a contended key
+	 * cannot starve an earlier caller.
 	 * The lock is not re-entrant: if the same context holds the key and calls lockAsync() again on
 	 * the same key, it will suspend until the timeout elapses.
 	 * @param key The key to lock on.
@@ -107,34 +137,46 @@ export class Mutex {
 		// getOrFetchLock may block once per key on worker threads to negotiate the
 		// shared buffer with the main thread; that one-time fetch is acceptable here.
 		const lock = await Mutex.getOrFetchLock(key, deadline);
+		const queue = Mutex.getQueue(key);
 
-		for (;;) {
-			// Atomically swap 0 → 1; if the previous value was 0 we acquired the lock.
-			const previous = Atomics.compareExchange(lock, 0, 0, 1);
-			if (previous === 0) {
-				return true;
-			}
-
-			// Otherwise, the lock is held by someone else. Check if we've already timed out.
-			const remaining = deadline - Date.now();
-			if (remaining <= 0) {
-				if (throwOnTimeout) {
-					throw new GeneralError(Mutex.CLASS_NAME, "lockTimeout", { key, timeoutMs });
-				}
-				return false;
-			}
-
-			// Suspend without blocking the event loop so the lock holder's async
-			// continuations can run and eventually call unlock().
-			const waitResult = Atomics.waitAsync(lock, 0, 1, remaining);
-			const outcome = waitResult.async ? await waitResult.value : waitResult.value;
-			if (outcome === "timed-out") {
-				if (throwOnTimeout) {
-					throw new GeneralError(Mutex.CLASS_NAME, "lockTimeout", { key, timeoutMs });
-				}
-				return false;
-			}
+		// Atomically swap 0 → 1; if the previous value was 0 we acquired the lock. Only take
+		// it outright when nothing on this thread is already queued, otherwise this caller
+		// would barge in front of waiters that arrived earlier.
+		if (queue.length === 0 && Atomics.compareExchange(lock, 0, 0, 1) === 0) {
+			return true;
 		}
+
+		if (deadline - Date.now() <= 0) {
+			if (throwOnTimeout) {
+				throw new GeneralError(Mutex.CLASS_NAME, "lockTimeout", { key, timeoutMs });
+			}
+			return false;
+		}
+
+		// Join the back of the queue and suspend without blocking the event loop, so the
+		// holder's async continuations can run and eventually call unlock(). The lock is
+		// handed over either by unlock() on this thread or by the watch task below when
+		// another thread releases it.
+		const waiter: IMutexWaiter = { settled: false };
+		const granted = new Promise<boolean>(resolve => {
+			waiter.resolve = resolve;
+		});
+		queue.push(waiter);
+
+		// The deadline is enforced by a timer rather than only by the atomic wait, so a
+		// congested event loop cannot stretch the wait well beyond the requested timeout.
+		waiter.timer = setTimeout(() => Mutex.settleWaiter(key, waiter, false), deadline - Date.now());
+
+		Mutex.startWatching(key, lock);
+
+		if (await granted) {
+			return true;
+		}
+
+		if (throwOnTimeout) {
+			throw new GeneralError(Mutex.CLASS_NAME, "lockTimeout", { key, timeoutMs });
+		}
+		return false;
 	}
 
 	/**
@@ -154,6 +196,15 @@ export class Mutex {
 		const previous = Atomics.compareExchange(lock, 0, 1, 0);
 		if (previous !== 1) {
 			throw new GeneralError(Mutex.CLASS_NAME, "lockAlreadyReleased", { key });
+		}
+
+		// Hand the lock straight to the caller at the front of this thread's queue. Nothing
+		// else on this thread can run between the release above and the re-acquire below, so
+		// no later caller can see the released state and take it first.
+		const next = Mutex.getWaiters()[key]?.[0];
+		if (!Is.empty(next) && Atomics.compareExchange(lock, 0, 0, 1) === 0) {
+			Mutex.settleWaiter(key, next, true);
+			return;
 		}
 
 		Atomics.notify(lock, 0, 1);
@@ -263,6 +314,120 @@ export class Mutex {
 		} finally {
 			port1.close();
 		}
+	}
+
+	/**
+	 * Settle a queued waiter, remove it from the queue and resume its caller.
+	 * @param key The lock key.
+	 * @param waiter The waiter to settle.
+	 * @param granted True when the waiter has been handed the lock and now owns it.
+	 * @internal
+	 */
+	private static settleWaiter(key: string, waiter: IMutexWaiter, granted: boolean): void {
+		if (waiter.settled) {
+			return;
+		}
+		waiter.settled = true;
+
+		if (!Is.empty(waiter.timer)) {
+			clearTimeout(waiter.timer);
+			waiter.timer = undefined;
+		}
+
+		const queue = Mutex.getWaiters()[key];
+		const index = queue?.indexOf(waiter) ?? -1;
+		if (index >= 0) {
+			queue.splice(index, 1);
+		}
+
+		waiter.resolve?.(granted);
+	}
+
+	/**
+	 * Start the watch task for a key if one is not already running.
+	 * @param key The lock key.
+	 * @param lock The shared lock for the key.
+	 * @internal
+	 */
+	private static startWatching(key: string, lock: Int32Array): void {
+		const watchers = Mutex.getWatchers();
+		watchers[key] ??= Mutex.runWatcher(key, lock);
+	}
+
+	/**
+	 * Run the watch task for a key and clear its registry entry once it ends. The entry is
+	 * only cleared after an await, so it cannot be removed before startWatching has recorded
+	 * it, even when the task itself completes without suspending.
+	 * @param key The lock key.
+	 * @param lock The shared lock for the key.
+	 * @returns A promise that resolves when the task ends.
+	 * @internal
+	 */
+	private static async runWatcher(key: string, lock: Int32Array): Promise<void> {
+		try {
+			await Mutex.watchQueue(key, lock);
+		} finally {
+			delete Mutex.getWatchers()[key];
+		}
+	}
+
+	/**
+	 * Watch the shared lock for a key and hand it to the waiter at the front of the queue.
+	 * This covers releases from other threads, a release on this thread hands the lock over
+	 * directly in unlock(). The task ends once the queue for the key has drained.
+	 * @param key The lock key.
+	 * @param lock The shared lock for the key.
+	 * @returns A promise that resolves when the task ends.
+	 * @internal
+	 */
+	private static async watchQueue(key: string, lock: Int32Array): Promise<void> {
+		for (;;) {
+			// Re-read the front of the queue on every pass, waiters that reached their
+			// deadline have already removed themselves.
+			const head = Mutex.getWaiters()[key]?.[0];
+			if (Is.empty(head)) {
+				return;
+			}
+
+			if (Atomics.compareExchange(lock, 0, 0, 1) === 0) {
+				Mutex.settleWaiter(key, head, true);
+			} else {
+				const waitResult = Atomics.waitAsync(lock, 0, 1, Mutex._WATCH_TIMEOUT_MS);
+				if (waitResult.async) {
+					await waitResult.value;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Get the FIFO waiter queue for a key, creating it if it does not exist.
+	 * @param key The lock key.
+	 * @returns The waiter queue for the key.
+	 * @internal
+	 */
+	private static getQueue(key: string): IMutexWaiter[] {
+		const waiters = Mutex.getWaiters();
+		waiters[key] ??= [];
+		return waiters[key];
+	}
+
+	/**
+	 * Get the shared waiter queues map, creating it if it does not exist.
+	 * @returns The shared waiter queues map.
+	 * @internal
+	 */
+	private static getWaiters(): { [key: string]: IMutexWaiter[] } {
+		return SharedStore.get<{ [key: string]: IMutexWaiter[] }>(Mutex._WAITERS_KEY, () => ({}));
+	}
+
+	/**
+	 * Get the shared watch tasks map, creating it if it does not exist.
+	 * @returns The shared watch tasks map.
+	 * @internal
+	 */
+	private static getWatchers(): { [key: string]: Promise<void> } {
+		return SharedStore.get<{ [key: string]: Promise<void> }>(Mutex._WATCHERS_KEY, () => ({}));
 	}
 
 	/**

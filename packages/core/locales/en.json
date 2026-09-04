@@ -114,7 +114,7 @@
 		"mutex": {
 			"lockNotFound": "The key \"{key}\" has no active lock",
 			"lockAlreadyReleased": "The key \"{key}\" is not currently locked",
-			"lockTimeout": "Failed to acquire lock for key \"{key}\" within the timeout of {timeout} milliseconds",
+			"lockTimeout": "Failed to acquire lock for key \"{key}\" within the timeout of {timeoutMs} milliseconds",
 			"bufferFetchFailed": "Failed to retrieve shared buffer for key \"{key}\" from the main thread",
 			"invalidTimeout": "The timeout value \"{timeoutMs}\" is invalid, it must be a non-negative integer"
 		},

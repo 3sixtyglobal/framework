@@ -41,6 +41,7 @@ export * from "./models/ILabelledValue.js";
 export * from "./models/ILocale.js";
 export * from "./models/ILocaleDictionary.js";
 export * from "./models/ILocalesIndex.js";
+export * from "./models/IMutexWaiter.js";
 export * from "./models/IMutexWorkerMessage.js";
 export * from "./models/IPatchOperation.js";
 export * from "./models/ISharedObjectBufferOptions.js";
