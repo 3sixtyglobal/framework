@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.9.3-next.4](https://github.com/iotaledger/twin-framework/compare/core-v0.9.3-next.3...core-v0.9.3-next.4) (2026-09-04)
+
+
+### Features
+
+* cache specific timeout ([#473](https://github.com/iotaledger/twin-framework/issues/473)) ([e4c6fac](https://github.com/iotaledger/twin-framework/commit/e4c6facdd874cf17f02db13932d256bedd55302f))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.9.3-next.3 to 0.9.3-next.4
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.3 to 0.9.3-next.4
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.3 to 0.9.3-next.4
+
 ## [0.9.3-next.3](https://github.com/iotaledger/twin-framework/compare/core-v0.9.3-next.2...core-v0.9.3-next.3) (2026-09-02)
 
 
