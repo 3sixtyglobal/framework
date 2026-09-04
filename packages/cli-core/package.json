@@ -1,6 +1,6 @@
 {
 	"name": "@twin.org/cli-core",
-	"version": "0.9.3-next.4",
+	"version": "0.9.3-next.5",
 	"description": "Core classes for building a CLI",
 	"repository": {
 		"type": "git",
@@ -29,15 +29,15 @@
 		"dist:no-test": "npm run clean && npm run build && npm run merge-locales"
 	},
 	"dependencies": {
-		"@twin.org/core": "0.9.3-next.4",
-		"@twin.org/nameof": "0.9.3-next.4",
+		"@twin.org/core": "0.9.3-next.5",
+		"@twin.org/nameof": "0.9.3-next.5",
 		"chalk": "5.6.2",
 		"commander": "15.0.0",
 		"dotenv": "17.4.2"
 	},
 	"devDependencies": {
-		"@twin.org/nameof-transformer": "0.9.3-next.4",
-		"@twin.org/nameof-vitest-plugin": "0.9.3-next.4",
+		"@twin.org/nameof-transformer": "0.9.3-next.5",
+		"@twin.org/nameof-vitest-plugin": "0.9.3-next.5",
 		"@types/node": "26.1.2",
 		"@vitest/coverage-v8": "4.1.10",
 		"copyfiles": "2.4.1",

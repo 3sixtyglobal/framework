@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.9.3-next.5](https://github.com/iotaledger/twin-framework/compare/core-v0.9.3-next.4...core-v0.9.3-next.5) (2026-09-04)
+
+
+### Bug Fixes
+
+* mutex ordering ([#476](https://github.com/iotaledger/twin-framework/issues/476)) ([45ed50a](https://github.com/iotaledger/twin-framework/commit/45ed50aab9f40b4d94921926e13deb37bcac8a70))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.9.3-next.4 to 0.9.3-next.5
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.4 to 0.9.3-next.5
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.4 to 0.9.3-next.5
+
 ## [0.9.3-next.4](https://github.com/iotaledger/twin-framework/compare/core-v0.9.3-next.3...core-v0.9.3-next.4) (2026-09-04)
 
 
