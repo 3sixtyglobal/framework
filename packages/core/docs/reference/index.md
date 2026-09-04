@@ -59,6 +59,7 @@
 - [ILocale](interfaces/ILocale.md)
 - [ILocaleDictionary](interfaces/ILocaleDictionary.md)
 - [ILocalesIndex](interfaces/ILocalesIndex.md)
+- [IMutexWaiter](interfaces/IMutexWaiter.md)
 - [IMutexWorkerMessage](interfaces/IMutexWorkerMessage.md)
 - [IPatchOperation](interfaces/IPatchOperation.md)
 - [ISharedObjectBufferOptions](interfaces/ISharedObjectBufferOptions.md)

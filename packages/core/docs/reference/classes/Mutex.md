@@ -12,6 +12,13 @@ the shared buffer with the main thread on first use of each key, then caches it 
 The main thread must call Mutex.handleWorkerMessage(msg) from its worker message handler
 before that worker first calls Mutex.lock().
 
+Callers on the same thread are served in the order they arrived. Each key has a FIFO
+queue of waiters, unlock() hands the lock directly to the waiter at the front, and a new
+caller only takes the lock outright when that queue is empty. Without this a caller that
+arrives while a waiter is being woken can take the lock first, which lets a busy key
+starve a waiter until its timeout elapses. Threads still contend with each other for the
+shared lock, so the ordering guarantee is per thread rather than global.
+
 The lock is not re-entrant: a thread that already holds a key and calls lock() again on
 the same key will block until the timeout elapses.
 
@@ -81,6 +88,8 @@ Acquires a lock for the given key without blocking the event loop. If the lock i
 held, it suspends the current async task until the lock is released or the timeout is reached.
 Use this in async single-threaded contexts (e.g. the main thread or a Fastify route handler)
 where calling the synchronous lock() would freeze the event loop and deadlock.
+Callers on the same thread are served in the order they arrived, so a contended key
+cannot starve an earlier caller.
 The lock is not re-entrant: if the same context holds the key and calls lockAsync() again on
 the same key, it will suspend until the timeout elapses.
 
