@@ -10,6 +10,8 @@ minimum frequency is evicted.
 The timer only runs while there are entries; it stops automatically when the cache empties.
 
 `get` and `set` increment an entry's access frequency and reset its idle timer.
+`set` and `getOrSet` accept an optional hard expiry timestamp; the entry is removed once that
+time is reached however recently it was used, and the TTI still applies alongside it.
 `has` and `keys` are pure peeks they evict idle entries but do not affect frequency or TTI.
 Call `destroy` when the cache is no longer needed to stop the background timer.
 
@@ -125,7 +127,7 @@ The cached value, or undefined on a miss or idle eviction.
 
 ### set() {#set}
 
-> **set**(`key`, `value`): `void`
+> **set**(`key`, `value`, `expires?`): `void`
 
 Store a value in the cache.
 If the key already exists its value and frequency are updated.
@@ -146,6 +148,13 @@ The key to store.
 
 The value to cache.
 
+##### expires?
+
+`number`
+
+Hard expiry timestamp in milliseconds since the epoch. The entry is removed
+once this time is reached regardless of how recently it was used. Must be an integer.
+
 #### Returns
 
 `void`
@@ -154,7 +163,7 @@ The value to cache.
 
 ### getOrSet() {#getorset}
 
-> **getOrSet**(`key`, `valueFactory`): `Promise`\<`T`\>
+> **getOrSet**(`key`, `valueFactory`, `expires?`): `Promise`\<`T`\>
 
 Atomically get an existing value or create and store it once using an async factory.
 Concurrent calls for the same key are serialized via a mutex.
@@ -172,6 +181,13 @@ The key to get or create.
 () => `Promise`\<`T`\>
 
 Async callback used to build a value when the key is absent.
+
+##### expires?
+
+`number`
+
+Hard expiry timestamp in milliseconds since the epoch, applied to the entry
+when one is created. Must be an integer.
 
 #### Returns
 
