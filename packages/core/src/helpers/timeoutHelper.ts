@@ -1,6 +1,5 @@
 // Copyright 2026 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { GeneralError } from "../errors/generalError.js";
 import { Is } from "../utils/is.js";
 
 /**
@@ -8,24 +7,20 @@ import { Is } from "../utils/is.js";
  */
 export class TimeoutHelper {
 	/**
-	 * Reject an operation which has not settled within the given time.
+	 * Stop waiting for an operation which has not settled within the given time.
 	 * The operation itself cannot be cancelled, so a timed out operation is abandoned, which is
-	 * the only option available when the identity wasm bindings panic instead of rejecting and
-	 * leave the promise they returned pending forever.
+	 * the only option available when the code being called can leave the promise it returned
+	 * pending forever.
 	 * @param operation The operation to bound.
 	 * @param timeoutMs The maximum time to wait in milliseconds, 0 or less waits indefinitely.
-	 * @param source The source to use for the timeout error.
-	 * @param message The message key to use for the timeout error.
-	 * @param properties Additional properties to include in the timeout error.
-	 * @returns The result of the operation.
-	 * @throws GeneralError if the operation has not settled within timeoutMs.
+	 * @param onTimeout Called when the wait expires, throw from it to fail the operation, or
+	 * return a value to complete it with that value instead.
+	 * @returns The result of the operation, or the value returned by onTimeout.
 	 */
 	public static async withTimeout<T>(
 		operation: Promise<T>,
 		timeoutMs: number,
-		source: string,
-		message: string,
-		properties?: { [id: string]: unknown }
+		onTimeout: () => T
 	): Promise<T> {
 		if (timeoutMs <= 0) {
 			return operation;
@@ -36,9 +31,13 @@ export class TimeoutHelper {
 		try {
 			return await Promise.race([
 				operation,
-				new Promise<never>((resolve, reject) => {
+				new Promise<T>((resolve, reject) => {
 					timer = setTimeout(() => {
-						reject(new GeneralError(source, message, { ...properties, timeoutMs }));
+						try {
+							resolve(onTimeout());
+						} catch (error) {
+							reject(error);
+						}
 					}, timeoutMs);
 				})
 			]);
