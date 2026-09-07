@@ -202,25 +202,32 @@ The lines.
 
 ***
 
-### findNpmRoot() {#findnpmroot}
+### findPackageRoot() {#findpackageroot}
 
-> `static` **findNpmRoot**(`rootFolder`): `Promise`\<`string`\>
+> `static` **findPackageRoot**(`packageName`, `startFolder`): `Promise`\<`string` \| `undefined`\>
 
-Find the NPM root based on a package.json path.
+Find the root folder of a package by walking up the directory tree looking in the
+node_modules folders, this supports package managers which do not install a flat structure.
 
 #### Parameters
 
-##### rootFolder
+##### packageName
 
 `string`
 
-The path to the package.json.
+The name of the package to locate.
+
+##### startFolder
+
+`string`
+
+The folder to start the search from.
 
 #### Returns
 
-`Promise`\<`string`\>
+`Promise`\<`string` \| `undefined`\>
 
-The root path.
+The resolved root folder of the package, or undefined if it could not be located.
 
 ***
 
