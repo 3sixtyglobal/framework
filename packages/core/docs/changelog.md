@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.9.3-next.6](https://github.com/iotaledger/twin-framework/compare/core-v0.9.3-next.5...core-v0.9.3-next.6) (2026-09-07)
+
+
+### Features
+
+* add TimeoutHelper ([2e0c50d](https://github.com/iotaledger/twin-framework/commit/2e0c50d70708f3a99e9e94ebad4b543250a1b987))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.9.3-next.5 to 0.9.3-next.6
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.5 to 0.9.3-next.6
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.5 to 0.9.3-next.6
+
 ## [0.9.3-next.5](https://github.com/iotaledger/twin-framework/compare/core-v0.9.3-next.4...core-v0.9.3-next.5) (2026-09-04)
 
 
