@@ -147,80 +147,15 @@ runs:
       env:
         GH_TOKEN: ${{ inputs.release_token }}
 
-    # The pull_request runs this PR triggers cannot start while the release holds
-    # the self-hosted runners, and merging destroys refs/pull/N/merge before they
-    # resolve it, which GitHub reports as a startup failure with no jobs. Cancel
-    # them first so the history records an intentional cancellation. The
-    # equivalent lint, build and docs checks already ran above before the PR was
-    # opened, so nothing is lost by cancelling.
-    - name: Cancel docs update PR checks
-      if: ${{ steps.create-pr.outputs.pr_number != '' }}
-      shell: bash
-      run: |
-        REPO="${{ github.repository }}"
-
-        list_in_flight() {
-          gh run list --repo "$REPO" --branch "$BRANCH_NAME" --event pull_request \
-            --json databaseId,status --jq '.[] | select(.status != "completed") | .databaseId'
-        }
-
-        # This step is best effort, so every API failure is reported as a warning
-        # and the step still succeeds. A cancellation problem must never abort a
-        # release that is otherwise healthy.
-
-        # Runs are registered a few seconds after the PR opens, so poll for them.
-        RUN_IDS=""
-        for i in {1..12}; do
-          if ! RUN_IDS=$(list_in_flight); then
-            echo "::warning title=Run Cancel Skipped::Could not list workflow runs for $BRANCH_NAME. Its checks may report a startup failure once the PR merges."
-            exit 0
-          fi
-
-          if [ -n "$RUN_IDS" ]; then
-            break
-          fi
-
-          echo "No in-flight pull_request runs for $BRANCH_NAME yet (attempt $i/12), retrying in 5s..."
-          sleep 5
-        done
-
-        if [ -z "$RUN_IDS" ]; then
-          echo "No in-flight pull_request runs found for $BRANCH_NAME; nothing to cancel."
-          exit 0
-        fi
-
-        for RUN_ID in $RUN_IDS; do
-          echo "Cancelling run $RUN_ID for $BRANCH_NAME."
-          if ! gh run cancel "$RUN_ID" --repo "$REPO"; then
-            echo "::warning title=Run Cancel Failed::Could not cancel run $RUN_ID for $BRANCH_NAME. It may report a startup failure once the PR merges."
-          fi
-        done
-
-        # Wait for the cancellations to settle so the merge does not delete the
-        # merge ref while a run is still transitioning.
-        for i in {1..24}; do
-          if ! PENDING=$(list_in_flight); then
-            echo "::warning title=Run Cancel Unverified::Could not confirm the cancelled runs for $BRANCH_NAME had settled."
-            exit 0
-          fi
-
-          if [ -z "$PENDING" ]; then
-            echo "All pull_request runs for $BRANCH_NAME have settled."
-            exit 0
-          fi
-
-          echo "Runs for $BRANCH_NAME still settling (attempt $i/24), retrying in 5s..."
-          sleep 5
-        done
-
-        echo "::warning title=Run Cancel Timed Out::Some pull_request runs for $BRANCH_NAME did not settle. They may report a startup failure after merge."
-      env:
-        # GITHUB_TOKEN with actions: write, because the release PAT is fine grained
-        # and has no Actions permission.
-        GH_TOKEN: ${{ inputs.github_token }}
-
-    # Poll until checks pass (CLEAN), then merge directly.
+    # Poll until the PR is mergeable, then merge directly.
     # Auto-merge is not used because it requires a repository-level setting.
+    #
+    # UNSTABLE is accepted alongside CLEAN. This PR is opened by GITHUB_TOKEN, so
+    # GitHub parks the workflow runs it triggers as action_required and they never
+    # execute, which leaves the PR permanently UNSTABLE rather than CLEAN. The
+    # next branch has no required status checks, so a non-required check that is
+    # not successful must not block the merge. Only genuinely unmergeable states
+    # (BLOCKED, DIRTY, BEHIND) keep this loop waiting.
     - name: Merge docs update PR
       if: ${{ steps.create-pr.outputs.pr_number != '' }}
       shell: bash
@@ -231,7 +166,7 @@ runs:
           MERGE_STATE=$(gh pr view "$PR_NUMBER" --repo "${{ github.repository }}" --json mergeStateStatus --jq '.mergeStateStatus')
           echo "PR #$PR_NUMBER mergeStateStatus: $MERGE_STATE (attempt $i/30)"
 
-          if [ "$MERGE_STATE" = "CLEAN" ]; then
+          if [ "$MERGE_STATE" = "CLEAN" ] || [ "$MERGE_STATE" = "UNSTABLE" ]; then
             echo "PR is mergeable; merging now."
             gh pr merge "$PR_NUMBER" --squash
             exit 0
