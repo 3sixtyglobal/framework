@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.9.3-next.8](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.9.3-next.7...cli-core-v0.9.3-next.8) (2026-09-07)
+
+
+### Features
+
+* improve node_modules location detection ([#486](https://github.com/iotaledger/twin-framework/issues/486)) ([c786853](https://github.com/iotaledger/twin-framework/commit/c7868538e9074f789577c0ab55552f3bcec0ef0e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.9.3-next.7 to 0.9.3-next.8
+    * @twin.org/nameof bumped from 0.9.3-next.7 to 0.9.3-next.8
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.7 to 0.9.3-next.8
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.7 to 0.9.3-next.8
+
 ## [0.9.3-next.7](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.9.3-next.6...cli-core-v0.9.3-next.7) (2026-09-07)
 
 
