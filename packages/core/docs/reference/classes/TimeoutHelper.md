@@ -16,12 +16,12 @@ Helper for bounding operations which can fail to settle.
 
 ### withTimeout() {#withtimeout}
 
-> `static` **withTimeout**\<`T`\>(`operation`, `timeoutMs`, `source`, `message`, `properties?`): `Promise`\<`T`\>
+> `static` **withTimeout**\<`T`\>(`operation`, `timeoutMs`, `onTimeout`): `Promise`\<`T`\>
 
-Reject an operation which has not settled within the given time.
+Stop waiting for an operation which has not settled within the given time.
 The operation itself cannot be cancelled, so a timed out operation is abandoned, which is
-the only option available when the identity wasm bindings panic instead of rejecting and
-leave the promise they returned pending forever.
+the only option available when the code being called can leave the promise it returned
+pending forever.
 
 #### Type Parameters
 
@@ -43,28 +43,15 @@ The operation to bound.
 
 The maximum time to wait in milliseconds, 0 or less waits indefinitely.
 
-##### source
+##### onTimeout
 
-`string`
+() => `T`
 
-The source to use for the timeout error.
-
-##### message
-
-`string`
-
-The message key to use for the timeout error.
-
-##### properties?
-
-Additional properties to include in the timeout error.
+Called when the wait expires, throw from it to fail the operation, or
+return a value to complete it with that value instead.
 
 #### Returns
 
 `Promise`\<`T`\>
 
-The result of the operation.
-
-#### Throws
-
-GeneralError if the operation has not settled within timeoutMs.
+The result of the operation, or the value returned by onTimeout.
