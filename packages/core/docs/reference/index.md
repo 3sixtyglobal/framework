@@ -28,6 +28,7 @@
 - [ObjectHelper](classes/ObjectHelper.md)
 - [RandomHelper](classes/RandomHelper.md)
 - [StringHelper](classes/StringHelper.md)
+- [TimeoutHelper](classes/TimeoutHelper.md)
 - [Uint8ArrayHelper](classes/Uint8ArrayHelper.md)
 - [BitString](classes/BitString.md)
 - [Duration](classes/Duration.md)
