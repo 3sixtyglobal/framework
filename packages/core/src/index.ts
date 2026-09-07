@@ -28,6 +28,7 @@ export * from "./helpers/numberHelper.js";
 export * from "./helpers/objectHelper.js";
 export * from "./helpers/randomHelper.js";
 export * from "./helpers/stringHelper.js";
+export * from "./helpers/timeoutHelper.js";
 export * from "./helpers/uint8ArrayHelper.js";
 export * from "./models/coerceType.js";
 export * from "./models/IDuration.js";
