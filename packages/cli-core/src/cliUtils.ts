@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { exec, spawn } from "node:child_process";
+import { spawn } from "node:child_process";
 import { accessSync, readFileSync, statSync } from "node:fs";
-import { access, mkdir, readFile, stat, writeFile } from "node:fs/promises";
+import { access, mkdir, readFile, realpath, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { Coerce, I18n, Is, ObjectHelper } from "@twin.org/core";
 import { CLIDisplay } from "./cliDisplay.js";
@@ -116,20 +116,41 @@ export class CLIUtils {
 	}
 
 	/**
-	 * Find the NPM root based on a package.json path.
-	 * @param rootFolder The path to the package.json.
-	 * @returns The root path.
+	 * Find the root folder of a package by walking up the directory tree looking in the
+	 * node_modules folders, this supports package managers which do not install a flat structure.
+	 * @param packageName The name of the package to locate.
+	 * @param startFolder The folder to start the search from.
+	 * @returns The resolved root folder of the package, or undefined if it could not be located.
 	 */
-	public static async findNpmRoot(rootFolder: string): Promise<string> {
-		return new Promise<string>((resolve, reject) => {
-			exec("npm root", { cwd: rootFolder }, (error, stdout, stderr) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve(stdout.trim());
+	public static async findPackageRoot(
+		packageName: string,
+		startFolder: string
+	): Promise<string | undefined> {
+		let currentFolder = path.resolve(startFolder);
+		let searching = true;
+
+		while (searching) {
+			// A node_modules folder never contains a nested node_modules folder of its own,
+			// the packages inside it do, so there is nothing to check at this level.
+			if (path.basename(currentFolder) !== "node_modules") {
+				const packageFolder = path.join(currentFolder, "node_modules", packageName);
+
+				if (await CLIUtils.fileExists(path.join(packageFolder, "package.json"))) {
+					// The entry can be a symlink, so resolve it to the real location, this makes
+					// sure that walking up from this folder finds the dependencies of the package
+					// and not those of the folder linking to it.
+					try {
+						return await realpath(packageFolder);
+					} catch {
+						return packageFolder;
+					}
 				}
-			});
-		});
+			}
+
+			const parentFolder = path.dirname(currentFolder);
+			searching = parentFolder !== currentFolder;
+			currentFolder = parentFolder;
+		}
 	}
 
 	/**

@@ -24,7 +24,7 @@
 				"configJson": "Config JSON",
 				"workingDirectory": "Working Directory",
 				"outputDirectory": "Output Directory",
-				"npmRoot": "NPM Root",
+				"packageNotFound": "Package Not Found",
 				"sourcePackages": "Source Packages",
 				"writingLocale": "Writing Locale",
 				"mergingLocale": "Merging Locale"
