@@ -415,6 +415,9 @@ jobs:
       group: ${{ github.event.repository.private && 'twin' || 'default' }}
     timeout-minutes: 60
     permissions:
+      # actions: write lets the docs update step cancel the PR checks it triggers
+      # before merging, which would otherwise fail at startup.
+      actions: write
       checks: read
       contents: write
       pull-requests: write

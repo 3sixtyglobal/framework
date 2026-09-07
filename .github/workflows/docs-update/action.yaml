@@ -159,10 +159,22 @@ runs:
       run: |
         REPO="${{ github.repository }}"
 
+        list_in_flight() {
+          gh run list --repo "$REPO" --branch "$BRANCH_NAME" --event pull_request \
+            --json databaseId,status --jq '.[] | select(.status != "completed") | .databaseId'
+        }
+
+        # This step is best effort, so every API failure is reported as a warning
+        # and the step still succeeds. A cancellation problem must never abort a
+        # release that is otherwise healthy.
+
         # Runs are registered a few seconds after the PR opens, so poll for them.
+        RUN_IDS=""
         for i in {1..12}; do
-          RUN_IDS=$(gh run list --repo "$REPO" --branch "$BRANCH_NAME" --event pull_request \
-            --json databaseId,status --jq '.[] | select(.status != "completed") | .databaseId')
+          if ! RUN_IDS=$(list_in_flight); then
+            echo "::warning title=Run Cancel Skipped::Could not list workflow runs for $BRANCH_NAME. Its checks may report a startup failure once the PR merges."
+            exit 0
+          fi
 
           if [ -n "$RUN_IDS" ]; then
             break
@@ -187,21 +199,25 @@ runs:
         # Wait for the cancellations to settle so the merge does not delete the
         # merge ref while a run is still transitioning.
         for i in {1..24}; do
-          PENDING=$(gh run list --repo "$REPO" --branch "$BRANCH_NAME" --event pull_request \
-            --json status --jq '[.[] | select(.status != "completed")] | length')
+          if ! PENDING=$(list_in_flight); then
+            echo "::warning title=Run Cancel Unverified::Could not confirm the cancelled runs for $BRANCH_NAME had settled."
+            exit 0
+          fi
 
-          if [ "$PENDING" = "0" ]; then
+          if [ -z "$PENDING" ]; then
             echo "All pull_request runs for $BRANCH_NAME have settled."
             exit 0
           fi
 
-          echo "$PENDING pull_request run(s) for $BRANCH_NAME still settling (attempt $i/24), retrying in 5s..."
+          echo "Runs for $BRANCH_NAME still settling (attempt $i/24), retrying in 5s..."
           sleep 5
         done
 
         echo "::warning title=Run Cancel Timed Out::Some pull_request runs for $BRANCH_NAME did not settle. They may report a startup failure after merge."
       env:
-        GH_TOKEN: ${{ inputs.release_token }}
+        # GITHUB_TOKEN with actions: write, because the release PAT is fine grained
+        # and has no Actions permission.
+        GH_TOKEN: ${{ inputs.github_token }}
 
     # Poll until checks pass (CLEAN), then merge directly.
     # Auto-merge is not used because it requires a repository-level setting.
