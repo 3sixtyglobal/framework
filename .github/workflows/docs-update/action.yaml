@@ -117,7 +117,11 @@ runs:
         echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
 
         git add -- ':(glob)**/docs/**'
-        git commit -S -m "docs: regenerate package documentation" --signoff
+        # [skip ci] stops GitHub creating the pull_request runs for this branch at
+        # all. They are opened by GITHUB_TOKEN, so GitHub parks them as
+        # action_required with no jobs and then relabels them as failures when the
+        # PR merges. Nothing is lost: lint, build and docs already ran above.
+        git commit -S -m "docs: regenerate package documentation [skip ci]" --signoff
         git push origin "$BRANCH_NAME"
 
     # Open PR back to the target branch so the docs commit goes through normal review gates.

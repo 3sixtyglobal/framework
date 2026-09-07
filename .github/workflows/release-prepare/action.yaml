@@ -134,7 +134,13 @@ runs:
 
         FORCE_BRANCH="release/force-commit-$(date +%s)"
         git checkout -b "$FORCE_BRANCH"
-        git commit -S --allow-empty -m "feat: release to production" -m "Release-As: $PROD_VERSION"
+        # [skip ci] stops GitHub creating the pull_request runs for this branch.
+        # They are opened by GITHUB_TOKEN, so GitHub parks them as action_required
+        # with no jobs and relabels them as failures when the PR merges. Closing
+        # this PR starts no release job: process-workspaces requires the
+        # 'autorelease: pending' label, which only the release PR has. The
+        # Release-As trailer stays in the body, so release-please still reads it.
+        git commit -S --allow-empty -m "feat: release to production [skip ci]" -m "Release-As: $PROD_VERSION"
         git push origin "$FORCE_BRANCH"
         git checkout main
 
