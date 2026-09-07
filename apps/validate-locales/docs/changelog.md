@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.9.3-next.7](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.9.3-next.6...validate-locales-v0.9.3-next.7) (2026-09-07)
+
+
+### Miscellaneous Chores
+
+* **validate-locales:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.3-next.6 to 0.9.3-next.7
+    * @twin.org/core bumped from 0.9.3-next.6 to 0.9.3-next.7
+    * @twin.org/nameof bumped from 0.9.3-next.6 to 0.9.3-next.7
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.6 to 0.9.3-next.7
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.3-next.6 to 0.9.3-next.7
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.6 to 0.9.3-next.7
+
 ## [0.9.3-next.6](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.9.3-next.5...validate-locales-v0.9.3-next.6) (2026-09-07)
 
 
