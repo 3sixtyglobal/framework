@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.9.3-next.9](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.9.3-next.8...validate-locales-v0.9.3-next.9) (2026-09-10)
+
+
+### Features
+
+* skip class properties ([#489](https://github.com/iotaledger/twin-framework/issues/489)) ([268dc30](https://github.com/iotaledger/twin-framework/commit/268dc30767eadc98268ecf346d830117cd272866))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.3-next.8 to 0.9.3-next.9
+    * @twin.org/core bumped from 0.9.3-next.8 to 0.9.3-next.9
+    * @twin.org/nameof bumped from 0.9.3-next.8 to 0.9.3-next.9
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.8 to 0.9.3-next.9
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.3-next.8 to 0.9.3-next.9
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.8 to 0.9.3-next.9
+
 ## [0.9.3-next.8](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.9.3-next.7...validate-locales-v0.9.3-next.8) (2026-09-07)
 
 
