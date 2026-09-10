@@ -185,6 +185,30 @@ describe("actionCommandValidateLocales", () => {
 		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
 	});
 
+	test("Can validate source where class properties hold constants which look like locale keys", async () => {
+		const fixture = path.join(testDir, "fixtures", "valid-class-property-constants");
+		await actionCommandValidateLocales({
+			source: path.join(fixture, "src/**/*.ts"),
+			locales: path.join(fixture, "locales/**/*.json"),
+			ignoreFile: path.join(fixture, "locales/.validate-ignore")
+		});
+		expect(errorBuffer.filter(l => l.length > 0)).toHaveLength(0);
+	});
+
+	test("Fails validation when a class property initialiser references a missing locale key", async () => {
+		// Only a property holding data is skipped, so a property initialised by a call is still
+		// walked and the keys it names are still validated.
+		const fixture = path.join(testDir, "fixtures", "class-property-initialiser-missing-key");
+		await expect(
+			actionCommandValidateLocales({
+				source: path.join(fixture, "src/**/*.ts"),
+				locales: path.join(fixture, "locales/**/*.json"),
+				ignoreFile: path.join(fixture, "locales/.validate-ignore")
+			})
+		).rejects.toThrow();
+		expect(errorBuffer.some(line => line.includes("error.myClass.missingKey"))).toEqual(true);
+	});
+
 	test("Fails validation when a locale key referenced in source is missing from the locale file", async () => {
 		const fixture = path.join(testDir, "fixtures", "missing-key");
 		await expect(

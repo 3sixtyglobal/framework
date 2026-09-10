@@ -1,0 +1,7 @@
+{
+	"error": {
+		"myClass": {
+			"doError": "An error occurred with {nextLink} {codes} {lookup} {retries}."
+		}
+	}
+}

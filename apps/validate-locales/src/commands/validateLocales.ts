@@ -321,6 +321,8 @@ function visit(
 		handled = processObjectLiteralExpression(sourceFile, node, localeEntries, failures);
 	} else if (ts.isPropertyAssignment(node)) {
 		handled = processPropertyAssignment(sourceFile, node, localeEntries, failures);
+	} else if (ts.isPropertyDeclaration(node)) {
+		handled = processPropertyDeclaration(node);
 	}
 
 	if (!handled) {
@@ -839,6 +841,49 @@ function processPropertyAssignment(
 			return true;
 		}
 	}
+	return false;
+}
+
+/**
+ * Process a class property declaration node.
+ * @param node The node to process.
+ * @returns True if processed, false otherwise.
+ */
+function processPropertyDeclaration(node: ts.PropertyDeclaration): boolean {
+	// Constants are declared as class properties rather than at module level, so a property
+	// holding nothing but data is not a locale reference, even when a value contains a dot.
+	// Anything else, such as a property initialised by a call, is still walked.
+	return Is.object(node.initializer) && isConstantData(node.initializer);
+}
+
+/**
+ * Check whether an expression is built only from literal values, so it carries data rather than
+ * anything which could reference a locale.
+ * @param node The expression to check.
+ * @returns True if the expression is constant data.
+ */
+function isConstantData(node: ts.Expression): boolean {
+	if (
+		ts.isStringLiteral(node) ||
+		ts.isNoSubstitutionTemplateLiteral(node) ||
+		ts.isNumericLiteral(node) ||
+		node.kind === ts.SyntaxKind.TrueKeyword ||
+		node.kind === ts.SyntaxKind.FalseKeyword ||
+		node.kind === ts.SyntaxKind.NullKeyword
+	) {
+		return true;
+	}
+
+	if (ts.isArrayLiteralExpression(node)) {
+		return node.elements.every(element => isConstantData(element));
+	}
+
+	if (ts.isObjectLiteralExpression(node)) {
+		return node.properties.every(
+			property => ts.isPropertyAssignment(property) && isConstantData(property.initializer)
+		);
+	}
+
 	return false;
 }
 
