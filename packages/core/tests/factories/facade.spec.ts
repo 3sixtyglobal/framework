@@ -258,6 +258,35 @@ describe("Factory facades", () => {
 		expect(calls).toEqual(["first:double", "first:double"]);
 	});
 
+	test("does not apply a facade to an excluded instance type", () => {
+		factory.register("other", () => new TestComponent());
+		factory.useFacade("first", ["test"]);
+
+		factory.get("other").double(1);
+		factory.get("test").double(1);
+
+		// Only the instance type which was not excluded is recorded.
+		expect(calls).toEqual(["first:double"]);
+	});
+
+	test("excludes an instance type from create as well as get", () => {
+		factory.useFacade("first", ["test"]);
+
+		factory.create("test").double(1);
+
+		expect(calls).toEqual([]);
+	});
+
+	test("applies the other facades to an instance one of them excludes", () => {
+		factory.useFacade("first", ["test"]);
+		factory.useFacade("second");
+
+		factory.get("test").double(1);
+
+		// "first" skips it, "second" does not.
+		expect(calls).toEqual(["second:double"]);
+	});
+
 	test("clear removes the facades along with the generators", () => {
 		factory.useFacade("first");
 		factory.clear();

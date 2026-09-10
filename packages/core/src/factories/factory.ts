@@ -48,12 +48,13 @@ export class Factory<T> {
 	private _facadeFactory?: Factory<IFacade>;
 
 	/**
-	 * The facades applied to the instances, in the order they were activated. The facade is
+	 * The facades applied to the instances, in the order they were activated, each with the
+	 * instance types it is not applied to. The facade is
 	 * resolved when it is activated rather than when an instance is produced, so unregistering or
 	 * replacing it afterwards cannot affect a factory which has already activated it.
 	 * @internal
 	 */
-	private _facades: { name: string; facade: IFacade }[];
+	private _facades: { name: string; facade: IFacade; excludeTypes: string[] }[];
 
 	/**
 	 * Store the instances with the facades applied, keyed as the instances are.
@@ -291,7 +292,7 @@ export class Factory<T> {
 			const instance = this._generators[matchName].generator(args);
 
 			if (!Is.empty(instance)) {
-				return this.applyFacades(instance) as U;
+				return this.applyFacades(matchName, instance) as U;
 			}
 		}
 	}
@@ -323,11 +324,13 @@ export class Factory<T> {
 	 * An instance is passed through the facades in the order they were activated, so the facade
 	 * activated first is the outermost. Activating a facade which is already active does nothing.
 	 * @param name The name of the facade, as registered with the facade factory.
+	 * @param excludeTypes The instance types the facade is not applied to, named as they are
+	 * registered with this factory.
 	 * @throws GuardError if the parameters are invalid.
 	 * @throws GeneralError if no facade is registered with the name, or the factory is the facade
 	 * factory itself.
 	 */
-	public useFacade(name: string): void {
+	public useFacade(name: string, excludeTypes?: string[]): void {
 		Guards.stringValue(Factory.CLASS_NAME, nameof(name), name);
 
 		const facadeFactory = this.facadeFactory();
@@ -345,7 +348,11 @@ export class Factory<T> {
 		}
 
 		if (!this._facades.some(f => f.name === name)) {
-			this._facades.push({ name, facade: facadeFactory.get(name) });
+			this._facades.push({
+				name,
+				facade: facadeFactory.get(name),
+				excludeTypes: excludeTypes ?? []
+			});
 			// Instances handed out before this point keep the facades they were built with, the
 			// change applies to instances produced from here on.
 			this._wrappedInstances = {};
@@ -454,29 +461,32 @@ export class Factory<T> {
 	 * @internal
 	 */
 	private wrappedInstance(name: string): T {
-		this._wrappedInstances[name] ??= this.applyFacades(this._instances[name]);
+		this._wrappedInstances[name] ??= this.applyFacades(name, this._instances[name]);
 
 		return this._wrappedInstances[name];
 	}
 
 	/**
 	 * Wrap an instance in the active facades. The first activated facade ends up outermost.
+	 * @param name The instance type being wrapped, used to honour the exclusions.
 	 * @param instance The instance to wrap.
-	 * @returns The wrapped instance, or the instance itself when no facades are active.
+	 * @returns The wrapped instance, or the instance itself when no facades apply to it.
 	 * @throws GeneralError if a facade does not return a wrapped instance.
 	 * @internal
 	 */
-	private applyFacades(instance: T): T {
+	private applyFacades(name: string, instance: T): T {
 		let wrapped = instance;
 
 		for (let i = this._facades.length - 1; i >= 0; i--) {
-			wrapped = this._facades[i].facade.wrap(wrapped) as T;
+			if (!this._facades[i].excludeTypes.includes(name)) {
+				wrapped = this._facades[i].facade.wrap(wrapped) as T;
 
-			if (Is.empty(wrapped)) {
-				throw new GeneralError(Factory.CLASS_NAME, "noFacadeWrap", {
-					typeName: this._typeName,
-					name: this._facades[i].name
-				});
+				if (Is.empty(wrapped)) {
+					throw new GeneralError(Factory.CLASS_NAME, "noFacadeWrap", {
+						typeName: this._typeName,
+						name: this._facades[i].name
+					});
+				}
 			}
 		}
 
