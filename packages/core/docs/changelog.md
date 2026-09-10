@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.9.3-next.10](https://github.com/iotaledger/twin-framework/compare/core-v0.9.3-next.9...core-v0.9.3-next.10) (2026-09-10)
+
+
+### Features
+
+* exclude instance types from a facade ([#492](https://github.com/iotaledger/twin-framework/issues/492)) ([5962e7a](https://github.com/iotaledger/twin-framework/commit/5962e7a98603a5b6674953cce89c2221dc0281a9))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.9.3-next.9 to 0.9.3-next.10
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.9 to 0.9.3-next.10
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.9 to 0.9.3-next.10
+
 ## [0.9.3-next.9](https://github.com/iotaledger/twin-framework/compare/core-v0.9.3-next.8...core-v0.9.3-next.9) (2026-09-10)
 
 
