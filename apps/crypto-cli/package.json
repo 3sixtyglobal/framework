@@ -1,6 +1,6 @@
 {
 	"name": "@twin.org/crypto-cli",
-	"version": "0.9.3-next.10",
+	"version": "0.9.3-next.11",
 	"description": "Command line interface for interacting with the crypto tools",
 	"repository": {
 		"type": "git",
@@ -29,17 +29,17 @@
 		"dist:no-test": "npm run clean && npm run build && npm run merge-locales"
 	},
 	"dependencies": {
-		"@twin.org/cli-core": "0.9.3-next.10",
-		"@twin.org/core": "0.9.3-next.10",
-		"@twin.org/crypto": "0.9.3-next.10",
-		"@twin.org/nameof": "0.9.3-next.10",
+		"@twin.org/cli-core": "0.9.3-next.11",
+		"@twin.org/core": "0.9.3-next.11",
+		"@twin.org/crypto": "0.9.3-next.11",
+		"@twin.org/nameof": "0.9.3-next.11",
 		"commander": "15.0.0"
 	},
 	"devDependencies": {
-		"@twin.org/merge-locales": "0.9.3-next.10",
-		"@twin.org/nameof-transformer": "0.9.3-next.10",
-		"@twin.org/nameof-vitest-plugin": "0.9.3-next.10",
-		"@twin.org/validate-locales": "0.9.3-next.10",
+		"@twin.org/merge-locales": "0.9.3-next.11",
+		"@twin.org/nameof-transformer": "0.9.3-next.11",
+		"@twin.org/nameof-vitest-plugin": "0.9.3-next.11",
+		"@twin.org/validate-locales": "0.9.3-next.11",
 		"@types/node": "26.1.2",
 		"@vitest/coverage-v8": "4.1.10",
 		"copyfiles": "2.4.1",
