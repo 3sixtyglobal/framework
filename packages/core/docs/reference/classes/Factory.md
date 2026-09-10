@@ -368,7 +368,7 @@ Remove all the instances and the generators.
 
 ### useFacade() {#usefacade}
 
-> **useFacade**(`name`): `void`
+> **useFacade**(`name`, `excludeTypes?`): `void`
 
 Activate a facade for this factory, so every instance it produces is wrapped by it.
 An instance is passed through the facades in the order they were activated, so the facade
@@ -381,6 +381,13 @@ activated first is the outermost. Activating a facade which is already active do
 `string`
 
 The name of the facade, as registered with the facade factory.
+
+##### excludeTypes?
+
+`string`[]
+
+The instance types the facade is not applied to, named as they are
+registered with this factory.
 
 #### Returns
 
