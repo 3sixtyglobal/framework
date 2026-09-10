@@ -384,10 +384,10 @@ The name of the facade, as registered with the facade factory.
 
 ##### excludeTypes?
 
-`string`[]
+`RegExp`[]
 
-The instance types the facade is not applied to, named as they are
-registered with this factory.
+Patterns matching the instance types the facade is not applied to, tested
+against the names they are registered with in this factory.
 
 #### Returns
 

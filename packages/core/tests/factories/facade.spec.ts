@@ -260,7 +260,7 @@ describe("Factory facades", () => {
 
 	test("does not apply a facade to an excluded instance type", () => {
 		factory.register("other", () => new TestComponent());
-		factory.useFacade("first", ["test"]);
+		factory.useFacade("first", [/^test$/]);
 
 		factory.get("other").double(1);
 		factory.get("test").double(1);
@@ -269,8 +269,43 @@ describe("Factory facades", () => {
 		expect(calls).toEqual(["first:double"]);
 	});
 
+	test("excludes every instance type matching the pattern", () => {
+		factory.register("test-other", () => new TestComponent());
+		factory.register("keep", () => new TestComponent());
+		factory.useFacade("first", [/^test/]);
+
+		factory.get("test").double(1);
+		factory.get("test-other").double(1);
+		factory.get("keep").double(1);
+
+		// Both of the names starting with "test" are excluded.
+		expect(calls).toEqual(["first:double"]);
+	});
+
+	test("excludes an instance type matching any of the patterns", () => {
+		factory.register("other", () => new TestComponent());
+		factory.register("keep", () => new TestComponent());
+		factory.useFacade("first", [/^test$/, /^other$/]);
+
+		factory.get("test").double(1);
+		factory.get("other").double(1);
+		factory.get("keep").double(1);
+
+		expect(calls).toEqual(["first:double"]);
+	});
+
+	test("excludes consistently for a pattern with the global flag", () => {
+		factory.register("test-other", () => new TestComponent());
+		factory.useFacade("first", [/test/g]);
+
+		factory.get("test").double(1);
+		factory.get("test-other").double(1);
+
+		expect(calls).toEqual([]);
+	});
+
 	test("excludes an instance type from create as well as get", () => {
-		factory.useFacade("first", ["test"]);
+		factory.useFacade("first", [/^test$/]);
 
 		factory.create("test").double(1);
 
@@ -278,7 +313,7 @@ describe("Factory facades", () => {
 	});
 
 	test("applies the other facades to an instance one of them excludes", () => {
-		factory.useFacade("first", ["test"]);
+		factory.useFacade("first", [/^test$/]);
 		factory.useFacade("second");
 
 		factory.get("test").double(1);
