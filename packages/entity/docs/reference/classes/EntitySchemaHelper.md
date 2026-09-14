@@ -20,6 +20,18 @@ Class to help with entity schema operations.
 
 Runtime name for the class.
 
+***
+
+### FORMAT\_MAX\_LENGTHS {#format_max_lengths}
+
+> `readonly` `static` **FORMAT\_MAX\_LENGTHS**: `object`
+
+The default maximum lengths for string properties, keyed by their format.
+
+#### Index Signature
+
+\[`format`: `string`\]: `number`
+
 ## Methods
 
 ### getSchema() {#getschema}
@@ -208,7 +220,7 @@ The schema to validate against.
 
 #### Throws
 
-If the entity is invalid.
+If the entity is invalid, or a string value exceeds its maxLength.
 
 ***
 
