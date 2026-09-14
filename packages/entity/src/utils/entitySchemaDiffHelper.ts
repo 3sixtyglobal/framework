@@ -152,6 +152,7 @@ export class EntitySchemaDiffHelper {
 		return (
 			schema1.type === schema2.type &&
 			schema1.format === schema2.format &&
+			schema1.maxLength === schema2.maxLength &&
 			schema1.isPrimary === schema2.isPrimary &&
 			schema1.isSecondary === schema2.isSecondary &&
 			schema1.isVersion === schema2.isVersion &&
