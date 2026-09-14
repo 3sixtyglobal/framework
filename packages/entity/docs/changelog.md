@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.9.3-next.12](https://github.com/iotaledger/twin-framework/compare/entity-v0.9.3-next.11...entity-v0.9.3-next.12) (2026-09-14)
+
+
+### Features
+
+* entity max string lengths ([#497](https://github.com/iotaledger/twin-framework/issues/497)) ([7fc91e2](https://github.com/iotaledger/twin-framework/commit/7fc91e2a49b9f1e2113bfe10983e083298ef2539))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.9.3-next.11 to 0.9.3-next.12
+    * @twin.org/nameof bumped from 0.9.3-next.11 to 0.9.3-next.12
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.11 to 0.9.3-next.12
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.11 to 0.9.3-next.12
+    * @twin.org/validate-locales bumped from 0.9.3-next.11 to 0.9.3-next.12
+
 ## [0.9.3-next.11](https://github.com/iotaledger/twin-framework/compare/entity-v0.9.3-next.10...entity-v0.9.3-next.11) (2026-09-10)
 
 
