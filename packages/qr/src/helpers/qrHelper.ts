@@ -134,7 +134,6 @@ export class QRHelper {
 	/**
 	 * @internal
 	 */
-
 	private static readonly _G15: number =
 		(1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
 

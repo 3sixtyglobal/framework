@@ -3,6 +3,7 @@
 import { GeneralError, Guards, Is } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 import { DecoratorHelper } from "./decoratorHelper.js";
+import { EntitySchemaPropertyFormat } from "../models/entitySchemaPropertyFormat.js";
 import { EntitySchemaPropertyType } from "../models/entitySchemaPropertyType.js";
 import type { IEntitySchema } from "../models/IEntitySchema.js";
 import type { IEntitySchemaProperty } from "../models/IEntitySchemaProperty.js";
@@ -17,6 +18,18 @@ export class EntitySchemaHelper {
 	 * Runtime name for the class.
 	 */
 	public static readonly CLASS_NAME: string = nameof<EntitySchemaHelper>();
+
+	/**
+	 * The default maximum lengths for string properties, keyed by their format.
+	 */
+	public static readonly FORMAT_MAX_LENGTHS: { [format: string]: number } = {
+		[EntitySchemaPropertyFormat.Uuid]: 36,
+		[EntitySchemaPropertyFormat.Date]: 64,
+		[EntitySchemaPropertyFormat.Time]: 64,
+		[EntitySchemaPropertyFormat.DateTime]: 64,
+		[EntitySchemaPropertyFormat.Email]: 254,
+		[EntitySchemaPropertyFormat.Uri]: 2048
+	};
 
 	/**
 	 * Get the schema for the specified object.
@@ -150,7 +163,7 @@ export class EntitySchemaHelper {
 	 * Validate the entity against the schema.
 	 * @param entity The entity to validate.
 	 * @param entitySchema The schema to validate against.
-	 * @throws If the entity is invalid.
+	 * @throws If the entity is invalid, or a string value exceeds its maxLength.
 	 */
 	public static validateEntity<T>(entity: T, entitySchema: IEntitySchema<T>): void {
 		Guards.object(EntitySchemaHelper.CLASS_NAME, nameof(entity), entity);
@@ -205,6 +218,24 @@ export class EntitySchemaHelper {
 					property: prop.property,
 					type: prop.type
 				});
+			}
+
+			if (prop.type === EntitySchemaPropertyType.String && Is.string(value)) {
+				// Formats with a known length default to it when no explicit maxLength is set
+				const maxLength =
+					prop.maxLength ??
+					(Is.stringValue(prop.format)
+						? EntitySchemaHelper.FORMAT_MAX_LENGTHS[prop.format]
+						: undefined);
+
+				if (Is.number(maxLength) && maxLength > 0 && value.length > maxLength) {
+					// The value is longer than the maximum length defined in the schema
+					throw new GeneralError(EntitySchemaHelper.CLASS_NAME, "maxLengthExceeded", {
+						property: prop.property,
+						maxLength,
+						length: value.length
+					});
+				}
 			}
 		}
 

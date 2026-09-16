@@ -89,8 +89,6 @@ export async function mergeLocales(
 		outputDirectory
 	);
 
-	const npmRoot = await CLIUtils.findNpmRoot(workingDirectory);
-	CLIDisplay.value(I18n.formatMessage("commands.merge-locales.labels.npmRoot"), npmRoot);
 	CLIDisplay.break();
 
 	CLIDisplay.task(
@@ -103,32 +101,48 @@ export async function mergeLocales(
 	} catch {}
 	await mkdir(outputDirectory, { recursive: true });
 
-	let packageNames: string[] = [];
+	const packageLocations: { [packageName: string]: string } = {};
 
 	const packageJson = await findDependencies(
-		npmRoot,
+		workingDirectory,
 		path.join(workingDirectory, "package.json"),
-		packageNames
+		packageLocations
 	);
 
 	excludePackages.push("@twin.org/merge-locales");
 	excludePackages.push("@twin.org/nameof");
 	excludePackages.push("@twin.org/nameof-transformer");
 
-	packageNames = packageNames.filter(pkg => !excludePackages.includes(pkg));
-	packageNames.push(...includePackages);
+	const packageNames = Object.keys(packageLocations).filter(pkg => !excludePackages.includes(pkg));
+
+	for (const includePackage of includePackages) {
+		if (!packageNames.includes(includePackage)) {
+			const packageRoot =
+				packageLocations[includePackage] ??
+				(await CLIUtils.findPackageRoot(includePackage, workingDirectory));
+
+			if (Is.stringValue(packageRoot)) {
+				packageLocations[includePackage] = packageRoot;
+				packageNames.push(includePackage);
+			} else {
+				CLIDisplay.warning(
+					`${I18n.formatMessage("commands.merge-locales.labels.packageNotFound")}: ${includePackage}`
+				);
+			}
+		}
+	}
 
 	CLIDisplay.break();
 	CLIDisplay.section(I18n.formatMessage("commands.merge-locales.labels.sourcePackages"));
 	for (const packageName of packageNames) {
-		CLIDisplay.value("", packageName, 1);
+		CLIDisplay.value(packageName, packageLocations[packageName], 1);
 	}
 	CLIDisplay.break();
 
 	const localeDictionaries: { [locale: string]: ILocaleDictionary } = {};
 
 	for (const packageName of packageNames) {
-		const packageLocalDirectory = path.join(npmRoot, packageName, "locales");
+		const packageLocalDirectory = path.join(packageLocations[packageName], "locales");
 		await mergePackageLocales(packageLocalDirectory, packageName, locales, localeDictionaries);
 	}
 
@@ -203,38 +217,63 @@ async function mergePackageLocales(
 
 /**
  * Find dependencies for the package.
- * @param npmRoot The root of the NPM packages.
+ * @param searchFolder The folder to resolve the dependencies from.
  * @param packageJsonPath The path to the package.json.
- * @param packageNames The package names to add to.
+ * @param packageLocations The package locations to add to, keyed by package name.
  * @returns The package details.
  * @internal
  */
 async function findDependencies(
-	npmRoot: string,
+	searchFolder: string,
 	packageJsonPath: string,
-	packageNames: string[]
+	packageLocations: { [packageName: string]: string }
 ): Promise<IPackageJson> {
 	const packageJson = await CLIUtils.readJsonFile<IPackageJson>(packageJsonPath);
 
 	if (Is.objectValue(packageJson?.dependencies)) {
 		for (const pkg in packageJson.dependencies) {
-			if (pkg.startsWith("@twin.org") && !packageNames.includes(pkg)) {
-				packageNames.push(pkg);
-				const packagePath = path.join(npmRoot, pkg, "package.json");
-				await findDependencies(npmRoot, packagePath, packageNames);
-			}
+			await findPackageDependencies(searchFolder, pkg, packageLocations);
 		}
 	}
 
 	if (Is.objectValue(packageJson?.peerDependencies)) {
 		for (const pkg in packageJson.peerDependencies) {
-			if (pkg.startsWith("@twin.org") && !packageNames.includes(pkg)) {
-				packageNames.push(pkg);
-				const packagePath = path.join(npmRoot, pkg, "package.json");
-				await findDependencies(npmRoot, packagePath, packageNames);
-			}
+			await findPackageDependencies(searchFolder, pkg, packageLocations);
 		}
 	}
 
 	return packageJson ?? {};
+}
+
+/**
+ * Locate a package and find its dependencies.
+ * @param searchFolder The folder to resolve the package from.
+ * @param packageName The name of the package to locate.
+ * @param packageLocations The package locations to add to, keyed by package name.
+ * @internal
+ */
+async function findPackageDependencies(
+	searchFolder: string,
+	packageName: string,
+	packageLocations: { [packageName: string]: string }
+): Promise<void> {
+	if (!packageName.startsWith("@twin.org") || Is.stringValue(packageLocations[packageName])) {
+		return;
+	}
+
+	// The location of a package can not be assumed to be in a single root node_modules folder,
+	// as package managers such nest the dependencies of each package, so walk the tree
+	// from the folder of the package which depends on it.
+	const packageRoot = await CLIUtils.findPackageRoot(packageName, searchFolder);
+
+	if (!Is.stringValue(packageRoot)) {
+		CLIDisplay.warning(
+			`${I18n.formatMessage("commands.merge-locales.labels.packageNotFound")}: ${packageName}`
+		);
+		return;
+	}
+
+	packageLocations[packageName] = packageRoot;
+
+	await findDependencies(packageRoot, path.join(packageRoot, "package.json"), packageLocations);
 }

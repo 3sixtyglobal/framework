@@ -17,6 +17,8 @@ import type { IValidationFailure } from "../models/IValidationFailure.js";
  * The timer only runs while there are entries; it stops automatically when the cache empties.
  *
  * `get` and `set` both update an entry's LRU position and reset its idle timer.
+ * `set` and `getOrSet` accept an optional hard expiry timestamp; the entry is removed once that
+ * time is reached however recently it was used, and the TTI still applies alongside it.
  * `has` is a pure peek it evicts idle entries but does not refresh a live entry's TTI.
  * Call `destroy` when the cache is no longer needed to stop the background timer.
  */
@@ -64,7 +66,22 @@ export class LruCache<T = unknown> {
 	 * Underlying storage; Map iteration order tracks LRU position (first = oldest).
 	 * @internal
 	 */
-	private readonly _cache: Map<string, { value: T; lastAccessed: number }>;
+	private readonly _cache: Map<
+		string,
+		{ value: T; lastAccessed: number; expires: number | undefined }
+	>;
+
+	/**
+	 * The earliest hard expiry timestamp among the live entries, used to pace the sweep timer.
+	 * @internal
+	 */
+	private _nextExpires: number | undefined;
+
+	/**
+	 * The timestamp the pending sweep is due to run at.
+	 * @internal
+	 */
+	private _scheduledDueAt: number;
 
 	/**
 	 * Handle for the pending idle-sweep timeout, or undefined if no timer is scheduled.
@@ -106,6 +123,8 @@ export class LruCache<T = unknown> {
 		this._mutexTimeoutMs = mutexTimeoutMs;
 		this._mutexScope = `${LruCache.CLASS_NAME}:${RandomHelper.generateUuidV7()}`;
 		this._cache = new Map();
+		this._nextExpires = undefined;
+		this._scheduledDueAt = 0;
 		this._sweepTimer = undefined;
 	}
 
@@ -125,12 +144,14 @@ export class LruCache<T = unknown> {
 	 * @returns The cached value, or undefined on a miss or idle eviction.
 	 */
 	public get(key: string): T | undefined {
+		Guards.stringValue(LruCache.CLASS_NAME, nameof(key), key);
+
 		const entry = this._cache.get(key);
 		if (entry === undefined) {
 			return undefined;
 		}
 		const now = Date.now();
-		if (now - entry.lastAccessed >= this._ttiMs) {
+		if (this.isExpired(entry, now)) {
 			this._cache.delete(key);
 			return undefined;
 		}
@@ -138,6 +159,7 @@ export class LruCache<T = unknown> {
 		this._cache.delete(key);
 		entry.lastAccessed = now;
 		this._cache.set(key, entry);
+
 		return entry.value;
 	}
 
@@ -148,8 +170,16 @@ export class LruCache<T = unknown> {
 	 * least-recently-used entry is evicted.
 	 * @param key The key to store.
 	 * @param value The value to cache.
+	 * @param expires Hard expiry timestamp in milliseconds since the epoch. The entry is removed
+	 * once this time is reached regardless of how recently it was used. Must be an integer.
 	 */
-	public set(key: string, value: T): void {
+	public set(key: string, value: T, expires?: number): void {
+		Guards.stringValue(LruCache.CLASS_NAME, nameof(key), key);
+
+		if (!Is.empty(expires)) {
+			Guards.integer(LruCache.CLASS_NAME, nameof(expires), expires);
+		}
+
 		const now = Date.now();
 		// Remove any existing entry so the refreshed version is inserted at the end
 		this._cache.delete(key);
@@ -162,7 +192,8 @@ export class LruCache<T = unknown> {
 				this._cache.delete(lruKey);
 			}
 		}
-		this._cache.set(key, { value, lastAccessed: now });
+		this._cache.set(key, { value, lastAccessed: now, expires });
+		this.trackExpires(expires);
 		this.startTimer();
 	}
 
@@ -171,11 +202,16 @@ export class LruCache<T = unknown> {
 	 * Concurrent calls for the same key are serialized via a mutex.
 	 * @param key The key to get or create.
 	 * @param valueFactory Async callback used to build a value when the key is absent.
+	 * @param expires Hard expiry timestamp in milliseconds since the epoch, applied to the entry
+	 * when one is created. Must be an integer.
 	 * @returns The existing or newly created value.
 	 */
-	public async getOrSet(key: string, valueFactory: () => Promise<T>): Promise<T> {
+	public async getOrSet(key: string, valueFactory: () => Promise<T>, expires?: number): Promise<T> {
 		Guards.stringValue(LruCache.CLASS_NAME, nameof(key), key);
 		Guards.function(LruCache.CLASS_NAME, nameof(valueFactory), valueFactory);
+		if (!Is.empty(expires)) {
+			Guards.integer(LruCache.CLASS_NAME, nameof(expires), expires);
+		}
 
 		const mutexKey = `${this._mutexScope}:${key}`;
 		await Mutex.lock(mutexKey, {
@@ -189,7 +225,7 @@ export class LruCache<T = unknown> {
 			}
 
 			const value = await valueFactory();
-			this.set(key, value);
+			this.set(key, value, expires);
 			return value;
 		} finally {
 			Mutex.unlock(mutexKey);
@@ -203,11 +239,12 @@ export class LruCache<T = unknown> {
 	 * @returns True if the key is present and not idle.
 	 */
 	public has(key: string): boolean {
+		Guards.stringValue(LruCache.CLASS_NAME, nameof(key), key);
 		const entry = this._cache.get(key);
 		if (entry === undefined) {
 			return false;
 		}
-		if (Date.now() - entry.lastAccessed >= this._ttiMs) {
+		if (this.isExpired(entry, Date.now())) {
 			this._cache.delete(key);
 			return false;
 		}
@@ -223,7 +260,7 @@ export class LruCache<T = unknown> {
 		const now = Date.now();
 		const result: string[] = [];
 		for (const [k, entry] of this._cache) {
-			if (now - entry.lastAccessed >= this._ttiMs) {
+			if (this.isExpired(entry, now)) {
 				this._cache.delete(k);
 			} else {
 				result.push(k);
@@ -238,6 +275,7 @@ export class LruCache<T = unknown> {
 	 * @param key The key to remove.
 	 */
 	public delete(key: string): void {
+		Guards.stringValue(LruCache.CLASS_NAME, nameof(key), key);
 		this._cache.delete(key);
 		if (this._cache.size === 0) {
 			this.cancelTimer();
@@ -250,6 +288,7 @@ export class LruCache<T = unknown> {
 	public clear(): void {
 		this.cancelTimer();
 		this._cache.clear();
+		this._nextExpires = undefined;
 	}
 
 	/**
@@ -259,6 +298,7 @@ export class LruCache<T = unknown> {
 	public destroy(): void {
 		this.cancelTimer();
 		this._cache.clear();
+		this._nextExpires = undefined;
 	}
 
 	/**
@@ -269,22 +309,71 @@ export class LruCache<T = unknown> {
 	private sweepIdle(): void {
 		this.cancelTimer();
 		const now = Date.now();
+		let nextExpires: number | undefined;
 		for (const [k, entry] of this._cache) {
-			if (now - entry.lastAccessed >= this._ttiMs) {
+			if (this.isExpired(entry, now)) {
 				this._cache.delete(k);
+			} else if (
+				Is.notEmpty(entry.expires) &&
+				(Is.empty(nextExpires) || entry.expires < nextExpires)
+			) {
+				nextExpires = entry.expires;
 			}
 		}
+		this._nextExpires = nextExpires;
 		if (this._cache.size > 0) {
 			this.startTimer();
 		}
 	}
 
 	/**
-	 * Schedule the next idle sweep if no timer is already pending.
+	 * Record an entry expiry timestamp if it is earlier than the currently tracked one.
+	 * @param expires The expiry timestamp in milliseconds, or undefined for none.
+	 * @internal
+	 */
+	private trackExpires(expires: number | undefined): void {
+		if (Is.notEmpty(expires) && (Is.empty(this._nextExpires) || expires < this._nextExpires)) {
+			this._nextExpires = expires;
+		}
+	}
+
+	/**
+	 * Determine whether an entry has idled out or reached its hard expiry timestamp.
+	 * @param entry The entry to test.
+	 * @param entry.lastAccessed The last-accessed timestamp in milliseconds.
+	 * @param entry.expires The hard expiry timestamp in milliseconds, or undefined for none.
+	 * @param now The current time in milliseconds.
+	 * @returns True if the entry should be removed.
+	 * @internal
+	 */
+	private isExpired(
+		entry: { lastAccessed: number; expires: number | undefined },
+		now: number
+	): boolean {
+		return (
+			now - entry.lastAccessed >= this._ttiMs ||
+			(Is.notEmpty(entry.expires) && now >= entry.expires)
+		);
+	}
+
+	/**
+	 * Schedule the next sweep if no timer is already pending, bringing a pending one forward
+	 * when an entry with an earlier hard expiry has since been added.
 	 * @internal
 	 */
 	private startTimer(): void {
-		this._sweepTimer ??= setTimeout(() => this.sweepIdle(), this._ttiMs);
+		const now = Date.now();
+		let delay = this._ttiMs;
+		if (Is.notEmpty(this._nextExpires)) {
+			delay = Math.min(delay, Math.max(0, this._nextExpires - now));
+		}
+		if (Is.empty(this._sweepTimer)) {
+			this._scheduledDueAt = now + delay;
+			this._sweepTimer = setTimeout(() => this.sweepIdle(), delay);
+		} else if (now + delay < this._scheduledDueAt) {
+			this.cancelTimer();
+			this.startTimer();
+		}
 	}
 
 	/**

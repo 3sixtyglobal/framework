@@ -34,6 +34,14 @@ The format of the property.
 
 ***
 
+### maxLength? {#maxlength}
+
+> `optional` **maxLength?**: `number`
+
+The maximum length of the property value i.e. for text fields.
+
+***
+
 ### isPrimary? {#isprimary}
 
 > `optional` **isPrimary?**: `boolean`

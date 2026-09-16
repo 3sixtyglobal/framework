@@ -416,4 +416,314 @@ describe("LruCache", () => {
 			}
 		});
 	});
+	describe("hard expiry timestamp", () => {
+		test("throws if expires is not an integer", () => {
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 1000 });
+			expect(() => cache.set("a", 1, Date.now() + 100.5)).toThrow();
+		});
+
+		test("the entry expires at the timestamp however recently it was used", () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 1000 });
+			try {
+				cache.set("a", 1, Date.now() + 2000);
+				vi.advanceTimersByTime(900);
+				expect(cache.get("a")).toEqual(1);
+				vi.advanceTimersByTime(900);
+				expect(cache.get("a")).toEqual(1);
+				vi.advanceTimersByTime(200);
+				expect(cache.get("a")).toBeUndefined();
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+
+		test("the TTI still applies to an entry with a later expiry", () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 1000 });
+			try {
+				cache.set("a", 1, Date.now() + 60000);
+				vi.advanceTimersByTime(1000);
+				expect(cache.get("a")).toBeUndefined();
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+
+		test("the background timer removes the entry at the timestamp with no method calls", () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 60000 });
+			try {
+				cache.set("a", 1);
+				cache.set("b", 2, Date.now() + 200);
+				vi.advanceTimersByTime(199);
+				expect(cache.count()).toEqual(2);
+				vi.advanceTimersByTime(1);
+				expect(cache.count()).toEqual(1);
+				expect(cache.keys()).toEqual(["a"]);
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+
+		test("has reports an expired entry as absent and removes it", () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 60000 });
+			try {
+				cache.set("a", 1, Date.now() + 200);
+				expect(cache.has("a")).toEqual(true);
+				vi.advanceTimersByTime(200);
+				expect(cache.has("a")).toEqual(false);
+				expect(cache.count()).toEqual(0);
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+
+		test("keys excludes entries past their expiry", () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 60000 });
+			try {
+				cache.set("a", 1, Date.now() + 200);
+				cache.set("b", 2);
+				expect(cache.keys()).toEqual(["a", "b"]);
+				vi.advanceTimersByTime(200);
+				expect(cache.keys()).toEqual(["b"]);
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+
+		test("setting the key again without an expiry clears the previous one", () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 60000 });
+			try {
+				cache.set("a", 1, Date.now() + 200);
+				vi.advanceTimersByTime(100);
+				cache.set("a", 2);
+				vi.advanceTimersByTime(200);
+				expect(cache.get("a")).toEqual(2);
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+
+		test("setting the key again applies the new expiry", () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 60000 });
+			try {
+				cache.set("a", 1);
+				vi.advanceTimersByTime(100);
+				cache.set("a", 2, Date.now() + 200);
+				expect(cache.get("a")).toEqual(2);
+				vi.advanceTimersByTime(200);
+				expect(cache.get("a")).toBeUndefined();
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+
+		test("an entry set with a past timestamp is treated as expired", () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 60000 });
+			try {
+				cache.set("a", 1, Date.now() - 1);
+				expect(cache.get("a")).toBeUndefined();
+				expect(cache.has("a")).toEqual(false);
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+
+		test("expired entries are removed before capacity eviction", () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 2, ttiMs: 60000 });
+			try {
+				cache.set("a", 1);
+				cache.set("b", 2, Date.now() + 200);
+				vi.advanceTimersByTime(200);
+				cache.set("c", 3);
+				expect(cache.keys()).toEqual(["a", "c"]);
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+
+		test("getOrSet applies the expiry to a created value", async () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 60000, mutexTimeoutMs: 1000 });
+			try {
+				await cache.getOrSet("a", async () => 1, Date.now() + 200);
+				vi.advanceTimersByTime(199);
+				expect(cache.get("a")).toEqual(1);
+				vi.advanceTimersByTime(1);
+				expect(cache.get("a")).toBeUndefined();
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+
+		test("repeated access keeps an entry alive across TTI windows until its expiry", () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 1000 });
+			try {
+				cache.set("a", 1, Date.now() + 5000);
+				for (let i = 0; i < 5; i++) {
+					vi.advanceTimersByTime(900);
+					expect(cache.get("a")).toEqual(1);
+				}
+				vi.advanceTimersByTime(500);
+				expect(cache.get("a")).toBeUndefined();
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+
+		test("a later expiry does not delay a pending earlier sweep", () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 60000 });
+			try {
+				cache.set("a", 1, Date.now() + 200);
+				cache.set("b", 2, Date.now() + 5000);
+				vi.advanceTimersByTime(200);
+				expect(cache.count()).toEqual(1);
+				expect(cache.keys()).toEqual(["b"]);
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+
+		test("entries with different expiries are removed in their own order", () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 60000 });
+			try {
+				cache.set("a", 1, Date.now() + 100);
+				cache.set("b", 2, Date.now() + 300);
+				cache.set("c", 3);
+				vi.advanceTimersByTime(100);
+				expect(cache.keys()).toEqual(["b", "c"]);
+				vi.advanceTimersByTime(200);
+				expect(cache.keys()).toEqual(["c"]);
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+
+		test("deleting the earliest-expiring entry leaves the others on their own schedule", () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 60000 });
+			try {
+				cache.set("a", 1, Date.now() + 200);
+				cache.set("b", 2, Date.now() + 400);
+				cache.delete("a");
+				vi.advanceTimersByTime(200);
+				expect(cache.get("b")).toEqual(2);
+				vi.advanceTimersByTime(200);
+				expect(cache.get("b")).toBeUndefined();
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+
+		test("the cache still works after every entry has expired", () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 60000 });
+			try {
+				cache.set("a", 1, Date.now() + 200);
+				vi.advanceTimersByTime(200);
+				expect(cache.count()).toEqual(0);
+				cache.set("b", 2, Date.now() + 200);
+				expect(cache.get("b")).toEqual(2);
+				vi.advanceTimersByTime(200);
+				expect(cache.count()).toEqual(0);
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+
+		test("getOrSet does not change the expiry of an existing entry", async () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 60000, mutexTimeoutMs: 1000 });
+			try {
+				cache.set("a", 1, Date.now() + 200);
+				const value = await cache.getOrSet("a", async () => 2, Date.now() + 5000);
+				expect(value).toEqual(1);
+				vi.advanceTimersByTime(200);
+				expect(cache.get("a")).toBeUndefined();
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+
+		test("getOrSet creates a new value once the entry has expired", async () => {
+			vi.useFakeTimers();
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 60000, mutexTimeoutMs: 1000 });
+			try {
+				cache.set("a", 1, Date.now() + 200);
+				vi.advanceTimersByTime(200);
+				const value = await cache.getOrSet("a", async () => 2);
+				expect(value).toEqual(2);
+				expect(cache.get("a")).toEqual(2);
+			} finally {
+				cache.destroy();
+				vi.useRealTimers();
+			}
+		});
+	});
+
+	describe("parameter guards", () => {
+		beforeEach(() => {
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 1000, mutexTimeoutMs: 1000 });
+		});
+
+		test("get throws if the key is empty", () => {
+			expect(() => cache.get("")).toThrow();
+		});
+
+		test("get throws if the key is not a string", () => {
+			expect(() => cache.get(undefined as unknown as string)).toThrow();
+		});
+
+		test("set throws if the key is empty", () => {
+			expect(() => cache.set("", 1)).toThrow();
+		});
+
+		test("set throws if the key is not a string", () => {
+			expect(() => cache.set(undefined as unknown as string, 1)).toThrow();
+		});
+
+		test("has throws if the key is empty", () => {
+			expect(() => cache.has("")).toThrow();
+		});
+
+		test("delete throws if the key is empty", () => {
+			expect(() => cache.delete("")).toThrow();
+		});
+
+		test("getOrSet throws if the key is empty", async () => {
+			await expect(cache.getOrSet("", async () => 1)).rejects.toThrow();
+		});
+
+		test("getOrSet throws if the value factory is not a function", async () => {
+			await expect(
+				cache.getOrSet("a", undefined as unknown as () => Promise<number>)
+			).rejects.toThrow();
+		});
+	});
 });

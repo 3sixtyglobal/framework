@@ -171,11 +171,48 @@ class SimpleHasher implements IHasher {
   }
 }
 
-const factory = new Factory<IHasher>('hashers');
+const factory = Factory.createFactory<IHasher>('hashers');
 factory.register('simple', () => new SimpleHasher());
 
 factory.create('simple').hash('abc'); // 'abc-hash'
 ```
+
+## Factory Facades
+
+A facade wraps the components a factory produces, so a cross cutting concern can be applied without modifying them.
+
+```typescript
+import { ComponentFactory, FacadeFactory, Is, type IFacade } from '@twin.org/core';
+
+class LoggingFacade implements IFacade {
+  public wrap(target: unknown): unknown {
+    return new Proxy(target as object, {
+      get(t, prop, receiver): unknown {
+        const value = Reflect.get(t, prop, receiver);
+
+        if (!Is.function(value)) {
+          return value;
+        }
+
+        return (...args: unknown[]): unknown => {
+          globalThis.console.log('calling', String(prop));
+          return value.apply(t, args);
+        };
+      }
+    });
+  }
+}
+
+FacadeFactory.register('logging', () => new LoggingFacade());
+
+// Every component the factory produces from here on is wrapped.
+ComponentFactory.useFacade('logging');
+
+// No longer wrapped, for instances produced after this call.
+ComponentFactory.unuseFacade('logging');
+```
+
+An instance is passed through the facades in the order they were activated, so the first activated is the outermost.
 
 ## Encoding and Compression
 

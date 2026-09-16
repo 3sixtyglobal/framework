@@ -133,6 +133,14 @@ describe("HeaderHelper", () => {
 		expect(locale).toBeUndefined();
 	});
 
+	test("returns undefined for an accept-language tag that exceeds the length limit without stack overflow", async () => {
+		// Crafted tag with thousands of subtags - previously could cause RangeError on the language tag regex
+		const tag = `en${"-ab".repeat(10_000)}`;
+		const locale = HeaderHelper.parseAcceptLanguage(tag);
+
+		expect(locale).toBeUndefined();
+	});
+
 	test("can extract parsed languages from request headers", async () => {
 		const locale = HeaderHelper.extractAcceptLanguage({
 			"accept-language": "de-CH,de;q=0.9,en;q=0.8"

@@ -22,14 +22,13 @@ npx "@twin.org/validate-locales"
 ```shell
 validate-locales --help
 
-Usage: validate-locales [options]
+Usage: validate-locales
 
 Options:
-  --cwd <path>                      Current working directory to scan. (default: ".")
-  --source-glob <glob>              Glob for source files to validate.
-  --locale-file <path>              Locale dictionary file to validate against.
-  --ignore-key-pattern <pattern>    Regex pattern for keys to ignore.
-  --report-unused                   Include unused locale keys in the report.
-  --lang <lang>                     The language to display the output in. (default: "en")
-  -h, --help                        display help for command
+  -V, --version        output the version number
+  --source <glob>      Glob for the source files to check. (default: "src/**/*.ts")
+  --locales <glob>     Glob for the locale files to check. (default: "locales/**/*.json")
+  --ignoreFile <path>  File containing keys to ignore. (default: "locales/.validate-ignore")
+  --lang <lang>        The language to display the output in. (default: "en")
+  -h, --help           display help for command
 ```

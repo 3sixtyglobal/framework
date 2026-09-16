@@ -240,11 +240,53 @@ Application BZIP2 - application/x-bzip2
 
 Application ZIP - application/zip
 
+### SevenZip {#sevenzip}
+
+> `readonly` **SevenZip**: `"application/x-7z-compressed"` = `"application/x-7z-compressed"`
+
+Application 7-Zip - application/x-7z-compressed
+
+### Rar {#rar}
+
+> `readonly` **Rar**: `"application/vnd.rar"` = `"application/vnd.rar"`
+
+Application RAR - application/vnd.rar
+
+### Sqlite {#sqlite}
+
+> `readonly` **Sqlite**: `"application/x-sqlite3"` = `"application/x-sqlite3"`
+
+Application SQLite3 - application/x-sqlite3
+
 ### Pdf {#pdf}
 
 > `readonly` **Pdf**: `"application/pdf"` = `"application/pdf"`
 
 Application PDF - application/pdf
+
+### Rtf {#rtf}
+
+> `readonly` **Rtf**: `"application/rtf"` = `"application/rtf"`
+
+Rich Text Format - application/rtf
+
+### Docx {#docx}
+
+> `readonly` **Docx**: `"application/vnd.openxmlformats-officedocument.wordprocessingml.document"` = `"application/vnd.openxmlformats-officedocument.wordprocessingml.document"`
+
+Word Document - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+### Xlsx {#xlsx}
+
+> `readonly` **Xlsx**: `"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"` = `"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"`
+
+Excel Spreadsheet - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+
+### Pptx {#pptx}
+
+> `readonly` **Pptx**: `"application/vnd.openxmlformats-officedocument.presentationml.presentation"` = `"application/vnd.openxmlformats-officedocument.presentationml.presentation"`
+
+PowerPoint Presentation - application/vnd.openxmlformats-officedocument.presentationml.presentation
 
 ### Gif {#gif}
 
@@ -300,6 +342,12 @@ Image WEBP - image/webp
 
 Image AVIF - image/avif
 
+### Heic {#heic}
+
+> `readonly` **Heic**: `"image/heic"` = `"image/heic"`
+
+Image HEIC - image/heic
+
 ### Apng {#apng}
 
 > `readonly` **Apng**: `"image/apng"` = `"image/apng"`
@@ -329,6 +377,18 @@ Font TTF - font/ttf
 > `readonly` **Otf**: `"font/otf"` = `"font/otf"`
 
 Font OTF - font/otf
+
+### Flac {#flac}
+
+> `readonly` **Flac**: `"audio/flac"` = `"audio/flac"`
+
+Audio FLAC - audio/flac
+
+### Midi {#midi}
+
+> `readonly` **Midi**: `"audio/midi"` = `"audio/midi"`
+
+Audio MIDI - audio/midi
 
 ### Mp3 {#mp3}
 

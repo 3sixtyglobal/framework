@@ -95,10 +95,7 @@ export class Is {
 	 * @returns True if the value is a base64 string.
 	 */
 	public static stringBase64(value: unknown): value is string {
-		return (
-			Is.stringValue(value) &&
-			/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(value)
-		);
+		return Is.stringValue(value) && value.length % 4 === 0 && /^[A-Za-z0-9+/]*={0,2}$/.test(value);
 	}
 
 	/**
@@ -107,7 +104,7 @@ export class Is {
 	 * @returns True if the value is a base64 string.
 	 */
 	public static stringBase64Url(value: unknown): value is string {
-		return Is.stringValue(value) && /^([A-Za-z0-9-_])*$/.test(value);
+		return Is.stringValue(value) && /^[A-Za-z0-9_-]*$/.test(value);
 	}
 
 	/**
@@ -414,6 +411,7 @@ export class Is {
 	public static email(value: unknown): value is string {
 		return (
 			Is.stringValue(value) &&
+			value.length <= 254 &&
 			/^[\w!#$%&'*+./=?^`{|}~-]+@[\dA-Za-z](?:[\dA-Za-z-]{0,61}[\dA-Za-z])?(?:\.[\dA-Za-z](?:[\dA-Za-z-]{0,61}[\dA-Za-z])?)*$/.test(
 				value
 			)

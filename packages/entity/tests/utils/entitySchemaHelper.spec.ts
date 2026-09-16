@@ -52,6 +52,54 @@ export class TestEntity {
 	 */
 	@property({ type: "string", optional: false })
 	public nonOptionalString!: string;
+
+	/**
+	 * A string value with a maximum length.
+	 */
+	@property({ type: "string", optional: true, maxLength: 5 })
+	public maxLengthString?: string;
+
+	/**
+	 * A uuid value with no explicit maximum length.
+	 */
+	@property({ type: "string", format: "uuid", optional: true })
+	public uuidValue?: string;
+
+	/**
+	 * A uuid value with an explicit maximum length.
+	 */
+	@property({ type: "string", format: "uuid", optional: true, maxLength: 10 })
+	public uuidMaxLengthValue?: string;
+
+	/**
+	 * A date-time value with no explicit maximum length.
+	 */
+	@property({ type: "string", format: "date-time", optional: true })
+	public dateTimeValue?: string;
+
+	/**
+	 * A date value with no explicit maximum length.
+	 */
+	@property({ type: "string", format: "date", optional: true })
+	public dateValue?: string;
+
+	/**
+	 * A time value with no explicit maximum length.
+	 */
+	@property({ type: "string", format: "time", optional: true })
+	public timeValue?: string;
+
+	/**
+	 * An email value with no explicit maximum length.
+	 */
+	@property({ type: "string", format: "email", optional: true })
+	public emailValue?: string;
+
+	/**
+	 * A uri value with no explicit maximum length.
+	 */
+	@property({ type: "string", format: "uri", optional: true })
+	public uriValue?: string;
 }
 
 /**
@@ -87,6 +135,46 @@ interface ITestEntity {
 	 * A non optional string value.
 	 */
 	nonOptionalString: string;
+
+	/**
+	 * A string value with a maximum length.
+	 */
+	maxLengthString?: string;
+
+	/**
+	 * A uuid value with no explicit maximum length.
+	 */
+	uuidValue?: string;
+
+	/**
+	 * A uuid value with an explicit maximum length.
+	 */
+	uuidMaxLengthValue?: string;
+
+	/**
+	 * A date-time value with no explicit maximum length.
+	 */
+	dateTimeValue?: string;
+
+	/**
+	 * A date value with no explicit maximum length.
+	 */
+	dateValue?: string;
+
+	/**
+	 * A time value with no explicit maximum length.
+	 */
+	timeValue?: string;
+
+	/**
+	 * An email value with no explicit maximum length.
+	 */
+	emailValue?: string;
+
+	/**
+	 * A uri value with no explicit maximum length.
+	 */
+	uriValue?: string;
 }
 
 const testEntitySchema: IEntitySchema<ITestEntity> = EntitySchemaHelper.getSchema(TestEntity);
@@ -483,6 +571,189 @@ describe("EntitySchemaHelper", () => {
 				name: "GeneralError",
 				message: "entitySchemaHelper.invalidEntityProperty",
 				properties: { value: 1n, property: "objectValue", type: "object" }
+			})
+		);
+	});
+
+	test("can validate a schema with a string property within the maximum length", async () => {
+		expect(
+			EntitySchemaHelper.validateEntity<ITestEntity>(
+				{ maxLengthString: "12345", nonOptionalString: "" },
+				testEntitySchema
+			)
+		).toBeUndefined();
+	});
+
+	test("can fail to validate a schema with a string property exceeding the maximum length", async () => {
+		expect(() =>
+			EntitySchemaHelper.validateEntity<ITestEntity>(
+				{ maxLengthString: "123456", nonOptionalString: "" },
+				testEntitySchema
+			)
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.maxLengthExceeded",
+				properties: { property: "maxLengthString", maxLength: 5, length: 6 }
+			})
+		);
+	});
+
+	test("can validate a schema with a string property when no maximum length is defined", async () => {
+		expect(
+			EntitySchemaHelper.validateEntity<ITestEntity>(
+				{ stringValue: "a really long string value", nonOptionalString: "" },
+				testEntitySchema
+			)
+		).toBeUndefined();
+	});
+
+	test("can validate a schema with a uuid property using the default maximum length", async () => {
+		expect(
+			EntitySchemaHelper.validateEntity<ITestEntity>(
+				{ uuidValue: "3f2504e0-4f89-11d3-9a0c-0305e82c3301", nonOptionalString: "" },
+				testEntitySchema
+			)
+		).toBeUndefined();
+	});
+
+	test("can fail to validate a schema with a uuid property exceeding the default maximum length", async () => {
+		expect(() =>
+			EntitySchemaHelper.validateEntity<ITestEntity>(
+				{ uuidValue: "3f2504e0-4f89-11d3-9a0c-0305e82c3301X", nonOptionalString: "" },
+				testEntitySchema
+			)
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.maxLengthExceeded",
+				properties: { property: "uuidValue", maxLength: 36, length: 37 }
+			})
+		);
+	});
+
+	test("can fail to validate a schema with a uuid property using an explicit maximum length", async () => {
+		expect(() =>
+			EntitySchemaHelper.validateEntity<ITestEntity>(
+				{ uuidMaxLengthValue: "3f2504e0-4f89", nonOptionalString: "" },
+				testEntitySchema
+			)
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.maxLengthExceeded",
+				properties: { property: "uuidMaxLengthValue", maxLength: 10, length: 13 }
+			})
+		);
+	});
+
+	test("can validate a schema with a date-time property using the default maximum length", async () => {
+		expect(
+			EntitySchemaHelper.validateEntity<ITestEntity>(
+				{ dateTimeValue: new Date(1724515200000).toISOString(), nonOptionalString: "" },
+				testEntitySchema
+			)
+		).toBeUndefined();
+	});
+
+	test("can fail to validate a schema with a date-time property exceeding the default maximum length", async () => {
+		expect(() =>
+			EntitySchemaHelper.validateEntity<ITestEntity>(
+				{ dateTimeValue: "a".repeat(65), nonOptionalString: "" },
+				testEntitySchema
+			)
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.maxLengthExceeded",
+				properties: { property: "dateTimeValue", maxLength: 64, length: 65 }
+			})
+		);
+	});
+
+	test("can validate a schema with date and time properties using the default maximum length", async () => {
+		expect(
+			EntitySchemaHelper.validateEntity<ITestEntity>(
+				{ dateValue: "2024-08-24", timeValue: "16:00:00", nonOptionalString: "" },
+				testEntitySchema
+			)
+		).toBeUndefined();
+	});
+
+	test("can fail to validate a schema with a date property exceeding the default maximum length", async () => {
+		expect(() =>
+			EntitySchemaHelper.validateEntity<ITestEntity>(
+				{ dateValue: "a".repeat(65), nonOptionalString: "" },
+				testEntitySchema
+			)
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.maxLengthExceeded",
+				properties: { property: "dateValue", maxLength: 64, length: 65 }
+			})
+		);
+	});
+
+	test("can fail to validate a schema with a time property exceeding the default maximum length", async () => {
+		expect(() =>
+			EntitySchemaHelper.validateEntity<ITestEntity>(
+				{ timeValue: "a".repeat(65), nonOptionalString: "" },
+				testEntitySchema
+			)
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.maxLengthExceeded",
+				properties: { property: "timeValue", maxLength: 64, length: 65 }
+			})
+		);
+	});
+
+	test("can validate a schema with an email property using the default maximum length", async () => {
+		expect(
+			EntitySchemaHelper.validateEntity<ITestEntity>(
+				{ emailValue: "a".repeat(254), nonOptionalString: "" },
+				testEntitySchema
+			)
+		).toBeUndefined();
+	});
+
+	test("can fail to validate a schema with an email property exceeding the default maximum length", async () => {
+		expect(() =>
+			EntitySchemaHelper.validateEntity<ITestEntity>(
+				{ emailValue: "a".repeat(255), nonOptionalString: "" },
+				testEntitySchema
+			)
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.maxLengthExceeded",
+				properties: { property: "emailValue", maxLength: 254, length: 255 }
+			})
+		);
+	});
+
+	test("can validate a schema with a uri property using the default maximum length", async () => {
+		expect(
+			EntitySchemaHelper.validateEntity<ITestEntity>(
+				{ uriValue: "a".repeat(2048), nonOptionalString: "" },
+				testEntitySchema
+			)
+		).toBeUndefined();
+	});
+
+	test("can fail to validate a schema with a uri property exceeding the default maximum length", async () => {
+		expect(() =>
+			EntitySchemaHelper.validateEntity<ITestEntity>(
+				{ uriValue: "a".repeat(2049), nonOptionalString: "" },
+				testEntitySchema
+			)
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.maxLengthExceeded",
+				properties: { property: "uriValue", maxLength: 2048, length: 2049 }
 			})
 		);
 	});

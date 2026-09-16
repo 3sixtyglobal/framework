@@ -152,6 +152,23 @@ describe("Is", () => {
 		expect(Is.stringBase64("Pio6bkd2KmQpc3I+VUc6IGE2bnI/MWlfXFw=")).toEqual(true);
 	});
 
+	test("stringBase64 can fail with invalid padding in middle", () => {
+		expect(Is.stringBase64("ab=c")).toEqual(false);
+	});
+
+	test("stringBase64 can fail with excessive padding", () => {
+		expect(Is.stringBase64("a===")).toEqual(false);
+	});
+
+	test("stringBase64 can fail with length not a multiple of 4", () => {
+		expect(Is.stringBase64("abc")).toEqual(false);
+	});
+
+	test("stringBase64 can succeed with a large base64 string without stack overflow", () => {
+		// 64 MB of valid base64 - previously caused RangeError: Maximum call stack size exceeded
+		expect(Is.stringBase64("AAAA".repeat(16 * 1024 * 1024))).toEqual(true);
+	});
+
 	test("stringBase64Url can fail if value is an empty string", () => {
 		expect(Is.stringBase64Url("")).toEqual(false);
 	});
@@ -170,6 +187,11 @@ describe("Is", () => {
 
 	test("stringBase64Url can succeed with base64 url string", () => {
 		expect(Is.stringBase64Url("Pio6bkd2KmQpc3I-VUc6IGE2bnI_MWlfXFw")).toEqual(true);
+	});
+
+	test("stringBase64Url can succeed with a large base64 url string without stack overflow", () => {
+		// 64 MB of valid base64url - previously caused RangeError: Maximum call stack size exceeded
+		expect(Is.stringBase64Url("AAAA".repeat(16 * 1024 * 1024))).toEqual(true);
 	});
 
 	test("stringBase58 can fail if value is an empty string", () => {
@@ -688,6 +710,15 @@ describe("Is", () => {
 
 	test("email can succeed if value is a valid email format with domain", () => {
 		expect(Is.email("a@example.com")).toEqual(true);
+	});
+
+	test("email can fail if value exceeds 254 characters", () => {
+		expect(Is.email(`${"a".repeat(244)}@example.com`)).toEqual(false);
+	});
+
+	test("email can fail with a large input without stack overflow", () => {
+		// Input far exceeds the 254-char limit - previously could cause RangeError on domain label regex
+		expect(Is.email(`user@${"a.".repeat(500_000)}com`)).toEqual(false);
 	});
 
 	test("promise can fail if the value is not a valid promise", () => {

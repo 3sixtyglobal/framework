@@ -19,6 +19,8 @@ import type { IValidationFailure } from "../models/IValidationFailure.js";
  * The timer only runs while there are entries; it stops automatically when the cache empties.
  *
  * `get` and `set` increment an entry's access frequency and reset its idle timer.
+ * `set` and `getOrSet` accept an optional hard expiry timestamp; the entry is removed once that
+ * time is reached however recently it was used, and the TTI still applies alongside it.
  * `has` and `keys` are pure peeks they evict idle entries but do not affect frequency or TTI.
  * Call `destroy` when the cache is no longer needed to stop the background timer.
  */
@@ -66,7 +68,10 @@ export class LfuCache<T> {
 	 * Maps each key to its cached value, access frequency, and last-accessed timestamp.
 	 * @internal
 	 */
-	private readonly _keyMap: Map<string, { value: T; freq: number; lastAccessed: number }>;
+	private readonly _keyMap: Map<
+		string,
+		{ value: T; freq: number; lastAccessed: number; expires: number | undefined }
+	>;
 
 	/**
 	 * Maps each frequency to the ordered set of keys at that frequency (insertion order = LRU).
@@ -79,6 +84,18 @@ export class LfuCache<T> {
 	 * @internal
 	 */
 	private _minFreq: number;
+
+	/**
+	 * The earliest hard expiry timestamp among the live entries, used to pace the sweep timer.
+	 * @internal
+	 */
+	private _nextExpires: number | undefined;
+
+	/**
+	 * The timestamp the pending sweep is due to run at.
+	 * @internal
+	 */
+	private _scheduledDueAt: number;
 
 	/**
 	 * Handle for the pending idle-sweep timeout, or undefined if no timer is scheduled.
@@ -122,6 +139,8 @@ export class LfuCache<T> {
 		this._keyMap = new Map();
 		this._freqMap = new Map();
 		this._minFreq = 0;
+		this._nextExpires = undefined;
+		this._scheduledDueAt = 0;
 		this._sweepTimer = undefined;
 	}
 
@@ -141,15 +160,18 @@ export class LfuCache<T> {
 	 * @returns The cached value, or undefined on a miss or idle eviction.
 	 */
 	public get(key: string): T | undefined {
+		Guards.stringValue(LfuCache.CLASS_NAME, nameof(key), key);
+
 		const entry = this._keyMap.get(key);
-		if (entry === undefined) {
+		if (Is.empty(entry)) {
 			return undefined;
 		}
-		if (Date.now() - entry.lastAccessed >= this._ttiMs) {
+		if (this.isExpired(entry, Date.now())) {
 			this.removeEntry(key);
 			return undefined;
 		}
 		this.promote(key, entry);
+
 		return entry.value;
 	}
 
@@ -160,16 +182,26 @@ export class LfuCache<T> {
 	 * least-frequently-used entry is evicted (LRU among ties).
 	 * @param key The key to store.
 	 * @param value The value to cache.
+	 * @param expires Hard expiry timestamp in milliseconds since the epoch. The entry is removed
+	 * once this time is reached regardless of how recently it was used. Must be an integer.
 	 */
-	public set(key: string, value: T): void {
+	public set(key: string, value: T, expires?: number): void {
+		Guards.stringValue(LfuCache.CLASS_NAME, nameof(key), key);
+		if (!Is.empty(expires)) {
+			Guards.integer(LfuCache.CLASS_NAME, nameof(expires), expires);
+		}
+
 		const existing = this._keyMap.get(key);
 		if (existing !== undefined) {
-			if (Date.now() - existing.lastAccessed >= this._ttiMs) {
-				// Idle: evict and fall through to add as a fresh entry
+			if (this.isExpired(existing, Date.now())) {
+				// Idle or expired: evict and fall through to add as a fresh entry
 				this.removeEntry(key);
 			} else {
 				existing.value = value;
+				existing.expires = expires;
+				this.trackExpires(expires);
 				this.promote(key, existing);
+				this.startTimer();
 				return;
 			}
 		}
@@ -179,7 +211,7 @@ export class LfuCache<T> {
 		if (this._keyMap.size >= this._capacity) {
 			this.evictLfu();
 		}
-		const entry = { value, freq: 1, lastAccessed: Date.now() };
+		const entry = { value, freq: 1, lastAccessed: Date.now(), expires };
 		this._keyMap.set(key, entry);
 		let bucket = this._freqMap.get(1);
 		if (bucket === undefined) {
@@ -188,6 +220,7 @@ export class LfuCache<T> {
 		}
 		bucket.add(key);
 		this._minFreq = 1;
+		this.trackExpires(expires);
 		this.startTimer();
 	}
 
@@ -196,11 +229,16 @@ export class LfuCache<T> {
 	 * Concurrent calls for the same key are serialized via a mutex.
 	 * @param key The key to get or create.
 	 * @param valueFactory Async callback used to build a value when the key is absent.
+	 * @param expires Hard expiry timestamp in milliseconds since the epoch, applied to the entry
+	 * when one is created. Must be an integer.
 	 * @returns The existing or newly created value.
 	 */
-	public async getOrSet(key: string, valueFactory: () => Promise<T>): Promise<T> {
+	public async getOrSet(key: string, valueFactory: () => Promise<T>, expires?: number): Promise<T> {
 		Guards.stringValue(LfuCache.CLASS_NAME, nameof(key), key);
 		Guards.function(LfuCache.CLASS_NAME, nameof(valueFactory), valueFactory);
+		if (!Is.empty(expires)) {
+			Guards.integer(LfuCache.CLASS_NAME, nameof(expires), expires);
+		}
 
 		const mutexKey = `${this._mutexScope}:${key}`;
 		await Mutex.lock(mutexKey, {
@@ -214,7 +252,7 @@ export class LfuCache<T> {
 			}
 
 			const value = await valueFactory();
-			this.set(key, value);
+			this.set(key, value, expires);
 			return value;
 		} finally {
 			Mutex.unlock(mutexKey);
@@ -228,11 +266,12 @@ export class LfuCache<T> {
 	 * @returns True if the key is present and not idle.
 	 */
 	public has(key: string): boolean {
+		Guards.stringValue(LfuCache.CLASS_NAME, nameof(key), key);
 		const entry = this._keyMap.get(key);
 		if (entry === undefined) {
 			return false;
 		}
-		if (Date.now() - entry.lastAccessed >= this._ttiMs) {
+		if (this.isExpired(entry, Date.now())) {
 			this.removeEntry(key);
 			return false;
 		}
@@ -248,7 +287,7 @@ export class LfuCache<T> {
 	public keys(): string[] {
 		const now = Date.now();
 		for (const [k, entry] of this._keyMap) {
-			if (now - entry.lastAccessed >= this._ttiMs) {
+			if (this.isExpired(entry, now)) {
 				this.removeEntry(k);
 			}
 		}
@@ -271,6 +310,7 @@ export class LfuCache<T> {
 	 * @param key The key to remove.
 	 */
 	public delete(key: string): void {
+		Guards.stringValue(LfuCache.CLASS_NAME, nameof(key), key);
 		this.removeEntry(key);
 		if (this._keyMap.size === 0) {
 			this.cancelTimer();
@@ -285,6 +325,7 @@ export class LfuCache<T> {
 		this._keyMap.clear();
 		this._freqMap.clear();
 		this._minFreq = 0;
+		this._nextExpires = undefined;
 	}
 
 	/**
@@ -295,6 +336,8 @@ export class LfuCache<T> {
 		this.cancelTimer();
 		this._keyMap.clear();
 		this._freqMap.clear();
+		this._minFreq = 0;
+		this._nextExpires = undefined;
 	}
 
 	/**
@@ -305,9 +348,13 @@ export class LfuCache<T> {
 	 * @param entry.value The cached value.
 	 * @param entry.freq The current access frequency.
 	 * @param entry.lastAccessed The last-accessed timestamp in milliseconds.
+	 * @param entry.expires The hard expiry timestamp in milliseconds, or undefined for none.
 	 * @internal
 	 */
-	private promote(key: string, entry: { value: T; freq: number; lastAccessed: number }): void {
+	private promote(
+		key: string,
+		entry: { value: T; freq: number; lastAccessed: number; expires: number | undefined }
+	): void {
 		const oldFreq = entry.freq;
 		const oldBucket = this._freqMap.get(oldFreq);
 		if (oldBucket !== undefined) {
@@ -383,22 +430,71 @@ export class LfuCache<T> {
 	private sweepIdle(): void {
 		this.cancelTimer();
 		const now = Date.now();
+		let nextExpires: number | undefined;
 		for (const [k, entry] of this._keyMap) {
-			if (now - entry.lastAccessed >= this._ttiMs) {
+			if (this.isExpired(entry, now)) {
 				this.removeEntry(k);
+			} else if (
+				Is.notEmpty(entry.expires) &&
+				(Is.empty(nextExpires) || entry.expires < nextExpires)
+			) {
+				nextExpires = entry.expires;
 			}
 		}
+		this._nextExpires = nextExpires;
 		if (this._keyMap.size > 0) {
 			this.startTimer();
 		}
 	}
 
 	/**
-	 * Schedule the next idle sweep if no timer is already pending.
+	 * Record an entry expiry timestamp if it is earlier than the currently tracked one.
+	 * @param expires The expiry timestamp in milliseconds, or undefined for none.
+	 * @internal
+	 */
+	private trackExpires(expires: number | undefined): void {
+		if (Is.notEmpty(expires) && (Is.empty(this._nextExpires) || expires < this._nextExpires)) {
+			this._nextExpires = expires;
+		}
+	}
+
+	/**
+	 * Determine whether an entry has idled out or reached its hard expiry timestamp.
+	 * @param entry The entry to test.
+	 * @param entry.lastAccessed The last-accessed timestamp in milliseconds.
+	 * @param entry.expires The hard expiry timestamp in milliseconds, or undefined for none.
+	 * @param now The current time in milliseconds.
+	 * @returns True if the entry should be removed.
+	 * @internal
+	 */
+	private isExpired(
+		entry: { lastAccessed: number; expires: number | undefined },
+		now: number
+	): boolean {
+		return (
+			now - entry.lastAccessed >= this._ttiMs ||
+			(Is.notEmpty(entry.expires) && now >= entry.expires)
+		);
+	}
+
+	/**
+	 * Schedule the next sweep if no timer is already pending, bringing a pending one forward
+	 * when an entry with an earlier hard expiry has since been added.
 	 * @internal
 	 */
 	private startTimer(): void {
-		this._sweepTimer ??= setTimeout(() => this.sweepIdle(), this._ttiMs);
+		const now = Date.now();
+		let delay = this._ttiMs;
+		if (Is.notEmpty(this._nextExpires)) {
+			delay = Math.min(delay, Math.max(0, this._nextExpires - now));
+		}
+		if (Is.empty(this._sweepTimer)) {
+			this._scheduledDueAt = now + delay;
+			this._sweepTimer = setTimeout(() => this.sweepIdle(), delay);
+		} else if (now + delay < this._scheduledDueAt) {
+			this.cancelTimer();
+			this.startTimer();
+		}
 	}
 
 	/**

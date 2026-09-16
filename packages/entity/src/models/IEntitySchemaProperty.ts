@@ -24,6 +24,11 @@ export interface IEntitySchemaProperty<T = unknown> {
 	format?: EntitySchemaPropertyFormat;
 
 	/**
+	 * The maximum length of the property value i.e. for text fields.
+	 */
+	maxLength?: number;
+
+	/**
 	 * Is this the primary index property.
 	 */
 	isPrimary?: boolean;

@@ -91,7 +91,10 @@
 		"factory": {
 			"noUnregister": "There is no {typeName} registered with the name \"{name}\"",
 			"noGet": "The requested {typeName} \"{name}\" does not exist in the factory",
-			"noCreate": "The requested {typeName} \"{name}\" cannot be created by the factory, with params \"{params}\""
+			"noCreate": "The requested {typeName} \"{name}\" cannot be created by the factory, with params \"{params}\"",
+			"noFacade": "The requested facade \"{name}\" is not registered, so it cannot be applied to the {typeName} factory",
+			"noFacadeOnFacades": "Facades cannot be applied to the facade factory itself",
+			"noFacadeWrap": "The facade \"{name}\" did not return a wrapped instance for the {typeName} factory"
 		},
 		"bitString": {
 			"outOfRange": "The index should be >= 0 and less than the length of the bit string, the index is \"{index}\" and the number of bit is \"{numberBits}\""
@@ -111,7 +114,7 @@
 		"mutex": {
 			"lockNotFound": "The key \"{key}\" has no active lock",
 			"lockAlreadyReleased": "The key \"{key}\" is not currently locked",
-			"lockTimeout": "Failed to acquire lock for key \"{key}\" within the timeout of {timeout} milliseconds",
+			"lockTimeout": "Failed to acquire lock for key \"{key}\" within the timeout of {timeoutMs} milliseconds",
 			"bufferFetchFailed": "Failed to retrieve shared buffer for key \"{key}\" from the main thread",
 			"invalidTimeout": "The timeout value \"{timeoutMs}\" is invalid, it must be a non-negative integer"
 		},

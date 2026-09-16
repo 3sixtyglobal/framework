@@ -1,5 +1,278 @@
 # Changelog
 
+## [0.9.3-next.12](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.9.3-next.11...crypto-cli-v0.9.3-next.12) (2026-09-14)
+
+
+### Miscellaneous Chores
+
+* **crypto-cli:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.3-next.11 to 0.9.3-next.12
+    * @twin.org/core bumped from 0.9.3-next.11 to 0.9.3-next.12
+    * @twin.org/crypto bumped from 0.9.3-next.11 to 0.9.3-next.12
+    * @twin.org/nameof bumped from 0.9.3-next.11 to 0.9.3-next.12
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.3-next.11 to 0.9.3-next.12
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.11 to 0.9.3-next.12
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.11 to 0.9.3-next.12
+    * @twin.org/validate-locales bumped from 0.9.3-next.11 to 0.9.3-next.12
+
+## [0.9.3-next.11](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.9.3-next.10...crypto-cli-v0.9.3-next.11) (2026-09-10)
+
+
+### Miscellaneous Chores
+
+* **crypto-cli:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.3-next.10 to 0.9.3-next.11
+    * @twin.org/core bumped from 0.9.3-next.10 to 0.9.3-next.11
+    * @twin.org/crypto bumped from 0.9.3-next.10 to 0.9.3-next.11
+    * @twin.org/nameof bumped from 0.9.3-next.10 to 0.9.3-next.11
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.3-next.10 to 0.9.3-next.11
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.10 to 0.9.3-next.11
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.10 to 0.9.3-next.11
+    * @twin.org/validate-locales bumped from 0.9.3-next.10 to 0.9.3-next.11
+
+## [0.9.3-next.10](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.9.3-next.9...crypto-cli-v0.9.3-next.10) (2026-09-10)
+
+
+### Miscellaneous Chores
+
+* **crypto-cli:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.3-next.9 to 0.9.3-next.10
+    * @twin.org/core bumped from 0.9.3-next.9 to 0.9.3-next.10
+    * @twin.org/crypto bumped from 0.9.3-next.9 to 0.9.3-next.10
+    * @twin.org/nameof bumped from 0.9.3-next.9 to 0.9.3-next.10
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.3-next.9 to 0.9.3-next.10
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.9 to 0.9.3-next.10
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.9 to 0.9.3-next.10
+    * @twin.org/validate-locales bumped from 0.9.3-next.9 to 0.9.3-next.10
+
+## [0.9.3-next.9](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.9.3-next.8...crypto-cli-v0.9.3-next.9) (2026-09-10)
+
+
+### Miscellaneous Chores
+
+* **crypto-cli:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.3-next.8 to 0.9.3-next.9
+    * @twin.org/core bumped from 0.9.3-next.8 to 0.9.3-next.9
+    * @twin.org/crypto bumped from 0.9.3-next.8 to 0.9.3-next.9
+    * @twin.org/nameof bumped from 0.9.3-next.8 to 0.9.3-next.9
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.3-next.8 to 0.9.3-next.9
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.8 to 0.9.3-next.9
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.8 to 0.9.3-next.9
+    * @twin.org/validate-locales bumped from 0.9.3-next.8 to 0.9.3-next.9
+
+## [0.9.3-next.8](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.9.3-next.7...crypto-cli-v0.9.3-next.8) (2026-09-07)
+
+
+### Miscellaneous Chores
+
+* **crypto-cli:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.3-next.7 to 0.9.3-next.8
+    * @twin.org/core bumped from 0.9.3-next.7 to 0.9.3-next.8
+    * @twin.org/crypto bumped from 0.9.3-next.7 to 0.9.3-next.8
+    * @twin.org/nameof bumped from 0.9.3-next.7 to 0.9.3-next.8
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.3-next.7 to 0.9.3-next.8
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.7 to 0.9.3-next.8
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.7 to 0.9.3-next.8
+    * @twin.org/validate-locales bumped from 0.9.3-next.7 to 0.9.3-next.8
+
+## [0.9.3-next.7](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.9.3-next.6...crypto-cli-v0.9.3-next.7) (2026-09-07)
+
+
+### Miscellaneous Chores
+
+* **crypto-cli:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.3-next.6 to 0.9.3-next.7
+    * @twin.org/core bumped from 0.9.3-next.6 to 0.9.3-next.7
+    * @twin.org/crypto bumped from 0.9.3-next.6 to 0.9.3-next.7
+    * @twin.org/nameof bumped from 0.9.3-next.6 to 0.9.3-next.7
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.3-next.6 to 0.9.3-next.7
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.6 to 0.9.3-next.7
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.6 to 0.9.3-next.7
+    * @twin.org/validate-locales bumped from 0.9.3-next.6 to 0.9.3-next.7
+
+## [0.9.3-next.6](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.9.3-next.5...crypto-cli-v0.9.3-next.6) (2026-09-07)
+
+
+### Miscellaneous Chores
+
+* **crypto-cli:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.3-next.5 to 0.9.3-next.6
+    * @twin.org/core bumped from 0.9.3-next.5 to 0.9.3-next.6
+    * @twin.org/crypto bumped from 0.9.3-next.5 to 0.9.3-next.6
+    * @twin.org/nameof bumped from 0.9.3-next.5 to 0.9.3-next.6
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.3-next.5 to 0.9.3-next.6
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.5 to 0.9.3-next.6
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.5 to 0.9.3-next.6
+    * @twin.org/validate-locales bumped from 0.9.3-next.5 to 0.9.3-next.6
+
+## [0.9.3-next.5](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.9.3-next.4...crypto-cli-v0.9.3-next.5) (2026-09-04)
+
+
+### Miscellaneous Chores
+
+* **crypto-cli:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.3-next.4 to 0.9.3-next.5
+    * @twin.org/core bumped from 0.9.3-next.4 to 0.9.3-next.5
+    * @twin.org/crypto bumped from 0.9.3-next.4 to 0.9.3-next.5
+    * @twin.org/nameof bumped from 0.9.3-next.4 to 0.9.3-next.5
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.3-next.4 to 0.9.3-next.5
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.4 to 0.9.3-next.5
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.4 to 0.9.3-next.5
+    * @twin.org/validate-locales bumped from 0.9.3-next.4 to 0.9.3-next.5
+
+## [0.9.3-next.4](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.9.3-next.3...crypto-cli-v0.9.3-next.4) (2026-09-04)
+
+
+### Miscellaneous Chores
+
+* **crypto-cli:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.3-next.3 to 0.9.3-next.4
+    * @twin.org/core bumped from 0.9.3-next.3 to 0.9.3-next.4
+    * @twin.org/crypto bumped from 0.9.3-next.3 to 0.9.3-next.4
+    * @twin.org/nameof bumped from 0.9.3-next.3 to 0.9.3-next.4
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.3-next.3 to 0.9.3-next.4
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.3 to 0.9.3-next.4
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.3 to 0.9.3-next.4
+    * @twin.org/validate-locales bumped from 0.9.3-next.3 to 0.9.3-next.4
+
+## [0.9.3-next.3](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.9.3-next.2...crypto-cli-v0.9.3-next.3) (2026-09-02)
+
+
+### Miscellaneous Chores
+
+* **crypto-cli:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.3-next.2 to 0.9.3-next.3
+    * @twin.org/core bumped from 0.9.3-next.2 to 0.9.3-next.3
+    * @twin.org/crypto bumped from 0.9.3-next.2 to 0.9.3-next.3
+    * @twin.org/nameof bumped from 0.9.3-next.2 to 0.9.3-next.3
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.3-next.2 to 0.9.3-next.3
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.2 to 0.9.3-next.3
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.2 to 0.9.3-next.3
+    * @twin.org/validate-locales bumped from 0.9.3-next.2 to 0.9.3-next.3
+
+## [0.9.3-next.2](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.9.3-next.1...crypto-cli-v0.9.3-next.2) (2026-08-28)
+
+
+### Miscellaneous Chores
+
+* **crypto-cli:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.3-next.1 to 0.9.3-next.2
+    * @twin.org/core bumped from 0.9.3-next.1 to 0.9.3-next.2
+    * @twin.org/crypto bumped from 0.9.3-next.1 to 0.9.3-next.2
+    * @twin.org/nameof bumped from 0.9.3-next.1 to 0.9.3-next.2
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.3-next.1 to 0.9.3-next.2
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.1 to 0.9.3-next.2
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.1 to 0.9.3-next.2
+    * @twin.org/validate-locales bumped from 0.9.3-next.1 to 0.9.3-next.2
+
+## [0.9.3-next.1](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.9.3-next.0...crypto-cli-v0.9.3-next.1) (2026-08-26)
+
+
+### Features
+
+* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.9.3-next.0 to 0.9.3-next.1
+    * @twin.org/core bumped from 0.9.3-next.0 to 0.9.3-next.1
+    * @twin.org/crypto bumped from 0.9.3-next.0 to 0.9.3-next.1
+    * @twin.org/nameof bumped from 0.9.3-next.0 to 0.9.3-next.1
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.9.3-next.0 to 0.9.3-next.1
+    * @twin.org/nameof-transformer bumped from 0.9.3-next.0 to 0.9.3-next.1
+    * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.0 to 0.9.3-next.1
+    * @twin.org/validate-locales bumped from 0.9.3-next.0 to 0.9.3-next.1
+
 ## [0.9.2](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.9.2...crypto-cli-v0.9.2) (2026-08-24)
 
 
