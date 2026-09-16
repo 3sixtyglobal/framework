@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.10.0](https://github.com/iotaledger/twin-framework/compare/crypto-v0.10.0...crypto-v0.10.0) (2026-09-16)
+
+
+### Features
+
+* release to production ([b24cba1](https://github.com/iotaledger/twin-framework/commit/b24cba1b6a969278d638e632590602ec881e49fb))
+* release to production ([787287d](https://github.com/iotaledger/twin-framework/commit/787287d06ea8319657401589d61fff369310c422))
+* release to production ([53f4843](https://github.com/iotaledger/twin-framework/commit/53f484326b2851d7a506d2620db24c4a65cee7b3))
+* release to production ([56cda4d](https://github.com/iotaledger/twin-framework/commit/56cda4da93e978c5be19ec7cfd421ae2a7fe4147))
+* release to production ([f7c6586](https://github.com/iotaledger/twin-framework/commit/f7c6586f6976b903b647b4c5ac5ad9421e0c9051))
+* release to production ([829d53d](https://github.com/iotaledger/twin-framework/commit/829d53d3953b1e1b40b0243c04cfdfd3842aac7b))
+* release to production ([5cf3a76](https://github.com/iotaledger/twin-framework/commit/5cf3a76a09eff2e6414d0cba846c7c37400a11d6))
+* release to production ([#330](https://github.com/iotaledger/twin-framework/issues/330)) ([d73f565](https://github.com/iotaledger/twin-framework/commit/d73f565588d156d23ef49b2a5718973756f7a696))
+* release to production ([#382](https://github.com/iotaledger/twin-framework/issues/382)) ([bbed01a](https://github.com/iotaledger/twin-framework/commit/bbed01a605ee9724bda77a0f7feab249118c2d90))
+* release to production ([#417](https://github.com/iotaledger/twin-framework/issues/417)) ([59727e7](https://github.com/iotaledger/twin-framework/commit/59727e73903a137310ca48fe469189cf29879cb9))
+* release to production ([#459](https://github.com/iotaledger/twin-framework/issues/459)) ([e26e2d9](https://github.com/iotaledger/twin-framework/commit/e26e2d9a88767364c32494c45232033447b26e22))
+* release to production ([#504](https://github.com/iotaledger/twin-framework/issues/504)) ([cfde07f](https://github.com/iotaledger/twin-framework/commit/cfde07f7790c62269e71144b95243ec441df38ba))
+
+
+### Miscellaneous Chores
+
+* release to production ([63cae24](https://github.com/iotaledger/twin-framework/commit/63cae2401f6c11f93b2a01260b665064e8bd28e0))
+
 ## [0.9.3-next.12](https://github.com/iotaledger/twin-framework/compare/crypto-v0.9.3-next.11...crypto-v0.9.3-next.12) (2026-09-14)
 
 
