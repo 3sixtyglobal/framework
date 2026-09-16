@@ -1,6 +1,6 @@
 {
 	"name": "@twin.org/image",
-	"version": "0.9.3-next.12",
+	"version": "0.10.0",
 	"description": "Classes for image manipulation",
 	"repository": {
 		"type": "git",
@@ -28,13 +28,13 @@
 		"dist:no-test": "npm run clean && npm run build && npm run test:build"
 	},
 	"dependencies": {
-		"@twin.org/core": "0.9.3-next.12",
-		"@twin.org/nameof": "0.9.3-next.12"
+		"@twin.org/core": "^0.10.0",
+		"@twin.org/nameof": "^0.10.0"
 	},
 	"devDependencies": {
-		"@twin.org/nameof-transformer": "0.9.3-next.12",
-		"@twin.org/nameof-vitest-plugin": "0.9.3-next.12",
-		"@twin.org/validate-locales": "0.9.3-next.12",
+		"@twin.org/nameof-transformer": "^0.10.0",
+		"@twin.org/nameof-vitest-plugin": "^0.10.0",
+		"@twin.org/validate-locales": "^0.10.0",
 		"@vitest/coverage-v8": "4.1.10",
 		"copyfiles": "2.4.1",
 		"nodemon": "3.1.14",
