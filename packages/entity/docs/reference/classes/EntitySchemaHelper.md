@@ -186,7 +186,7 @@ The properties and their directions keyed by the group name, empty if there are 
 #### Throws
 
 GeneralError if an index entry has an invalid direction or index, or if two properties
-claim the same index within the same group.
+claim the same index within the same group, or if a group contains fewer than two properties.
 
 ***
 
