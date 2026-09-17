@@ -1095,7 +1095,11 @@ describe("EntitySchemaHelper", () => {
 	});
 
 	test("can get index groups when properties share an index in different groups", () => {
-		const result = EntitySchemaHelper.getIndexGroups<{ prop1: string; prop2: string }>({
+		const result = EntitySchemaHelper.getIndexGroups<{
+			prop1: string;
+			prop2: string;
+			prop3: string;
+		}>({
 			type: "test",
 			properties: [
 				{
@@ -1110,19 +1114,49 @@ describe("EntitySchemaHelper", () => {
 					property: "prop2",
 					type: "string",
 					indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: 1 }]
+				},
+				{
+					property: "prop3",
+					type: "string",
+					indexGroup: [{ name: "bbb", direction: SortDirection.Ascending, index: 1 }]
 				}
 			]
 		});
 
 		expect(result.aaa.map(p => p.property.property)).toEqual(["prop1", "prop2"]);
-		expect(result.bbb.map(p => p.property.property)).toEqual(["prop1"]);
+		expect(result.bbb.map(p => p.property.property)).toEqual(["prop1", "prop3"]);
+	});
+
+	test("can fail to get index groups when a group has fewer than two properties", () => {
+		expect(() =>
+			EntitySchemaHelper.getIndexGroups<{ prop1: string }>({
+				type: "test",
+				properties: [
+					{
+						property: "prop1",
+						type: "string",
+						indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: 0 }]
+					}
+				]
+			})
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.indexGroupMustHaveAtLeastTwoProperties",
+				properties: { group: "aaa", count: 1 }
+			})
+		);
 	});
 
 	test("can get index groups ignoring entries with an empty or missing name", () => {
 		const result = EntitySchemaHelper.getIndexGroups<{ prop1: string; prop2: string }>({
 			type: "test",
 			properties: [
-				{ property: "prop1", type: "string", indexGroup: [] },
+				{
+					property: "prop1",
+					type: "string",
+					indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: 0 }]
+				},
 				{
 					property: "prop2",
 					type: "string",
@@ -1136,6 +1170,6 @@ describe("EntitySchemaHelper", () => {
 		});
 
 		expect(Object.keys(result)).toEqual(["aaa"]);
-		expect(result.aaa.map(p => p.property.property)).toEqual(["prop2"]);
+		expect(result.aaa.map(p => p.property.property)).toEqual(["prop1", "prop2"]);
 	});
 });

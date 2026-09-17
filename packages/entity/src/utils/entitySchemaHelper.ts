@@ -130,7 +130,7 @@ export class EntitySchemaHelper {
 	 * @param entitySchema The entity schema to find the index groups from.
 	 * @returns The properties and their directions keyed by the group name, empty if there are no groups.
 	 * @throws GeneralError if an index entry has an invalid direction or index, or if two properties
-	 * claim the same index within the same group.
+	 * claim the same index within the same group, or if a group contains fewer than two properties.
 	 */
 	public static getIndexGroups<T>(entitySchema: IEntitySchema<T>): {
 		[group: string]: { property: IEntitySchemaProperty<T>; direction: SortDirection }[];
@@ -194,6 +194,17 @@ export class EntitySchemaHelper {
 		} = {};
 
 		for (const group of Object.keys(groupEntries)) {
+			if (groupEntries[group].length < 2) {
+				throw new GeneralError(
+					EntitySchemaHelper.CLASS_NAME,
+					"indexGroupMustHaveAtLeastTwoProperties",
+					{
+						group,
+						count: groupEntries[group].length
+					}
+				);
+			}
+
 			indexGroups[group] = groupEntries[group]
 				.sort((a, b) => a.index - b.index)
 				.map(groupEntry => groupEntry.entry);

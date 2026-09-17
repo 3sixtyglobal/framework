@@ -21,6 +21,7 @@
 			"invalidIndexGroupDirection": "The index group \"{group}\" on the property \"{property}\" has the direction \"{direction}\" which is not a valid sort direction",
 			"invalidIndexGroupIndex": "The index group \"{group}\" on the property \"{property}\" has the index {index} which must be an integer >= 0",
 			"duplicateIndexGroupIndex": "The index group \"{group}\" has more than one property using the index {index}, found again on the property \"{property}\"",
+			"indexGroupMustHaveAtLeastTwoProperties": "The index group \"{group}\" must contain at least two properties, but contains {count}",
 			"versionPropertyMustBeInteger": "The version property \"{property}\" has type \"{type}\" but must be of type integer"
 		}
 	}
