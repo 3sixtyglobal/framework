@@ -8,7 +8,7 @@ import { EntitySchemaPropertyType } from "../models/entitySchemaPropertyType.js"
 import type { IEntitySchema } from "../models/IEntitySchema.js";
 import type { IEntitySchemaProperty } from "../models/IEntitySchemaProperty.js";
 import type { IEntitySort } from "../models/IEntitySort.js";
-import type { SortDirection } from "../models/sortDirection.js";
+import { SortDirection } from "../models/sortDirection.js";
 
 /**
  * Class to help with entity schema operations.
@@ -120,6 +120,86 @@ export class EntitySchemaHelper {
 						}) as IEntitySort<T>
 				)
 			: undefined;
+	}
+
+	/**
+	 * Get the composite index groups from the schema.
+	 * Each property can be part of multiple indexes through its `indexGroup` list, so a property
+	 * can appear in more than one group. The properties within a group are ordered by the `index`
+	 * of their index entry, and each is returned with the sort direction it declared for that group.
+	 * @param entitySchema The entity schema to find the index groups from.
+	 * @returns The properties and their directions keyed by the group name, empty if there are no groups.
+	 * @throws GeneralError if an index entry has an invalid direction or index, or if two properties
+	 * claim the same index within the same group.
+	 */
+	public static getIndexGroups<T>(entitySchema: IEntitySchema<T>): {
+		[group: string]: { property: IEntitySchemaProperty<T>; direction: SortDirection }[];
+	} {
+		Guards.object<IEntitySchema<T>>(
+			EntitySchemaHelper.CLASS_NAME,
+			nameof(entitySchema),
+			entitySchema
+		);
+
+		const groupEntries: {
+			[group: string]: {
+				entry: { property: IEntitySchemaProperty<T>; direction: SortDirection };
+				index: number;
+			}[];
+		} = {};
+		const groupIndexes: { [group: string]: Set<number> } = {};
+
+		for (const property of entitySchema.properties ?? []) {
+			if (Is.arrayValue(property.indexGroup)) {
+				for (const propertyIndex of property.indexGroup) {
+					if (Is.stringValue(propertyIndex?.name)) {
+						if (!Object.values(SortDirection).includes(propertyIndex.direction)) {
+							throw new GeneralError(EntitySchemaHelper.CLASS_NAME, "invalidIndexGroupDirection", {
+								group: propertyIndex.name,
+								direction: propertyIndex.direction,
+								property: property.property
+							});
+						}
+
+						if (!Is.integer(propertyIndex.index) || propertyIndex.index < 0) {
+							throw new GeneralError(EntitySchemaHelper.CLASS_NAME, "invalidIndexGroupIndex", {
+								group: propertyIndex.name,
+								index: propertyIndex.index,
+								property: property.property
+							});
+						}
+
+						groupIndexes[propertyIndex.name] ??= new Set();
+						if (groupIndexes[propertyIndex.name].has(propertyIndex.index)) {
+							throw new GeneralError(EntitySchemaHelper.CLASS_NAME, "duplicateIndexGroupIndex", {
+								group: propertyIndex.name,
+								index: propertyIndex.index,
+								property: property.property
+							});
+						}
+						groupIndexes[propertyIndex.name].add(propertyIndex.index);
+
+						groupEntries[propertyIndex.name] ??= [];
+						groupEntries[propertyIndex.name].push({
+							entry: { property, direction: propertyIndex.direction },
+							index: propertyIndex.index
+						});
+					}
+				}
+			}
+		}
+
+		const indexGroups: {
+			[group: string]: { property: IEntitySchemaProperty<T>; direction: SortDirection }[];
+		} = {};
+
+		for (const group of Object.keys(groupEntries)) {
+			indexGroups[group] = groupEntries[group]
+				.sort((a, b) => a.index - b.index)
+				.map(groupEntry => groupEntry.entry);
+		}
+
+		return indexGroups;
 	}
 
 	/**

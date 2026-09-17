@@ -3,6 +3,7 @@
 import { entity } from "../../src/decorators/entityDecorator.js";
 import { property } from "../../src/decorators/propertyDecorator.js";
 import type { IEntitySchema } from "../../src/models/IEntitySchema.js";
+import type { IEntitySchemaPropertyIndex } from "../../src/models/IEntitySchemaPropertyIndex.js";
 import { SortDirection } from "../../src/models/sortDirection.js";
 import { EntitySchemaHelper } from "../../src/utils/entitySchemaHelper.js";
 
@@ -878,5 +879,263 @@ describe("EntitySchemaHelper", () => {
 				properties: { property: "rev", type: "string" }
 			})
 		);
+	});
+
+	test("can fail to get index groups if there is no schema", () => {
+		expect(() => EntitySchemaHelper.getIndexGroups(undefined as unknown as IEntitySchema)).toThrow(
+			expect.objectContaining({
+				name: "GuardError",
+				message: "guard.objectUndefined"
+			})
+		);
+	});
+
+	test("can get no index groups if none are defined", () => {
+		const result = EntitySchemaHelper.getIndexGroups<{ id: string }>({
+			type: "test",
+			properties: [{ property: "id", type: "string", isPrimary: true }]
+		});
+
+		expect(result).toEqual({});
+	});
+
+	test("can get no index groups if the schema has no properties", () => {
+		const result = EntitySchemaHelper.getIndexGroups({ type: "test" });
+
+		expect(result).toEqual({});
+	});
+
+	test("can get index groups with a property belonging to multiple groups", () => {
+		const result = EntitySchemaHelper.getIndexGroups<{
+			prop1: string;
+			prop2: string;
+			prop3: string;
+		}>({
+			type: "test",
+			properties: [
+				{
+					property: "prop1",
+					type: "string",
+					indexGroup: [
+						{ name: "aaa", direction: SortDirection.Ascending, index: 0 },
+						{ name: "bbb", direction: SortDirection.Descending, index: 0 }
+					]
+				},
+				{
+					property: "prop2",
+					type: "string",
+					indexGroup: [{ name: "aaa", direction: SortDirection.Descending, index: 1 }]
+				},
+				{
+					property: "prop3",
+					type: "string",
+					indexGroup: [{ name: "bbb", direction: SortDirection.Ascending, index: 1 }]
+				}
+			]
+		});
+
+		expect(Object.keys(result)).toEqual(["aaa", "bbb"]);
+		expect(result.aaa.map(p => p.property.property)).toEqual(["prop1", "prop2"]);
+		expect(result.aaa.map(p => p.direction)).toEqual([
+			SortDirection.Ascending,
+			SortDirection.Descending
+		]);
+		expect(result.bbb.map(p => p.property.property)).toEqual(["prop1", "prop3"]);
+		expect(result.bbb.map(p => p.direction)).toEqual([
+			SortDirection.Descending,
+			SortDirection.Ascending
+		]);
+	});
+
+	test("can get index group properties ordered by their index and not schema order", () => {
+		const result = EntitySchemaHelper.getIndexGroups<{
+			prop1: string;
+			prop2: string;
+			prop3: string;
+		}>({
+			type: "test",
+			properties: [
+				{
+					property: "prop1",
+					type: "string",
+					indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: 2 }]
+				},
+				{
+					property: "prop2",
+					type: "string",
+					indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: 0 }]
+				},
+				{
+					property: "prop3",
+					type: "string",
+					indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: 1 }]
+				}
+			]
+		});
+
+		expect(result.aaa.map(p => p.property.property)).toEqual(["prop2", "prop3", "prop1"]);
+	});
+
+	test("can fail to get index groups when an index entry has an invalid direction", () => {
+		expect(() =>
+			EntitySchemaHelper.getIndexGroups<{ prop1: string }>({
+				type: "test",
+				properties: [
+					{
+						property: "prop1",
+						type: "string",
+						indexGroup: [
+							{ name: "aaa", direction: "sideways" as unknown as SortDirection, index: 0 }
+						]
+					}
+				]
+			})
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.invalidIndexGroupDirection",
+				properties: { group: "aaa", direction: "sideways", property: "prop1" }
+			})
+		);
+	});
+
+	test("can fail to get index groups when an index entry has a missing index", () => {
+		expect(() =>
+			EntitySchemaHelper.getIndexGroups<{ prop1: string }>({
+				type: "test",
+				properties: [
+					{
+						property: "prop1",
+						type: "string",
+						indexGroup: [
+							{
+								name: "aaa",
+								direction: SortDirection.Ascending,
+								index: undefined as unknown as number
+							}
+						]
+					}
+				]
+			})
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.invalidIndexGroupIndex",
+				properties: { group: "aaa", property: "prop1" }
+			})
+		);
+	});
+
+	test("can fail to get index groups when an index entry has a non integer index", () => {
+		expect(() =>
+			EntitySchemaHelper.getIndexGroups<{ prop1: string }>({
+				type: "test",
+				properties: [
+					{
+						property: "prop1",
+						type: "string",
+						indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: 1.5 }]
+					}
+				]
+			})
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.invalidIndexGroupIndex",
+				properties: { group: "aaa", index: 1.5, property: "prop1" }
+			})
+		);
+	});
+
+	test("can fail to get index groups when an index entry has a negative index", () => {
+		expect(() =>
+			EntitySchemaHelper.getIndexGroups<{ prop1: string }>({
+				type: "test",
+				properties: [
+					{
+						property: "prop1",
+						type: "string",
+						indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: -1 }]
+					}
+				]
+			})
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.invalidIndexGroupIndex",
+				properties: { group: "aaa", index: -1, property: "prop1" }
+			})
+		);
+	});
+
+	test("can fail to get index groups when two properties share an index in the same group", () => {
+		expect(() =>
+			EntitySchemaHelper.getIndexGroups<{ prop1: string; prop2: string }>({
+				type: "test",
+				properties: [
+					{
+						property: "prop1",
+						type: "string",
+						indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: 0 }]
+					},
+					{
+						property: "prop2",
+						type: "string",
+						indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: 0 }]
+					}
+				]
+			})
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "entitySchemaHelper.duplicateIndexGroupIndex",
+				properties: { group: "aaa", index: 0, property: "prop2" }
+			})
+		);
+	});
+
+	test("can get index groups when properties share an index in different groups", () => {
+		const result = EntitySchemaHelper.getIndexGroups<{ prop1: string; prop2: string }>({
+			type: "test",
+			properties: [
+				{
+					property: "prop1",
+					type: "string",
+					indexGroup: [
+						{ name: "aaa", direction: SortDirection.Ascending, index: 0 },
+						{ name: "bbb", direction: SortDirection.Ascending, index: 0 }
+					]
+				},
+				{
+					property: "prop2",
+					type: "string",
+					indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: 1 }]
+				}
+			]
+		});
+
+		expect(result.aaa.map(p => p.property.property)).toEqual(["prop1", "prop2"]);
+		expect(result.bbb.map(p => p.property.property)).toEqual(["prop1"]);
+	});
+
+	test("can get index groups ignoring entries with an empty or missing name", () => {
+		const result = EntitySchemaHelper.getIndexGroups<{ prop1: string; prop2: string }>({
+			type: "test",
+			properties: [
+				{ property: "prop1", type: "string", indexGroup: [] },
+				{
+					property: "prop2",
+					type: "string",
+					indexGroup: [
+						{ name: "", direction: SortDirection.Ascending, index: 0 },
+						undefined as unknown as IEntitySchemaPropertyIndex,
+						{ name: "aaa", direction: SortDirection.Ascending, index: 1 }
+					]
+				}
+			]
+		});
+
+		expect(Object.keys(result)).toEqual(["aaa"]);
+		expect(result.aaa.map(p => p.property.property)).toEqual(["prop2"]);
 	});
 });
