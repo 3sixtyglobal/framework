@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.10.1-next.1](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.10.1-next.0...crypto-cli-v0.10.1-next.1) (2026-09-17)
+
+
+### Features
+
+* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/core bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/crypto bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/nameof bumped from 0.10.1-next.0 to 0.10.1-next.1
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/validate-locales bumped from 0.10.1-next.0 to 0.10.1-next.1
+
 ## [0.10.0](https://github.com/iotaledger/twin-framework/compare/crypto-cli-v0.10.0...crypto-cli-v0.10.0) (2026-09-16)
 
 

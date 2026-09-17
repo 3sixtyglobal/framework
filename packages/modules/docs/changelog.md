@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.10.1-next.1](https://github.com/iotaledger/twin-framework/compare/modules-v0.10.1-next.0...modules-v0.10.1-next.1) (2026-09-17)
+
+
+### Features
+
+* add mutex ([#316](https://github.com/iotaledger/twin-framework/issues/316)) ([1027e5a](https://github.com/iotaledger/twin-framework/commit/1027e5ac77aa9804178b4253abdeefd6f1c3d521))
+* automatically handle SharedObjectBuffer message in module threads ([10510ff](https://github.com/iotaledger/twin-framework/commit/10510ff4180a2cfbb51aa5a65c57362291826077))
+* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* module helper can now handle long running threads with messaging ([4ecbb9a](https://github.com/iotaledger/twin-framework/commit/4ecbb9a526927d462d4fb3f95ba2a44889202753))
+* retain detail in Errors from background threads ([52bdeef](https://github.com/iotaledger/twin-framework/commit/52bdeef7a75fd462ed118073b9dc7612304e038d))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* module tests ([58fd497](https://github.com/iotaledger/twin-framework/commit/58fd497876aa65062001d146727e1084be891ac4))
+* module tests ([e323b7b](https://github.com/iotaledger/twin-framework/commit/e323b7b62aa430cedbeb09e83c2388cd458a6d48))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/context bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/core bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/nameof bumped from 0.10.1-next.0 to 0.10.1-next.1
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/validate-locales bumped from 0.10.1-next.0 to 0.10.1-next.1
+
 ## [0.10.0](https://github.com/iotaledger/twin-framework/compare/modules-v0.10.0...modules-v0.10.0) (2026-09-16)
 
 

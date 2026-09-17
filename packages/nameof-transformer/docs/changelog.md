@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.10.1-next.1](https://github.com/iotaledger/twin-framework/compare/nameof-transformer-v0.10.1-next.0...nameof-transformer-v0.10.1-next.1) (2026-09-17)
+
+
+### Features
+
+* add cookie helper method to web package ([#217](https://github.com/iotaledger/twin-framework/issues/217)) ([043c632](https://github.com/iotaledger/twin-framework/commit/043c63298bff96f70bdefed56b82afef42ec3f44))
+* add factory.createIfExists ([aad5a53](https://github.com/iotaledger/twin-framework/commit/aad5a53cef1b1c2e04344ea46244d41e371dff9b))
+* add Link header array support ([aff32a3](https://github.com/iotaledger/twin-framework/commit/aff32a3ff8ad3d076cade7c889444220706bfb1e))
+* add/update http and mime types ([#229](https://github.com/iotaledger/twin-framework/issues/229)) ([d50154a](https://github.com/iotaledger/twin-framework/commit/d50154a484711b67feb42ea20a94e4415e53d392))
+* adding link header helper ([#225](https://github.com/iotaledger/twin-framework/issues/225)) ([703c072](https://github.com/iotaledger/twin-framework/commit/703c0725aceac6b6ec0c4fa729ef832d12fb3fd7))
+* context id handler derives from component ([c868ec2](https://github.com/iotaledger/twin-framework/commit/c868ec21d3a576d4faa222bf130270a21936e50e))
+* factory create and integrity ([#235](https://github.com/iotaledger/twin-framework/issues/235)) ([9f98b99](https://github.com/iotaledger/twin-framework/commit/9f98b99daf46eb365346fae49cc4ffba63e74cb3))
+* improved password generation and validation ([#232](https://github.com/iotaledger/twin-framework/issues/232)) ([ca4e18f](https://github.com/iotaledger/twin-framework/commit/ca4e18f388b1882cdfb774fc0d0921b8530fac33))
+* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* module helper can now handle long running threads with messaging ([4ecbb9a](https://github.com/iotaledger/twin-framework/commit/4ecbb9a526927d462d4fb3f95ba2a44889202753))
+* simplify factory options ([7f85a85](https://github.com/iotaledger/twin-framework/commit/7f85a8553dd3008364e8e1104f2e6f6b6595d77e))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
 ## [0.10.0](https://github.com/iotaledger/twin-framework/compare/nameof-transformer-v0.10.0...nameof-transformer-v0.10.0) (2026-09-16)
 
 
