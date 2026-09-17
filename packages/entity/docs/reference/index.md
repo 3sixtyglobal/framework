@@ -16,6 +16,7 @@
 - [IEntitySchemaDiff](interfaces/IEntitySchemaDiff.md)
 - [IEntitySchemaOptions](interfaces/IEntitySchemaOptions.md)
 - [IEntitySchemaProperty](interfaces/IEntitySchemaProperty.md)
+- [IEntitySchemaPropertyIndex](interfaces/IEntitySchemaPropertyIndex.md)
 - [IEntitySort](interfaces/IEntitySort.md)
 
 ## Type Aliases

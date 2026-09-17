@@ -154,6 +154,42 @@ The sort keys from the schema or undefined if there are none.
 
 ***
 
+### getIndexGroups() {#getindexgroups}
+
+> `static` **getIndexGroups**\<`T`\>(`entitySchema`): `object`
+
+Get the composite index groups from the schema.
+Each property can be part of multiple indexes through its `indexGroup` list, so a property
+can appear in more than one group. The properties within a group are ordered by the `index`
+of their index entry, and each is returned with the sort direction it declared for that group.
+
+#### Type Parameters
+
+##### T
+
+`T`
+
+#### Parameters
+
+##### entitySchema
+
+[`IEntitySchema`](../interfaces/IEntitySchema.md)\<`T`\>
+
+The entity schema to find the index groups from.
+
+#### Returns
+
+`object`
+
+The properties and their directions keyed by the group name, empty if there are no groups.
+
+#### Throws
+
+GeneralError if an index entry has an invalid direction or index, or if two properties
+claim the same index within the same group.
+
+***
+
 ### buildSortProperties() {#buildsortproperties}
 
 > `static` **buildSortProperties**\<`T`\>(`entitySchema`, `overrideSortKeys?`): [`IEntitySort`](../interfaces/IEntitySort.md)\<`T`\>[] \| `undefined`

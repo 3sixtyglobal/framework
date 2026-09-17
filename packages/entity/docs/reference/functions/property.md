@@ -17,3 +17,11 @@ The options for the property.
 `any`
 
 The property decorator.
+
+## Throws
+
+GeneralError if an index group is declared on an object or array property.
+
+## Throws
+
+GeneralError if the same index group name is declared more than once for the property.
