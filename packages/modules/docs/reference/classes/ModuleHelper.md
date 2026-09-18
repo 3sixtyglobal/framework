@@ -216,7 +216,8 @@ GeneralError if executing the module entry failed.
 
 > `static` **execModuleMethodThreadMessage**(`module`, `completed`, `options?`): [`IModuleWorker`](../interfaces/IModuleWorker.md)
 
-Load the module and provide a messaging interface.
+Load the module and provide a messaging interface. The worker starts with the native
+modules already registered on this thread via NativeModules.init().
 
 #### Parameters
 

@@ -68,6 +68,20 @@ The module, or undefined if it was never registered via init().
 
 ***
 
+### names() {#names}
+
+> `static` **names**(): `string`[]
+
+Get the specifiers of the modules registered via init().
+
+#### Returns
+
+`string`[]
+
+The registered specifiers.
+
+***
+
 ### init() {#init}
 
 > `static` **init**(`modules`): `Promise`\<\{\[`specifier`: `string`\]: [`IError`](../interfaces/IError.md); \}\>
