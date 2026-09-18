@@ -16,12 +16,22 @@ describe("NativeModules", () => {
 		expect(NativeModules.getModule("node:crypto")).toBeUndefined();
 	});
 
+	test("names is empty before init() has been called", () => {
+		expect(NativeModules.names()).toEqual([]);
+	});
+
 	test("getModule resolves a Node builtin once init() has registered it", async () => {
 		await NativeModules.init(["node:crypto"]);
 
 		// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 		const nodeCrypto = NativeModules.getModule<typeof import("node:crypto")>("node:crypto");
 		expect(typeof nodeCrypto?.createHash).toEqual("function");
+	});
+
+	test("names lists the specifiers registered via init()", async () => {
+		await NativeModules.init(["node:crypto"]);
+
+		expect(NativeModules.names()).toContain("node:crypto");
 	});
 
 	test("getModule returns undefined for a specifier that is neither registered nor a builtin", () => {
@@ -53,5 +63,11 @@ describe("NativeModules", () => {
 			expect.objectContaining({ name: expect.any(String), message: expect.any(String) })
 		);
 		expect(NativeModules.getModule("this-module-does-not-exist")).toBeUndefined();
+	});
+
+	test("names does not include a specifier that failed to load", async () => {
+		await NativeModules.init(["this-module-does-not-exist"]);
+
+		expect(NativeModules.names()).not.toContain("this-module-does-not-exist");
 	});
 });

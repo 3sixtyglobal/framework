@@ -42,6 +42,15 @@ export class NativeModules {
 	}
 
 	/**
+	 * Get the specifiers of the modules registered via init().
+	 * @returns The registered specifiers.
+	 */
+	public static names(): string[] {
+		const registry = SharedStore.get<{ [specifier: string]: unknown }>(NativeModules._REGISTRY_KEY);
+		return Object.keys(registry ?? {});
+	}
+
+	/**
 	 * Resolve and register modules for getModule() to return, including Node builtins.
 	 * @param modules The module specifiers to import and register.
 	 * @returns The specifiers that failed, keyed by specifier, with the error raised.

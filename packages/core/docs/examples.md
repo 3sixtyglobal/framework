@@ -252,6 +252,7 @@ NativeModules.typeExists('Buffer'); // true on Node, false in a browser without 
 // typically once at startup. The returned object lists any specifiers that failed to load.
 const failures = await NativeModules.init(['node:crypto']);
 NativeModules.getModule('node:crypto'); // the module, or undefined if init() was never called for it
+NativeModules.names(); // ['node:crypto']
 ```
 
 ## RandomHelper and NumberHelper

@@ -7,6 +7,7 @@ import {
 	GeneralError,
 	Is,
 	Mutex,
+	NativeModules,
 	SharedObjectBuffer,
 	SharedStore
 } from "@twin.org/core";
@@ -182,7 +183,8 @@ export class ModuleHelper {
 	}
 
 	/**
-	 * Load the module and provide a messaging interface.
+	 * Load the module and provide a messaging interface. The worker starts with the native
+	 * modules already registered on this thread via NativeModules.init().
 	 * @param module The module.
 	 * @param completed Callback called when the worker thread processes a completion.
 	 * @param options Optional settings.
@@ -201,8 +203,15 @@ export class ModuleHelper {
 			`(async () => {
 	const { workerData, parentPort } = await import('node:worker_threads');
 	const { ContextIdStore } = await import('@twin.org/context');
-	const { BaseError } = await import('@twin.org/core');
-	const { module } = workerData;
+	const { BaseError, NativeModules } = await import('@twin.org/core');
+	const { module, nativeModules } = workerData;
+
+	// Skipped when empty so a host that never opted in isn't broken by an older core in its
+	// own node_modules (this eval worker resolves bare specifiers against that tree, not ours).
+	// Failures beyond that are ignored, the pure JavaScript fallbacks still work.
+	if (nativeModules.length > 0) {
+		await NativeModules.init(nativeModules);
+	}
 
 	function rejectError(errorType, methodName, args, cause) {
 		parentPort.postMessage({ errorType, method: methodName, args, cause: BaseError.fromError(cause).toJsonObject(true) });
@@ -251,7 +260,11 @@ export class ModuleHelper {
 		}
 	});
 })();`,
-			{ eval: true, workerData: { module }, name: options?.threadName }
+			{
+				eval: true,
+				workerData: { module, nativeModules: NativeModules.names() },
+				name: options?.threadName
+			}
 		);
 
 		worker.on("message", msg => {

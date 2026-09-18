@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import path from "node:path";
-import { Coerce, Mutex } from "@twin.org/core";
+import { Coerce, Mutex, NativeModules } from "@twin.org/core";
 import { ModuleHelper } from "../../src/helpers/moduleHelper.js";
 
 const TEST_MODULE = `file://${path.join(__dirname, "testModule.js")}`;
@@ -127,6 +127,24 @@ describe("ModuleHelper", () => {
 				"foo-bar"
 			])
 		).toEqual("fooBar");
+	});
+
+	test("execModuleMethodThread worker does not see a native module the main thread never registered", async () => {
+		expect(
+			await ModuleHelper.execModuleMethodThread(TEST_MODULE, "testMethodHasNativeModule", [
+				"node:crypto"
+			])
+		).toEqual(false);
+	});
+
+	test("execModuleMethodThread worker inherits the native modules registered on the main thread", async () => {
+		await NativeModules.init(["node:crypto"]);
+
+		expect(
+			await ModuleHelper.execModuleMethodThread(TEST_MODULE, "testMethodHasNativeModule", [
+				"node:crypto"
+			])
+		).toEqual(true);
 	});
 
 	test("execModuleMethodThread can throw if a function throws an error", async () => {

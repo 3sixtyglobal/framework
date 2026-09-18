@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 const { ContextIdStore } = await import('@twin.org/context');
-const { Mutex } = await import('@twin.org/core');
+const { Mutex, NativeModules } = await import('@twin.org/core');
 
 export function testMethod() {
 	return 1;
@@ -16,6 +16,10 @@ export async function testMethodAddAsync(value1, value2) {
 }
 
 export const testValue = 2;
+
+export function testMethodHasNativeModule(name) {
+	return NativeModules.getModule(name) !== undefined;
+}
 
 export function testMethodWithError() {
 	throw new Error('This is a test error');
