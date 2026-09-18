@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.10.1-next.4](https://github.com/iotaledger/twin-framework/compare/core-v0.10.1-next.3...core-v0.10.1-next.4) (2026-09-18)
+
+
+### Features
+
+* back base64, sha256 and chacha20poly1305 with native Node implementations ([#518](https://github.com/iotaledger/twin-framework/issues/518)) ([9c09337](https://github.com/iotaledger/twin-framework/commit/9c09337cb8e4045c2c1784b7c072a88de779234d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.10.1-next.3 to 0.10.1-next.4
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.3 to 0.10.1-next.4
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.3 to 0.10.1-next.4
+
 ## [0.10.1-next.3](https://github.com/iotaledger/twin-framework/compare/core-v0.10.1-next.2...core-v0.10.1-next.3) (2026-09-18)
 
 
