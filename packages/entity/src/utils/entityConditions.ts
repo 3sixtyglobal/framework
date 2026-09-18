@@ -95,7 +95,9 @@ export class EntityConditions {
 					(comparator.comparison === ComparisonOperator.LessThanOrEqual && val <= conditionValue) ||
 					(comparator.comparison === ComparisonOperator.Includes && val.includes(conditionValue)) ||
 					(comparator.comparison === ComparisonOperator.NotIncludes &&
-						!val.includes(conditionValue))
+						!val.includes(conditionValue)) ||
+					(comparator.comparison === ComparisonOperator.StartsWith &&
+						val.startsWith(conditionValue))
 				)) {
 					return false;
 				}

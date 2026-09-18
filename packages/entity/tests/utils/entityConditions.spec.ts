@@ -273,6 +273,58 @@ describe("EntityConditions", () => {
 		).toEqual(true);
 	});
 
+	test("can match if string condition starts with", async () => {
+		expect(
+			EntityConditions.check(
+				{ foo: "bebar" },
+				{
+					property: "foo",
+					value: "beb",
+					comparison: ComparisonOperator.StartsWith
+				}
+			)
+		).toEqual(true);
+	});
+
+	test("can not match if string condition contains but does not start with", async () => {
+		expect(
+			EntityConditions.check(
+				{ foo: "bebar" },
+				{
+					property: "foo",
+					value: "bar",
+					comparison: ComparisonOperator.StartsWith
+				}
+			)
+		).toEqual(false);
+	});
+
+	test("can not match if string condition starts with differs in case", async () => {
+		expect(
+			EntityConditions.check(
+				{ foo: "Bebar" },
+				{
+					property: "foo",
+					value: "beb",
+					comparison: ComparisonOperator.StartsWith
+				}
+			)
+		).toEqual(false);
+	});
+
+	test("can not match if starts with is used on a number value", async () => {
+		expect(
+			EntityConditions.check(
+				{ foo: 123 },
+				{
+					property: "foo",
+					value: "12",
+					comparison: ComparisonOperator.StartsWith
+				}
+			)
+		).toEqual(false);
+	});
+
 	test("can match if array condition contains", async () => {
 		expect(
 			EntityConditions.check(
