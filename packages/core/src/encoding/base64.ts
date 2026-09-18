@@ -6,6 +6,7 @@
 import { nameof } from "@twin.org/nameof";
 import { GeneralError } from "../errors/generalError.js";
 import { Guards } from "../utils/guards.js";
+import { NativeModules } from "../utils/nativeModules.js";
 
 /**
  * Class to help with base64 Encoding/Decoding.
@@ -16,6 +17,12 @@ export class Base64 {
 	 * Runtime name for the class.
 	 */
 	public static readonly CLASS_NAME: string = nameof<Base64>();
+
+	/**
+	 * True when a global Buffer is available to back encode/decode natively.
+	 * @internal
+	 */
+	private static readonly _hasBuffer: boolean = NativeModules.typeExists("Buffer");
 
 	/**
 	 * Alphabet table for encoding.
@@ -115,6 +122,12 @@ export class Base64 {
 	public static decode(base64: string): Uint8Array {
 		Guards.string(Base64.CLASS_NAME, nameof(base64), base64);
 
+		Base64.validateLength(base64);
+
+		if (Base64._hasBuffer) {
+			return new Uint8Array(globalThis.Buffer.from(base64, "base64"));
+		}
+
 		let tmp;
 		const lens = Base64.getLengths(base64);
 		const validLen = lens[0];
@@ -166,6 +179,12 @@ export class Base64 {
 	public static encode(bytes: Uint8Array): string {
 		Guards.uint8Array(Base64.CLASS_NAME, nameof(bytes), bytes);
 
+		if (Base64._hasBuffer) {
+			return globalThis.Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength).toString(
+				"base64"
+			);
+		}
+
 		let tmp;
 		const len = bytes.length;
 		const extraBytes = len % 3; // if we have 1 byte left, pad 2 bytes
@@ -203,6 +222,18 @@ export class Base64 {
 	}
 
 	/**
+	 * Validate that a base64 string has a length that is a multiple of 4.
+	 * @param base64 The base64 string.
+	 * @throws GeneralError if the string length is not a multiple of 4.
+	 * @internal
+	 */
+	private static validateLength(base64: string): void {
+		if (base64.length % 4 > 0) {
+			throw new GeneralError(Base64.CLASS_NAME, "length4Multiple", { value: base64.length });
+		}
+	}
+
+	/**
 	 * Get the valid and placeholder lengths from a base64 string.
 	 * @param base64 The base64 string.
 	 * @returns The lengths.
@@ -210,11 +241,9 @@ export class Base64 {
 	 * @internal
 	 */
 	private static getLengths(base64: string): number[] {
-		const len = base64.length;
+		Base64.validateLength(base64);
 
-		if (len % 4 > 0) {
-			throw new GeneralError(Base64.CLASS_NAME, "length4Multiple", { value: len });
-		}
+		const len = base64.length;
 
 		// Trim off extra bytes after placeholder bytes are found
 		// See: https://github.com/beatgammit/base64-js/issues/42

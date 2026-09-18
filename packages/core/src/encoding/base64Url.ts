@@ -3,6 +3,7 @@
 import { nameof } from "@twin.org/nameof";
 import { Base64 } from "./base64.js";
 import { Guards } from "../utils/guards.js";
+import { NativeModules } from "../utils/nativeModules.js";
 
 /**
  * Class to help with base64 URL Encoding/Decoding.
@@ -12,7 +13,15 @@ export class Base64Url {
 	/**
 	 * Runtime name for the class.
 	 */
-	public static readonly CLASS_NAME: string = nameof<Base64>();
+	public static readonly CLASS_NAME: string = nameof<Base64Url>();
+
+	/**
+	 * True when a global Buffer with the "base64url" encoding is available, which the
+	 * browser buffer polyfill lacks.
+	 * @internal
+	 */
+	private static readonly _hasBuffer: boolean =
+		NativeModules.typeExists("Buffer") && globalThis.Buffer.isEncoding("base64url");
 
 	/**
 	 * Convert the base 64 string to a byte array.
@@ -21,6 +30,10 @@ export class Base64Url {
 	 */
 	public static decode(base64Url: string): Uint8Array {
 		Guards.string(Base64Url.CLASS_NAME, nameof(base64Url), base64Url);
+
+		if (Base64Url._hasBuffer) {
+			return new Uint8Array(globalThis.Buffer.from(base64Url, "base64url"));
+		}
 
 		let base64 = base64Url;
 
@@ -43,6 +56,12 @@ export class Base64Url {
 	 */
 	public static encode(bytes: Uint8Array): string {
 		Guards.uint8Array(Base64Url.CLASS_NAME, nameof(bytes), bytes);
+
+		if (Base64Url._hasBuffer) {
+			return globalThis.Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength).toString(
+				"base64url"
+			);
+		}
 
 		const base64 = Base64.encode(bytes);
 		// Base 64 url can have padding removed, so remove it.

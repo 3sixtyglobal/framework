@@ -69,6 +69,7 @@ export * from "./utils/guards.js";
 export * from "./utils/i18n.js";
 export * from "./utils/is.js";
 export * from "./utils/mutex.js";
+export * from "./utils/nativeModules.js";
 export * from "./utils/sharedObjectBuffer.js";
 export * from "./utils/sharedStore.js";
 export * from "./utils/validation.js";
