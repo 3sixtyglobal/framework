@@ -44,6 +44,7 @@
 - [LfuCache](classes/LfuCache.md)
 - [LruCache](classes/LruCache.md)
 - [Mutex](classes/Mutex.md)
+- [NativeModules](classes/NativeModules.md)
 - [SharedObjectBuffer](classes/SharedObjectBuffer.md)
 - [SharedStore](classes/SharedStore.md)
 - [Validation](classes/Validation.md)
