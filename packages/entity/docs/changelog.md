@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.10.1-next.3](https://github.com/iotaledger/twin-framework/compare/entity-v0.10.1-next.2...entity-v0.10.1-next.3) (2026-09-18)
+
+
+### Features
+
+* add StartsWith comparison operator ([#517](https://github.com/iotaledger/twin-framework/issues/517)) ([5c39b5b](https://github.com/iotaledger/twin-framework/commit/5c39b5b77bb5d59199e6dad2000d1806e7f4035d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.2 to 0.10.1-next.3
+    * @twin.org/nameof bumped from 0.10.1-next.2 to 0.10.1-next.3
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.2 to 0.10.1-next.3
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.2 to 0.10.1-next.3
+    * @twin.org/validate-locales bumped from 0.10.1-next.2 to 0.10.1-next.3
+
 ## [0.10.1-next.2](https://github.com/iotaledger/twin-framework/compare/entity-v0.10.1-next.1...entity-v0.10.1-next.2) (2026-09-17)
 
 
