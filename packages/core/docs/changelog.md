@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.10.1-next.5](https://github.com/iotaledger/twin-framework/compare/core-v0.10.1-next.4...core-v0.10.1-next.5) (2026-09-18)
+
+
+### Features
+
+* propagate NativeModules registrations to ModuleHelper worker threads ([#524](https://github.com/iotaledger/twin-framework/issues/524)) ([28c9399](https://github.com/iotaledger/twin-framework/commit/28c9399fd5efbda32a095f4ccbf6790ba153db7c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.10.1-next.4 to 0.10.1-next.5
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.4 to 0.10.1-next.5
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.4 to 0.10.1-next.5
+
 ## [0.10.1-next.4](https://github.com/iotaledger/twin-framework/compare/core-v0.10.1-next.3...core-v0.10.1-next.4) (2026-09-18)
 
 
