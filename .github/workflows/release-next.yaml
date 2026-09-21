@@ -332,18 +332,19 @@ jobs:
         run: |
           # Preserve dependency build approvals, then remove the workspace files so pnpm
           # installs dependencies from the registry as it would for a package consumer.
-          printf 'packages: []\n' > pnpm-workspace.yaml.tmp
+          # The approvals are written into the package directory so it becomes its own
+          # workspace root. Leaving a workspace file at the repository root instead makes
+          # pnpm treat the package as a non-member and skip the install entirely.
           awk '
             /^allowBuilds:/ { copying = 1 }
             copying && /^[^[:space:]]/ && !/^allowBuilds:/ { exit }
             copying { print }
-          ' pnpm-workspace.yaml >> pnpm-workspace.yaml.tmp
-          grep -q '^allowBuilds:' pnpm-workspace.yaml.tmp || {
+          ' pnpm-workspace.yaml > "${{ matrix.package }}/pnpm-workspace.yaml"
+          grep -q '^allowBuilds:' "${{ matrix.package }}/pnpm-workspace.yaml" || {
             echo "allowBuilds section is missing from pnpm-workspace.yaml"
             exit 1
           }
           rm -f package.json pnpm-lock.yaml pnpm-workspace.yaml
-          mv pnpm-workspace.yaml.tmp pnpm-workspace.yaml
 
       # Retried to handle transient registry failures.
       - name: Install dependencies
@@ -359,7 +360,6 @@ jobs:
               sleep 30
             }
           done
-          rm -f "$GITHUB_WORKSPACE/pnpm-workspace.yaml"
 
       - name: Run Dist
         run: |
@@ -369,6 +369,8 @@ jobs:
       - name: Cleanup package.json properties
         run: |
           cd ${{ matrix.package }}
+          # The build approvals are only needed for install and dist.
+          rm -f pnpm-workspace.yaml
           # Strip dev-only fields so they are absent from the published tarball.
           npm pkg delete scripts
           npm pkg delete devDependencies
