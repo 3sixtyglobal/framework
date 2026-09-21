@@ -64,144 +64,178 @@ export class EntityConditions {
 	 * @returns True if the entity matches.
 	 */
 	public static compare<T>(entity: T, comparator: IComparator): boolean {
-		const val = ObjectHelper.propertyGet(entity, comparator.property);
+		const value = ObjectHelper.propertyGet(entity, comparator.property);
 		const conditionValue = comparator.value;
+		const comparison = comparator.comparison;
 
 		if (Is.undefined(conditionValue)) {
-			const valUndefined = Is.undefined(val);
-			if (valUndefined && comparator.comparison === ComparisonOperator.Equals) {
-				return true;
-			} else if (!valUndefined && comparator.comparison === ComparisonOperator.NotEquals) {
-				return true;
-			}
-			return false;
-		} else if (conditionValue === null) {
-			const valNull = val === null;
-			if (valNull && comparator.comparison === ComparisonOperator.Equals) {
-				return true;
-			} else if (!valNull && comparator.comparison === ComparisonOperator.NotEquals) {
-				return true;
-			}
-			return false;
-		} else if (Is.string(val)) {
-			if (Is.string(conditionValue)) {
-				if (!(
-					(comparator.comparison === ComparisonOperator.Equals && val === conditionValue) ||
-					(comparator.comparison === ComparisonOperator.NotEquals && val !== conditionValue) ||
-					(comparator.comparison === ComparisonOperator.GreaterThan && val > conditionValue) ||
-					(comparator.comparison === ComparisonOperator.LessThan && val < conditionValue) ||
-					(comparator.comparison === ComparisonOperator.GreaterThanOrEqual &&
-						val >= conditionValue) ||
-					(comparator.comparison === ComparisonOperator.LessThanOrEqual && val <= conditionValue) ||
-					(comparator.comparison === ComparisonOperator.Includes && val.includes(conditionValue)) ||
-					(comparator.comparison === ComparisonOperator.NotIncludes &&
-						!val.includes(conditionValue)) ||
-					(comparator.comparison === ComparisonOperator.StartsWith &&
-						val.startsWith(conditionValue))
-				)) {
-					return false;
-				}
-				return true;
-			} else if (Is.array(conditionValue)) {
-				if (!(comparator.comparison === ComparisonOperator.In && conditionValue.includes(val))) {
-					return false;
-				}
-				return true;
-			}
-			return false;
-		} else if (Is.number(val)) {
-			if (Is.number(conditionValue)) {
-				if (!(
-					(comparator.comparison === ComparisonOperator.Equals && val === conditionValue) ||
-					(comparator.comparison === ComparisonOperator.NotEquals && val !== conditionValue) ||
-					(comparator.comparison === ComparisonOperator.GreaterThan && val > conditionValue) ||
-					(comparator.comparison === ComparisonOperator.LessThan && val < conditionValue) ||
-					(comparator.comparison === ComparisonOperator.GreaterThanOrEqual &&
-						val >= conditionValue) ||
-					(comparator.comparison === ComparisonOperator.LessThanOrEqual && val <= conditionValue)
-				)) {
-					return false;
-				}
-				return true;
-			} else if (Is.array(conditionValue)) {
-				if (!(comparator.comparison === ComparisonOperator.In && conditionValue.includes(val))) {
-					return false;
-				}
-				return true;
-			}
-			return false;
-		} else if (Is.boolean(val)) {
-			if (Is.boolean(conditionValue)) {
-				if (!(
-					(comparator.comparison === ComparisonOperator.Equals && val === conditionValue) ||
-					(comparator.comparison === ComparisonOperator.NotEquals && val !== conditionValue)
-				)) {
-					return false;
-				}
-				return true;
-			} else if (Is.array(conditionValue)) {
-				if (!(comparator.comparison === ComparisonOperator.In && conditionValue.includes(val))) {
-					return false;
-				}
-				return true;
-			}
-			return false;
-		} else if (Is.array(val)) {
-			if (Is.array(conditionValue)) {
-				if (
-					comparator.comparison === ComparisonOperator.Equals ||
-					comparator.comparison === ComparisonOperator.NotEquals
-				) {
-					const matches = ArrayHelper.matches(val, conditionValue);
-					if (!(
-						(comparator.comparison === ComparisonOperator.Equals && matches) ||
-						(comparator.comparison === ComparisonOperator.NotEquals && !matches)
-					)) {
-						return false;
-					}
-					return true;
-				}
-				return false;
-			} else if (Is.number(conditionValue) || Is.string(conditionValue)) {
-				if (
-					comparator.comparison === ComparisonOperator.Includes ||
-					comparator.comparison === ComparisonOperator.NotIncludes ||
-					comparator.comparison === ComparisonOperator.In
-				) {
-					const includes = val.includes(conditionValue);
-					if (!(
-						(comparator.comparison === ComparisonOperator.Includes && includes) ||
-						(comparator.comparison === ComparisonOperator.NotIncludes && !includes) ||
-						(comparator.comparison === ComparisonOperator.In && includes)
-					)) {
-						return false;
-					}
-					return true;
-				}
-				return false;
-			} else if (Is.object(conditionValue)) {
-				if (comparator.comparison === ComparisonOperator.Includes) {
-					for (const v of val) {
-						if (ObjectHelper.equal(v, conditionValue)) {
-							return true;
-						}
-					}
-				} else if (comparator.comparison === ComparisonOperator.NotIncludes) {
-					for (const v of val) {
-						if (ObjectHelper.equal(v, conditionValue)) {
-							return false;
-						}
-					}
-					return true;
-				}
-			}
-			return false;
-		} else if (Is.object(val)) {
-			if (comparator.comparison === ComparisonOperator.Equals) {
-				return ObjectHelper.equal(val, conditionValue);
-			} else if (comparator.comparison === ComparisonOperator.NotEquals) {
-				return !ObjectHelper.equal(val, conditionValue);
-			}
+			return EntityConditions.matchEquality(Is.undefined(value), comparison);
+		}
+
+		if (conditionValue === null) {
+			return EntityConditions.matchEquality(value === null, comparison);
+		}
+
+		if (Is.string(value)) {
+			return Is.string(conditionValue)
+				? EntityConditions.compareString(value, conditionValue, comparison)
+				: EntityConditions.compareIn(value, conditionValue, comparison);
+		}
+
+		if (Is.number(value)) {
+			return Is.number(conditionValue)
+				? EntityConditions.compareOrdered(value, conditionValue, comparison)
+				: EntityConditions.compareIn(value, conditionValue, comparison);
+		}
+
+		if (Is.boolean(value)) {
+			return Is.boolean(conditionValue)
+				? EntityConditions.matchEquality(value === conditionValue, comparison)
+				: EntityConditions.compareIn(value, conditionValue, comparison);
+		}
+
+		if (Is.array(value)) {
+			return EntityConditions.compareArray(value, conditionValue, comparison);
+		}
+
+		if (Is.object(value)) {
+			return EntityConditions.matchEquality(ObjectHelper.equal(value, conditionValue), comparison);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Resolve an equality result for the equals and not equals operators.
+	 * @param isEqual Whether the two values are equal.
+	 * @param comparison The comparison to perform.
+	 * @returns True if the comparison is satisfied.
+	 * @internal
+	 */
+	private static matchEquality(isEqual: boolean, comparison: ComparisonOperator): boolean {
+		return (
+			(comparison === ComparisonOperator.Equals && isEqual) ||
+			(comparison === ComparisonOperator.NotEquals && !isEqual)
+		);
+	}
+
+	/**
+	 * Resolve an inclusion result for the includes and not includes operators.
+	 * @param isIncluded Whether the value is included.
+	 * @param comparison The comparison to perform.
+	 * @returns True if the comparison is satisfied.
+	 * @internal
+	 */
+	private static matchInclusion(isIncluded: boolean, comparison: ComparisonOperator): boolean {
+		return (
+			(comparison === ComparisonOperator.Includes && isIncluded) ||
+			(comparison === ComparisonOperator.NotIncludes && !isIncluded)
+		);
+	}
+
+	/**
+	 * Compare a value with the in operator against a list of condition values.
+	 * @param value The value to test.
+	 * @param conditionValue The condition value which should be a list.
+	 * @param comparison The comparison to perform.
+	 * @returns True if the comparison is satisfied.
+	 * @internal
+	 */
+	private static compareIn(
+		value: unknown,
+		conditionValue: unknown,
+		comparison: ComparisonOperator
+	): boolean {
+		return (
+			comparison === ComparisonOperator.In &&
+			Is.array(conditionValue) &&
+			conditionValue.includes(value)
+		);
+	}
+
+	/**
+	 * Compare two values which support ordering.
+	 * @param value The value to test.
+	 * @param conditionValue The condition value to test against.
+	 * @param comparison The comparison to perform.
+	 * @returns True if the comparison is satisfied.
+	 * @internal
+	 */
+	private static compareOrdered<U extends string | number>(
+		value: U,
+		conditionValue: U,
+		comparison: ComparisonOperator
+	): boolean {
+		switch (comparison) {
+			case ComparisonOperator.GreaterThan:
+				return value > conditionValue;
+			case ComparisonOperator.LessThan:
+				return value < conditionValue;
+			case ComparisonOperator.GreaterThanOrEqual:
+				return value >= conditionValue;
+			case ComparisonOperator.LessThanOrEqual:
+				return value <= conditionValue;
+			default:
+				return EntityConditions.matchEquality(value === conditionValue, comparison);
+		}
+	}
+
+	/**
+	 * Compare two string values.
+	 * @param value The value to test.
+	 * @param conditionValue The condition value to test against.
+	 * @param comparison The comparison to perform.
+	 * @returns True if the comparison is satisfied.
+	 * @internal
+	 */
+	private static compareString(
+		value: string,
+		conditionValue: string,
+		comparison: ComparisonOperator
+	): boolean {
+		if (comparison === ComparisonOperator.StartsWith) {
+			return value.startsWith(conditionValue);
+		}
+
+		if (
+			comparison === ComparisonOperator.Includes ||
+			comparison === ComparisonOperator.NotIncludes
+		) {
+			return EntityConditions.matchInclusion(value.includes(conditionValue), comparison);
+		}
+
+		return EntityConditions.compareOrdered(value, conditionValue, comparison);
+	}
+
+	/**
+	 * Compare an array value against a condition value.
+	 * @param value The array to test.
+	 * @param conditionValue The condition value to test against.
+	 * @param comparison The comparison to perform.
+	 * @returns True if the comparison is satisfied.
+	 * @internal
+	 */
+	private static compareArray(
+		value: unknown[],
+		conditionValue: unknown,
+		comparison: ComparisonOperator
+	): boolean {
+		if (Is.array(conditionValue)) {
+			return EntityConditions.matchEquality(ArrayHelper.matches(value, conditionValue), comparison);
+		}
+
+		if (Is.string(conditionValue) || Is.number(conditionValue)) {
+			const isIncluded = value.includes(conditionValue);
+			return comparison === ComparisonOperator.In
+				? isIncluded
+				: EntityConditions.matchInclusion(isIncluded, comparison);
+		}
+
+		if (Is.object(conditionValue)) {
+			return EntityConditions.matchInclusion(
+				value.some(v => ObjectHelper.equal(v, conditionValue)),
+				comparison
+			);
 		}
 
 		return false;
