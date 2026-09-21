@@ -84,24 +84,29 @@ runs:
       with:
         node-version: 24
 
-    # Install and prepare the tooling release-please depends on.
+    # Setup pnpm after node, the runners have no system node for its installer to use.
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v6
+
+    # Install and prepare the tooling release-please depends on, with retry to
+    # handle transient registry failures.
     - name: Install dependencies
       shell: bash
       run: |
         for i in {1..5}; do
-          npm ci --no-audit --no-fund && break || {
+          pnpm install --frozen-lockfile && break || {
             if [ $i -eq 5 ]; then
-              echo "npm ci failed after 5 attempts"
+              echo "pnpm install failed after 5 attempts"
               exit 1
             fi
-            echo "npm ci failed, retrying in 30 seconds (attempt $i/3)..."
+            echo "pnpm install failed, retrying in 30 seconds (attempt $i/5)..."
             sleep 30
           }
         done
 
     - name: Patch release-please prerelease versioning strategy
       shell: bash
-      run: npx patch-package --patch-dir release
+      run: pnpm dlx patch-package --patch-dir release
 
     - name: Import GPG key
       shell: bash

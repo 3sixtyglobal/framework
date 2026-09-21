@@ -1,8 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+import path from "node:path";
 import { Coerce, I18n, Is } from "@twin.org/core";
 import { Command } from "commander";
 import { CLIDisplay } from "./cliDisplay.js";
+import { CLIUtils } from "./cliUtils.js";
 import {
 	addGlobalOptions,
 	handleGlobalOptions,
@@ -16,18 +18,50 @@ import type { ICliOptions } from "./models/ICliOptions.js";
  */
 export abstract class CLIBase {
 	/**
+	 * Resolve the locales entries to directories, an entry which is not an existing
+	 * directory is treated as the name of an installed package and resolved to the
+	 * locales folder of that package.
+	 * @param localesDirectory The locales directories or package names.
+	 * @returns The resolved locales directories.
+	 * @internal
+	 */
+	private static async resolveLocalesDirectories(
+		localesDirectory: string | string[]
+	): Promise<string[]> {
+		const entries = Is.array<string>(localesDirectory) ? localesDirectory : [localesDirectory];
+		const resolved: string[] = [];
+
+		for (const entry of entries) {
+			if (await CLIUtils.dirExists(entry)) {
+				resolved.push(entry);
+			} else {
+				const packageRoot = await CLIUtils.findPackageRoot(entry, process.cwd());
+				if (Is.stringValue(packageRoot)) {
+					resolved.push(path.join(packageRoot, "locales"));
+				}
+			}
+		}
+
+		return resolved;
+	}
+
+	/**
 	 * Execute the command line processing.
 	 * @param options The options for the CLI.
-	 * @param localesDirectory The path to load the locales from.
+	 * @param localesDirectory The locales to load, each entry is either a path to a locales
+	 * directory or the name of an installed package to take the locales from. Entries are
+	 * merged in order, so later entries override earlier ones.
 	 * @param argv The process arguments.
 	 * @returns The exit code.
 	 */
 	public async execute(
 		options: ICliOptions,
-		localesDirectory: string,
+		localesDirectory: string | string[],
 		argv: string[]
 	): Promise<number> {
-		initGlobalOptions(localesDirectory);
+		CLIDisplay.setColorEnabled(!(options.noColor ?? false));
+
+		initGlobalOptions(await CLIBase.resolveLocalesDirectories(localesDirectory));
 		initLocales("en");
 
 		try {

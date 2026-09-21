@@ -239,12 +239,41 @@ jobs:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Extract workspaces from package.json
-        id: read-workspaces
+      # Setup pnpm after node, the runners have no system node for its installer to use.
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      # Install so pnpm can resolve the workspace graph. Scripts are skipped because
+      # only the project list is needed here, nothing is built in this job. Retried
+      # to handle transient registry failures.
+      - name: Install dependencies
         run: |
-          PACKAGES=$(node -e '
-            const pkg = JSON.parse(require("fs").readFileSync("./package.json", "utf8"));
-            console.log(JSON.stringify(pkg.workspaces));
+          for i in {1..5}; do
+            pnpm install --frozen-lockfile --ignore-scripts && break || {
+              if [ $i -eq 5 ]; then
+                echo "pnpm install failed after 5 attempts"
+                exit 1
+              fi
+              echo "pnpm install failed, retrying in 30 seconds (attempt $i/5)..."
+              sleep 30
+            }
+          done
+
+      # pnpm walks the workspace in topological order, so each package is listed after
+      # the packages it depends on. The publish matrix runs one package at a time and
+      # each installs its dependencies from the registry, so a dependency published
+      # after its dependent would fail to resolve.
+      - name: Resolve workspace publish order
+        id: read-workspaces
+        env:
+          ROOT: ${{ github.workspace }}
+        run: |
+          PACKAGES=$(pnpm -r --workspace-concurrency=1 exec node -e '
+            const path = require("path");
+            console.log(path.relative(process.env.ROOT, process.cwd()).split(path.sep).join("/"));
+          ' | node -e '
+            const lines = require("fs").readFileSync(0, "utf8").split(String.fromCharCode(10)).map(l => l.trim());
+            console.log(JSON.stringify(lines.filter(Boolean)));
           ')
           echo "Found packages: $PACKAGES"
           echo "packages=$PACKAGES" >> $GITHUB_OUTPUT
@@ -289,6 +318,10 @@ jobs:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
 
+      # Setup pnpm after node, the runners have no system node for its installer to use.
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
       - name: Setup Test Environment
         uses: ./.github/workflows/setup-test-env
         with:
@@ -297,20 +330,22 @@ jobs:
 
       - name: Remove Mono-Repo Node Modules
         run: |
-          # Root package.json declares workspace paths that conflict with per-package npm install.
-          rm package.json
-          rm package-lock.json
+          # The workspace files make pnpm link the sibling packages from disk. Removing them
+          # forces the package to install its dependencies from the registry, which is what
+          # a consumer of the published tarball gets.
+          rm -f package.json pnpm-lock.yaml pnpm-workspace.yaml
 
+      # Retried to handle transient registry failures.
       - name: Install dependencies
         run: |
           cd ${{ matrix.package }}
           for i in {1..5}; do
-            npm install --no-audit --no-fund && break || {
+            pnpm install --no-frozen-lockfile && break || {
               if [ $i -eq 5 ]; then
-                echo "npm install failed after 5 attempts"
+                echo "pnpm install failed after 5 attempts"
                 exit 1
               fi
-              echo "npm install failed, retrying in 30 seconds (attempt $i/5)..."
+              echo "pnpm install failed, retrying in 30 seconds (attempt $i/5)..."
               sleep 30
             }
           done
@@ -318,7 +353,7 @@ jobs:
       - name: Run Dist
         run: |
           cd ${{ matrix.package }}
-          npm run dist
+          pnpm run dist
 
       - name: Cleanup package.json properties
         run: |
@@ -410,9 +445,13 @@ jobs:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
 
+      # Setup pnpm after node, the runners have no system node for its installer to use.
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
       - name: Release Please
         run: |
-          npx --yes release-please github-release \
+          pnpm dlx release-please github-release \
             --config-file=release/release-please-config.prerelease.json \
             --manifest-file=release/release-please-manifest.prerelease.json \
             --repo-url=${{ github.repository }} \

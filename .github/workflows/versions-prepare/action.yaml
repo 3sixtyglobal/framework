@@ -208,21 +208,21 @@ runs:
           echo "Version changes detected. Proceeding with build and PR creation."
         fi
 
-    # Install dependencies with retry to handle transient registry failures.
-    # Uses npm install (not npm ci) because package.json versions have just been
-    # updated and the lockfile needs to be regenerated to match.
+    # Uses a non-frozen install because package.json versions have just been
+    # updated and the lockfile needs to be regenerated to match. Retried to handle
+    # transient registry failures.
     - name: Install dependencies
       if: ${{ steps.check-changes.outputs.has_changes == 'true' }}
       shell: bash
       run: |
         cd "$TARGET_DIR"
         for i in {1..5}; do
-          npm install --no-audit --no-fund && break || {
+          pnpm install --no-frozen-lockfile && break || {
             if [ $i -eq 5 ]; then
-              echo "npm install failed after 5 attempts"
+              echo "pnpm install failed after 5 attempts"
               exit 1
             fi
-            echo "npm install failed, retrying in 30 seconds (attempt $i/5)..."
+            echo "pnpm install failed, retrying in 30 seconds (attempt $i/5)..."
             sleep 30
           }
         done
@@ -234,9 +234,7 @@ runs:
       shell: bash
       run: |
         cd "$TARGET_DIR"
-        npm run format
-        npm run lint
-        npm run dist:no-test
+        pnpm run quality:no-test
 
     # Commit all version and lockfile changes together so the PR is self-contained.
     - name: Commit Changes

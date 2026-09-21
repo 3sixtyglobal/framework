@@ -13,14 +13,15 @@ export class CLI extends CLIBase {
 	/**
 	 * Run the app.
 	 * @param argv The process arguments.
-	 * @param localesDirectory The directory for the locales, default to relative to the script.
+	 * @param localesDirectory The locales to load, either paths to locales directories or names
+	 * of installed packages, defaults to relative to the script.
 	 * @param options Additional options.
 	 * @param options.overrideOutputWidth Override the output width.
 	 * @returns The exit code.
 	 */
 	public async run(
 		argv: string[],
-		localesDirectory?: string,
+		localesDirectory?: string | string[],
 		options?: { overrideOutputWidth?: number }
 	): Promise<number> {
 		return this.execute(

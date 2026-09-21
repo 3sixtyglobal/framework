@@ -10,6 +10,60 @@ import { SharedStore } from "../../src/utils/sharedStore.js";
 // Mirror the internal layout constants for test assertions.
 const HEADER_BYTES = 4;
 const DEFAULT_CAP = SharedObjectBuffer.DEFAULT_CAPACITY_BYTES;
+
+// A worker blocked in an unbounded Atomics.wait never exits, which would hang the
+// suite until the vitest timeout. Every wait in the worker scripts below is bounded
+// and the test side terminates any worker which has not exited, so a starved worker
+// fails the test quickly instead of wedging it.
+// The worker side wait is deliberately shorter than the test side timeout, so a worker
+// which is never serviced times out first and reports why, rather than the test giving
+// up at the same instant and hiding the cause.
+const WORKER_WAIT_MS = 5000;
+const WORKER_EXIT_TIMEOUT_MS = 20000;
+
+/**
+ * Wait for workers to exit, terminating any which have not.
+ * @param exited Exit promises, registered when each worker was created so an early exit is not missed.
+ * @param workers The workers those promises belong to.
+ * @param errors Errors reported by the workers, surfaced so the cause is visible.
+ */
+async function waitForWorkerExits(
+	exited: Promise<void>[],
+	workers: Worker[],
+	errors: string[] = []
+): Promise<void> {
+	let timer: ReturnType<typeof setTimeout> | undefined;
+	const timedOut = new Promise<boolean>(resolve => {
+		timer = setTimeout(() => resolve(true), WORKER_EXIT_TIMEOUT_MS);
+	});
+
+	const didTimeOut = await Promise.race([Promise.all(exited).then(() => false), timedOut]);
+	clearTimeout(timer);
+
+	if (didTimeOut) {
+		await Promise.all(
+			workers.map(async worker => {
+				await worker.terminate();
+			})
+		);
+		throw new Error(`Workers did not exit within ${WORKER_EXIT_TIMEOUT_MS}ms`);
+	}
+
+	if (errors.length > 0) {
+		throw new Error(`A worker reported an error: ${errors[0]}`);
+	}
+}
+
+/**
+ * Wait for a single worker to exit, terminating it if it does not.
+ * @param worker The worker to wait for.
+ */
+async function waitForWorkerExit(worker: Worker): Promise<void> {
+	const exited = new Promise<void>(resolve => {
+		worker.on("exit", () => resolve());
+	});
+	await waitForWorkerExits([exited], [worker]);
+}
 const MAX_CAP = SharedObjectBuffer.MAX_CAPACITY_BYTES;
 
 // Access the internal per-thread buffer map that SharedObjectBuffer stores in SharedStore.
@@ -504,7 +558,9 @@ describe("SharedObjectBuffer", () => {
 				},
 				[port2]
 			);
-			Atomics.wait(signal, 0, 0);
+			if (Atomics.wait(signal, 0, 0, ${WORKER_WAIT_MS}) === "timed-out") {
+				throw new Error("Timed out waiting for the buffer from the main thread");
+			}
 			const resp = receiveMessageOnPort(port1);
 			port1.close();
 			const buf = resp.message.buffer;
@@ -529,7 +585,7 @@ describe("SharedObjectBuffer", () => {
 					}
 				});
 			});
-			await new Promise<void>(resolve => worker.on("exit", resolve));
+			await waitForWorkerExit(worker);
 
 			expect(report.byteLength).toBe(getBuffers()[objectId].byteLength);
 			expect(report.dataLen).toBe(expectedLen);
@@ -551,7 +607,7 @@ describe("SharedObjectBuffer", () => {
 					}
 				});
 			});
-			await new Promise<void>(resolve => worker.on("exit", resolve));
+			await waitForWorkerExit(worker);
 
 			expect(report.dataLen).toBeGreaterThan(0);
 		});
@@ -570,7 +626,9 @@ describe("SharedObjectBuffer", () => {
 					{ type: "twin:sharedObjectBuffer:getBuffer", objectId: "${objectId}", signal: signalBuf, port: port2, createIfMissing: false },
 					[port2]
 				);
-				Atomics.wait(signal, 0, 0);
+				if (Atomics.wait(signal, 0, 0, ${WORKER_WAIT_MS}) === "timed-out") {
+					throw new Error("Timed out waiting for the buffer from the main thread");
+				}
 				const resp = receiveMessageOnPort(port1);
 				port1.close();
 				const buf = resp.message.buffer;
@@ -590,7 +648,7 @@ describe("SharedObjectBuffer", () => {
 					}
 				});
 			});
-			await new Promise<void>(resolve => worker.on("exit", resolve));
+			await waitForWorkerExit(worker);
 
 			const mainBuf = getBuffers()[objectId];
 			expect(mainBuf).toBeInstanceOf(SharedArrayBuffer);
@@ -605,9 +663,13 @@ describe("SharedObjectBuffer", () => {
 			const workerCount = 4;
 			const reports: { dataLen: number }[] = [];
 			const exited: Promise<void>[] = [];
+			const workers: Worker[] = [];
+			const errors: string[] = [];
 
 			for (let i = 0; i < workerCount; i++) {
 				const w = new Worker(makeFetchAndReportScript(objectId), { eval: true });
+				workers.push(w);
+				w.on("error", err => errors.push(String(err)));
 				w.on("message", (msg: unknown) => {
 					SharedObjectBuffer.handleWorkerMessage(msg);
 					if (Is.object(msg) && "dataLen" in msg) {
@@ -617,7 +679,7 @@ describe("SharedObjectBuffer", () => {
 				exited.push(new Promise<void>(resolve => w.on("exit", resolve)));
 			}
 
-			await Promise.all(exited);
+			await waitForWorkerExits(exited, workers, errors);
 
 			expect(reports).toHaveLength(workerCount);
 			for (const r of reports) {
@@ -659,7 +721,7 @@ describe("SharedObjectBuffer", () => {
 				});
 			});
 
-			await new Promise<void>(resolve => worker.on("exit", resolve));
+			await waitForWorkerExit(worker);
 			expect(result.waitResult).toBe("timed-out");
 		});
 	});

@@ -112,7 +112,7 @@ tenant-create --organization-id="did:iota:..." --label="My Tenant" --public-orig
 
 **REST API:**
 
-```
+```http
 POST /tenants/
 ```
 
@@ -129,7 +129,7 @@ POST /tenants/
 
 ### How API Keys Map to Tenants
 
-```
+```text
 Login:                API Key (secret, header)       →  Tenant ID + Organization DID  →  Data Partition
 Unauthenticated:      Organization DID (query param)  →  Tenant ID + Organization DID  →  Data Partition
 Authenticated (JWT):  Organization DID (query param)  →  [TenantProcessor sets initial context]
@@ -234,13 +234,13 @@ There is no built-in migration tool. Migrating would require exporting all data,
 
 For web applications serving multiple tenants, the recommended pattern is a reverse proxy that injects the API key based on the request subdomain:
 
-```
+```text
 Browser → Reverse Proxy (injects x-api-key based on subdomain) → TWIN Node
 ```
 
 For example with Nginx:
 
-```
+```text
 tenant-a.app.example.com  →  x-api-key: <key-for-tenant-a>  →  TWIN Node
 tenant-b.app.example.com  →  x-api-key: <key-for-tenant-b>  →  TWIN Node
 ```

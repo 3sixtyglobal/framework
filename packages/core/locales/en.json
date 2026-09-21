@@ -91,7 +91,7 @@
 		"factory": {
 			"noUnregister": "There is no {typeName} registered with the name \"{name}\"",
 			"noGet": "The requested {typeName} \"{name}\" does not exist in the factory",
-			"noCreate": "The requested {typeName} \"{name}\" cannot be created by the factory, with params \"{params}\"",
+			"noCreate": "The requested {typeName} \"{name}\" cannot be created by the factory, with params \"{args}\"",
 			"noFacade": "The requested facade \"{name}\" is not registered, so it cannot be applied to the {typeName} factory",
 			"noFacadeOnFacades": "Facades cannot be applied to the facade factory itself",
 			"noFacadeWrap": "The facade \"{name}\" did not return a wrapped instance for the {typeName} factory"

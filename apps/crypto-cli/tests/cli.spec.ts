@@ -6,7 +6,10 @@ import { CLI } from "../src/cli.js";
 
 let writeBuffer: string[] = [];
 let errorBuffer: string[] = [];
-const localesDirectory = "./dist/locales/";
+// The dependency packages first then this package, matching the precedence the
+// merge-locales tool uses, so this resolves to the same dictionary as dist/locales
+// without requiring the merge step to have run.
+const localesDirectory = ["@twin.org/cli-core", "@twin.org/core", "@twin.org/crypto", "./locales"];
 
 describe("CLI", () => {
 	beforeEach(() => {
@@ -25,7 +28,8 @@ describe("CLI", () => {
 	test("Can execute with no command line options and receive help", async () => {
 		const cli = new CLI();
 		const exitCode = await cli.run(["", path.join(__dirname, "crypto-cli")], localesDirectory, {
-			overrideOutputWidth: 1000
+			overrideOutputWidth: 1000,
+			noColor: true
 		});
 		expect(exitCode).toBe(0);
 		expect(writeBuffer.length).toEqual(21);

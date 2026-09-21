@@ -14,15 +14,17 @@ export class CLI extends CLIBase {
 	/**
 	 * Run the app.
 	 * @param argv The process arguments.
-	 * @param localesDirectory The directory for the locales, default to relative to the script.
+	 * @param localesDirectory The locales to load, either paths to locales directories or names
+	 * of installed packages, defaults to relative to the script.
 	 * @param options Additional options.
 	 * @param options.overrideOutputWidth Override the output width.
+	 * @param options.noColor Disable colourised output.
 	 * @returns The exit code.
 	 */
 	public async run(
 		argv: string[],
-		localesDirectory?: string,
-		options?: { overrideOutputWidth?: number }
+		localesDirectory?: string | string[],
+		options?: { overrideOutputWidth?: number; noColor?: boolean }
 	): Promise<number> {
 		return this.execute(
 			{
@@ -32,7 +34,8 @@ export class CLI extends CLIBase {
 				icon: "🔒",
 				supportsEnvFiles: true,
 				overrideOutputWidth: options?.overrideOutputWidth,
-				showDevToolWarning: true
+				showDevToolWarning: true,
+				noColor: options?.noColor
 			},
 			localesDirectory ?? path.join(path.dirname(fileURLToPath(import.meta.url)), "../locales"),
 			argv

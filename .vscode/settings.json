@@ -16,5 +16,7 @@
 	},
 	"prettier.configPath": "prettier.config.mjs",
 	"cSpell.autoFormatConfigFile": true,
-	"vitest.disableWorkspaceWarning": true
+	"vitest.disableWorkspaceWarning": true,
+	"coverage-gutters.coverageFileNames": ["lcov.info"],
+	"coverage-gutters.coverageBaseDir": "{packages,apps}/*/coverage"
 }

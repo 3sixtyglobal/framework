@@ -32,7 +32,8 @@
 			"invalidChecksum": "The address contains an invalid checksum in address, \"{bech32}\"",
 			"separatorMisused": "The separator character '1' should only be used between hrp and data, \"{bech32}\"",
 			"lowerUpper": "The address my use either lowercase or uppercase, \"{bech32}\"",
-			"dataTooShort": "The address does not contain enough data to decode, \"{bech32}\""
+			"dataTooShort": "The address does not contain enough data to decode, \"{bech32}\"",
+			"invalidLength": "The address length is outside the range permitted for bech32, \"{bech32}\""
 		},
 		"bip44": {
 			"unsupportedKeyType": "The key type \"{keyType}\" is not supported"
