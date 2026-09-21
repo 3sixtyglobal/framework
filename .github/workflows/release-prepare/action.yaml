@@ -244,6 +244,24 @@ runs:
           exit 1
         fi
 
+    # Release-please updates package.json versions but does not regenerate the
+    # pnpm lockfile. Update the generated release PR before approval.
+    - name: Update release PR lockfile
+      if: ${{ steps.release-please.outputs.pr_number != '' }}
+      shell: bash
+      run: |
+        gh pr checkout ${{ steps.release-please.outputs.pr_number }} --force
+        pnpm install --lockfile-only --no-frozen-lockfile --ignore-scripts
+        if git diff --quiet -- pnpm-lock.yaml; then
+          echo "pnpm-lock.yaml is already up to date"
+        else
+          git add pnpm-lock.yaml
+          git commit -m "chore: update pnpm lockfile for release versions [skip ci]"
+          git push origin HEAD
+        fi
+      env:
+        GH_TOKEN: ${{ inputs.release_token }}
+
     # Approval must come from a second identity because the PR author cannot self-approve.
     # If the approval token is rate-limited, continue and let the reviewer approve manually.
     - name: Attempt PR approval
