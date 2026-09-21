@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.10.1-next.6](https://github.com/iotaledger/twin-framework/compare/core-v0.10.1-next.5...core-v0.10.1-next.6) (2026-09-21)
+
+
+### Features
+
+* native enhancements ([#527](https://github.com/iotaledger/twin-framework/issues/527)) ([dc77328](https://github.com/iotaledger/twin-framework/commit/dc77328df201ff77809d8e8792c27780bfb6d8c4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.10.1-next.5 to 0.10.1-next.6
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.5 to 0.10.1-next.6
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.5 to 0.10.1-next.6
+
 ## [0.10.1-next.5](https://github.com/iotaledger/twin-framework/compare/core-v0.10.1-next.4...core-v0.10.1-next.5) (2026-09-18)
 
 
