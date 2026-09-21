@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1-next.7](https://github.com/iotaledger/twin-framework/compare/nameof-transformer-v0.10.1-next.6...nameof-transformer-v0.10.1-next.7) (2026-09-21)
+
+
+### Features
+
+* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+
 ## [0.10.1-next.6](https://github.com/iotaledger/twin-framework/compare/nameof-transformer-v0.10.1-next.5...nameof-transformer-v0.10.1-next.6) (2026-09-21)
 
 

@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.10.1-next.7](https://github.com/iotaledger/twin-framework/compare/entity-v0.10.1-next.6...entity-v0.10.1-next.7) (2026-09-21)
+
+
+### Features
+
+* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+* entity conditions boolean in ([#530](https://github.com/iotaledger/twin-framework/issues/530)) ([50cc09a](https://github.com/iotaledger/twin-framework/commit/50cc09aa7b32e0dd7936ed0c2f074b0b166bcbf5))
+* refactor EntityConditions compare ([576f894](https://github.com/iotaledger/twin-framework/commit/576f894f67186353d112a95ff57c94bc92e7f93c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.6 to 0.10.1-next.7
+    * @twin.org/nameof bumped from 0.10.1-next.6 to 0.10.1-next.7
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.6 to 0.10.1-next.7
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.6 to 0.10.1-next.7
+    * @twin.org/validate-locales bumped from 0.10.1-next.6 to 0.10.1-next.7
+
 ## [0.10.1-next.6](https://github.com/iotaledger/twin-framework/compare/entity-v0.10.1-next.5...entity-v0.10.1-next.6) (2026-09-21)
 
 

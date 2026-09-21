@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.10.1-next.7](https://github.com/iotaledger/twin-framework/compare/crypto-v0.10.1-next.6...crypto-v0.10.1-next.7) (2026-09-21)
+
+
+### Features
+
+* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.6 to 0.10.1-next.7
+    * @twin.org/nameof bumped from 0.10.1-next.6 to 0.10.1-next.7
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.6 to 0.10.1-next.7
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.6 to 0.10.1-next.7
+    * @twin.org/validate-locales bumped from 0.10.1-next.6 to 0.10.1-next.7
+
 ## [0.10.1-next.6](https://github.com/iotaledger/twin-framework/compare/crypto-v0.10.1-next.5...crypto-v0.10.1-next.6) (2026-09-21)
 
 
