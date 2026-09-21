@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.10.1-next.9](https://github.com/iotaledger/twin-framework/compare/nameof-vitest-plugin-v0.10.1-next.8...nameof-vitest-plugin-v0.10.1-next.9) (2026-09-21)
+
+
+### Features
+
+* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.8 to 0.10.1-next.9
+
 ## [0.10.1-next.8](https://github.com/iotaledger/twin-framework/compare/nameof-vitest-plugin-v0.10.1-next.7...nameof-vitest-plugin-v0.10.1-next.8) (2026-09-21)
 
 
