@@ -21,6 +21,7 @@
 - [Sha3](classes/Sha3.md)
 - [Sha512](classes/Sha512.md)
 - [IntegrityHelper](classes/IntegrityHelper.md)
+- [NativeModulesCrypto](classes/NativeModulesCrypto.md)
 - [PemHelper](classes/PemHelper.md)
 - [Bip32Path](classes/Bip32Path.md)
 - [Bip39](classes/Bip39.md)

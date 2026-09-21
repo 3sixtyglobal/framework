@@ -296,7 +296,8 @@ The string split into words.
 
 > `static` **isUtf8**(`data`): `boolean`
 
-Check if a Node.js Buffer or Uint8Array is UTF-8.
+Check if a Node.js Buffer or Uint8Array is UTF-8. Delegates to isUtf8 from node:buffer
+when a host has registered it with NativeModules.init(), otherwise validates in place.
 
 #### Parameters
 

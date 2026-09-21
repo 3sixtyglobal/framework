@@ -3,7 +3,7 @@
 Helper for detecting and resolving native platform modules (Node builtins and globals)
 so a class can prefer a faster native implementation while keeping a pure JavaScript
 fallback where the native form does not exist (e.g. a browser). See getModule() and
-init() below for how a builtin is opted into, and typeExists() for a global.
+init() below for how a builtin is opted into, and getType() for a global.
 
 ## Constructors
 
@@ -17,11 +17,34 @@ init() below for how a builtin is opted into, and typeExists() for a global.
 
 ## Methods
 
-### typeExists() {#typeexists}
+### getRegistry() {#getregistry}
 
-> `static` **typeExists**(`name`): `boolean`
+> `static` **getRegistry**(): `object`
 
-Check whether a global of the given name exists in the current environment.
+Get the registry of modules resolved via init(), creating it if it does not yet exist.
+The registry is live, so mutating it changes what getModule() and names() return.
+
+#### Returns
+
+`object`
+
+The registry, keyed by module specifier.
+
+***
+
+### getType() {#gettype}
+
+> `static` **getType**\<`T`\>(`name`): `T` \| `undefined`
+
+Get a global of the given name from the current environment, typed as the caller requires.
+Pass the constructor type, not the instance type, to reach statics e.g.
+getType<BufferConstructor>("Buffer").
+
+#### Type Parameters
+
+##### T
+
+`T` = `unknown`
 
 #### Parameters
 
@@ -29,13 +52,13 @@ Check whether a global of the given name exists in the current environment.
 
 `string`
 
-The name of the global to check for, e.g. "Buffer".
+The name of the global to get, e.g. "Buffer".
 
 #### Returns
 
-`boolean`
+`T` \| `undefined`
 
-True if the global exists, false otherwise (e.g. in a browser).
+The global, or undefined if it does not exist (e.g. in a browser).
 
 ***
 
