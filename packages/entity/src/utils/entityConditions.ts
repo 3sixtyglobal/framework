@@ -139,6 +139,11 @@ export class EntityConditions {
 					return false;
 				}
 				return true;
+			} else if (Is.array(conditionValue)) {
+				if (!(comparator.comparison === ComparisonOperator.In && conditionValue.includes(val))) {
+					return false;
+				}
+				return true;
 			}
 			return false;
 		} else if (Is.array(val)) {

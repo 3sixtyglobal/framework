@@ -699,6 +699,32 @@ describe("EntityConditions", () => {
 		).toEqual(false);
 	});
 
+	test("can match if boolean condition is in", async () => {
+		expect(
+			EntityConditions.check(
+				{ foo: true },
+				{
+					property: "foo",
+					value: [false, true],
+					comparison: ComparisonOperator.In
+				}
+			)
+		).toEqual(true);
+	});
+
+	test("can not match if boolean condition is not in", async () => {
+		expect(
+			EntityConditions.check(
+				{ foo: true },
+				{
+					property: "foo",
+					value: [false],
+					comparison: ComparisonOperator.In
+				}
+			)
+		).toEqual(false);
+	});
+
 	test("can not match if number condition never contains", async () => {
 		expect(
 			EntityConditions.check(
