@@ -1,10 +1,23 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Converter, NativeModules, SharedStore } from "@twin.org/core";
+import { Converter } from "@twin.org/core";
 import testData from "./sha256.json" with { type: "json" };
 import { Sha256 } from "../../src/hashes/sha256.js";
+import {
+	NATIVE_CRYPTO_VARIANTS,
+	unregisterNodeCrypto,
+	useNativeCryptoVariant
+} from "../nativeCryptoVariants.js";
 
-describe("Sha256", () => {
+describe.each(NATIVE_CRYPTO_VARIANTS)("Sha256 ($implementation)", ({ useNodeCrypto }) => {
+	beforeAll(async () => {
+		await useNativeCryptoVariant(useNodeCrypto);
+	});
+
+	afterAll(() => {
+		unregisterNodeCrypto();
+	});
+
 	test("Can perform a sha256 on short text", () => {
 		const sha = new Sha256();
 		sha.update(Converter.utf8ToBytes("abc"));
@@ -64,37 +77,46 @@ describe("Sha256", () => {
 		}
 	});
 
-	test("Uses the native hash once node:crypto has been registered via init()", async () => {
-		await NativeModules.init(["node:crypto"]);
+	test("Can accumulate multiple updates into one digest", () => {
+		const chunked = new Sha256();
+		chunked.update(Converter.utf8ToBytes("The quick brown fox "));
+		chunked.update(Converter.utf8ToBytes("jumps over the lazy dog"));
 
-		const nodeCrypto = NativeModules.getModule<{ createHash: (...args: unknown[]) => unknown }>(
-			"node:crypto"
+		expect(Converter.bytesToHex(chunked.digest())).toEqual(
+			"d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592"
 		);
-		const realCreateHash = nodeCrypto?.createHash.bind(nodeCrypto);
-		let createHashCalls = 0;
+	});
 
-		const registry = SharedStore.get<{ [specifier: string]: unknown }>(
-			"nativeModulesRegistry",
-			() => ({})
+	test("Can chain update calls", () => {
+		const sha = new Sha256();
+		expect(sha.update(Converter.utf8ToBytes("a"))).toBe(sha);
+	});
+
+	test("Returns a plain Uint8Array rather than a platform buffer type", () => {
+		// node:crypto hands back a Buffer, which is a Uint8Array subclass, so the digest is
+		// normalised to keep the return type the same on both implementations
+		const digest = Sha256.sum256(Converter.utf8ToBytes("abc"));
+		expect(digest.constructor).toEqual(Uint8Array);
+	});
+
+	test("Throws for an unsupported bit size", () => {
+		expect(() => new Sha256(512)).toThrow(
+			expect.objectContaining({ name: "GeneralError", message: "sha256.bitSize" })
 		);
-		const previousNodeCrypto = registry["node:crypto"];
-		registry["node:crypto"] = {
-			...nodeCrypto,
-			createHash: (...args: unknown[]) => {
-				createHashCalls++;
-				return realCreateHash?.(...args);
-			}
-		};
+	});
+
+	test("Produces the same digest as the other implementation", async () => {
+		const block = Converter.utf8ToBytes("cross implementation digest ".repeat(20));
+		const digest = Sha256.sum256(block);
+
+		// Flip to the opposite implementation, so this really does cross the two.
+		await useNativeCryptoVariant(!useNodeCrypto);
 
 		try {
-			const digest = Sha256.sum256(Converter.utf8ToBytes("abc"));
-			expect(Converter.bytesToHex(digest)).toEqual(
-				"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
-			);
-			expect(createHashCalls).toEqual(1);
-			expect(digest.constructor).toEqual(Uint8Array);
+			expect(Sha256.sum256(block)).toEqual(digest);
 		} finally {
-			registry["node:crypto"] = previousNodeCrypto;
+			// Put the registry back, as the remaining tests in this block rely on it.
+			await useNativeCryptoVariant(useNodeCrypto);
 		}
 	});
 });

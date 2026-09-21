@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0.
 // eslint-disable-next-line camelcase
 import { sha3_224, sha3_256, sha3_384, sha3_512 } from "@noble/hashes/sha3.js";
-import type { Hash } from "@noble/hashes/utils.js";
 import { GeneralError, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
+import type { IHashInstance } from "../models/IHashInstance.js";
 
 /**
  * Perform a SHA-3 hash on the block.
@@ -36,11 +37,21 @@ export class Sha3 {
 	public static readonly CLASS_NAME: string = nameof<Sha3>();
 
 	/**
+	 * The hash to request from node:crypto, keyed by bit size.
+	 * @internal
+	 */
+	private static readonly _HASHES: { [bits: number]: string } = {
+		224: "sha3-224",
+		256: "sha3-256",
+		384: "sha3-384",
+		512: "sha3-512"
+	};
+
+	/**
 	 * The instance of the hash.
 	 * @internal
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	private readonly _instance: Hash<any>;
+	private readonly _instance: IHashInstance;
 
 	/**
 	 * Create a new instance of Sha3.
@@ -57,7 +68,12 @@ export class Sha3 {
 			throw new GeneralError(Sha3.CLASS_NAME, "bitSize", { bitSize: bits });
 		}
 
-		if (bits === Sha3.SIZE_224) {
+		const hash = Sha3._HASHES[bits];
+		const nodeCrypto = NativeModulesCrypto.getNodeCryptoHash(hash);
+
+		if (nodeCrypto) {
+			this._instance = nodeCrypto.createHash(hash);
+		} else if (bits === Sha3.SIZE_224) {
 			// eslint-disable-next-line camelcase
 			this._instance = sha3_224.create();
 		} else if (bits === Sha3.SIZE_256) {
@@ -132,6 +148,6 @@ export class Sha3 {
 	 * @returns The computed hash as bytes.
 	 */
 	public digest(): Uint8Array {
-		return this._instance.digest();
+		return new Uint8Array(this._instance.digest());
 	}
 }

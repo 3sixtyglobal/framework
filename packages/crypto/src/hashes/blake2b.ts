@@ -1,9 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { blake2b } from "@noble/hashes/blake2.js";
-import type { Hash } from "@noble/hashes/utils.js";
-import { Guards } from "@twin.org/core";
+import { Guards, Is } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
+import type { IHashInstance } from "../models/IHashInstance.js";
 
 /**
  * Class to help with Blake2B Signature scheme.
@@ -30,11 +31,17 @@ export class Blake2b {
 	public static readonly CLASS_NAME: string = nameof<Blake2b>();
 
 	/**
+	 * The hash to request from node:crypto. OpenSSL only exposes the unkeyed 512 bit
+	 * variant, so every other output length and any keyed hash stays on the fallback.
+	 * @internal
+	 */
+	private static readonly _HASH: string = "blake2b512";
+
+	/**
 	 * The instance of the hash.
 	 * @internal
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	private readonly _instance: Hash<any>;
+	private readonly _instance: IHashInstance;
 
 	/**
 	 * Create a new instance of Blake2b.
@@ -42,10 +49,17 @@ export class Blake2b {
 	 * @param key Optional key for the hash.
 	 */
 	constructor(outputLength: number, key?: Uint8Array) {
-		this._instance = blake2b.create({
-			dkLen: outputLength,
-			key
-		});
+		const nodeCrypto =
+			outputLength === Blake2b.SIZE_512 && Is.undefined(key)
+				? NativeModulesCrypto.getNodeCryptoHash(Blake2b._HASH)
+				: undefined;
+
+		this._instance = nodeCrypto
+			? nodeCrypto.createHash(Blake2b._HASH)
+			: blake2b.create({
+					dkLen: outputLength,
+					key
+				});
 	}
 
 	/**
@@ -97,6 +111,6 @@ export class Blake2b {
 	 * @returns The computed hash as bytes.
 	 */
 	public digest(): Uint8Array {
-		return this._instance.digest();
+		return new Uint8Array(this._instance.digest());
 	}
 }

@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { hmac } from "@noble/hashes/hmac.js";
 import { sha1 } from "@noble/hashes/legacy.js";
-import type { Hash } from "@noble/hashes/utils.js";
 import { Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
+import type { IHashInstance } from "../models/IHashInstance.js";
 
 /**
  * Class to help with HmacSha1 scheme.
@@ -16,18 +17,26 @@ export class HmacSha1 {
 	public static readonly CLASS_NAME: string = nameof<HmacSha1>();
 
 	/**
+	 * The hash to request from node:crypto.
+	 * @internal
+	 */
+	private static readonly _HASH: string = "sha1";
+
+	/**
 	 * The instance of the hash.
 	 * @internal
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	private readonly _instance: Hash<any>;
+	private readonly _instance: IHashInstance;
 
 	/**
 	 * Create a new instance of HmacSha1.
 	 * @param key The key for the hmac.
 	 */
 	constructor(key: Uint8Array) {
-		this._instance = hmac.create(sha1, key);
+		const nodeCrypto = NativeModulesCrypto.getNodeCryptoHash(HmacSha1._HASH);
+		this._instance = nodeCrypto
+			? nodeCrypto.createHmac(HmacSha1._HASH, nodeCrypto.createSecretKey(key))
+			: hmac.create(sha1, key);
 	}
 
 	/**
@@ -58,6 +67,6 @@ export class HmacSha1 {
 	 * @returns The computed hash as bytes.
 	 */
 	public digest(): Uint8Array {
-		return this._instance.digest();
+		return new Uint8Array(this._instance.digest());
 	}
 }

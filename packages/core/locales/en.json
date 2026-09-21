@@ -122,6 +122,9 @@
 			"notCreated": "The shared buffer for object \"{objectId}\" has not been created",
 			"capacityExceeded": "The payload size of {required} bytes exceeds the maximum capacity of {capacity} bytes for object \"{objectId}\"",
 			"bufferFetchFailed": "Failed to retrieve shared buffer for object \"{objectId}\" from the main thread"
+		},
+		"randomHelper": {
+			"maxLength": "Requested length \"{length}\" is greater than the maximum of \"{maxLength}\" bytes"
 		}
 	},
 	"errorNames": {

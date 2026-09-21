@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { Base32, RandomHelper } from "@twin.org/core";
 import * as otp from "micro-key-producer/otp.js";
+import { Hotp } from "./hotp.js";
+import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
 
 /**
  * Perform TOTP.
@@ -20,6 +22,12 @@ export class Totp {
 		interval: number = 30,
 		timestamp: number = Date.now()
 	): string {
+		const nodeCrypto = NativeModulesCrypto.getNodeCryptoHash("sha1");
+		if (nodeCrypto) {
+			// A time based password is a counter based one over the elapsed intervals
+			return Hotp.generate(key, Math.floor(timestamp / (interval * 1000)));
+		}
+
 		return otp.totp({ secret: key, digits: 6, algorithm: "sha1", interval }, timestamp);
 	}
 

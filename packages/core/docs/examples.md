@@ -246,7 +246,8 @@ SharedStore.get<string>('region'); // 'eu-west-1'
 ```typescript
 import { NativeModules } from '@twin.org/core';
 
-NativeModules.typeExists('Buffer'); // true on Node, false in a browser without a polyfill
+// Pass the constructor type, not the instance type, to reach statics such as Buffer.from
+NativeModules.getType<BufferConstructor>('Buffer'); // the Buffer constructor on Node, undefined in a browser
 
 // Node builtins are only used by classes such as Sha256 once a host has registered them,
 // typically once at startup. The returned object lists any specifiers that failed to load.

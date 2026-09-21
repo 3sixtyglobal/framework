@@ -16,12 +16,19 @@ export class Base64Url {
 	public static readonly CLASS_NAME: string = nameof<Base64Url>();
 
 	/**
-	 * True when a global Buffer with the "base64url" encoding is available, which the
+	 * The global Buffer constructor when one is available, undefined otherwise.
+	 * @internal
+	 */
+	private static readonly _bufferType: BufferConstructor | undefined =
+		NativeModules.getType<BufferConstructor>("Buffer");
+
+	/**
+	 * True when the global Buffer supports the "base64url" encoding, which the
 	 * browser buffer polyfill lacks.
 	 * @internal
 	 */
-	private static readonly _hasBuffer: boolean =
-		NativeModules.typeExists("Buffer") && globalThis.Buffer.isEncoding("base64url");
+	private static readonly _hasBase64UrlEncoding: boolean =
+		Base64Url._bufferType?.isEncoding("base64url") ?? false;
 
 	/**
 	 * Convert the base 64 string to a byte array.
@@ -31,8 +38,8 @@ export class Base64Url {
 	public static decode(base64Url: string): Uint8Array {
 		Guards.string(Base64Url.CLASS_NAME, nameof(base64Url), base64Url);
 
-		if (Base64Url._hasBuffer) {
-			return new Uint8Array(globalThis.Buffer.from(base64Url, "base64url"));
+		if (Base64Url._bufferType && Base64Url._hasBase64UrlEncoding) {
+			return new Uint8Array(Base64Url._bufferType.from(base64Url, "base64url"));
 		}
 
 		let base64 = base64Url;
@@ -57,10 +64,10 @@ export class Base64Url {
 	public static encode(bytes: Uint8Array): string {
 		Guards.uint8Array(Base64Url.CLASS_NAME, nameof(bytes), bytes);
 
-		if (Base64Url._hasBuffer) {
-			return globalThis.Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength).toString(
-				"base64url"
-			);
+		if (Base64Url._bufferType && Base64Url._hasBase64UrlEncoding) {
+			return Base64Url._bufferType
+				.from(bytes.buffer, bytes.byteOffset, bytes.byteLength)
+				.toString("base64url");
 		}
 
 		const base64 = Base64.encode(bytes);

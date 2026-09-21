@@ -66,9 +66,9 @@ export class EntitySorter {
 				if (b1 === b2) {
 					res = 0;
 				} else if (b1) {
-					res = -1;
-				} else {
 					res = 1;
+				} else {
+					res = -1;
 				}
 			} else if (type === "string") {
 				res = (entity1[prop] as unknown as string).localeCompare(

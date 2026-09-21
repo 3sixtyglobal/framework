@@ -1,6 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable no-bitwise */
+import { Is } from "./is.js";
+import { NativeModules } from "./nativeModules.js";
 import { Base58 } from "../encoding/base58.js";
 import { Base64 } from "../encoding/base64.js";
 import { Base64Url } from "../encoding/base64Url.js";
@@ -10,6 +12,13 @@ import { HexHelper } from "../helpers/hexHelper.js";
  * Convert arrays to and from different formats.
  */
 export class Converter {
+	/**
+	 * The global Buffer constructor when one is available, undefined otherwise.
+	 * @internal
+	 */
+	private static readonly _bufferType: BufferConstructor | undefined =
+		NativeModules.getType<BufferConstructor>("Buffer");
+
 	/**
 	 * Lookup table for encoding.
 	 * @internal
@@ -36,6 +45,16 @@ export class Converter {
 	): string {
 		const start = startIndex ?? 0;
 		const len = length ?? array.length;
+
+		if (Converter._bufferType && Is.uint8Array(array)) {
+			// Clamped so an over-long length reads the remaining bytes instead of throwing,
+			// matching the pure implementation, which never throws for an out of range slice.
+			const clamped = Math.max(0, Math.min(len, array.length - start));
+			return Converter._bufferType
+				.from(array.buffer, array.byteOffset + start, clamped)
+				.toString("utf8");
+		}
+
 		let str = "";
 
 		for (let i = start; i < start + len; i++) {
@@ -74,6 +93,10 @@ export class Converter {
 	 * @returns The array.
 	 */
 	public static utf8ToBytes(utf8: string): Uint8Array {
+		if (Converter._bufferType) {
+			return new Uint8Array(Converter._bufferType.from(utf8, "utf8"));
+		}
+
 		const bytes: number[] = [];
 
 		for (let i = 0; i < utf8.length; i++) {
@@ -123,18 +146,30 @@ export class Converter {
 		length?: number | undefined,
 		reverse?: boolean
 	): string {
+		const len = length ?? array.length;
+		const start = startIndex ?? 0;
 		let hex = "";
-		Converter.buildHexLookups();
-		if (Converter._ENCODE_LOOKUP) {
-			const len = length ?? array.length;
-			const start = startIndex ?? 0;
-			if (reverse) {
-				for (let i = 0; i < len; i++) {
-					hex = Converter._ENCODE_LOOKUP[array[start + i]] + hex;
-				}
-			} else {
-				for (let i = 0; i < len; i++) {
-					hex += Converter._ENCODE_LOOKUP[array[start + i]];
+
+		if (Converter._bufferType && Is.uint8Array(array)) {
+			const slice = array.subarray(start, start + len);
+			// from(Uint8Array) copies, so reversing it cannot disturb the caller's bytes,
+			// whereas from(buffer, offset, length) is a view and must not be reversed.
+			hex = reverse
+				? Converter._bufferType.from(slice).reverse().toString("hex")
+				: Converter._bufferType
+						.from(slice.buffer, slice.byteOffset, slice.byteLength)
+						.toString("hex");
+		} else {
+			Converter.buildHexLookups();
+			if (Converter._ENCODE_LOOKUP) {
+				if (reverse) {
+					for (let i = 0; i < len; i++) {
+						hex = Converter._ENCODE_LOOKUP[array[start + i]] + hex;
+					}
+				} else {
+					for (let i = 0; i < len; i++) {
+						hex += Converter._ENCODE_LOOKUP[array[start + i]];
+					}
 				}
 			}
 		}
@@ -151,6 +186,20 @@ export class Converter {
 		const strippedHex = HexHelper.stripPrefix(hex);
 		const sizeof = strippedHex.length >> 1;
 		const length = sizeof << 1;
+
+		if (Converter._bufferType) {
+			const decoded = Converter._bufferType.from(strippedHex, "hex");
+			// Buffer stops at the first character that is not hex, so a short result means
+			// the string was malformed and the lookup tables below decide what it becomes.
+			if (decoded.length === sizeof) {
+				const nativeArray = new Uint8Array(decoded);
+				if (reverse) {
+					nativeArray.reverse();
+				}
+				return nativeArray;
+			}
+		}
+
 		const array = new Uint8Array(sizeof);
 
 		Converter.buildHexLookups();

@@ -1,9 +1,11 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+import type * as NodeCrypto from "node:crypto";
 import { chacha20poly1305 } from "@noble/ciphers/chacha.js";
 import type { CipherWithOutput } from "@noble/ciphers/utils.js";
-import { Guards, Is, NativeModules, Uint8ArrayHelper } from "@twin.org/core";
+import { Guards, Is, Uint8ArrayHelper } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
 
 /**
  * Implementation of the ChaCha20Poly1305 cipher.
@@ -22,11 +24,16 @@ export class ChaCha20Poly1305 {
 	private static readonly _AUTH_TAG_LENGTH: number = 16;
 
 	/**
+	 * The cipher to request from node:crypto.
+	 * @internal
+	 */
+	private static readonly _CIPHER: NodeCrypto.CipherChaCha20Poly1305Types = "chacha20-poly1305";
+
+	/**
 	 * node:crypto when it supports chacha20-poly1305, otherwise undefined.
 	 * @internal
 	 */
-	// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-	private readonly _nodeCrypto: typeof import("node:crypto") | undefined;
+	private readonly _nodeCrypto: typeof NodeCrypto | undefined;
 
 	/**
 	 * The key, retained to build a native cipher/decipher per call.
@@ -66,25 +73,11 @@ export class ChaCha20Poly1305 {
 		this._key = key;
 		this._nonce = nonce;
 		this._aad = aad;
-		this._nodeCrypto = ChaCha20Poly1305.resolveNodeCrypto();
+		this._nodeCrypto = NativeModulesCrypto.getNodeCryptoCipher(ChaCha20Poly1305._CIPHER);
 
 		if (!this._nodeCrypto) {
 			this._instance = chacha20poly1305(key, nonce, aad);
 		}
-	}
-
-	/**
-	 * Resolve node:crypto, but only when this build's OpenSSL actually lists
-	 * chacha20-poly1305 as a supported cipher.
-	 * @returns The module to use natively, or undefined to use the pure JavaScript fallback.
-	 * @internal
-	 */
-	private static resolveNodeCrypto():
-		// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-		typeof import("node:crypto") | undefined {
-		// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-		const nodeCrypto = NativeModules.getModule<typeof import("node:crypto")>("node:crypto");
-		return nodeCrypto?.getCiphers().includes("chacha20-poly1305") ? nodeCrypto : undefined;
 	}
 
 	/**
@@ -97,7 +90,7 @@ export class ChaCha20Poly1305 {
 
 		const nodeCrypto = this._nodeCrypto;
 		if (nodeCrypto) {
-			const cipher = nodeCrypto.createCipheriv("chacha20-poly1305", this._key, this._nonce, {
+			const cipher = nodeCrypto.createCipheriv(ChaCha20Poly1305._CIPHER, this._key, this._nonce, {
 				authTagLength: ChaCha20Poly1305._AUTH_TAG_LENGTH
 			});
 			if (!Is.empty(this._aad)) {
@@ -123,9 +116,14 @@ export class ChaCha20Poly1305 {
 			const tag = block.subarray(block.length - ChaCha20Poly1305._AUTH_TAG_LENGTH);
 			const cipherText = block.subarray(0, block.length - ChaCha20Poly1305._AUTH_TAG_LENGTH);
 
-			const decipher = nodeCrypto.createDecipheriv("chacha20-poly1305", this._key, this._nonce, {
-				authTagLength: ChaCha20Poly1305._AUTH_TAG_LENGTH
-			});
+			const decipher = nodeCrypto.createDecipheriv(
+				ChaCha20Poly1305._CIPHER,
+				this._key,
+				this._nonce,
+				{
+					authTagLength: ChaCha20Poly1305._AUTH_TAG_LENGTH
+				}
+			);
 			if (!Is.empty(this._aad)) {
 				decipher.setAAD(this._aad);
 			}

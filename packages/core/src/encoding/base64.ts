@@ -22,7 +22,8 @@ export class Base64 {
 	 * True when a global Buffer is available to back encode/decode natively.
 	 * @internal
 	 */
-	private static readonly _hasBuffer: boolean = NativeModules.typeExists("Buffer");
+	private static readonly _bufferType: BufferConstructor | undefined =
+		NativeModules.getType<BufferConstructor>("Buffer");
 
 	/**
 	 * Alphabet table for encoding.
@@ -124,8 +125,8 @@ export class Base64 {
 
 		Base64.validateLength(base64);
 
-		if (Base64._hasBuffer) {
-			return new Uint8Array(globalThis.Buffer.from(base64, "base64"));
+		if (Base64._bufferType) {
+			return new Uint8Array(Base64._bufferType.from(base64, "base64"));
 		}
 
 		let tmp;
@@ -179,10 +180,10 @@ export class Base64 {
 	public static encode(bytes: Uint8Array): string {
 		Guards.uint8Array(Base64.CLASS_NAME, nameof(bytes), bytes);
 
-		if (Base64._hasBuffer) {
-			return globalThis.Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength).toString(
-				"base64"
-			);
+		if (Base64._bufferType) {
+			return Base64._bufferType
+				.from(bytes.buffer, bytes.byteOffset, bytes.byteLength)
+				.toString("base64");
 		}
 
 		let tmp;

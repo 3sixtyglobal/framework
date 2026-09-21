@@ -1,9 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { sha1 } from "@noble/hashes/legacy.js";
-import type { Hash } from "@noble/hashes/utils.js";
 import { Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
+import type { IHashInstance } from "../models/IHashInstance.js";
 
 /**
  * Perform a SHA-1 hash on the block.
@@ -15,17 +16,23 @@ export class Sha1 {
 	public static readonly CLASS_NAME: string = nameof<Sha1>();
 
 	/**
+	 * The hash to request from node:crypto.
+	 * @internal
+	 */
+	private static readonly _HASH: string = "sha1";
+
+	/**
 	 * The instance of the hash.
 	 * @internal
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	private readonly _instance: Hash<any>;
+	private readonly _instance: IHashInstance;
 
 	/**
 	 * Create a new instance of Sha1.
 	 */
 	constructor() {
-		this._instance = sha1.create();
+		const nodeCrypto = NativeModulesCrypto.getNodeCryptoHash(Sha1._HASH);
+		this._instance = nodeCrypto ? nodeCrypto.createHash(Sha1._HASH) : sha1.create();
 	}
 
 	/**
@@ -54,6 +61,6 @@ export class Sha1 {
 	 * @returns The computed hash as bytes.
 	 */
 	public digest(): Uint8Array {
-		return this._instance.digest();
+		return new Uint8Array(this._instance.digest());
 	}
 }

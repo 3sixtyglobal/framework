@@ -4,12 +4,14 @@ import { NativeModules } from "../../src/utils/nativeModules.js";
 import { SharedStore } from "../../src/utils/sharedStore.js";
 
 describe("NativeModules", () => {
-	test("typeExists is true for a global that exists in this environment", () => {
-		expect(NativeModules.typeExists("Buffer")).toEqual(true);
+	test("getType returns the constructor for a global that exists in this environment", () => {
+		const bufferType = NativeModules.getType<BufferConstructor>("Buffer");
+		expect(bufferType).toBe(globalThis.Buffer);
+		expect(typeof bufferType?.from).toEqual("function");
 	});
 
-	test("typeExists is false for a name that is not a global", () => {
-		expect(NativeModules.typeExists("thisGlobalDoesNotExist")).toEqual(false);
+	test("getType returns undefined for a name that is not a global", () => {
+		expect(NativeModules.getType("thisGlobalDoesNotExist")).toBeUndefined();
 	});
 
 	test("getModule returns undefined for a Node builtin that init() was never called for", () => {
