@@ -727,16 +727,18 @@ jobs:
         run: |
           # Preserve dependency build approvals, then remove the workspace files so pnpm
           # installs dependencies from the registry as it would for a package consumer.
+          printf 'packages: []\n' > pnpm-workspace.yaml.tmp
           awk '
             /^allowBuilds:/ { copying = 1 }
             copying && /^[^[:space:]]/ && !/^allowBuilds:/ { exit }
             copying { print }
-          ' pnpm-workspace.yaml > "${{ matrix.package }}/pnpm-workspace.yaml"
-          test -s "${{ matrix.package }}/pnpm-workspace.yaml" || {
+          ' pnpm-workspace.yaml >> pnpm-workspace.yaml.tmp
+          grep -q '^allowBuilds:' pnpm-workspace.yaml.tmp || {
             echo "allowBuilds section is missing from pnpm-workspace.yaml"
             exit 1
           }
           rm -f package.json pnpm-lock.yaml pnpm-workspace.yaml
+          mv pnpm-workspace.yaml.tmp pnpm-workspace.yaml
 
       # Retried to handle transient registry failures.
       - name: Install dependencies
@@ -752,7 +754,7 @@ jobs:
               sleep 30
             }
           done
-          rm -f pnpm-workspace.yaml
+          rm -f "$GITHUB_WORKSPACE/pnpm-workspace.yaml"
 
       - name: Run Dist
         run: |
