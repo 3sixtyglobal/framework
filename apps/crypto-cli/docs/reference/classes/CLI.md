@@ -117,6 +117,12 @@ Additional options.
 
 Override the output width.
 
+###### noColor?
+
+`boolean`
+
+Disable colourised output.
+
 #### Returns
 
 `Promise`\<`number`\>
