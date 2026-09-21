@@ -330,9 +330,17 @@ jobs:
 
       - name: Remove Mono-Repo Node Modules
         run: |
-          # The workspace files make pnpm link the sibling packages from disk. Removing them
-          # forces the package to install its dependencies from the registry, which is what
-          # a consumer of the published tarball gets.
+          # Preserve dependency build approvals, then remove the workspace files so pnpm
+          # installs dependencies from the registry as it would for a package consumer.
+          awk '
+            /^allowBuilds:/ { copying = 1 }
+            copying && /^[^[:space:]]/ && !/^allowBuilds:/ { exit }
+            copying { print }
+          ' pnpm-workspace.yaml > "${{ matrix.package }}/pnpm-workspace.yaml"
+          test -s "${{ matrix.package }}/pnpm-workspace.yaml" || {
+            echo "allowBuilds section is missing from pnpm-workspace.yaml"
+            exit 1
+          }
           rm -f package.json pnpm-lock.yaml pnpm-workspace.yaml
 
       # Retried to handle transient registry failures.
@@ -349,6 +357,7 @@ jobs:
               sleep 30
             }
           done
+          rm -f pnpm-workspace.yaml
 
       - name: Run Dist
         run: |

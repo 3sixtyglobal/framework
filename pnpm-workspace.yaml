@@ -10,9 +10,6 @@ preferWorkspacePackages: true
 # Every dependency in the repo is pinned to an exact version.
 saveExact: true
 
-# eslint-plugin-import-x resolves through unrs-resolver, and tsx runs the CLI apps
-# from TypeScript source through esbuild. Both need their postinstall to select the
-# correct native binary.
 allowBuilds:
   esbuild: true
   unrs-resolver: true
