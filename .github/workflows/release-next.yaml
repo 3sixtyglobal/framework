@@ -259,22 +259,14 @@ jobs:
             }
           done
 
-      # pnpm walks the workspace in topological order, so each package is listed after
+      # pnpm walks the workspace in dependency order, so each package is listed after
       # the packages it depends on. The publish matrix runs one package at a time and
       # each installs its dependencies from the registry, so a dependency published
       # after its dependent would fail to resolve.
       - name: Resolve workspace publish order
         id: read-workspaces
-        env:
-          ROOT: ${{ github.workspace }}
         run: |
-          PACKAGES=$(pnpm -r --workspace-concurrency=1 exec node -e '
-            const path = require("path");
-            console.log(path.relative(process.env.ROOT, process.cwd()).split(path.sep).join("/"));
-          ' | node -e '
-            const lines = require("fs").readFileSync(0, "utf8").split(String.fromCharCode(10)).map(l => l.trim());
-            console.log(JSON.stringify(lines.filter(Boolean)));
-          ')
+          PACKAGES=$(node --input-type=module -e 'import { loadWorkspaceDirs } from "./scripts/common.mjs"; console.log(JSON.stringify(await loadWorkspaceDirs()));')
           echo "Found packages: $PACKAGES"
           echo "packages=$PACKAGES" >> $GITHUB_OUTPUT
 

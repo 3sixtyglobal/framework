@@ -30,7 +30,13 @@
  */
 import fs, { readdir } from 'node:fs/promises';
 import path from 'node:path';
-import { directoryExists, fileExists, isSymbolicLink, loadJson } from './common.mjs';
+import {
+	directoryExists,
+	fileExists,
+	isSymbolicLink,
+	loadJson,
+	loadWorkspaceDirs
+} from './common.mjs';
 
 /**
  * Execute the process.
@@ -245,16 +251,13 @@ async function findPackagesDetails(targetPackage) {
 		const allRepoDirs = await readdir(repoDirRoot, { withFileTypes: true });
 		for (const repoDir of allRepoDirs) {
 			if (repoDir.isDirectory()) {
-				const repoPackageJsonFilename = path.join(repoDirRoot, repoDir.name, 'package.json');
-				if (await fileExists(repoPackageJsonFilename)) {
-					const repoPackageJson = await loadJson(repoPackageJsonFilename);
-					if (Array.isArray(repoPackageJson.workspaces)) {
-						for (const workspaceEntry of repoPackageJson.workspaces) {
-							const entryParts = workspaceEntry.split('/');
-							if (new RegExp(`^${packageNameOnly}`).test(entryParts[1])) {
-								const targetDir = path.join(repoDirRoot, repoDir.name, workspaceEntry);
-								packages.push({ packageName: await getPackageNameFromDir(targetDir), targetDir });
-							}
+				const repoRoot = path.join(repoDirRoot, repoDir.name);
+				if (await fileExists(path.join(repoRoot, 'package.json'))) {
+					for (const workspaceEntry of await loadWorkspaceDirs(repoRoot)) {
+						const entryParts = workspaceEntry.split('/');
+						if (new RegExp(`^${packageNameOnly}`).test(entryParts[1])) {
+							const targetDir = path.join(repoRoot, workspaceEntry);
+							packages.push({ packageName: await getPackageNameFromDir(targetDir), targetDir });
 						}
 					}
 				}
