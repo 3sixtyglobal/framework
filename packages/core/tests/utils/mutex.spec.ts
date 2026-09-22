@@ -48,29 +48,37 @@ async function waitForWorkerExits(
 	}
 }
 
-const getLocks = (): { [key: string]: Int32Array } => {
-	let locks = SharedStore.get<{ [key: string]: Int32Array }>("mutexLocks");
-	if (!locks) {
-		locks = {};
-		SharedStore.set("mutexLocks", locks);
-	}
-	return locks;
-};
+// All of the lock state lives on a single instance in the SharedStore, so the tests reach
+// through that instance and reset it by removing the one entry.
+interface IMutexInternal {
+	_locks: Map<string, Int32Array>;
+	_waiters: Map<string, unknown[]>;
+	_watchers: Map<string, Promise<void>>;
+	_workerShared: Set<string>;
+	_createdSinceSweep: number;
+	_workerThreadsModule: unknown;
+}
+
+const mutexInstance = (): IMutexInternal =>
+	(Mutex as unknown as { instance: () => IMutexInternal }).instance();
+
+const getLocks = (): Map<string, Int32Array> => mutexInstance()._locks;
 
 const mutexSetPrivateLock = (key: string, arr: Int32Array): void => {
-	getLocks()[key] = arr;
+	getLocks().set(key, arr);
 };
 
-const mutexGetPrivateLock = (key: string): Int32Array | undefined => getLocks()[key];
+const mutexGetPrivateLock = (key: string): Int32Array | undefined => getLocks().get(key);
 
-const mutexClearPrivateLocks = (): void => {
-	SharedStore.set("mutexLocks", {});
+const mutexResetInstance = (): void => {
+	SharedStore.remove("mutex");
 };
 
-const mutexClearPrivateQueues = (): void => {
-	SharedStore.set("mutexWaiters", {});
-	SharedStore.set("mutexWatchers", {});
-};
+const mutexGetPrivateQueue = (key: string): unknown[] | undefined =>
+	mutexInstance()._waiters.get(key);
+
+const mutexGetPrivateReclaimThreshold = (): number =>
+	(Mutex as unknown as { _RECLAIM_THRESHOLD: number })._RECLAIM_THRESHOLD;
 
 const mutexSimulateHeldLock = (key: string): Int32Array => {
 	const arr = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
@@ -79,24 +87,13 @@ const mutexSimulateHeldLock = (key: string): Int32Array => {
 	return arr;
 };
 
-const mutexResetDefaultTimeout = (): void => {
-	SharedStore.remove("mutexDefaultTimeoutMs");
-};
-
 const mutexSetPrivateWorkerThreads = (module: unknown): void => {
-	(Mutex as unknown as { _workerThreadsModule: unknown })._workerThreadsModule = module;
-};
-
-const mutexResetPrivateWorkerThreads = (): void => {
-	(Mutex as unknown as { _workerThreadsModule: unknown })._workerThreadsModule = undefined;
+	mutexInstance()._workerThreadsModule = module;
 };
 
 describe("Mutex", () => {
 	afterEach(() => {
-		mutexClearPrivateLocks();
-		mutexClearPrivateQueues();
-		mutexResetDefaultTimeout();
-		mutexResetPrivateWorkerThreads();
+		mutexResetInstance();
 	});
 
 	describe("getDefaultTimeoutMs / setDefaultTimeoutMs", () => {
@@ -199,6 +196,16 @@ describe("Mutex", () => {
 			}
 		});
 
+		test("accepts keys which collide with object prototype members", async () => {
+			// The registries are Maps, so a key such as __proto__ is stored as an ordinary key
+			// rather than reassigning the prototype of a plain object and vanishing.
+			for (const key of ["__proto__", "constructor", "toString", "hasOwnProperty"]) {
+				expect(await Mutex.lock(key, { timeoutMs: 50 })).toEqual(true);
+				expect(mutexGetPrivateLock(key)).toBeInstanceOf(Int32Array);
+				Mutex.unlock(key);
+			}
+		});
+
 		test("accepts keys containing special characters", async () => {
 			const keys = ["a/b", "a.b", "a b", "a:b"];
 			for (const key of keys) {
@@ -279,11 +286,98 @@ describe("Mutex", () => {
 		});
 
 		test("retains the key entry in the registry after unlock with no waiters", async () => {
-			// parentPort is null in fork-mode test processes, so this process owns the
-			// registry and never deletes entries - worker threads may still hold references.
+			// Reclamation is amortised, so a single unlock leaves the entry in place; it is
+			// only discarded once enough new entries have been created to trigger a sweep.
 			await Mutex.lock("cleanup");
 			Mutex.unlock("cleanup");
 			expect(mutexGetPrivateLock("cleanup")).toBeDefined();
+		});
+	});
+
+	describe("registry reclamation", () => {
+		test("does not create a waiter queue for an uncontended lock", async () => {
+			await Mutex.lock("uncontended");
+			expect(mutexGetPrivateQueue("uncontended")).toBeUndefined();
+			Mutex.unlock("uncontended");
+			expect(mutexGetPrivateQueue("uncontended")).toBeUndefined();
+		});
+
+		test("removes the waiter queue for a key once contention ends", async () => {
+			await Mutex.lock("queue-drain");
+
+			const waiting = Mutex.lock("queue-drain", { timeoutMs: 1000 });
+			await new Promise(resolve => setTimeout(resolve, 1));
+			expect(mutexGetPrivateQueue("queue-drain")).toHaveLength(1);
+
+			Mutex.unlock("queue-drain");
+			expect(await waiting).toEqual(true);
+			expect(mutexGetPrivateQueue("queue-drain")).toBeUndefined();
+
+			Mutex.unlock("queue-drain");
+		});
+
+		test("removes the waiter queue for a key when the waiter times out", async () => {
+			await Mutex.lock("queue-timeout");
+
+			expect(await Mutex.lock("queue-timeout", { timeoutMs: 20 })).toEqual(false);
+			expect(mutexGetPrivateQueue("queue-timeout")).toBeUndefined();
+
+			Mutex.unlock("queue-timeout");
+		});
+
+		test("reclaims idle lock entries once the creation threshold is reached", async () => {
+			const threshold = mutexGetPrivateReclaimThreshold();
+			const total = threshold + 50;
+
+			for (let i = 0; i < total; i++) {
+				await Mutex.lock(`reclaim-${i}`);
+				Mutex.unlock(`reclaim-${i}`);
+			}
+
+			// The sweep runs on the unlock which crosses the threshold and clears every idle
+			// entry, so only the keys created after that sweep are still registered.
+			expect(getLocks().size).toEqual(total - threshold);
+
+			// The registry is still usable for a key whose entry was discarded.
+			expect(await Mutex.lock("reclaim-0")).toEqual(true);
+			Mutex.unlock("reclaim-0");
+		});
+
+		test("retains a lock entry which is still held when the sweep runs", async () => {
+			const threshold = mutexGetPrivateReclaimThreshold();
+			await Mutex.lock("held-through-sweep");
+
+			for (let i = 0; i < threshold; i++) {
+				await Mutex.lock(`churn-${i}`);
+				Mutex.unlock(`churn-${i}`);
+			}
+
+			expect(mutexGetPrivateLock("held-through-sweep")).toBeDefined();
+			Mutex.unlock("held-through-sweep");
+		});
+
+		test("retains a lock entry whose buffer has been handed to a worker", async () => {
+			const threshold = mutexGetPrivateReclaimThreshold();
+
+			// Negotiating the buffer marks the key as shared with a worker thread. The worker
+			// caches the Int32Array it receives, so replacing it would break mutual exclusion.
+			const { port1, port2 } = new MessageChannel();
+			const signal = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
+			Mutex.handleWorkerMessage({
+				type: MutexMessageTypes.GetBuffer,
+				key: "worker-shared",
+				signal: signal.buffer,
+				port: port2
+			});
+			const shared = mutexGetPrivateLock("worker-shared");
+			port1.close();
+
+			for (let i = 0; i < threshold; i++) {
+				await Mutex.lock(`churn-${i}`);
+				Mutex.unlock(`churn-${i}`);
+			}
+
+			expect(mutexGetPrivateLock("worker-shared")).toBe(shared);
 		});
 	});
 
