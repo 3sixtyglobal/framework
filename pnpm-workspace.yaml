@@ -10,6 +10,12 @@ preferWorkspacePackages: true
 # Every dependency in the repo is pinned to an exact version.
 saveExact: true
 
+# The @twin.org packages are released continuously as next builds and consumed
+# across the repos, so they are exempt from the release age hold pnpm applies to
+# everything else.
+minimumReleaseAgeExclude:
+  - '@twin.org/*'
+
 allowBuilds:
   esbuild: true
   unrs-resolver: true
