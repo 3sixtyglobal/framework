@@ -2,12 +2,20 @@
 
 A cross-thread mutex built on Atomics and SharedArrayBuffer.
 
-When isMainThread is true (main thread or fork-mode child process) the class acts as
-the authoritative registry: it creates a SharedArrayBuffer-backed Int32Array for each
-key on first use and never discards it, because worker threads may hold references to
-the same underlying memory.
+The static methods are a facade over a single instance held in the SharedStore, so every
+load of this package on a thread shares one set of registries. Each thread has its own
+instance; the mutual exclusion between threads comes from the SharedArrayBuffer behind
+each key, not from the instance itself.
 
-When isMainThread is false (a true worker thread) the class synchronously negotiates
+When isMainThread is true (main thread or fork-mode child process) the instance acts as
+the authoritative registry: it creates a SharedArrayBuffer-backed Int32Array for each
+key on first use. An entry is discarded once the key is idle, so a workload which touches
+many distinct keys does not grow the registry without bound. A key which has been handed
+to a worker thread is retained for the life of the process, because the worker caches the
+Int32Array it was given and re-creating the buffer would hand two threads different memory
+for the same key, silently breaking mutual exclusion.
+
+When isMainThread is false (a true worker thread) the instance synchronously negotiates
 the shared buffer with the main thread on first use of each key, then caches it locally.
 The main thread must call Mutex.handleWorkerMessage(msg) from its worker message handler
 before that worker first calls Mutex.lock().
@@ -21,16 +29,6 @@ shared lock, so the ordering guarantee is per thread rather than global.
 
 The lock is not re-entrant: a thread that already holds a key and calls lock() again on
 the same key will block until the timeout elapses.
-
-## Constructors
-
-### Constructor
-
-> **new Mutex**(): `Mutex`
-
-#### Returns
-
-`Mutex`
 
 ## Properties
 
