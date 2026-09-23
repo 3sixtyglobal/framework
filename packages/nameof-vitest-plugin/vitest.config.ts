@@ -21,6 +21,7 @@ export default defineConfig({
 		},
 		fileParallelism: true,
 		maxWorkers: 4,
-		fsModuleCache: true
+		fsModuleCache: true,
+		fsModuleCachePath: "node_modules/.vitest-cache"
 	}
 });
