@@ -38,7 +38,7 @@ The registry, keyed by module specifier.
 
 Get a global of the given name from the current environment, typed as the caller requires.
 Pass the constructor type, not the instance type, to reach statics e.g.
-getType<BufferConstructor>("Buffer").
+getType&lt;BufferConstructor&gt;("Buffer").
 
 #### Type Parameters
 

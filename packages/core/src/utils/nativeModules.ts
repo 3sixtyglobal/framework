@@ -32,7 +32,7 @@ export class NativeModules {
 	/**
 	 * Get a global of the given name from the current environment, typed as the caller requires.
 	 * Pass the constructor type, not the instance type, to reach statics e.g.
-	 * getType<BufferConstructor>("Buffer").
+	 * getType&lt;BufferConstructor&gt;("Buffer").
 	 * @param name The name of the global to get, e.g. "Buffer".
 	 * @returns The global, or undefined if it does not exist (e.g. in a browser).
 	 */
