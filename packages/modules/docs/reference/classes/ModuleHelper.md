@@ -44,6 +44,20 @@ The options for module resolution.
 
 ***
 
+### getOptions() {#getoptions}
+
+> `static` **getOptions**(): [`IModuleHelperOptions`](../interfaces/IModuleHelperOptions.md) \| `undefined`
+
+Get the options for module resolution, worker threads are started with these options.
+
+#### Returns
+
+[`IModuleHelperOptions`](../interfaces/IModuleHelperOptions.md) \| `undefined`
+
+The options, or undefined if they have not been set.
+
+***
+
 ### importModule() {#importmodule}
 
 > `static` **importModule**\<`T`\>(`module`): `Promise`\<`T`\>
@@ -247,7 +261,8 @@ GeneralError if executing the module entry failed.
 > `static` **execModuleMethodThreadMessage**(`module`, `completed`, `options?`): [`IModuleWorker`](../interfaces/IModuleWorker.md)
 
 Load the module and provide a messaging interface. The worker starts with the native
-modules already registered on this thread via NativeModules.init().
+modules already registered on this thread via NativeModules.init() and the options from
+setOptions, messages from the worker's onMessage option are forwarded to this thread.
 
 #### Parameters
 
