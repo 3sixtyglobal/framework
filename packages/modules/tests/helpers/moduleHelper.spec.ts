@@ -280,6 +280,41 @@ describe("ModuleHelper", () => {
 			).toEqual(3);
 		});
 
+		test("getOptions returns the options that were set", () => {
+			expect(ModuleHelper.getOptions()).toBeUndefined();
+			ModuleHelper.setOptions({ executionDirectory, maxSizeMb: 5 });
+			expect(ModuleHelper.getOptions()).toEqual({ executionDirectory, maxSizeMb: 5 });
+		});
+
+		test("execModuleMethodThread worker is started without options when none are set", async () => {
+			expect(
+				await ModuleHelper.execModuleMethodThread(TEST_MODULE, "testMethodModuleHelperOptions")
+			).toBeUndefined();
+		});
+
+		test("execModuleMethodThread worker is started with the options", async () => {
+			ModuleHelper.setOptions({ executionDirectory, cacheDirectory: ".cache", cacheTtlHours: 2 });
+
+			expect(
+				await ModuleHelper.execModuleMethodThread(TEST_MODULE, "testMethodModuleHelperOptions")
+			).toEqual({
+				executionDirectory,
+				cacheDirectory: ".cache",
+				cacheTtlHours: 2,
+				hasOnMessage: false
+			});
+		});
+
+		test("execModuleMethodThread worker forwards option messages to the main thread", async () => {
+			const onMessage = vi.fn();
+			ModuleHelper.setOptions({ executionDirectory, onMessage });
+
+			expect(
+				await ModuleHelper.execModuleMethodThread(TEST_MODULE, "testMethodModuleHelperOptions")
+			).toMatchObject({ executionDirectory, hasOnMessage: true });
+			expect(onMessage).toHaveBeenCalledWith("info", "test.message", { value: 1 });
+		});
+
 		test("execModuleMethodThread reports errors with the original module name", async () => {
 			ModuleHelper.setOptions({ executionDirectory });
 

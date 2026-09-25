@@ -37,6 +37,14 @@ export class ModuleHelper {
 	}
 
 	/**
+	 * Get the options for module resolution, worker threads are started with these options.
+	 * @returns The options, or undefined if they have not been set.
+	 */
+	public static getOptions(): IModuleHelperOptions | undefined {
+		return SharedStore.get<IModuleHelperOptions>("moduleHelperOptions");
+	}
+
+	/**
 	 * Import a module on the main thread, resolving and caching it.
 	 * @param module The module.
 	 * @returns The imported module.
@@ -187,7 +195,8 @@ export class ModuleHelper {
 
 	/**
 	 * Load the module and provide a messaging interface. The worker starts with the native
-	 * modules already registered on this thread via NativeModules.init().
+	 * modules already registered on this thread via NativeModules.init() and the options from
+	 * setOptions, messages from the worker's onMessage option are forwarded to this thread.
 	 * @param module The module.
 	 * @param completed Callback called when the worker thread processes a completion.
 	 * @param options Optional settings.
@@ -263,9 +272,7 @@ export class ModuleHelper {
 	public static async resolveModule(module: string): Promise<string> {
 		await ModuleResolutionHelper.initNativeModules();
 
-		const options =
-			SharedStore.get<IModuleHelperOptions>("moduleHelperOptions") ??
-			ModuleResolutionHelper.getDefaultOptions(module);
+		const options = ModuleHelper.getOptions() ?? ModuleResolutionHelper.getDefaultOptions(module);
 		if (Is.undefined(options)) {
 			return module;
 		}
@@ -322,10 +329,11 @@ export class ModuleHelper {
 	): Worker {
 		// Eval workers resolve bare specifiers from the host's working directory, so resolve our
 		// own dependencies here and pass their URLs to the worker.
+		const moduleHelperOptions = ModuleHelper.getOptions();
 		const worker = new Worker(
 			`(async () => {
 	const { workerData, parentPort } = await import('node:worker_threads');
-	const { module, nativeModules, contextUrl, coreUrl } = workerData;
+	const { module, nativeModules, moduleHelperOptions, forwardMessages, contextUrl, coreUrl } = workerData;
 
 	let ContextIdStore;
 	let BaseError;
@@ -338,6 +346,16 @@ export class ModuleHelper {
 		// Failures are ignored, the pure JavaScript fallbacks still work.
 		if (nativeModules.length > 0) {
 			await coreModule.NativeModules.init(nativeModules);
+		}
+
+		// Set through the global shared store so any ModuleHelper instance in the worker uses them.
+		if (moduleHelperOptions !== undefined) {
+			coreModule.SharedStore.set('moduleHelperOptions', {
+				...moduleHelperOptions,
+				onMessage: forwardMessages
+					? (level, key, properties) => parentPort.postMessage({ moduleHelperMessage: { level, key, properties } })
+					: undefined
+			});
 		}
 	} catch (err) {
 		// BaseError may not have loaded, so serialise the cause directly.
@@ -401,6 +419,11 @@ export class ModuleHelper {
 				workerData: {
 					module: resolvedModule,
 					nativeModules: NativeModules.names(),
+					// Functions can not be cloned to the worker, so messages are forwarded to onMessage here.
+					moduleHelperOptions: Is.object(moduleHelperOptions)
+						? { ...moduleHelperOptions, onMessage: undefined }
+						: undefined,
+					forwardMessages: Is.function(moduleHelperOptions?.onMessage),
 					contextUrl: import.meta.resolve("@twin.org/context"),
 					coreUrl: import.meta.resolve("@twin.org/core")
 				},
@@ -413,6 +436,14 @@ export class ModuleHelper {
 				return;
 			}
 			if (SharedObjectBuffer.handleWorkerMessage(msg)) {
+				return;
+			}
+			if (Is.object(msg?.moduleHelperMessage)) {
+				moduleHelperOptions?.onMessage?.(
+					msg.moduleHelperMessage.level,
+					msg.moduleHelperMessage.key,
+					msg.moduleHelperMessage.properties
+				);
 				return;
 			}
 			if (!Is.stringValue(msg?.method)) {
