@@ -12,6 +12,8 @@ import {
 	SharedStore
 } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { ModuleResolutionHelper } from "./moduleResolutionHelper.js";
+import type { IModuleHelperOptions } from "../models/IModuleHelperOptions.js";
 import type { IModuleWorker } from "../models/IModuleWorker.js";
 
 /**
@@ -24,13 +26,30 @@ export class ModuleHelper {
 	public static readonly CLASS_NAME: string = nameof<ModuleHelper>();
 
 	/**
-	 * Override the import function for modules.
-	 * @param overrideImport The override import function.
+	 * Set the options for module resolution, this enables resolving local, package, npm: and https:
+	 * modules from the execution directory for both main thread and worker thread imports.
+	 * Setting the options clears the resolution caches.
+	 * @param options The options for module resolution.
 	 */
-	public static overrideImport(
-		overrideImport: (moduleName: string) => Promise<{ module?: unknown; useDefault: boolean }>
-	): void {
-		SharedStore.set("overrideImport", overrideImport);
+	public static setOptions(options: IModuleHelperOptions): void {
+		SharedStore.set("moduleHelperOptions", options);
+		SharedStore.remove("moduleHelperCache");
+	}
+
+	/**
+	 * Import a module on the main thread, resolving and caching it.
+	 * @param module The module.
+	 * @returns The imported module.
+	 */
+	public static async importModule<T = { [key: string]: unknown }>(module: string): Promise<T> {
+		const cache = ModuleHelper.getCache();
+		if (cache.modules.has(module)) {
+			return cache.modules.get(module) as T;
+		}
+
+		const moduleInstance = await import(await ModuleHelper.resolveModule(module));
+		cache.modules.set(module, moduleInstance);
+		return moduleInstance as T;
 	}
 
 	/**
@@ -41,26 +60,10 @@ export class ModuleHelper {
 	 * @throws GeneralError if getting the module entry failed.
 	 */
 	public static async getModuleEntry<T>(module: string, entry: string): Promise<T> {
-		let moduleInstance;
+		let moduleInstance: { [key: string]: unknown } | undefined;
 
 		try {
-			let useDefault = true;
-
-			const overrideImport =
-				SharedStore.get<(moduleName: string) => Promise<{ module?: unknown; useDefault: boolean }>>(
-					"overrideImport"
-				);
-
-			if (Is.function(overrideImport)) {
-				const overrideResult = await overrideImport(module);
-
-				moduleInstance = overrideResult.module;
-				useDefault = overrideResult.useDefault;
-			}
-
-			if (useDefault) {
-				moduleInstance = await import(module);
-			}
+			moduleInstance = await ModuleHelper.importModule(module);
 		} catch (err) {
 			throw new GeneralError(
 				ModuleHelper.CLASS_NAME,
@@ -199,18 +202,151 @@ export class ModuleHelper {
 			threadName?: string;
 		}
 	): IModuleWorker {
+		const pending: { method: string; args?: unknown; contextIds?: IContextIds }[] = [];
+		let worker: Worker | undefined;
+		let terminated = false;
+
+		// The worker starts once the module is resolved, messages are queued until then.
+		const started = (async () => {
+			try {
+				const resolvedModule = await ModuleHelper.resolveModule(module);
+				if (!terminated) {
+					worker = ModuleHelper.createWorker(
+						module,
+						resolvedModule,
+						completed,
+						options?.threadName
+					);
+					for (const message of pending) {
+						worker.postMessage(message);
+					}
+					pending.length = 0;
+				}
+			} catch (err) {
+				completed(
+					"startup",
+					undefined,
+					new GeneralError(
+						ModuleHelper.CLASS_NAME,
+						"workerStartup",
+						{ module },
+						BaseError.fromError(err)
+					)
+				);
+			}
+		})();
+
+		return {
+			executeMethod: (method: string, args?: unknown, contextIds?: IContextIds) => {
+				if (worker) {
+					worker.postMessage({ method, args, contextIds });
+				} else {
+					pending.push({ method, args, contextIds });
+				}
+			},
+			terminate: async () => {
+				terminated = true;
+				await started;
+				return worker?.terminate() ?? 0;
+			}
+		};
+	}
+
+	/**
+	 * Resolve a module name to the specifier to import, using the options from setOptions. Without
+	 * options, local and package modules are resolved from the working directory, npm: and https:
+	 * modules are only resolved once options are set. The native modules needed are registered on first use.
+	 * @param module The module name.
+	 * @returns The specifier to import, or the module name unchanged if it could not be resolved.
+	 * @throws GeneralError if the module uses an insecure protocol or could not be installed or downloaded.
+	 */
+	public static async resolveModule(module: string): Promise<string> {
+		await ModuleResolutionHelper.initNativeModules();
+
+		const options =
+			SharedStore.get<IModuleHelperOptions>("moduleHelperOptions") ??
+			ModuleResolutionHelper.getDefaultOptions(module);
+		if (Is.undefined(options)) {
+			return module;
+		}
+
+		const cache = ModuleHelper.getCache();
+		const cacheKey = `${options.executionDirectory}|${module}`;
+		let resolved = cache.resolved.get(cacheKey);
+		if (Is.undefined(resolved)) {
+			const resolvedPath = await ModuleResolutionHelper.resolveModulePath(
+				module,
+				options,
+				cache.dependencyRoots
+			);
+			if (Is.stringValue(resolvedPath)) {
+				resolved = ModuleResolutionHelper.createModuleImportUrl(resolvedPath);
+				cache.resolved.set(cacheKey, resolved);
+			}
+		}
+
+		return resolved ?? module;
+	}
+
+	/**
+	 * Get the resolution caches, shared across instance loads of the package.
+	 * @returns The caches.
+	 * @internal
+	 */
+	private static getCache(): {
+		modules: Map<string, unknown>;
+		resolved: Map<string, string>;
+		dependencyRoots: Map<string, string | undefined>;
+	} {
+		return SharedStore.get("moduleHelperCache", () => ({
+			modules: new Map<string, unknown>(),
+			resolved: new Map<string, string>(),
+			dependencyRoots: new Map<string, string | undefined>()
+		}));
+	}
+
+	/**
+	 * Create the worker thread for the module.
+	 * @param module The module name, used for error reporting.
+	 * @param resolvedModule The resolved module specifier to import in the worker.
+	 * @param completed Callback called when the worker thread processes a completion.
+	 * @param threadName The name of the thread.
+	 * @returns The worker.
+	 * @internal
+	 */
+	private static createWorker(
+		module: string,
+		resolvedModule: string,
+		completed: (operation: string, result?: unknown, err?: Error) => void,
+		threadName?: string
+	): Worker {
+		// Eval workers resolve bare specifiers from the host's working directory, so resolve our
+		// own dependencies here and pass their URLs to the worker.
 		const worker = new Worker(
 			`(async () => {
 	const { workerData, parentPort } = await import('node:worker_threads');
-	const { ContextIdStore } = await import('@twin.org/context');
-	const { BaseError, NativeModules } = await import('@twin.org/core');
-	const { module, nativeModules } = workerData;
+	const { module, nativeModules, contextUrl, coreUrl } = workerData;
 
-	// Skipped when empty so a host that never opted in isn't broken by an older core in its
-	// own node_modules (this eval worker resolves bare specifiers against that tree, not ours).
-	// Failures beyond that are ignored, the pure JavaScript fallbacks still work.
-	if (nativeModules.length > 0) {
-		await NativeModules.init(nativeModules);
+	let ContextIdStore;
+	let BaseError;
+	try {
+		const contextModule = await import(contextUrl);
+		const coreModule = await import(coreUrl);
+		ContextIdStore = contextModule.ContextIdStore;
+		BaseError = coreModule.BaseError;
+
+		// Failures are ignored, the pure JavaScript fallbacks still work.
+		if (nativeModules.length > 0) {
+			await coreModule.NativeModules.init(nativeModules);
+		}
+	} catch (err) {
+		// BaseError may not have loaded, so serialise the cause directly.
+		parentPort.postMessage({
+			errorType: 'workerStartup',
+			method: 'startup',
+			cause: { name: err?.name ?? 'Error', message: err?.message ?? String(err), stack: err?.stack }
+		});
+		return;
 	}
 
 	function rejectError(errorType, methodName, args, cause) {
@@ -262,8 +398,13 @@ export class ModuleHelper {
 })();`,
 			{
 				eval: true,
-				workerData: { module, nativeModules: NativeModules.names() },
-				name: options?.threadName
+				workerData: {
+					module: resolvedModule,
+					nativeModules: NativeModules.names(),
+					contextUrl: import.meta.resolve("@twin.org/context"),
+					coreUrl: import.meta.resolve("@twin.org/core")
+				},
+				name: threadName
 			}
 		);
 
@@ -312,28 +453,6 @@ export class ModuleHelper {
 			completed("terminate", code);
 		});
 
-		return {
-			executeMethod: (method: string, args?: unknown, contextIds?: IContextIds) =>
-				worker.postMessage({ method, args, contextIds }),
-			terminate: async () => worker.terminate()
-		};
-	}
-
-	/**
-	 * Check if a module is a local module.
-	 * @param name The name of the module.
-	 * @returns True if the module is local, false otherwise.
-	 */
-	public static isLocalModule(name: string): boolean {
-		return name.startsWith(".") || name.startsWith("/");
-	}
-
-	/**
-	 * Check if a module is a relative module.
-	 * @param name The name of the module.
-	 * @returns True if the module is relative, false otherwise.
-	 */
-	public static isRelativeModule(name: string): boolean {
-		return name.startsWith(".");
+		return worker;
 	}
 }

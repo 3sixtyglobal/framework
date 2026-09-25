@@ -4,7 +4,22 @@
 			"moduleNotFound": "Failed to load module \"{module}\"",
 			"entryNotFound": "Failed to load entry \"{entry}\" from module \"{module}\"",
 			"notFunction": "The entry \"{method}\" in module \"{module}\" is not a function",
-			"workerException": "The thread worker failed with an exception in module \"{module}\""
+			"workerException": "The thread worker failed with an exception in module \"{module}\"",
+			"workerStartup": "The thread worker failed to start for module \"{module}\""
+		},
+		"moduleResolutionHelper": {
+			"insecureProtocol": "Cannot load module from insecure protocol: {protocol}. Only HTTPS is allowed for remote modules.",
+			"downloadFailed": "Failed to download module from {url}",
+			"npmInstallFailed": "Failed to install npm module: {package}",
+			"sizeLimitExceeded": "Module download size exceeds limit: {size} bytes > {limit} bytes",
+			"nativeModuleMissing": "The native module \"{module}\" must be registered with NativeModules.init() to resolve modules"
 		}
+	},
+	"moduleResolutionHelper": {
+		"npmInstalling": "Installing npm module: {package}",
+		"httpsDownloading": "Downloading module: {url}",
+		"securityWarning": "SECURITY WARNING: Loading module from external URL: {url}",
+		"cacheExpired": "Cache expired for module: {url}",
+		"forceRefresh": "Force refresh enabled for module: {url}"
 	}
 }

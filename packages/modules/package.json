@@ -30,6 +30,7 @@
 	"dependencies": {
 		"@twin.org/context": "0.10.1-next.10",
 		"@twin.org/core": "0.10.1-next.10",
+		"@twin.org/crypto": "0.10.1-next.10",
 		"@twin.org/nameof": "0.10.1-next.10"
 	},
 	"devDependencies": {
