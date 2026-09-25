@@ -1,6 +1,6 @@
 {
 	"name": "@twin.org/validate-locales",
-	"version": "0.10.1-next.10",
+	"version": "0.10.1-next.11",
 	"description": "Validate source files against the locales",
 	"repository": {
 		"type": "git",
@@ -29,17 +29,17 @@
 		"dist:no-test": "pnpm run clean && concurrently -g -n build,merge,locales,types \"pnpm run build\" \"pnpm run merge-locales\" \"pnpm run validate-locales\" \"pnpm run test:build\""
 	},
 	"dependencies": {
-		"@twin.org/cli-core": "0.10.1-next.10",
-		"@twin.org/core": "0.10.1-next.10",
-		"@twin.org/nameof": "0.10.1-next.10",
-		"@twin.org/nameof-transformer": "0.10.1-next.10",
+		"@twin.org/cli-core": "0.10.1-next.11",
+		"@twin.org/core": "0.10.1-next.11",
+		"@twin.org/nameof": "0.10.1-next.11",
+		"@twin.org/nameof-transformer": "0.10.1-next.11",
 		"commander": "15.0.0",
 		"glob": "13.0.6",
 		"typescript": "6.0.3"
 	},
 	"devDependencies": {
-		"@twin.org/merge-locales": "0.10.1-next.10",
-		"@twin.org/nameof-vitest-plugin": "0.10.1-next.10",
+		"@twin.org/merge-locales": "0.10.1-next.11",
+		"@twin.org/nameof-vitest-plugin": "0.10.1-next.11",
 		"@types/node": "26.6.2",
 		"@vitest/coverage-v8": "5.0.1",
 		"concurrently": "10.0.5",

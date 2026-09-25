@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.10.1-next.11](https://github.com/iotaledger/twin-framework/compare/core-v0.10.1-next.10...core-v0.10.1-next.11) (2026-09-25)
+
+
+### Features
+
+* improved module loader ([#542](https://github.com/iotaledger/twin-framework/issues/542)) ([3642476](https://github.com/iotaledger/twin-framework/commit/36424769359c55c20697fac93a42c402d5e8e41d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/nameof bumped from 0.10.1-next.10 to 0.10.1-next.11
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.10 to 0.10.1-next.11
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.10 to 0.10.1-next.11
+
 ## [0.10.1-next.10](https://github.com/iotaledger/twin-framework/compare/core-v0.10.1-next.9...core-v0.10.1-next.10) (2026-09-22)
 
 
