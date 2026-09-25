@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.10.1-next.12](https://github.com/iotaledger/twin-framework/compare/modules-v0.10.1-next.11...modules-v0.10.1-next.12) (2026-09-25)
+
+
+### Bug Fixes
+
+* pass module loader options to threads ([9200aab](https://github.com/iotaledger/twin-framework/commit/9200aabd3596545eea1f4547ec938fa25fca7a33))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/context bumped from 0.10.1-next.11 to 0.10.1-next.12
+    * @twin.org/core bumped from 0.10.1-next.11 to 0.10.1-next.12
+    * @twin.org/crypto bumped from 0.10.1-next.11 to 0.10.1-next.12
+    * @twin.org/nameof bumped from 0.10.1-next.11 to 0.10.1-next.12
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.11 to 0.10.1-next.12
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.11 to 0.10.1-next.12
+    * @twin.org/validate-locales bumped from 0.10.1-next.11 to 0.10.1-next.12
+
 ## [0.10.1-next.11](https://github.com/iotaledger/twin-framework/compare/modules-v0.10.1-next.10...modules-v0.10.1-next.11) (2026-09-25)
 
 

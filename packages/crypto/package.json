@@ -1,6 +1,6 @@
 {
 	"name": "@twin.org/crypto",
-	"version": "0.10.1-next.11",
+	"version": "0.10.1-next.12",
 	"description": "Helper methods and classes which implement cryptographic functions",
 	"repository": {
 		"type": "git",
@@ -34,14 +34,14 @@
 		"@scure/base": "2.4.0",
 		"@scure/bip32": "2.4.0",
 		"@scure/bip39": "2.4.0",
-		"@twin.org/core": "0.10.1-next.11",
-		"@twin.org/nameof": "0.10.1-next.11",
+		"@twin.org/core": "0.10.1-next.12",
+		"@twin.org/nameof": "0.10.1-next.12",
 		"micro-key-producer": "0.10.2"
 	},
 	"devDependencies": {
-		"@twin.org/nameof-transformer": "0.10.1-next.11",
-		"@twin.org/nameof-vitest-plugin": "0.10.1-next.11",
-		"@twin.org/validate-locales": "0.10.1-next.11",
+		"@twin.org/nameof-transformer": "0.10.1-next.12",
+		"@twin.org/nameof-vitest-plugin": "0.10.1-next.12",
+		"@twin.org/validate-locales": "0.10.1-next.12",
 		"@types/node": "26.6.2",
 		"@vitest/coverage-v8": "5.0.1",
 		"copyfiles": "2.4.1",

@@ -1,6 +1,6 @@
 {
 	"name": "@twin.org/crypto-cli",
-	"version": "0.10.1-next.11",
+	"version": "0.10.1-next.12",
 	"description": "Command line interface for interacting with the crypto tools",
 	"repository": {
 		"type": "git",
@@ -29,17 +29,17 @@
 		"dist:no-test": "pnpm run clean && concurrently -g -n build,merge,locales,types \"pnpm run build\" \"pnpm run merge-locales\" \"pnpm run validate-locales\" \"pnpm run test:build\""
 	},
 	"dependencies": {
-		"@twin.org/cli-core": "0.10.1-next.11",
-		"@twin.org/core": "0.10.1-next.11",
-		"@twin.org/crypto": "0.10.1-next.11",
-		"@twin.org/nameof": "0.10.1-next.11",
+		"@twin.org/cli-core": "0.10.1-next.12",
+		"@twin.org/core": "0.10.1-next.12",
+		"@twin.org/crypto": "0.10.1-next.12",
+		"@twin.org/nameof": "0.10.1-next.12",
 		"commander": "15.0.0"
 	},
 	"devDependencies": {
-		"@twin.org/merge-locales": "0.10.1-next.11",
-		"@twin.org/nameof-transformer": "0.10.1-next.11",
-		"@twin.org/nameof-vitest-plugin": "0.10.1-next.11",
-		"@twin.org/validate-locales": "0.10.1-next.11",
+		"@twin.org/merge-locales": "0.10.1-next.12",
+		"@twin.org/nameof-transformer": "0.10.1-next.12",
+		"@twin.org/nameof-vitest-plugin": "0.10.1-next.12",
+		"@twin.org/validate-locales": "0.10.1-next.12",
 		"@types/node": "26.6.2",
 		"@vitest/coverage-v8": "5.0.1",
 		"copyfiles": "2.4.1",

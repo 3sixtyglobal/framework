@@ -1,6 +1,6 @@
 {
 	"name": "@twin.org/nameof-vitest-plugin",
-	"version": "0.10.1-next.11",
+	"version": "0.10.1-next.12",
 	"description": "Vitest plugin which perform the nameof transformation",
 	"repository": {
 		"type": "git",
@@ -28,7 +28,7 @@
 		"dist:no-test": "pnpm run clean && concurrently -g -n build,locales,types \"pnpm run build\" \"pnpm run validate-locales\" \"pnpm run test:build\""
 	},
 	"dependencies": {
-		"@twin.org/nameof-transformer": "0.10.1-next.11",
+		"@twin.org/nameof-transformer": "0.10.1-next.12",
 		"vitest": "5.0.1"
 	},
 	"devDependencies": {
