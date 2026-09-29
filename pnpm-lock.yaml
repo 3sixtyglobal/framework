@@ -242,32 +242,32 @@ importers:
   apps/crypto-cli:
     dependencies:
       '@twin.org/cli-core':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../packages/cli-core
       '@twin.org/core':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../packages/core
       '@twin.org/crypto':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../packages/crypto
       '@twin.org/nameof':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../packages/nameof
       commander:
         specifier: 15.0.0
         version: 15.0.0
     devDependencies:
       '@twin.org/merge-locales':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../merge-locales
       '@twin.org/nameof-transformer':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../packages/nameof-transformer
       '@twin.org/nameof-vitest-plugin':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../packages/nameof-vitest-plugin
       '@twin.org/validate-locales':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../validate-locales
       '@types/node':
         specifier: 26.6.2
@@ -306,13 +306,13 @@ importers:
   apps/merge-locales:
     dependencies:
       '@twin.org/cli-core':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../packages/cli-core
       '@twin.org/core':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../packages/core
       '@twin.org/nameof':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../packages/nameof
       commander:
         specifier: 15.0.0
@@ -322,10 +322,10 @@ importers:
         version: 13.0.6
     devDependencies:
       '@twin.org/nameof-transformer':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../packages/nameof-transformer
       '@twin.org/nameof-vitest-plugin':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../packages/nameof-vitest-plugin
       '@types/node':
         specifier: 26.6.2
@@ -367,16 +367,16 @@ importers:
   apps/validate-locales:
     dependencies:
       '@twin.org/cli-core':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../packages/cli-core
       '@twin.org/core':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../packages/core
       '@twin.org/nameof':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../packages/nameof
       '@twin.org/nameof-transformer':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../packages/nameof-transformer
       commander:
         specifier: 15.0.0
@@ -389,10 +389,10 @@ importers:
         version: 6.0.3
     devDependencies:
       '@twin.org/merge-locales':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../merge-locales
       '@twin.org/nameof-vitest-plugin':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../packages/nameof-vitest-plugin
       '@types/node':
         specifier: 26.6.2
@@ -431,10 +431,10 @@ importers:
   packages/cli-core:
     dependencies:
       '@twin.org/core':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../core
       '@twin.org/nameof':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof
       chalk:
         specifier: 6.0.0
@@ -447,10 +447,10 @@ importers:
         version: 18.0.2
     devDependencies:
       '@twin.org/nameof-transformer':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-transformer
       '@twin.org/nameof-vitest-plugin':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-vitest-plugin
       '@types/node':
         specifier: 26.6.2
@@ -489,20 +489,20 @@ importers:
   packages/context:
     dependencies:
       '@twin.org/core':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../core
       '@twin.org/nameof':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof
     devDependencies:
       '@twin.org/nameof-transformer':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-transformer
       '@twin.org/nameof-vitest-plugin':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-vitest-plugin
       '@twin.org/validate-locales':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../apps/validate-locales
       '@types/node':
         specifier: 26.6.2
@@ -541,7 +541,7 @@ importers:
   packages/core:
     dependencies:
       '@twin.org/nameof':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof
       intl-messageformat:
         specifier: 12.1.2
@@ -551,10 +551,10 @@ importers:
         version: 5.3.0
     devDependencies:
       '@twin.org/nameof-transformer':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-transformer
       '@twin.org/nameof-vitest-plugin':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-vitest-plugin
       '@types/node':
         specifier: 26.6.2
@@ -611,23 +611,23 @@ importers:
         specifier: 2.4.0
         version: 2.4.0
       '@twin.org/core':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../core
       '@twin.org/nameof':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof
       micro-key-producer:
         specifier: 0.10.2
         version: 0.10.2
     devDependencies:
       '@twin.org/nameof-transformer':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-transformer
       '@twin.org/nameof-vitest-plugin':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-vitest-plugin
       '@twin.org/validate-locales':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../apps/validate-locales
       '@types/node':
         specifier: 26.6.2
@@ -666,10 +666,10 @@ importers:
   packages/entity:
     dependencies:
       '@twin.org/core':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../core
       '@twin.org/nameof':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof
       reflect-metadata:
         specifier: 0.2.2
@@ -679,13 +679,13 @@ importers:
         version: 2.8.1
     devDependencies:
       '@twin.org/nameof-transformer':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-transformer
       '@twin.org/nameof-vitest-plugin':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-vitest-plugin
       '@twin.org/validate-locales':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../apps/validate-locales
       '@vitest/coverage-v8':
         specifier: 5.0.1
@@ -721,20 +721,20 @@ importers:
   packages/image:
     dependencies:
       '@twin.org/core':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../core
       '@twin.org/nameof':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof
     devDependencies:
       '@twin.org/nameof-transformer':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-transformer
       '@twin.org/nameof-vitest-plugin':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-vitest-plugin
       '@twin.org/validate-locales':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../apps/validate-locales
       '@vitest/coverage-v8':
         specifier: 5.0.1
@@ -770,26 +770,26 @@ importers:
   packages/modules:
     dependencies:
       '@twin.org/context':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../context
       '@twin.org/core':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../core
       '@twin.org/crypto':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../crypto
       '@twin.org/nameof':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof
     devDependencies:
       '@twin.org/nameof-transformer':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-transformer
       '@twin.org/nameof-vitest-plugin':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-vitest-plugin
       '@twin.org/validate-locales':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../apps/validate-locales
       '@types/node':
         specifier: 26.6.2
@@ -828,7 +828,7 @@ importers:
   packages/nameof:
     devDependencies:
       '@twin.org/nameof-transformer':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-transformer
       '@vitest/coverage-v8':
         specifier: 5.0.1
@@ -895,7 +895,7 @@ importers:
   packages/nameof-vitest-plugin:
     dependencies:
       '@twin.org/nameof-transformer':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-transformer
       vitest:
         specifier: 5.0.1
@@ -929,23 +929,23 @@ importers:
   packages/qr:
     dependencies:
       '@twin.org/core':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../core
       '@twin.org/image':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../image
       '@twin.org/nameof':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof
     devDependencies:
       '@twin.org/nameof-transformer':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-transformer
       '@twin.org/nameof-vitest-plugin':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-vitest-plugin
       '@twin.org/validate-locales':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../apps/validate-locales
       '@vitest/coverage-v8':
         specifier: 5.0.1
@@ -981,26 +981,26 @@ importers:
   packages/web:
     dependencies:
       '@twin.org/core':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../core
       '@twin.org/crypto':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../crypto
       '@twin.org/nameof':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof
       jose:
         specifier: 6.2.12
         version: 6.2.12
     devDependencies:
       '@twin.org/nameof-transformer':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-transformer
       '@twin.org/nameof-vitest-plugin':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../nameof-vitest-plugin
       '@twin.org/validate-locales':
-        specifier: 0.10.1-next.12
+        specifier: ^0.11.0
         version: link:../../apps/validate-locales
       '@types/node':
         specifier: 26.6.2

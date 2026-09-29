@@ -1,6 +1,6 @@
 {
 	"name": "@twin.org/context",
-	"version": "0.10.1-next.12",
+	"version": "0.11.0",
 	"description": "Helper methods/classes for context handling",
 	"repository": {
 		"type": "git",
@@ -28,13 +28,13 @@
 		"dist:no-test": "pnpm run clean && concurrently -g -n build,locales,types \"pnpm run build\" \"pnpm run validate-locales\" \"pnpm run test:build\""
 	},
 	"dependencies": {
-		"@twin.org/core": "0.10.1-next.12",
-		"@twin.org/nameof": "0.10.1-next.12"
+		"@twin.org/core": "^0.11.0",
+		"@twin.org/nameof": "^0.11.0"
 	},
 	"devDependencies": {
-		"@twin.org/nameof-transformer": "0.10.1-next.12",
-		"@twin.org/nameof-vitest-plugin": "0.10.1-next.12",
-		"@twin.org/validate-locales": "0.10.1-next.12",
+		"@twin.org/nameof-transformer": "^0.11.0",
+		"@twin.org/nameof-vitest-plugin": "^0.11.0",
+		"@twin.org/validate-locales": "^0.11.0",
 		"@types/node": "26.6.2",
 		"@vitest/coverage-v8": "5.0.1",
 		"copyfiles": "2.4.1",
