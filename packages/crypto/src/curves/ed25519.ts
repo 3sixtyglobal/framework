@@ -1,8 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+import type * as NodeCrypto from "node:crypto";
 import { ed25519 } from "@noble/curves/ed25519.js";
 import { GeneralError, Guards, Uint8ArrayHelper } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
 
 /**
  * Implementation of Ed25519.
@@ -24,6 +26,23 @@ export class Ed25519 {
 	public static readonly CLASS_NAME: string = nameof<Ed25519>();
 
 	/**
+	 * The DER prefix wrapping a raw 32 byte private key as a PKCS8 Ed25519 key, which is
+	 * the only form node:crypto will import a raw key through.
+	 * @internal
+	 */
+	private static readonly _DER_PRIVATE_PREFIX: Uint8Array = new Uint8Array([
+		0x30, 0x2e, 0x02, 0x01, 0x00, 0x30, 0x05, 0x06, 0x03, 0x2b, 0x65, 0x70, 0x04, 0x22, 0x04, 0x20
+	]);
+
+	/**
+	 * The DER prefix wrapping a raw 32 byte public key as an SPKI Ed25519 key.
+	 * @internal
+	 */
+	private static readonly _DER_PUBLIC_PREFIX: Uint8Array = new Uint8Array([
+		0x30, 0x2a, 0x30, 0x05, 0x06, 0x03, 0x2b, 0x65, 0x70, 0x03, 0x21, 0x00
+	]);
+
+	/**
 	 * Public returns the PublicKey corresponding to private.
 	 * @param privateKey The private key to get the corresponding public key.
 	 * @returns The public key.
@@ -37,6 +56,14 @@ export class Ed25519 {
 				requiredSize: Ed25519.PRIVATE_KEY_SIZE,
 				actualSize: privateKey.length
 			});
+		}
+
+		const nodeCrypto = NativeModulesCrypto.getNodeCryptoEd25519();
+		if (nodeCrypto) {
+			const publicKey = nodeCrypto
+				.createPublicKey(Ed25519.nodePrivateKey(nodeCrypto, privateKey))
+				.export({ format: "der", type: "spki" });
+			return new Uint8Array(publicKey.subarray(Ed25519._DER_PUBLIC_PREFIX.length));
 		}
 
 		return ed25519.getPublicKey(privateKey);
@@ -60,6 +87,13 @@ export class Ed25519 {
 			});
 		}
 
+		const nodeCrypto = NativeModulesCrypto.getNodeCryptoEd25519();
+		if (nodeCrypto) {
+			return new Uint8Array(
+				nodeCrypto.sign(null, block, Ed25519.nodePrivateKey(nodeCrypto, privateKey))
+			);
+		}
+
 		return ed25519.sign(block, privateKey);
 	}
 
@@ -81,6 +115,24 @@ export class Ed25519 {
 				requiredSize: Ed25519.PUBLIC_KEY_SIZE,
 				actualSize: publicKey ? publicKey.length : 0
 			});
+		}
+
+		const nodeCrypto = NativeModulesCrypto.getNodeCryptoEd25519();
+		if (nodeCrypto) {
+			try {
+				return nodeCrypto.verify(
+					null,
+					block,
+					nodeCrypto.createPublicKey({
+						key: Uint8ArrayHelper.concat([Ed25519._DER_PUBLIC_PREFIX, publicKey]),
+						format: "der",
+						type: "spki"
+					}),
+					signature
+				);
+			} catch {
+				return false;
+			}
 		}
 
 		try {
@@ -127,5 +179,23 @@ export class Ed25519 {
 		const pkcs8Bytes = await crypto.subtle.exportKey("pkcs8", cryptoKey);
 
 		return new Uint8Array(pkcs8Bytes.slice(16));
+	}
+
+	/**
+	 * Build a node:crypto key object from a raw private key.
+	 * @param nodeCrypto The resolved node:crypto module.
+	 * @param privateKey The raw 32 byte private key.
+	 * @returns The key object to sign or derive with.
+	 * @internal
+	 */
+	private static nodePrivateKey(
+		nodeCrypto: typeof NodeCrypto,
+		privateKey: Uint8Array
+	): NodeCrypto.KeyObject {
+		return nodeCrypto.createPrivateKey({
+			key: Uint8ArrayHelper.concat([Ed25519._DER_PRIVATE_PREFIX, privateKey]),
+			format: "der",
+			type: "pkcs8"
+		});
 	}
 }

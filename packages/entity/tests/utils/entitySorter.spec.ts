@@ -15,6 +15,10 @@ interface ITestItem {
 	 * Test string.
 	 */
 	valString: string;
+	/**
+	 * Test boolean.
+	 */
+	valBoolean?: boolean;
 }
 
 describe("Sorter", () => {
@@ -110,6 +114,23 @@ describe("Sorter", () => {
 		expect(vals[0].valString).toEqual("cccc");
 		expect(vals[1].valString).toEqual("bbbb");
 		expect(vals[2].valString).toEqual("aaaa");
+	});
+
+	test("compare can sort boolean values numerically", async () => {
+		const vals: ITestItem[] = [
+			{ valNum: 1, valString: "", valBoolean: true },
+			{ valNum: 1, valString: "", valBoolean: false }
+		];
+
+		vals.sort((a, b) => EntitySorter.compare(a, b, "valBoolean", "boolean"));
+
+		expect(vals.map(value => value.valBoolean)).toEqual([false, true]);
+
+		vals.sort((a, b) =>
+			EntitySorter.compare(a, b, "valBoolean", "boolean", SortDirection.Descending)
+		);
+
+		expect(vals.map(value => value.valBoolean)).toEqual([true, false]);
 	});
 
 	test("can sort single keys and return quickly", async () => {

@@ -1,6 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import path from "node:path";
+import { I18n } from "@twin.org/core";
 import chalk from "chalk";
 import { CLIBase } from "../src/cliBase.js";
 import { CLIDisplay } from "../src/cliDisplay.js";
@@ -10,7 +11,10 @@ import { CLIDisplay } from "../src/cliDisplay.js";
  */
 class CLI extends CLIBase {}
 
-const localesDir = path.resolve("./dist/locales");
+const localesDir = path.resolve("./locales");
+// Captured before any test disables colour, so the restore can be checked
+// against the level the environment actually detected.
+const detectedColorLevel = chalk.level;
 let writeBuffer: string[] = [];
 let errorBuffer: string[] = [];
 
@@ -118,6 +122,60 @@ describe("CLI", () => {
 		expect(writeBuffer[11]).toEqual("");
 	});
 
+	test("Can execute with colour output disabled", async () => {
+		const cli = new CLI();
+		const exitCode = await cli.execute(
+			{
+				title: "Test App",
+				appName: "test-app",
+				version: "0.0.1",
+				icon: "🔐",
+				noColor: true
+			},
+			localesDir,
+			["", path.join(__dirname, "test-app")]
+		);
+		expect(exitCode).toBe(0);
+		expect(chalk.level).toEqual(0);
+		// The header is the only colourised part of the help output, so with colour
+		// disabled it must be emitted as plain text with no escape sequences.
+		expect(writeBuffer[0]).toEqual("🔐 Test App v0.0.1");
+		expect(writeBuffer.every(line => !line.includes("["))).toEqual(true);
+	});
+
+	test("Can execute with colour output restored after being disabled", async () => {
+		const cli = new CLI();
+		await cli.execute(
+			{
+				title: "Test App",
+				appName: "test-app",
+				version: "0.0.1",
+				icon: "🔐",
+				noColor: true
+			},
+			localesDir,
+			["", path.join(__dirname, "test-app")]
+		);
+		expect(chalk.level).toEqual(0);
+
+		writeBuffer = [];
+
+		const exitCode = await cli.execute(
+			{
+				title: "Test App",
+				appName: "test-app",
+				version: "0.0.1",
+				icon: "🔐"
+			},
+			localesDir,
+			["", path.join(__dirname, "test-app")]
+		);
+		expect(exitCode).toBe(0);
+		// Omitting the option puts back whichever colour level the environment supports.
+		expect(chalk.level).toEqual(detectedColorLevel);
+		expect(writeBuffer[0]).toEqual(`🔐 ${chalk.underline.bold.blue("Test App v0.0.1")}`);
+	});
+
 	test("Can execute with version command line option", async () => {
 		const cli = new CLI();
 		const exitCode = await cli.execute(
@@ -134,5 +192,57 @@ describe("CLI", () => {
 		expect(writeBuffer.length).toEqual(2);
 		expect(writeBuffer[0]).toEqual("0.0.1");
 		expect(writeBuffer[1]).toEqual("");
+	});
+
+	test("Can execute with the locales supplied as an array of directories", async () => {
+		const cli = new CLI();
+		const exitCode = await cli.execute(
+			{
+				title: "Test App",
+				appName: "test-app",
+				version: "0.0.1",
+				icon: "🔐"
+			},
+			[localesDir],
+			["", path.join(__dirname, "test-app"), "--version"]
+		);
+		expect(exitCode).toBe(0);
+		expect(I18n.formatMessage("cli.version")).not.toEqual("cli.version");
+	});
+
+	test("Can execute with the locales resolved from a package name", async () => {
+		const cli = new CLI();
+		const exitCode = await cli.execute(
+			{
+				title: "Test App",
+				appName: "test-app",
+				version: "0.0.1",
+				icon: "🔐"
+			},
+			["@twin.org/core", localesDir],
+			["", path.join(__dirname, "test-app"), "--version"]
+		);
+		expect(exitCode).toBe(0);
+		// Only defined in the @twin.org/core locales, so it can only be present
+		// if the package name was resolved to its locales directory.
+		expect(I18n.formatMessage("errorNames.generalError")).toEqual("General");
+		// The directory entry is merged in as well.
+		expect(I18n.formatMessage("cli.version")).not.toEqual("cli.version");
+	});
+
+	test("Can execute when a package name in the locales cannot be resolved", async () => {
+		const cli = new CLI();
+		const exitCode = await cli.execute(
+			{
+				title: "Test App",
+				appName: "test-app",
+				version: "0.0.1",
+				icon: "🔐"
+			},
+			["@twin.org/not-a-real-package", localesDir],
+			["", path.join(__dirname, "test-app"), "--version"]
+		);
+		expect(exitCode).toBe(0);
+		expect(I18n.formatMessage("cli.version")).not.toEqual("cli.version");
 	});
 });

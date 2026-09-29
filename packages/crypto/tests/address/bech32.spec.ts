@@ -71,6 +71,27 @@ describe("Bech32", () => {
 		}
 	});
 
+	test("Can fail to decode a string longer than the standard 90 character limit", () => {
+		expect(() =>
+			Bech32.decode(
+				"iota1qv9pzxqlyckngw6zf9g9whn9d3eh4qvg37tfmf9tk2uup37w6hww86h3lrlsvrg5rv3zjvph8ez5c566v95x7anasj9e9xdqcycpcs"
+			)
+		).toThrow(
+			expect.objectContaining({
+				name: "GeneralError",
+				message: "bech32.invalidLength"
+			})
+		);
+	});
+
+	test("Can fail to match an address longer than the standard 90 character limit", () => {
+		expect(
+			Bech32.isBech32(
+				"iota1qv9pzxqlyckngw6zf9g9whn9d3eh4qvg37tfmf9tk2uup37w6hww86h3lrlsvrg5rv3zjvph8ez5c566v95x7anasj9e9xdqcycpcs"
+			)
+		).toEqual(false);
+	});
+
 	test("Can fail to match empty address", () => {
 		expect(Bech32.isBech32("")).toEqual(false);
 	});

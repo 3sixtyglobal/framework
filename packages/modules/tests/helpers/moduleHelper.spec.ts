@@ -1,7 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+import os from "node:os";
 import path from "node:path";
-import { Coerce, Mutex } from "@twin.org/core";
+import { Coerce, Mutex, NativeModules, SharedStore } from "@twin.org/core";
 import { ModuleHelper } from "../../src/helpers/moduleHelper.js";
 
 const TEST_MODULE = `file://${path.join(__dirname, "testModule.js")}`;
@@ -129,6 +130,34 @@ describe("ModuleHelper", () => {
 		).toEqual("fooBar");
 	});
 
+	test("execModuleMethodThread worker resolves its own dependencies when the working directory has none", async () => {
+		const cwd = process.cwd();
+		process.chdir(os.tmpdir());
+		try {
+			expect(await ModuleHelper.execModuleMethodThread(TEST_MODULE, "testMethod")).toEqual(1);
+		} finally {
+			process.chdir(cwd);
+		}
+	});
+
+	test("execModuleMethodThread worker does not see a native module the main thread never registered", async () => {
+		expect(
+			await ModuleHelper.execModuleMethodThread(TEST_MODULE, "testMethodHasNativeModule", [
+				"node:crypto"
+			])
+		).toEqual(false);
+	});
+
+	test("execModuleMethodThread worker inherits the native modules registered on the main thread", async () => {
+		await NativeModules.init(["node:crypto"]);
+
+		expect(
+			await ModuleHelper.execModuleMethodThread(TEST_MODULE, "testMethodHasNativeModule", [
+				"node:crypto"
+			])
+		).toEqual(true);
+	});
+
 	test("execModuleMethodThread can throw if a function throws an error", async () => {
 		await expect(
 			ModuleHelper.execModuleMethodThread(TEST_MODULE, "testMethodWithError")
@@ -227,6 +256,123 @@ describe("ModuleHelper", () => {
 		expect(taskResults).toEqual([1, 3, 6]);
 		expect(finalTotal).toEqual(6);
 		expect(endCalled).toBeTruthy();
+	});
+
+	describe("setOptions", () => {
+		const executionDirectory = __dirname;
+
+		afterEach(() => {
+			SharedStore.remove("moduleHelperOptions");
+			SharedStore.remove("moduleHelperCache");
+		});
+
+		test("execModuleMethod imports a local module from the execution directory", async () => {
+			ModuleHelper.setOptions({ executionDirectory });
+
+			expect(await ModuleHelper.execModuleMethod("./testModule.js", "testMethod")).toEqual(1);
+		});
+
+		test("execModuleMethodThread imports a local module from the execution directory", async () => {
+			ModuleHelper.setOptions({ executionDirectory });
+
+			expect(
+				await ModuleHelper.execModuleMethodThread("./testModule.js", "testMethodAdd", [1, 2])
+			).toEqual(3);
+		});
+
+		test("getOptions returns the options that were set", () => {
+			expect(ModuleHelper.getOptions()).toBeUndefined();
+			ModuleHelper.setOptions({ executionDirectory, maxSizeMb: 5 });
+			expect(ModuleHelper.getOptions()).toEqual({ executionDirectory, maxSizeMb: 5 });
+		});
+
+		test("execModuleMethodThread worker is started without options when none are set", async () => {
+			expect(
+				await ModuleHelper.execModuleMethodThread(TEST_MODULE, "testMethodModuleHelperOptions")
+			).toBeUndefined();
+		});
+
+		test("execModuleMethodThread worker is started with the options", async () => {
+			ModuleHelper.setOptions({ executionDirectory, cacheDirectory: ".cache", cacheTtlHours: 2 });
+
+			expect(
+				await ModuleHelper.execModuleMethodThread(TEST_MODULE, "testMethodModuleHelperOptions")
+			).toEqual({
+				executionDirectory,
+				cacheDirectory: ".cache",
+				cacheTtlHours: 2,
+				hasOnMessage: false
+			});
+		});
+
+		test("execModuleMethodThread worker forwards option messages to the main thread", async () => {
+			const onMessage = vi.fn();
+			ModuleHelper.setOptions({ executionDirectory, onMessage });
+
+			expect(
+				await ModuleHelper.execModuleMethodThread(TEST_MODULE, "testMethodModuleHelperOptions")
+			).toMatchObject({ executionDirectory, hasOnMessage: true });
+			expect(onMessage).toHaveBeenCalledWith("info", "test.message", { value: 1 });
+		});
+
+		test("execModuleMethodThread reports errors with the original module name", async () => {
+			ModuleHelper.setOptions({ executionDirectory });
+
+			await expect(
+				ModuleHelper.execModuleMethodThread("./testModule.js", "non-existing-method")
+			).rejects.toMatchObject({
+				name: "GeneralError",
+				message: "moduleHelper.entryNotFound",
+				properties: { module: "./testModule.js", method: "non-existing-method" }
+			});
+		});
+
+		test("execModuleMethodThread can throw if resolution fails", async () => {
+			ModuleHelper.setOptions({ executionDirectory });
+
+			await expect(
+				ModuleHelper.execModuleMethodThread("http://example.com/module.js", "testMethod")
+			).rejects.toMatchObject({
+				name: "GeneralError",
+				source: "ModuleHelper",
+				message: "moduleHelper.workerStartup",
+				properties: { module: "http://example.com/module.js" },
+				cause: { message: "moduleResolutionHelper.insecureProtocol" }
+			});
+		});
+
+		test("getModuleEntry uses importModule so tests can replace modules", async () => {
+			const importSpy = vi
+				.spyOn(ModuleHelper, "importModule")
+				.mockImplementation(async moduleName => {
+					if (moduleName === "virtual-module") {
+						return { value: 42 };
+					}
+					return {};
+				});
+
+			try {
+				expect(await ModuleHelper.getModuleEntry("virtual-module", "value")).toEqual(42);
+				expect(importSpy).toHaveBeenCalledWith("virtual-module");
+			} finally {
+				importSpy.mockRestore();
+			}
+
+			ModuleHelper.setOptions({ executionDirectory });
+			expect(await ModuleHelper.execModuleMethod("./testModule.js", "testMethod")).toEqual(1);
+		});
+	});
+
+	test("execModuleMethodThreadMessage can terminate before the worker starts", async () => {
+		const operations: string[] = [];
+		const module = ModuleHelper.execModuleMethodThreadMessage(TEST_MODULE, operation => {
+			operations.push(operation);
+		});
+
+		module.executeMethod("testMethod");
+
+		expect(await module.terminate()).toEqual(0);
+		expect(operations).toEqual([]);
 	});
 
 	describe("mutex", () => {

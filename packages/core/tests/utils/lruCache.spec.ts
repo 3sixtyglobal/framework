@@ -1,6 +1,7 @@
 // Copyright 2026 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { LruCache } from "../../src/utils/lruCache.js";
+import { SharedStore } from "../../src/utils/sharedStore.js";
 
 describe("LruCache", () => {
 	let cache: LruCache<number>;
@@ -80,6 +81,31 @@ describe("LruCache", () => {
 			expect(factory).toHaveBeenCalledTimes(0);
 		});
 
+		test("returns the cached value when the entry expires mid-lookup", async () => {
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 1000, mutexTimeoutMs: 50 });
+			cache.set("a", 1);
+
+			// An uncontended getOrSet reads the clock once for the mutex deadline and once to
+			// test the entry. Hold those two reads inside the idle window and push every later
+			// read beyond it, so a second expiry check would evict the entry and miss.
+			const base = Date.now();
+			let reads = 0;
+			const nowSpy = vi.spyOn(Date, "now").mockImplementation(() => {
+				reads++;
+				return reads <= 2 ? base : base + 5000;
+			});
+
+			try {
+				const factory = vi.fn(async () => 2);
+				const value = await cache.getOrSet("a", factory);
+
+				expect(value).toEqual(1);
+				expect(factory).toHaveBeenCalledTimes(0);
+			} finally {
+				nowSpy.mockRestore();
+			}
+		});
+
 		test("builds once when called concurrently for the same key", async () => {
 			cache = new LruCache<number>({ capacity: 5, ttiMs: 1000, mutexTimeoutMs: 1000 });
 			let buildCount = 0;
@@ -102,6 +128,27 @@ describe("LruCache", () => {
 			expect(firstValue).toEqual(123);
 			expect(secondValue).toEqual(123);
 			expect(buildCount).toEqual(1);
+		});
+
+		test("does not grow the mutex registries per distinct key", async () => {
+			cache = new LruCache<number>({ capacity: 5, ttiMs: 60000, mutexTimeoutMs: 1000 });
+
+			// Enough distinct keys to cross the reclamation threshold more than once, so an
+			// entry retained per key would be plainly visible in the registry sizes.
+			const total = 4000;
+			for (let i = 0; i < total; i++) {
+				await cache.getOrSet(`k${i}`, async () => i);
+			}
+
+			const mutex = SharedStore.get<{
+				_locks: Map<string, unknown>;
+				_waiters: Map<string, unknown>;
+			}>("mutex");
+			const locks = mutex?._locks.size ?? 0;
+			const waiters = mutex?._waiters.size ?? 0;
+
+			expect(locks).toBeLessThan(total);
+			expect(waiters).toEqual(0);
 		});
 
 		test("throws when mutex acquisition times out", async () => {

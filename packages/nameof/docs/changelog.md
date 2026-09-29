@@ -1,5 +1,193 @@
 # Changelog
 
+## [0.10.1-next.12](https://github.com/iotaledger/twin-framework/compare/nameof-v0.10.1-next.11...nameof-v0.10.1-next.12) (2026-09-25)
+
+
+### Miscellaneous Chores
+
+* **nameof:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.11 to 0.10.1-next.12
+
+## [0.10.1-next.11](https://github.com/iotaledger/twin-framework/compare/nameof-v0.10.1-next.10...nameof-v0.10.1-next.11) (2026-09-25)
+
+
+### Miscellaneous Chores
+
+* **nameof:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.10 to 0.10.1-next.11
+
+## [0.10.1-next.10](https://github.com/iotaledger/twin-framework/compare/nameof-v0.10.1-next.9...nameof-v0.10.1-next.10) (2026-09-22)
+
+
+### Miscellaneous Chores
+
+* **nameof:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.9 to 0.10.1-next.10
+
+## [0.10.1-next.9](https://github.com/iotaledger/twin-framework/compare/nameof-v0.10.1-next.8...nameof-v0.10.1-next.9) (2026-09-21)
+
+
+### Features
+
+* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.8 to 0.10.1-next.9
+
+## [0.10.1-next.8](https://github.com/iotaledger/twin-framework/compare/nameof-v0.10.1-next.7...nameof-v0.10.1-next.8) (2026-09-21)
+
+
+### Features
+
+* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.7 to 0.10.1-next.8
+
+## [0.10.1-next.7](https://github.com/iotaledger/twin-framework/compare/nameof-v0.10.1-next.6...nameof-v0.10.1-next.7) (2026-09-21)
+
+
+### Features
+
+* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.6 to 0.10.1-next.7
+
+## [0.10.1-next.6](https://github.com/iotaledger/twin-framework/compare/nameof-v0.10.1-next.5...nameof-v0.10.1-next.6) (2026-09-21)
+
+
+### Miscellaneous Chores
+
+* **nameof:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.5 to 0.10.1-next.6
+
+## [0.10.1-next.5](https://github.com/iotaledger/twin-framework/compare/nameof-v0.10.1-next.4...nameof-v0.10.1-next.5) (2026-09-18)
+
+
+### Miscellaneous Chores
+
+* **nameof:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.4 to 0.10.1-next.5
+
+## [0.10.1-next.4](https://github.com/iotaledger/twin-framework/compare/nameof-v0.10.1-next.3...nameof-v0.10.1-next.4) (2026-09-18)
+
+
+### Miscellaneous Chores
+
+* **nameof:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.3 to 0.10.1-next.4
+
+## [0.10.1-next.3](https://github.com/iotaledger/twin-framework/compare/nameof-v0.10.1-next.2...nameof-v0.10.1-next.3) (2026-09-18)
+
+
+### Miscellaneous Chores
+
+* **nameof:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.2 to 0.10.1-next.3
+
+## [0.10.1-next.2](https://github.com/iotaledger/twin-framework/compare/nameof-v0.10.1-next.1...nameof-v0.10.1-next.2) (2026-09-17)
+
+
+### Miscellaneous Chores
+
+* **nameof:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.1 to 0.10.1-next.2
+
+## [0.10.1-next.1](https://github.com/iotaledger/twin-framework/compare/nameof-v0.10.1-next.0...nameof-v0.10.1-next.1) (2026-09-17)
+
+
+### Features
+
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.0 to 0.10.1-next.1
+
 ## [0.10.0](https://github.com/iotaledger/twin-framework/compare/nameof-v0.10.0...nameof-v0.10.0) (2026-09-16)
 
 

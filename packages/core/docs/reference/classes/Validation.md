@@ -132,7 +132,7 @@ Additional options for the validation.
 
 ###### format?
 
-`RegExp` \| `"base64"` \| `"base58"` \| `"hex"`
+`RegExp` \| `"base64"` \| `"hex"` \| `"base58"`
 
 Specific format to check.
 

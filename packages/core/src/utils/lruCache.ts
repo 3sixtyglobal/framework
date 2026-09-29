@@ -146,19 +146,11 @@ export class LruCache<T = unknown> {
 	public get(key: string): T | undefined {
 		Guards.stringValue(LruCache.CLASS_NAME, nameof(key), key);
 
-		const entry = this._cache.get(key);
-		if (entry === undefined) {
+		const entry = this.lookupLive(key);
+		if (Is.empty(entry)) {
 			return undefined;
 		}
-		const now = Date.now();
-		if (this.isExpired(entry, now)) {
-			this._cache.delete(key);
-			return undefined;
-		}
-		// Move to end of Map (most-recently-used) via delete + re-insert
-		this._cache.delete(key);
-		entry.lastAccessed = now;
-		this._cache.set(key, entry);
+		this.touch(key, entry);
 
 		return entry.value;
 	}
@@ -220,8 +212,10 @@ export class LruCache<T = unknown> {
 		});
 
 		try {
-			if (this.has(key)) {
-				return this.get(key) as T;
+			const entry = this.lookupLive(key);
+			if (Is.notEmpty(entry)) {
+				this.touch(key, entry);
+				return entry.value;
 			}
 
 			const value = await valueFactory();
@@ -240,15 +234,7 @@ export class LruCache<T = unknown> {
 	 */
 	public has(key: string): boolean {
 		Guards.stringValue(LruCache.CLASS_NAME, nameof(key), key);
-		const entry = this._cache.get(key);
-		if (entry === undefined) {
-			return false;
-		}
-		if (this.isExpired(entry, Date.now())) {
-			this._cache.delete(key);
-			return false;
-		}
-		return true;
+		return Is.notEmpty(this.lookupLive(key));
 	}
 
 	/**
@@ -299,6 +285,47 @@ export class LruCache<T = unknown> {
 		this.cancelTimer();
 		this._cache.clear();
 		this._nextExpires = undefined;
+	}
+
+	/**
+	 * Resolve an entry which is present and has not expired, evicting it if it has.
+	 * The expiry check is evaluated once so a caller cannot observe an entry as live and
+	 * then as expired across two separate lookups.
+	 * @param key The key to resolve.
+	 * @returns The live entry, or undefined if the key is absent or has been evicted.
+	 * @internal
+	 */
+	private lookupLive(
+		key: string
+	): { value: T; lastAccessed: number; expires: number | undefined } | undefined {
+		const entry = this._cache.get(key);
+		if (Is.empty(entry)) {
+			return undefined;
+		}
+		if (this.isExpired(entry, Date.now())) {
+			this._cache.delete(key);
+			return undefined;
+		}
+		return entry;
+	}
+
+	/**
+	 * Move an entry to the most-recently-used position and reset its idle timer.
+	 * @param key The key to touch.
+	 * @param entry The entry object to update in place.
+	 * @param entry.value The cached value.
+	 * @param entry.lastAccessed The last-accessed timestamp in milliseconds.
+	 * @param entry.expires The hard expiry timestamp in milliseconds, or undefined for none.
+	 * @internal
+	 */
+	private touch(
+		key: string,
+		entry: { value: T; lastAccessed: number; expires: number | undefined }
+	): void {
+		// Move to end of Map (most-recently-used) via delete + re-insert
+		this._cache.delete(key);
+		entry.lastAccessed = Date.now();
+		this._cache.set(key, entry);
 	}
 
 	/**

@@ -12,6 +12,7 @@ export * from "./models/IComparatorGroup.js";
 export * from "./models/IEntitySchema.js";
 export * from "./models/IEntitySchemaOptions.js";
 export * from "./models/IEntitySchemaProperty.js";
+export * from "./models/IEntitySchemaPropertyIndex.js";
 export * from "./models/IEntitySort.js";
 export * from "./models/logicalOperator.js";
 export * from "./models/sortDirection.js";

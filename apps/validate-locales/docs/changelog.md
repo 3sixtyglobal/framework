@@ -1,5 +1,293 @@
 # Changelog
 
+## [0.10.1-next.12](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.10.1-next.11...validate-locales-v0.10.1-next.12) (2026-09-25)
+
+
+### Miscellaneous Chores
+
+* **validate-locales:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.10.1-next.11 to 0.10.1-next.12
+    * @twin.org/core bumped from 0.10.1-next.11 to 0.10.1-next.12
+    * @twin.org/nameof bumped from 0.10.1-next.11 to 0.10.1-next.12
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.11 to 0.10.1-next.12
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.10.1-next.11 to 0.10.1-next.12
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.11 to 0.10.1-next.12
+
+## [0.10.1-next.11](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.10.1-next.10...validate-locales-v0.10.1-next.11) (2026-09-25)
+
+
+### Miscellaneous Chores
+
+* **validate-locales:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.10.1-next.10 to 0.10.1-next.11
+    * @twin.org/core bumped from 0.10.1-next.10 to 0.10.1-next.11
+    * @twin.org/nameof bumped from 0.10.1-next.10 to 0.10.1-next.11
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.10 to 0.10.1-next.11
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.10.1-next.10 to 0.10.1-next.11
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.10 to 0.10.1-next.11
+
+## [0.10.1-next.10](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.10.1-next.9...validate-locales-v0.10.1-next.10) (2026-09-22)
+
+
+### Miscellaneous Chores
+
+* **validate-locales:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.10.1-next.9 to 0.10.1-next.10
+    * @twin.org/core bumped from 0.10.1-next.9 to 0.10.1-next.10
+    * @twin.org/nameof bumped from 0.10.1-next.9 to 0.10.1-next.10
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.9 to 0.10.1-next.10
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.10.1-next.9 to 0.10.1-next.10
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.9 to 0.10.1-next.10
+
+## [0.10.1-next.9](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.10.1-next.8...validate-locales-v0.10.1-next.9) (2026-09-21)
+
+
+### Features
+
+* add support for health i18n validation ([7a286dd](https://github.com/iotaledger/twin-framework/commit/7a286ddb0c1bfa498bf3a77126cd589042bad6de))
+* additional error types in validate locales ([d0e87d6](https://github.com/iotaledger/twin-framework/commit/d0e87d6d9430e91417636d30dd4865fa6a31d825))
+* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* skip class properties ([#489](https://github.com/iotaledger/twin-framework/issues/489)) ([268dc30](https://github.com/iotaledger/twin-framework/commit/268dc30767eadc98268ecf346d830117cd272866))
+* support templated strings in health check source ([14b8d1c](https://github.com/iotaledger/twin-framework/commit/14b8d1cefa8b63153b6c2833b8f487509a128b10))
+* ternary support in log and health properties ([#438](https://github.com/iotaledger/twin-framework/issues/438)) ([59859f9](https://github.com/iotaledger/twin-framework/commit/59859f985753eda5f8667bfc5d240cecbbfef905))
+* ternary support in validate-locales errors ([142bb62](https://github.com/iotaledger/twin-framework/commit/142bb62bc35795867df13a1fac2151e90f6533bb))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* validate-locales add spread support for data ([#432](https://github.com/iotaledger/twin-framework/issues/432)) ([d746e3a](https://github.com/iotaledger/twin-framework/commit/d746e3a3ceeedfb6b4ce17f8fbdd00771649dfd3))
+* validate-locales exclude module-helper methods ([#420](https://github.com/iotaledger/twin-framework/issues/420)) ([f42c882](https://github.com/iotaledger/twin-framework/commit/f42c88286747c45daa3c0306653967504c4ca577))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.10.1-next.8 to 0.10.1-next.9
+    * @twin.org/core bumped from 0.10.1-next.8 to 0.10.1-next.9
+    * @twin.org/nameof bumped from 0.10.1-next.8 to 0.10.1-next.9
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.8 to 0.10.1-next.9
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.10.1-next.8 to 0.10.1-next.9
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.8 to 0.10.1-next.9
+
+## [0.10.1-next.8](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.10.1-next.7...validate-locales-v0.10.1-next.8) (2026-09-21)
+
+
+### Features
+
+* add support for health i18n validation ([7a286dd](https://github.com/iotaledger/twin-framework/commit/7a286ddb0c1bfa498bf3a77126cd589042bad6de))
+* additional error types in validate locales ([d0e87d6](https://github.com/iotaledger/twin-framework/commit/d0e87d6d9430e91417636d30dd4865fa6a31d825))
+* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* skip class properties ([#489](https://github.com/iotaledger/twin-framework/issues/489)) ([268dc30](https://github.com/iotaledger/twin-framework/commit/268dc30767eadc98268ecf346d830117cd272866))
+* support templated strings in health check source ([14b8d1c](https://github.com/iotaledger/twin-framework/commit/14b8d1cefa8b63153b6c2833b8f487509a128b10))
+* ternary support in log and health properties ([#438](https://github.com/iotaledger/twin-framework/issues/438)) ([59859f9](https://github.com/iotaledger/twin-framework/commit/59859f985753eda5f8667bfc5d240cecbbfef905))
+* ternary support in validate-locales errors ([142bb62](https://github.com/iotaledger/twin-framework/commit/142bb62bc35795867df13a1fac2151e90f6533bb))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* validate-locales add spread support for data ([#432](https://github.com/iotaledger/twin-framework/issues/432)) ([d746e3a](https://github.com/iotaledger/twin-framework/commit/d746e3a3ceeedfb6b4ce17f8fbdd00771649dfd3))
+* validate-locales exclude module-helper methods ([#420](https://github.com/iotaledger/twin-framework/issues/420)) ([f42c882](https://github.com/iotaledger/twin-framework/commit/f42c88286747c45daa3c0306653967504c4ca577))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.10.1-next.7 to 0.10.1-next.8
+    * @twin.org/core bumped from 0.10.1-next.7 to 0.10.1-next.8
+    * @twin.org/nameof bumped from 0.10.1-next.7 to 0.10.1-next.8
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.7 to 0.10.1-next.8
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.10.1-next.7 to 0.10.1-next.8
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.7 to 0.10.1-next.8
+
+## [0.10.1-next.7](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.10.1-next.6...validate-locales-v0.10.1-next.7) (2026-09-21)
+
+
+### Features
+
+* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.10.1-next.6 to 0.10.1-next.7
+    * @twin.org/core bumped from 0.10.1-next.6 to 0.10.1-next.7
+    * @twin.org/nameof bumped from 0.10.1-next.6 to 0.10.1-next.7
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.6 to 0.10.1-next.7
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.10.1-next.6 to 0.10.1-next.7
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.6 to 0.10.1-next.7
+
+## [0.10.1-next.6](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.10.1-next.5...validate-locales-v0.10.1-next.6) (2026-09-21)
+
+
+### Miscellaneous Chores
+
+* **validate-locales:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.10.1-next.5 to 0.10.1-next.6
+    * @twin.org/core bumped from 0.10.1-next.5 to 0.10.1-next.6
+    * @twin.org/nameof bumped from 0.10.1-next.5 to 0.10.1-next.6
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.5 to 0.10.1-next.6
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.10.1-next.5 to 0.10.1-next.6
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.5 to 0.10.1-next.6
+
+## [0.10.1-next.5](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.10.1-next.4...validate-locales-v0.10.1-next.5) (2026-09-18)
+
+
+### Miscellaneous Chores
+
+* **validate-locales:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.10.1-next.4 to 0.10.1-next.5
+    * @twin.org/core bumped from 0.10.1-next.4 to 0.10.1-next.5
+    * @twin.org/nameof bumped from 0.10.1-next.4 to 0.10.1-next.5
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.4 to 0.10.1-next.5
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.10.1-next.4 to 0.10.1-next.5
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.4 to 0.10.1-next.5
+
+## [0.10.1-next.4](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.10.1-next.3...validate-locales-v0.10.1-next.4) (2026-09-18)
+
+
+### Miscellaneous Chores
+
+* **validate-locales:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.10.1-next.3 to 0.10.1-next.4
+    * @twin.org/core bumped from 0.10.1-next.3 to 0.10.1-next.4
+    * @twin.org/nameof bumped from 0.10.1-next.3 to 0.10.1-next.4
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.3 to 0.10.1-next.4
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.10.1-next.3 to 0.10.1-next.4
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.3 to 0.10.1-next.4
+
+## [0.10.1-next.3](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.10.1-next.2...validate-locales-v0.10.1-next.3) (2026-09-18)
+
+
+### Miscellaneous Chores
+
+* **validate-locales:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.10.1-next.2 to 0.10.1-next.3
+    * @twin.org/core bumped from 0.10.1-next.2 to 0.10.1-next.3
+    * @twin.org/nameof bumped from 0.10.1-next.2 to 0.10.1-next.3
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.2 to 0.10.1-next.3
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.10.1-next.2 to 0.10.1-next.3
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.2 to 0.10.1-next.3
+
+## [0.10.1-next.2](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.10.1-next.1...validate-locales-v0.10.1-next.2) (2026-09-17)
+
+
+### Miscellaneous Chores
+
+* **validate-locales:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.10.1-next.1 to 0.10.1-next.2
+    * @twin.org/core bumped from 0.10.1-next.1 to 0.10.1-next.2
+    * @twin.org/nameof bumped from 0.10.1-next.1 to 0.10.1-next.2
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.1 to 0.10.1-next.2
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.10.1-next.1 to 0.10.1-next.2
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.1 to 0.10.1-next.2
+
+## [0.10.1-next.1](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.10.1-next.0...validate-locales-v0.10.1-next.1) (2026-09-17)
+
+
+### Features
+
+* add support for health i18n validation ([7a286dd](https://github.com/iotaledger/twin-framework/commit/7a286ddb0c1bfa498bf3a77126cd589042bad6de))
+* additional error types in validate locales ([d0e87d6](https://github.com/iotaledger/twin-framework/commit/d0e87d6d9430e91417636d30dd4865fa6a31d825))
+* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* skip class properties ([#489](https://github.com/iotaledger/twin-framework/issues/489)) ([268dc30](https://github.com/iotaledger/twin-framework/commit/268dc30767eadc98268ecf346d830117cd272866))
+* support for "property" assignments in validate-locales ([2414a0c](https://github.com/iotaledger/twin-framework/commit/2414a0c2e29d8935a17b58b9bdc31609c0f97140))
+* support templated strings in health check source ([14b8d1c](https://github.com/iotaledger/twin-framework/commit/14b8d1cefa8b63153b6c2833b8f487509a128b10))
+* ternary support in log and health properties ([#438](https://github.com/iotaledger/twin-framework/issues/438)) ([59859f9](https://github.com/iotaledger/twin-framework/commit/59859f985753eda5f8667bfc5d240cecbbfef905))
+* ternary support in validate-locales errors ([142bb62](https://github.com/iotaledger/twin-framework/commit/142bb62bc35795867df13a1fac2151e90f6533bb))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* validate-locales add spread support for data ([#432](https://github.com/iotaledger/twin-framework/issues/432)) ([d746e3a](https://github.com/iotaledger/twin-framework/commit/d746e3a3ceeedfb6b4ce17f8fbdd00771649dfd3))
+* validate-locales exclude module-helper methods ([#420](https://github.com/iotaledger/twin-framework/issues/420)) ([f42c882](https://github.com/iotaledger/twin-framework/commit/f42c88286747c45daa3c0306653967504c4ca577))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/cli-core bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/core bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/nameof bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.0 to 0.10.1-next.1
+  * devDependencies
+    * @twin.org/merge-locales bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.0 to 0.10.1-next.1
+
 ## [0.10.0](https://github.com/iotaledger/twin-framework/compare/validate-locales-v0.10.0...validate-locales-v0.10.0) (2026-09-16)
 
 

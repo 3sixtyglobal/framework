@@ -38,7 +38,7 @@ export const ComparisonOperator = {
 
 	/**
 	 * Includes.
-	 * A string in a substring.
+	 * A string in a substring, this is a scan and cannot use an index.
 	 * A set contains an element.
 	 * A list contains an element.
 	 */
@@ -51,6 +51,12 @@ export const ComparisonOperator = {
 	 * A list does not contain an element.
 	 */
 	NotIncludes: "not-includes",
+
+	/**
+	 * Starts With.
+	 * A string begins with a prefix, the anchored match can use an index.
+	 */
+	StartsWith: "starts-with",
 
 	/**
 	 * In.

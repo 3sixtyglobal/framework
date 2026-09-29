@@ -38,9 +38,11 @@ The options for the CLI.
 
 ##### localesDirectory
 
-`string`
+`string` \| `string`[]
 
-The path to load the locales from.
+The locales to load, each entry is either a path to a locales
+directory or the name of an installed package to take the locales from. Entries are
+merged in order, so later entries override earlier ones.
 
 ##### argv
 
@@ -100,9 +102,10 @@ The process arguments.
 
 ##### localesDirectory?
 
-`string`
+`string` \| `string`[]
 
-The directory for the locales, default to relative to the script.
+The locales to load, either paths to locales directories or names
+of installed packages, defaults to relative to the script.
 
 ##### options?
 
@@ -113,6 +116,12 @@ Additional options.
 `number`
 
 Override the output width.
+
+###### noColor?
+
+`boolean`
+
+Disable colourised output.
 
 #### Returns
 

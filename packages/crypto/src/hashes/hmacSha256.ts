@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { hmac } from "@noble/hashes/hmac.js";
 import { sha224, sha256 } from "@noble/hashes/sha2.js";
-import type { Hash } from "@noble/hashes/utils.js";
 import { GeneralError, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
+import type { IHashInstance } from "../models/IHashInstance.js";
 
 /**
  * Class to help with HmacSha256 scheme.
@@ -26,11 +27,19 @@ export class HmacSha256 {
 	public static readonly CLASS_NAME: string = nameof<HmacSha256>();
 
 	/**
+	 * The hash to request from node:crypto, keyed by bit size.
+	 * @internal
+	 */
+	private static readonly _HASHES: { [bits: number]: string } = {
+		224: "sha224",
+		256: "sha256"
+	};
+
+	/**
 	 * The instance of the hash.
 	 * @internal
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	private readonly _instance: Hash<any>;
+	private readonly _instance: IHashInstance;
 
 	/**
 	 * Create a new instance of HmacSha256.
@@ -43,7 +52,12 @@ export class HmacSha256 {
 			throw new GeneralError(HmacSha256.CLASS_NAME, "bitSize", { bitSize: bits });
 		}
 
-		this._instance = hmac.create(bits === HmacSha256.SIZE_256 ? sha256 : sha224, key);
+		const hash = HmacSha256._HASHES[bits];
+		const nodeCrypto = NativeModulesCrypto.getNodeCryptoHash(hash);
+
+		this._instance = nodeCrypto
+			? nodeCrypto.createHmac(hash, nodeCrypto.createSecretKey(key))
+			: hmac.create(bits === HmacSha256.SIZE_256 ? sha256 : sha224, key);
 	}
 
 	/**
@@ -90,6 +104,6 @@ export class HmacSha256 {
 	 * @returns The computed hash as bytes.
 	 */
 	public digest(): Uint8Array {
-		return this._instance.digest();
+		return new Uint8Array(this._instance.digest());
 	}
 }

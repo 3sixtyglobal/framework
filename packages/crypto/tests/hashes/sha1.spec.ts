@@ -3,8 +3,21 @@
 import { Converter } from "@twin.org/core";
 import testData from "./sha1.json" with { type: "json" };
 import { Sha1 } from "../../src/hashes/sha1.js";
+import {
+	NATIVE_CRYPTO_VARIANTS,
+	unregisterNodeCrypto,
+	useNativeCryptoVariant
+} from "../nativeCryptoVariants.js";
 
-describe("Sha1", () => {
+describe.each(NATIVE_CRYPTO_VARIANTS)("Sha1 ($implementation)", ({ useNodeCrypto }) => {
+	beforeAll(async () => {
+		await useNativeCryptoVariant(useNodeCrypto);
+	});
+
+	afterAll(() => {
+		unregisterNodeCrypto();
+	});
+
 	test("Can perform a sha1 on short text", () => {
 		const sha = new Sha1();
 		sha.update(Converter.utf8ToBytes("abc"));

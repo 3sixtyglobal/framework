@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable camelcase */
 import { sha384, sha512, sha512_224, sha512_256 } from "@noble/hashes/sha2.js";
-import type { Hash } from "@noble/hashes/utils.js";
 import { GeneralError, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
+import type { IHashInstance } from "../models/IHashInstance.js";
 
 /**
  * Perform a SHA-512 hash on the block.
@@ -36,11 +37,21 @@ export class Sha512 {
 	public static readonly CLASS_NAME: string = nameof<Sha512>();
 
 	/**
+	 * The hash to request from node:crypto, keyed by bit size.
+	 * @internal
+	 */
+	private static readonly _HASHES: { [bits: number]: string } = {
+		224: "sha512-224",
+		256: "sha512-256",
+		384: "sha384",
+		512: "sha512"
+	};
+
+	/**
 	 * The instance of the hash.
 	 * @internal
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	private readonly _instance: Hash<any>;
+	private readonly _instance: IHashInstance;
 
 	/**
 	 * Create a new instance of Sha512.
@@ -57,7 +68,12 @@ export class Sha512 {
 			throw new GeneralError(Sha512.CLASS_NAME, "bitSize", { bitSize: bits });
 		}
 
-		if (bits === Sha512.SIZE_224) {
+		const hash = Sha512._HASHES[bits];
+		const nodeCrypto = NativeModulesCrypto.getNodeCryptoHash(hash);
+
+		if (nodeCrypto) {
+			this._instance = nodeCrypto.createHash(hash);
+		} else if (bits === Sha512.SIZE_224) {
 			this._instance = sha512_224.create();
 		} else if (bits === Sha512.SIZE_256) {
 			this._instance = sha512_256.create();
@@ -128,6 +144,6 @@ export class Sha512 {
 	 * @returns The computed hash as bytes.
 	 */
 	public digest(): Uint8Array {
-		return this._instance.digest();
+		return new Uint8Array(this._instance.digest());
 	}
 }

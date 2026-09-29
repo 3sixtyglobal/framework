@@ -66,6 +66,28 @@ The default output method for clearing the current line.
 
 ## Methods
 
+### setColorEnabled() {#setcolorenabled}
+
+> `static` **setColorEnabled**(`enabled`): `void`
+
+Enable or disable colourised output. When disabled the display methods emit
+plain text with no ANSI escape sequences, otherwise the colour support
+detected from the environment is used.
+
+#### Parameters
+
+##### enabled
+
+`boolean`
+
+Whether to colourise the output.
+
+#### Returns
+
+`void`
+
+***
+
 ### header() {#header}
 
 > `static` **header**(`title`, `version`, `icon`): `void`

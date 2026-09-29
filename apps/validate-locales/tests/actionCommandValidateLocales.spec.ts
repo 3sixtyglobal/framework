@@ -13,8 +13,11 @@ let errorBuffer: string[] = [];
 
 describe("actionCommandValidateLocales", () => {
 	beforeAll(() => {
+		// The assertions only need this package's own messages, so read them from the
+		// source locales rather than the merged dist copy, which would require the
+		// merge step to have run first.
 		const localeContent = CLIUtils.readJsonFileSync<ILocaleDictionary>(
-			path.join(testDir, "../dist/locales/en.json")
+			path.join(testDir, "../locales/en.json")
 		);
 		if (localeContent) {
 			I18n.addDictionary("en", localeContent);

@@ -3,8 +3,21 @@
 import { Converter } from "@twin.org/core";
 import testData from "./blake2b.json" with { type: "json" };
 import { Blake2b } from "../../src/hashes/blake2b.js";
+import {
+	NATIVE_CRYPTO_VARIANTS,
+	unregisterNodeCrypto,
+	useNativeCryptoVariant
+} from "../nativeCryptoVariants.js";
 
-describe("Blake2b", () => {
+describe.each(NATIVE_CRYPTO_VARIANTS)("Blake2b ($implementation)", ({ useNodeCrypto }) => {
+	beforeAll(async () => {
+		await useNativeCryptoVariant(useNodeCrypto);
+	});
+
+	afterAll(() => {
+		unregisterNodeCrypto();
+	});
+
 	test("Can perform a sum512 on short text", () => {
 		const sum = Blake2b.sum512(Converter.utf8ToBytes("abc"));
 		expect(Converter.bytesToHex(sum)).toEqual(
@@ -60,6 +73,41 @@ describe("Blake2b", () => {
 					expect(Converter.bytesToHex(sum160)).toEqual(test.out160);
 				}
 			}
+		}
+	});
+
+	test("Can perform sum160 and sum256, which stay on the fallback", () => {
+		// OpenSSL only exposes the unkeyed 512 bit variant, so these lengths never go native
+		expect(Blake2b.sum160(Converter.utf8ToBytes("abc")).length).toEqual(Blake2b.SIZE_160);
+		expect(Blake2b.sum256(Converter.utf8ToBytes("abc")).length).toEqual(Blake2b.SIZE_256);
+		expect(Converter.bytesToHex(Blake2b.sum256(Converter.utf8ToBytes("abc")))).toEqual(
+			"bddd813c634239723171ef3fee98579b94964e3bb1cb3e427262c8c068d52319"
+		);
+	});
+
+	test("Can perform a keyed hash, which stays on the fallback", () => {
+		const key = new Uint8Array(32).fill(7);
+		const keyed = Blake2b.sum512(Converter.utf8ToBytes("abc"), key);
+		const unkeyed = Blake2b.sum512(Converter.utf8ToBytes("abc"));
+
+		expect(keyed.length).toEqual(Blake2b.SIZE_512);
+		expect(keyed).not.toEqual(unkeyed);
+	});
+
+	test("Returns a plain Uint8Array rather than a platform buffer type", () => {
+		expect(Blake2b.sum512(Converter.utf8ToBytes("abc")).constructor).toEqual(Uint8Array);
+	});
+
+	test("Produces the same digest as the other implementation", async () => {
+		const block = Converter.utf8ToBytes("cross implementation blake2b ".repeat(20));
+		const digest = Blake2b.sum512(block);
+
+		await useNativeCryptoVariant(!useNodeCrypto);
+
+		try {
+			expect(Blake2b.sum512(block)).toEqual(digest);
+		} finally {
+			await useNativeCryptoVariant(useNodeCrypto);
 		}
 	});
 });

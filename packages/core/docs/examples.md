@@ -241,6 +241,21 @@ SharedStore.set('region', 'eu-west-1');
 SharedStore.get<string>('region'); // 'eu-west-1'
 ```
 
+## NativeModules
+
+```typescript
+import { NativeModules } from '@twin.org/core';
+
+// Pass the constructor type, not the instance type, to reach statics such as Buffer.from
+NativeModules.getType<BufferConstructor>('Buffer'); // the Buffer constructor on Node, undefined in a browser
+
+// Node builtins are only used by classes such as Sha256 once a host has registered them,
+// typically once at startup. The returned object lists any specifiers that failed to load.
+const failures = await NativeModules.init(['node:crypto']);
+NativeModules.getModule('node:crypto'); // the module, or undefined if init() was never called for it
+NativeModules.names(); // ['node:crypto']
+```
+
 ## RandomHelper and NumberHelper
 
 ```typescript

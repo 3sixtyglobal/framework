@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable no-bitwise */
 import { nameof } from "@twin.org/nameof";
+import { GeneralError } from "../errors/generalError.js";
 import { Converter } from "../utils/converter.js";
 import { Guards } from "../utils/guards.js";
 
@@ -15,11 +16,25 @@ export class RandomHelper {
 	public static readonly CLASS_NAME: string = nameof<RandomHelper>();
 
 	/**
+	 * The most bytes getRandomValues will fill in a single call.
+	 * @internal
+	 */
+	private static readonly _MAX_LENGTH: number = 65536;
+
+	/**
 	 * Generate a new random array.
 	 * @param length The length of buffer to create.
 	 * @returns The random array.
+	 * @throws GeneralError if the length is above the maximum getRandomValues accepts.
 	 */
 	public static generate(length: number): Uint8Array {
+		if (length > RandomHelper._MAX_LENGTH) {
+			throw new GeneralError(RandomHelper.CLASS_NAME, "maxLength", {
+				length,
+				maxLength: RandomHelper._MAX_LENGTH
+			});
+		}
+
 		const randomBytes = new Uint8Array(length);
 		globalThis.crypto.getRandomValues(randomBytes);
 		return randomBytes;

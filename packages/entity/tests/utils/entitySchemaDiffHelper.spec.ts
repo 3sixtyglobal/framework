@@ -3,6 +3,7 @@
 import { EntitySchemaPropertyFormat } from "../../src/models/entitySchemaPropertyFormat.js";
 import { EntitySchemaPropertyType } from "../../src/models/entitySchemaPropertyType.js";
 import type { IEntitySchemaProperty } from "../../src/models/IEntitySchemaProperty.js";
+import type { IEntitySchemaPropertyIndex } from "../../src/models/IEntitySchemaPropertyIndex.js";
 import { SortDirection } from "../../src/models/sortDirection.js";
 import { EntitySchemaDiffHelper } from "../../src/utils/entitySchemaDiffHelper.js";
 
@@ -624,6 +625,136 @@ describe("schemaPropertiesEqual", () => {
 	test("returns false when isSecondary differs", () => {
 		expect(
 			EntitySchemaDiffHelper.schemaPropertiesEqual(ageProp, { ...ageProp, isSecondary: true })
+		).toBe(false);
+	});
+
+	test("returns false when indexGroup is added", () => {
+		expect(
+			EntitySchemaDiffHelper.schemaPropertiesEqual(ageProp, {
+				...ageProp,
+				indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: 0 }]
+			})
+		).toBe(false);
+	});
+
+	test("returns false when indexGroup names differ", () => {
+		expect(
+			EntitySchemaDiffHelper.schemaPropertiesEqual(
+				{
+					...ageProp,
+					indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: 0 }]
+				},
+				{
+					...ageProp,
+					indexGroup: [{ name: "bbb", direction: SortDirection.Ascending, index: 0 }]
+				}
+			)
+		).toBe(false);
+	});
+
+	test("returns false when indexGroup directions differ", () => {
+		expect(
+			EntitySchemaDiffHelper.schemaPropertiesEqual(
+				{
+					...ageProp,
+					indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: 0 }]
+				},
+				{
+					...ageProp,
+					indexGroup: [{ name: "aaa", direction: SortDirection.Descending, index: 0 }]
+				}
+			)
+		).toBe(false);
+	});
+
+	test("returns false when indexGroup index positions differ", () => {
+		expect(
+			EntitySchemaDiffHelper.schemaPropertiesEqual(
+				{
+					...ageProp,
+					indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: 0 }]
+				},
+				{
+					...ageProp,
+					indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: 1 }]
+				}
+			)
+		).toBe(false);
+	});
+
+	test("returns true when indexGroup contains the same indexes in a different order", () => {
+		expect(
+			EntitySchemaDiffHelper.schemaPropertiesEqual(
+				{
+					...ageProp,
+					indexGroup: [
+						{ name: "aaa", direction: SortDirection.Ascending, index: 0 },
+						{ name: "bbb", direction: SortDirection.Descending, index: 1 }
+					]
+				},
+				{
+					...ageProp,
+					indexGroup: [
+						{ name: "bbb", direction: SortDirection.Descending, index: 1 },
+						{ name: "aaa", direction: SortDirection.Ascending, index: 0 }
+					]
+				}
+			)
+		).toBe(true);
+	});
+
+	test("returns false when duplicate indexGroup entries do not match", () => {
+		expect(
+			EntitySchemaDiffHelper.schemaPropertiesEqual(
+				{
+					...ageProp,
+					indexGroup: [
+						{ name: "aaa", direction: SortDirection.Ascending, index: 0 },
+						{ name: "aaa", direction: SortDirection.Ascending, index: 0 }
+					]
+				},
+				{
+					...ageProp,
+					indexGroup: [
+						{ name: "aaa", direction: SortDirection.Ascending, index: 0 },
+						{ name: "bbb", direction: SortDirection.Ascending, index: 0 }
+					]
+				}
+			)
+		).toBe(false);
+	});
+
+	test("returns true when indexGroup is absent on both properties", () => {
+		expect(EntitySchemaDiffHelper.schemaPropertiesEqual(ageProp, { ...ageProp })).toBe(true);
+	});
+
+	test("returns true when indexGroup contains matching undefined entries", () => {
+		expect(
+			EntitySchemaDiffHelper.schemaPropertiesEqual(
+				{
+					...ageProp,
+					indexGroup: [undefined as unknown as IEntitySchemaPropertyIndex]
+				},
+				{
+					...ageProp,
+					indexGroup: [undefined as unknown as IEntitySchemaPropertyIndex]
+				}
+			)
+		).toBe(true);
+	});
+
+	test("returns false when only one indexGroup contains an undefined entry", () => {
+		expect(
+			EntitySchemaDiffHelper.schemaPropertiesEqual(
+				{
+					...ageProp,
+					indexGroup: [undefined as unknown as IEntitySchemaPropertyIndex]
+				},
+				{
+					...ageProp,
+					indexGroup: [{ name: "aaa", direction: SortDirection.Ascending, index: 0 }]
+				}
+			)
 		).toBe(false);
 	});
 

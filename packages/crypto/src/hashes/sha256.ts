@@ -1,9 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { sha224, sha256 } from "@noble/hashes/sha2.js";
-import type { Hash } from "@noble/hashes/utils.js";
 import { GeneralError, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
+import type { IHashInstance } from "../models/IHashInstance.js";
 
 /**
  * Perform a SHA-256 hash on the block.
@@ -25,11 +26,19 @@ export class Sha256 {
 	public static readonly CLASS_NAME: string = nameof<Sha256>();
 
 	/**
+	 * The hash to request from node:crypto, keyed by bit size.
+	 * @internal
+	 */
+	private static readonly _HASHES: { [bits: number]: string } = {
+		224: "sha224",
+		256: "sha256"
+	};
+
+	/**
 	 * The instance of the hash.
 	 * @internal
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	private readonly _instance: Hash<any>;
+	private readonly _instance: IHashInstance;
 
 	/**
 	 * Create a new instance of Sha256.
@@ -41,7 +50,14 @@ export class Sha256 {
 			throw new GeneralError(Sha256.CLASS_NAME, "bitSize", { bitSize: bits });
 		}
 
-		this._instance = bits === Sha256.SIZE_256 ? sha256.create() : sha224.create();
+		const hash = Sha256._HASHES[bits];
+		const nodeCrypto = NativeModulesCrypto.getNodeCryptoHash(hash);
+
+		if (nodeCrypto) {
+			this._instance = nodeCrypto.createHash(hash);
+		} else {
+			this._instance = bits === Sha256.SIZE_256 ? sha256.create() : sha224.create();
+		}
 	}
 
 	/**
@@ -82,6 +98,6 @@ export class Sha256 {
 	 * @returns The computed hash as bytes.
 	 */
 	public digest(): Uint8Array {
-		return this._instance.digest();
+		return new Uint8Array(this._instance.digest());
 	}
 }

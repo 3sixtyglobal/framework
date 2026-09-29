@@ -6,6 +6,10 @@ import { SharedStore } from "../../src/utils/sharedStore.js";
 
 let counter = 0;
 
+// The action only has to stay in flight past the synchronous window in which the second
+// call is made, so a short delay tests the same behaviour as a full second would.
+const SLOW_ACTION_MS = 10;
+
 const counterIncrement = vi.fn(async (sleep: number = 0) => {
 	if (sleep > 0) {
 		await new Promise<void>(resolve => setTimeout(resolve, sleep));
@@ -84,11 +88,11 @@ describe("AsyncCache", () => {
 	});
 
 	test("can get a second promise if the action is still in progress", async () => {
-		const res = AsyncCache.exec("key", 1, async () => counterIncrement(1000));
+		const res = AsyncCache.exec("key", 1, async () => counterIncrement(SLOW_ACTION_MS));
 		expect(Is.promise(res)).toEqual(true);
 		expect(counter).toEqual(0);
 
-		const res2 = AsyncCache.exec("key", 1, async () => counterIncrement(1000));
+		const res2 = AsyncCache.exec("key", 1, async () => counterIncrement(SLOW_ACTION_MS));
 		expect(Is.promise(res2)).toEqual(true);
 		expect(counter).toEqual(0);
 
@@ -105,7 +109,7 @@ describe("AsyncCache", () => {
 		expect(Is.promise(res)).toEqual(true);
 		expect(counter).toEqual(0);
 
-		const res2 = AsyncCache.exec("key", 1, async () => counterIncrement(1000));
+		const res2 = AsyncCache.exec("key", 1, async () => counterIncrement(SLOW_ACTION_MS));
 		expect(Is.promise(res2)).toEqual(true);
 		expect(counter).toEqual(0);
 
@@ -131,7 +135,7 @@ describe("AsyncCache", () => {
 		expect(Is.promise(res)).toEqual(true);
 		expect(counter).toEqual(0);
 
-		const res2 = AsyncCache.exec("key", 1, async () => counterIncrement(1000));
+		const res2 = AsyncCache.exec("key", 1, async () => counterIncrement(SLOW_ACTION_MS));
 		expect(Is.promise(res2)).toEqual(true);
 		expect(counter).toEqual(0);
 
@@ -179,7 +183,7 @@ describe("AsyncCache", () => {
 		const deferred = createDeferred<number>();
 
 		const res = AsyncCache.exec("key", 1000, async () => deferred.promise);
-		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(1000));
+		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(SLOW_ACTION_MS));
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -197,7 +201,7 @@ describe("AsyncCache", () => {
 		const deferred = createDeferred<number>();
 
 		const res = AsyncCache.exec("key", 1000, async () => deferred.promise);
-		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(1000));
+		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(SLOW_ACTION_MS));
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -219,7 +223,7 @@ describe("AsyncCache", () => {
 		const deferred = createDeferred<number>();
 
 		const res = AsyncCache.exec("key", 1000, async () => deferred.promise, true);
-		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(1000), true);
+		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(SLOW_ACTION_MS), true);
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -248,7 +252,7 @@ describe("AsyncCache", () => {
 		const deferred = createDeferred<number>();
 
 		const res = AsyncCache.exec("key", 1000, async () => deferred.promise);
-		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(1000));
+		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(SLOW_ACTION_MS));
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -269,7 +273,7 @@ describe("AsyncCache", () => {
 		const deferred = createDeferred<number>();
 
 		const res = AsyncCache.exec("key", 1000, async () => deferred.promise);
-		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(1000));
+		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(SLOW_ACTION_MS));
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -294,7 +298,7 @@ describe("AsyncCache", () => {
 		const deferred = createDeferred<number>();
 
 		const res = AsyncCache.exec("key", 1000, async () => deferred.promise);
-		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(1000));
+		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(SLOW_ACTION_MS));
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -312,7 +316,7 @@ describe("AsyncCache", () => {
 		const deferred = createDeferred<number>();
 
 		const res = AsyncCache.exec("key", 1000, async () => deferred.promise);
-		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(1000));
+		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(SLOW_ACTION_MS));
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -334,7 +338,7 @@ describe("AsyncCache", () => {
 		const deferred = createDeferred<number>();
 
 		const res = AsyncCache.exec("key", 1000, async () => deferred.promise, true);
-		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(1000), true);
+		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(SLOW_ACTION_MS), true);
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -363,7 +367,7 @@ describe("AsyncCache", () => {
 		const deferred = createDeferred<number>();
 
 		const res = AsyncCache.exec("api-key", 1000, async () => deferred.promise);
-		const res2 = AsyncCache.exec("api-key", 1000, async () => counterIncrement(1000));
+		const res2 = AsyncCache.exec("api-key", 1000, async () => counterIncrement(SLOW_ACTION_MS));
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -381,7 +385,7 @@ describe("AsyncCache", () => {
 		const deferred = createDeferred<number>();
 
 		const res = AsyncCache.exec("api-key", 1000, async () => deferred.promise);
-		const res2 = AsyncCache.exec("api-key", 1000, async () => counterIncrement(1000));
+		const res2 = AsyncCache.exec("api-key", 1000, async () => counterIncrement(SLOW_ACTION_MS));
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);

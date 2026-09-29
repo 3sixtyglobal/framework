@@ -19,6 +19,7 @@ export * from "./hashes/sha256.js";
 export * from "./hashes/sha3.js";
 export * from "./hashes/sha512.js";
 export * from "./helpers/integrityHelper.js";
+export * from "./helpers/nativeModulesCrypto.js";
 export * from "./helpers/pemHelper.js";
 export * from "./keys/bip32Path.js";
 export * from "./keys/bip39.js";

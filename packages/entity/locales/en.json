@@ -4,6 +4,10 @@
 			"duplicateOldProperty": "The oldProperties array contains a duplicate property key \"{property}\"",
 			"duplicateNewProperty": "The newProperties array contains a duplicate property key \"{property}\""
 		},
+		"propertyDecorator": {
+			"indexGroupTypeNotSupported": "The property \"{property}\" of type \"{type}\" cannot be part of an index group",
+			"duplicateIndexGroup": "The property \"{property}\" declares the index group \"{group}\" more than once"
+		},
 		"entitySchemaHelper": {
 			"noIsPrimary": "Property \"entitySchema.properties\" must contain a value with isPrimary set",
 			"multipleIsPrimary": "Property \"entitySchema.properties\" contains more than one property with isPrimary set",
@@ -14,6 +18,10 @@
 			"maxLengthExceeded": "The entity property \"{property}\" has a length of {length} which exceeds the maximum length of {maxLength}",
 			"versionMustBeGreaterThanOrEqualZero": "Property \"entitySchema.version\" must be an integer >= 0, but got {version}",
 			"multipleVersionProperties": "The schema has more than one property with isVersion set, only one is allowed",
+			"invalidIndexGroupDirection": "The index group \"{group}\" on the property \"{property}\" has the direction \"{direction}\" which is not a valid sort direction",
+			"invalidIndexGroupIndex": "The index group \"{group}\" on the property \"{property}\" has the index {index} which must be an integer >= 0",
+			"duplicateIndexGroupIndex": "The index group \"{group}\" has more than one property using the index {index}, found again on the property \"{property}\"",
+			"indexGroupMustHaveAtLeastTwoProperties": "The index group \"{group}\" must contain at least two properties, but contains {count}",
 			"versionPropertyMustBeInteger": "The version property \"{property}\" has type \"{type}\" but must be of type integer"
 		}
 	}

@@ -30,9 +30,11 @@ The options for the CLI.
 
 ##### localesDirectory
 
-`string`
+`string` \| `string`[]
 
-The path to load the locales from.
+The locales to load, each entry is either a path to a locales
+directory or the name of an installed package to take the locales from. Entries are
+merged in order, so later entries override earlier ones.
 
 ##### argv
 

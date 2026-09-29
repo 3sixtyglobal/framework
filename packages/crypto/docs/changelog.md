@@ -1,5 +1,278 @@
 # Changelog
 
+## [0.10.1-next.12](https://github.com/iotaledger/twin-framework/compare/crypto-v0.10.1-next.11...crypto-v0.10.1-next.12) (2026-09-25)
+
+
+### Miscellaneous Chores
+
+* **crypto:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.11 to 0.10.1-next.12
+    * @twin.org/nameof bumped from 0.10.1-next.11 to 0.10.1-next.12
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.11 to 0.10.1-next.12
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.11 to 0.10.1-next.12
+    * @twin.org/validate-locales bumped from 0.10.1-next.11 to 0.10.1-next.12
+
+## [0.10.1-next.11](https://github.com/iotaledger/twin-framework/compare/crypto-v0.10.1-next.10...crypto-v0.10.1-next.11) (2026-09-25)
+
+
+### Miscellaneous Chores
+
+* **crypto:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.10 to 0.10.1-next.11
+    * @twin.org/nameof bumped from 0.10.1-next.10 to 0.10.1-next.11
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.10 to 0.10.1-next.11
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.10 to 0.10.1-next.11
+    * @twin.org/validate-locales bumped from 0.10.1-next.10 to 0.10.1-next.11
+
+## [0.10.1-next.10](https://github.com/iotaledger/twin-framework/compare/crypto-v0.10.1-next.9...crypto-v0.10.1-next.10) (2026-09-22)
+
+
+### Miscellaneous Chores
+
+* **crypto:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.9 to 0.10.1-next.10
+    * @twin.org/nameof bumped from 0.10.1-next.9 to 0.10.1-next.10
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.9 to 0.10.1-next.10
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.9 to 0.10.1-next.10
+    * @twin.org/validate-locales bumped from 0.10.1-next.9 to 0.10.1-next.10
+
+## [0.10.1-next.9](https://github.com/iotaledger/twin-framework/compare/crypto-v0.10.1-next.8...crypto-v0.10.1-next.9) (2026-09-21)
+
+
+### Features
+
+* add crypto argon2id ([#255](https://github.com/iotaledger/twin-framework/issues/255)) ([27fe3a7](https://github.com/iotaledger/twin-framework/commit/27fe3a72eeb0f398a278ebb3f1cb9c4dd459743c))
+* back base64, sha256 and chacha20poly1305 with native Node implementations ([#518](https://github.com/iotaledger/twin-framework/issues/518)) ([9c09337](https://github.com/iotaledger/twin-framework/commit/9c09337cb8e4045c2c1784b7c072a88de779234d))
+* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+* factory create and integrity ([#235](https://github.com/iotaledger/twin-framework/issues/235)) ([9f98b99](https://github.com/iotaledger/twin-framework/commit/9f98b99daf46eb365346fae49cc4ffba63e74cb3))
+* improve signatures ([cdd24be](https://github.com/iotaledger/twin-framework/commit/cdd24be6fb898d33955b6f2f93c3ddbd73582269))
+* improved password generation and validation ([#232](https://github.com/iotaledger/twin-framework/issues/232)) ([ca4e18f](https://github.com/iotaledger/twin-framework/commit/ca4e18f388b1882cdfb774fc0d0921b8530fac33))
+* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* native enhancements ([#527](https://github.com/iotaledger/twin-framework/issues/527)) ([dc77328](https://github.com/iotaledger/twin-framework/commit/dc77328df201ff77809d8e8792c27780bfb6d8c4))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* docs ([9df46e0](https://github.com/iotaledger/twin-framework/commit/9df46e0a3940a4d1f479373f58830519262f9590))
+* docs ([67c8887](https://github.com/iotaledger/twin-framework/commit/67c888739448e753106ea067a8703d058e0ddf12))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.8 to 0.10.1-next.9
+    * @twin.org/nameof bumped from 0.10.1-next.8 to 0.10.1-next.9
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.8 to 0.10.1-next.9
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.8 to 0.10.1-next.9
+    * @twin.org/validate-locales bumped from 0.10.1-next.8 to 0.10.1-next.9
+
+## [0.10.1-next.8](https://github.com/iotaledger/twin-framework/compare/crypto-v0.10.1-next.7...crypto-v0.10.1-next.8) (2026-09-21)
+
+
+### Features
+
+* add crypto argon2id ([#255](https://github.com/iotaledger/twin-framework/issues/255)) ([27fe3a7](https://github.com/iotaledger/twin-framework/commit/27fe3a72eeb0f398a278ebb3f1cb9c4dd459743c))
+* back base64, sha256 and chacha20poly1305 with native Node implementations ([#518](https://github.com/iotaledger/twin-framework/issues/518)) ([9c09337](https://github.com/iotaledger/twin-framework/commit/9c09337cb8e4045c2c1784b7c072a88de779234d))
+* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+* factory create and integrity ([#235](https://github.com/iotaledger/twin-framework/issues/235)) ([9f98b99](https://github.com/iotaledger/twin-framework/commit/9f98b99daf46eb365346fae49cc4ffba63e74cb3))
+* improve signatures ([cdd24be](https://github.com/iotaledger/twin-framework/commit/cdd24be6fb898d33955b6f2f93c3ddbd73582269))
+* improved password generation and validation ([#232](https://github.com/iotaledger/twin-framework/issues/232)) ([ca4e18f](https://github.com/iotaledger/twin-framework/commit/ca4e18f388b1882cdfb774fc0d0921b8530fac33))
+* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* native enhancements ([#527](https://github.com/iotaledger/twin-framework/issues/527)) ([dc77328](https://github.com/iotaledger/twin-framework/commit/dc77328df201ff77809d8e8792c27780bfb6d8c4))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* docs ([9df46e0](https://github.com/iotaledger/twin-framework/commit/9df46e0a3940a4d1f479373f58830519262f9590))
+* docs ([67c8887](https://github.com/iotaledger/twin-framework/commit/67c888739448e753106ea067a8703d058e0ddf12))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.7 to 0.10.1-next.8
+    * @twin.org/nameof bumped from 0.10.1-next.7 to 0.10.1-next.8
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.7 to 0.10.1-next.8
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.7 to 0.10.1-next.8
+    * @twin.org/validate-locales bumped from 0.10.1-next.7 to 0.10.1-next.8
+
+## [0.10.1-next.7](https://github.com/iotaledger/twin-framework/compare/crypto-v0.10.1-next.6...crypto-v0.10.1-next.7) (2026-09-21)
+
+
+### Features
+
+* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.6 to 0.10.1-next.7
+    * @twin.org/nameof bumped from 0.10.1-next.6 to 0.10.1-next.7
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.6 to 0.10.1-next.7
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.6 to 0.10.1-next.7
+    * @twin.org/validate-locales bumped from 0.10.1-next.6 to 0.10.1-next.7
+
+## [0.10.1-next.6](https://github.com/iotaledger/twin-framework/compare/crypto-v0.10.1-next.5...crypto-v0.10.1-next.6) (2026-09-21)
+
+
+### Features
+
+* native enhancements ([#527](https://github.com/iotaledger/twin-framework/issues/527)) ([dc77328](https://github.com/iotaledger/twin-framework/commit/dc77328df201ff77809d8e8792c27780bfb6d8c4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.5 to 0.10.1-next.6
+    * @twin.org/nameof bumped from 0.10.1-next.5 to 0.10.1-next.6
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.5 to 0.10.1-next.6
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.5 to 0.10.1-next.6
+    * @twin.org/validate-locales bumped from 0.10.1-next.5 to 0.10.1-next.6
+
+## [0.10.1-next.5](https://github.com/iotaledger/twin-framework/compare/crypto-v0.10.1-next.4...crypto-v0.10.1-next.5) (2026-09-18)
+
+
+### Miscellaneous Chores
+
+* **crypto:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.4 to 0.10.1-next.5
+    * @twin.org/nameof bumped from 0.10.1-next.4 to 0.10.1-next.5
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.4 to 0.10.1-next.5
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.4 to 0.10.1-next.5
+    * @twin.org/validate-locales bumped from 0.10.1-next.4 to 0.10.1-next.5
+
+## [0.10.1-next.4](https://github.com/iotaledger/twin-framework/compare/crypto-v0.10.1-next.3...crypto-v0.10.1-next.4) (2026-09-18)
+
+
+### Features
+
+* back base64, sha256 and chacha20poly1305 with native Node implementations ([#518](https://github.com/iotaledger/twin-framework/issues/518)) ([9c09337](https://github.com/iotaledger/twin-framework/commit/9c09337cb8e4045c2c1784b7c072a88de779234d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.3 to 0.10.1-next.4
+    * @twin.org/nameof bumped from 0.10.1-next.3 to 0.10.1-next.4
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.3 to 0.10.1-next.4
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.3 to 0.10.1-next.4
+    * @twin.org/validate-locales bumped from 0.10.1-next.3 to 0.10.1-next.4
+
+## [0.10.1-next.3](https://github.com/iotaledger/twin-framework/compare/crypto-v0.10.1-next.2...crypto-v0.10.1-next.3) (2026-09-18)
+
+
+### Miscellaneous Chores
+
+* **crypto:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.2 to 0.10.1-next.3
+    * @twin.org/nameof bumped from 0.10.1-next.2 to 0.10.1-next.3
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.2 to 0.10.1-next.3
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.2 to 0.10.1-next.3
+    * @twin.org/validate-locales bumped from 0.10.1-next.2 to 0.10.1-next.3
+
+## [0.10.1-next.2](https://github.com/iotaledger/twin-framework/compare/crypto-v0.10.1-next.1...crypto-v0.10.1-next.2) (2026-09-17)
+
+
+### Miscellaneous Chores
+
+* **crypto:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.1 to 0.10.1-next.2
+    * @twin.org/nameof bumped from 0.10.1-next.1 to 0.10.1-next.2
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.1 to 0.10.1-next.2
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.1 to 0.10.1-next.2
+    * @twin.org/validate-locales bumped from 0.10.1-next.1 to 0.10.1-next.2
+
+## [0.10.1-next.1](https://github.com/iotaledger/twin-framework/compare/crypto-v0.10.1-next.0...crypto-v0.10.1-next.1) (2026-09-17)
+
+
+### Features
+
+* add crypto argon2id ([#255](https://github.com/iotaledger/twin-framework/issues/255)) ([27fe3a7](https://github.com/iotaledger/twin-framework/commit/27fe3a72eeb0f398a278ebb3f1cb9c4dd459743c))
+* factory create and integrity ([#235](https://github.com/iotaledger/twin-framework/issues/235)) ([9f98b99](https://github.com/iotaledger/twin-framework/commit/9f98b99daf46eb365346fae49cc4ffba63e74cb3))
+* improve signatures ([cdd24be](https://github.com/iotaledger/twin-framework/commit/cdd24be6fb898d33955b6f2f93c3ddbd73582269))
+* improved password generation and validation ([#232](https://github.com/iotaledger/twin-framework/issues/232)) ([ca4e18f](https://github.com/iotaledger/twin-framework/commit/ca4e18f388b1882cdfb774fc0d0921b8530fac33))
+* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* docs ([9df46e0](https://github.com/iotaledger/twin-framework/commit/9df46e0a3940a4d1f479373f58830519262f9590))
+* docs ([67c8887](https://github.com/iotaledger/twin-framework/commit/67c888739448e753106ea067a8703d058e0ddf12))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/nameof bumped from 0.10.1-next.0 to 0.10.1-next.1
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/validate-locales bumped from 0.10.1-next.0 to 0.10.1-next.1
+
 ## [0.10.0](https://github.com/iotaledger/twin-framework/compare/crypto-v0.10.0...crypto-v0.10.0) (2026-09-16)
 
 

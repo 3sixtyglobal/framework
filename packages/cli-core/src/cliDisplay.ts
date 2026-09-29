@@ -16,6 +16,13 @@ export class CLIDisplay {
 	private static _spinnerIntervalId: ReturnType<typeof setTimeout> | number | undefined;
 
 	/**
+	 * The colour level detected from the environment, captured before any override
+	 * so that colour can be restored after being disabled.
+	 * @internal
+	 */
+	private static readonly _detectedColorLevel = chalk.level;
+
+	/**
 	 * The default output method for writing standard messages.
 	 * @param buffer The message to output.
 	 */
@@ -36,6 +43,20 @@ export class CLIDisplay {
 		clearLine(process.stdout, 0);
 		cursorTo(process.stdout, 0);
 	};
+
+	/**
+	 * Enable or disable colourised output. When disabled the display methods emit
+	 * plain text with no ANSI escape sequences, otherwise the colour support
+	 * detected from the environment is used.
+	 * @param enabled Whether to colourise the output.
+	 */
+	public static setColorEnabled(enabled: boolean): void {
+		if (enabled) {
+			chalk.level = CLIDisplay._detectedColorLevel;
+		} else {
+			chalk.level = 0;
+		}
+	}
 
 	/**
 	 * Display the header for the CLI.

@@ -4,6 +4,7 @@ import { pbkdf2 } from "@noble/hashes/pbkdf2.js";
 import { sha256, sha512 } from "@noble/hashes/sha2.js";
 import { GeneralError, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
 
 /**
  * Implementation of the password based key derivation function 2.
@@ -36,6 +37,11 @@ export class Pbkdf2 {
 		if (keyLength < 1) {
 			throw new GeneralError(Pbkdf2.CLASS_NAME, "keyLengthTooSmall", { keyLength });
 		}
+		const nodeCrypto = NativeModulesCrypto.getNodeCryptoHash("sha256");
+		if (nodeCrypto) {
+			return new Uint8Array(nodeCrypto.pbkdf2Sync(password, salt, iterations, keyLength, "sha256"));
+		}
+
 		return pbkdf2(sha256, password, salt, { c: iterations, dkLen: keyLength });
 	}
 
@@ -61,6 +67,11 @@ export class Pbkdf2 {
 		if (keyLength < 1) {
 			throw new GeneralError(Pbkdf2.CLASS_NAME, "keyLengthTooSmall", { keyLength });
 		}
+		const nodeCrypto = NativeModulesCrypto.getNodeCryptoHash("sha512");
+		if (nodeCrypto) {
+			return new Uint8Array(nodeCrypto.pbkdf2Sync(password, salt, iterations, keyLength, "sha512"));
+		}
+
 		return pbkdf2(sha512, password, salt, { c: iterations, dkLen: keyLength });
 	}
 }

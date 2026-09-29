@@ -3,8 +3,21 @@
 import { Converter } from "@twin.org/core";
 import testData from "./ed25519.json" with { type: "json" };
 import { Ed25519 } from "../../src/curves/ed25519.js";
+import {
+	NATIVE_CRYPTO_VARIANTS,
+	unregisterNodeCrypto,
+	useNativeCryptoVariant
+} from "../nativeCryptoVariants.js";
 
-describe("Ed25519", () => {
+describe.each(NATIVE_CRYPTO_VARIANTS)("Ed25519 ($implementation)", ({ useNodeCrypto }) => {
+	beforeAll(async () => {
+		await useNativeCryptoVariant(useNodeCrypto);
+	});
+
+	afterAll(() => {
+		unregisterNodeCrypto();
+	});
+
 	test("Can generate a key pair from a seed", () => {
 		const privateKey = new Uint8Array(32).fill(170);
 		const publicKey = Ed25519.publicKeyFromPrivateKey(privateKey);

@@ -65,3 +65,13 @@ Override the default output width.
 > `optional` **showDevToolWarning?**: `boolean`
 
 Show a warning that this is a dev tool and not for production use.
+
+***
+
+### noColor? {#nocolor}
+
+> `optional` **noColor?**: `boolean`
+
+Disable colourised output, so that all output is plain text with no ANSI
+escape sequences, defaults to false which uses the colour support detected
+from the environment.

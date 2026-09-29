@@ -44,17 +44,16 @@ export class Bech32 {
 				data: result.bytes
 			};
 		} catch (err) {
-			if (BaseError.isErrorMessage(err, /checksum/)) {
+			if (BaseError.isErrorMessage(err, /checksum/i)) {
 				throw new GeneralError(Bech32.CLASS_NAME, "invalidChecksum", { bech32 });
-			} else if (BaseError.isErrorMessage(err, /between prefix and data only/i)) {
+			} else if (BaseError.isErrorMessage(err, /separator/i)) {
 				throw new GeneralError(Bech32.CLASS_NAME, "separatorMisused", { bech32 });
-			} else if (BaseError.isErrorMessage(err, /lowercase or uppercase/i)) {
+			} else if (BaseError.isErrorMessage(err, /mixed-case/i)) {
 				throw new GeneralError(Bech32.CLASS_NAME, "lowerUpper", { bech32 });
-			} else if (
-				BaseError.isErrorMessage(err, /must be at least/i) ||
-				BaseError.isErrorMessage(err, /wrong string length/i)
-			) {
+			} else if (BaseError.isErrorMessage(err, /data length/i)) {
 				throw new GeneralError(Bech32.CLASS_NAME, "dataTooShort", { bech32 });
+			} else if (BaseError.isErrorMessage(err, /string length/i)) {
+				throw new GeneralError(Bech32.CLASS_NAME, "invalidLength", { bech32 });
 			}
 
 			throw new GeneralError(Bech32.CLASS_NAME, "decodeFailed", { bech32 }, err);

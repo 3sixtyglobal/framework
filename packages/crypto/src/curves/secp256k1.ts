@@ -3,6 +3,7 @@
 import { secp256k1 } from "@noble/curves/secp256k1.js";
 import { GeneralError, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
 
 /**
  * Implementation of secp256k1.
@@ -24,6 +25,13 @@ export class Secp256k1 {
 	public static readonly CLASS_NAME: string = nameof<Secp256k1>();
 
 	/**
+	 * The curve to request from node:crypto. Only key derivation uses it, as OpenSSL signs
+	 * with a random k where this class must stay deterministic per RFC 6979.
+	 * @internal
+	 */
+	private static readonly _CURVE: string = "secp256k1";
+
+	/**
 	 * Public returns the PublicKey corresponding to private.
 	 * @param privateKey The private key to get the corresponding public key.
 	 * @returns The public key.
@@ -37,6 +45,13 @@ export class Secp256k1 {
 				requiredSize: Secp256k1.PRIVATE_KEY_SIZE,
 				actualSize: privateKey.length
 			});
+		}
+
+		const nodeCrypto = NativeModulesCrypto.getNodeCryptoCurve(Secp256k1._CURVE);
+		if (nodeCrypto) {
+			const ecdh = nodeCrypto.createECDH(Secp256k1._CURVE);
+			ecdh.setPrivateKey(privateKey);
+			return new Uint8Array(ecdh.getPublicKey(null, "compressed"));
 		}
 
 		return secp256k1.getPublicKey(privateKey);

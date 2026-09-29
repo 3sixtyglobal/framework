@@ -88,6 +88,8 @@ console.log(threaded); // 64.4
 ```typescript
 import { ModuleHelper } from '@twin.org/modules';
 
+// The worker starts with the native modules already registered on this thread
+// via NativeModules.init().
 const worker = ModuleHelper.execModuleMethodThreadMessage(
   './workers/temperature.js',
   (operation, result, err) => {

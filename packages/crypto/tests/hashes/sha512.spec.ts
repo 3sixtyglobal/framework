@@ -3,8 +3,21 @@
 import { Converter } from "@twin.org/core";
 import testData from "./sha512.json" with { type: "json" };
 import { Sha512 } from "../../src/hashes/sha512.js";
+import {
+	NATIVE_CRYPTO_VARIANTS,
+	unregisterNodeCrypto,
+	useNativeCryptoVariant
+} from "../nativeCryptoVariants.js";
 
-describe("Sha512", () => {
+describe.each(NATIVE_CRYPTO_VARIANTS)("Sha512 ($implementation)", ({ useNodeCrypto }) => {
+	beforeAll(async () => {
+		await useNativeCryptoVariant(useNodeCrypto);
+	});
+
+	afterAll(() => {
+		unregisterNodeCrypto();
+	});
+
 	test("Can perform a sha512 on short text", () => {
 		const sha = new Sha512();
 		sha.update(Converter.utf8ToBytes("abc"));

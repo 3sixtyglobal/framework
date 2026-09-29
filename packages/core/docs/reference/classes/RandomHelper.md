@@ -42,6 +42,10 @@ The length of buffer to create.
 
 The random array.
 
+#### Throws
+
+GeneralError if the length is above the maximum getRandomValues accepts.
+
 ***
 
 ### generateUuidV7() {#generateuuidv7}

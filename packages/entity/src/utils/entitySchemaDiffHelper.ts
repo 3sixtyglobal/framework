@@ -4,6 +4,7 @@ import { GeneralError, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 import type { IEntitySchemaDiff } from "../models/IEntitySchemaDiff.js";
 import type { IEntitySchemaProperty } from "../models/IEntitySchemaProperty.js";
+import type { IEntitySchemaPropertyIndex } from "../models/IEntitySchemaPropertyIndex.js";
 
 /**
  * Helper class for comparing entity schemas and generating diffs.
@@ -17,7 +18,7 @@ export class EntitySchemaDiffHelper {
 	/**
 	 * Compare two arrays of entity schema properties and return a structured diff.
 	 *
-	 * Properties are matched by their `property` key name. A property is considered modified when any structural field differs: `type`, `format`, `isPrimary`, `isSecondary`, `isVersion`, `sortDirection`, `optional`, `itemType`, or `itemTypeRef`.
+	 * Properties are matched by their `property` key name. A property is considered modified when any structural field differs: `type`, `format`, `isPrimary`, `isSecondary`, `indexGroup`, `isVersion`, `sortDirection`, `optional`, `itemType`, or `itemTypeRef`.
 	 * Documentation-only fields (`description`, `examples`) are intentionally excluded from the comparison to avoid spurious diffs.
 	 *
 	 * Because a pure name change cannot be detected automatically, callers may supply a `renames` list mapping old names to new names. Renamed properties appear in `modified` (never in `added` or `removed`) even when no other fields changed. Rename lookups take priority over direct same-name matches, which allows swap renames to work correctly and prevents a renamed source from silently disappearing when the target name already existed in the old schema. Self-renames (`from === to`) are ignored and the property is classified normally.
@@ -155,11 +156,46 @@ export class EntitySchemaDiffHelper {
 			schema1.maxLength === schema2.maxLength &&
 			schema1.isPrimary === schema2.isPrimary &&
 			schema1.isSecondary === schema2.isSecondary &&
+			EntitySchemaDiffHelper.indexGroupsEqual(schema1.indexGroup, schema2.indexGroup) &&
 			schema1.isVersion === schema2.isVersion &&
 			schema1.sortDirection === schema2.sortDirection &&
 			schema1.optional === schema2.optional &&
 			schema1.itemType === schema2.itemType &&
 			schema1.itemTypeRef === schema2.itemTypeRef
 		);
+	}
+
+	/**
+	 * Compare two index group lists, treating them as unordered sets of indexes.
+	 * The order a property declares its indexes in has no effect on the indexes a connector builds.
+	 * @param indexGroup1 The first index group list.
+	 * @param indexGroup2 The second index group list.
+	 * @returns True if both lists contain the same name, direction and index values.
+	 * @internal
+	 */
+	private static indexGroupsEqual(
+		indexGroup1?: IEntitySchemaPropertyIndex[],
+		indexGroup2?: IEntitySchemaPropertyIndex[]
+	): boolean {
+		const groups1 = indexGroup1 ?? [];
+		const unmatchedGroups2 = [...(indexGroup2 ?? [])];
+
+		if (groups1.length !== unmatchedGroups2.length) {
+			return false;
+		}
+
+		for (const group1 of groups1) {
+			const matchIndex = unmatchedGroups2.findIndex(
+				group2 =>
+					group2?.name === group1?.name &&
+					group2?.direction === group1?.direction &&
+					group2?.index === group1?.index
+			);
+			if (matchIndex === -1) {
+				return false;
+			}
+			unmatchedGroups2.splice(matchIndex, 1);
+		}
+		return unmatchedGroups2.length === 0;
 	}
 }

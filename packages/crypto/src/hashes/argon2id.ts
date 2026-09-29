@@ -3,6 +3,7 @@
 import { argon2idAsync } from "@noble/hashes/argon2.js";
 import { Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
 
 /**
  * Implementation of the Argon2id password based key derivation function.
@@ -12,6 +13,12 @@ export class Argon2id {
 	 * Runtime name for the class.
 	 */
 	public static readonly CLASS_NAME: string = nameof<Argon2id>();
+
+	/**
+	 * The Argon2 variant to request from node:crypto.
+	 * @internal
+	 */
+	private static readonly _ALGORITHM = "argon2id" as const;
 
 	/**
 	 * Derive a key from the parameters using Argon2id.
@@ -45,6 +52,31 @@ export class Argon2id {
 			dkLen: options?.dkLen ?? 32,
 			maxmem: options?.maxmem ?? 2 ** 30
 		};
+		const nodeCrypto = NativeModulesCrypto.getNodeCryptoArgon2();
+		if (nodeCrypto) {
+			// The callback form runs on the thread pool, where argon2Sync would block the loop
+			return new Promise<Uint8Array>((resolve, reject) => {
+				nodeCrypto.argon2(
+					Argon2id._ALGORITHM,
+					{
+						message: password,
+						nonce: salt,
+						passes: localOptions.t,
+						memory: localOptions.m,
+						parallelism: localOptions.p,
+						tagLength: localOptions.dkLen
+					},
+					(err, derivedKey) => {
+						if (err) {
+							reject(err);
+						} else {
+							resolve(new Uint8Array(derivedKey));
+						}
+					}
+				);
+			});
+		}
+
 		return argon2idAsync(password, salt, localOptions);
 	}
 }

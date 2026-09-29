@@ -3,6 +3,32 @@
 import { RandomHelper } from "../../src/helpers/randomHelper.js";
 
 describe("RandomHelper", () => {
+	describe("generate", () => {
+		it("should generate an empty array for a zero length", () => {
+			expect(RandomHelper.generate(0)).toEqual(new Uint8Array());
+		});
+
+		it("should generate the requested length", () => {
+			expect(RandomHelper.generate(32).length).toEqual(32);
+		});
+
+		it("should generate up to the maximum length", () => {
+			expect(RandomHelper.generate(65536).length).toEqual(65536);
+		});
+
+		it("should throw when the length is above the maximum", () => {
+			expect(() => RandomHelper.generate(65537)).toThrow(
+				expect.objectContaining({ name: "GeneralError", message: "randomHelper.maxLength" })
+			);
+		});
+
+		it("should generate different values on each call", () => {
+			const first = RandomHelper.generate(64);
+			const second = RandomHelper.generate(64);
+			expect(first).not.toEqual(second);
+		});
+	});
+
 	describe("generateUuidV7", () => {
 		it("should generate a valid UUIDv7 string format", () => {
 			const uuid = RandomHelper.generateUuidV7();

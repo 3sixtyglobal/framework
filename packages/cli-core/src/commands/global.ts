@@ -1,20 +1,20 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import path from "node:path";
-import { I18n, Is, type ILocaleDictionary } from "@twin.org/core";
+import { I18n, Is, ObjectHelper, type ILocaleDictionary } from "@twin.org/core";
 import type { Command } from "commander";
 import * as dotenv from "dotenv";
 import { CLIDisplay } from "../cliDisplay.js";
 import { CLIUtils } from "../cliUtils.js";
 
-let localesDir: string;
+let localesDirs: string[];
 
 /**
  * Initialize the global options.
- * @param localesDirectory The path to load the locales from.
+ * @param localesDirectory The path, or paths, to load the locales from.
  */
-export function initGlobalOptions(localesDirectory: string): void {
-	localesDir = localesDirectory;
+export function initGlobalOptions(localesDirectory: string | string[]): void {
+	localesDirs = Is.array<string>(localesDirectory) ? localesDirectory : [localesDirectory];
 }
 
 /**
@@ -71,10 +71,20 @@ export function handleGlobalOptions(command: Command): void {
  * @internal
  */
 export function initLocales(locale: string): void {
-	const localePath = path.join(localesDir, `${locale}.json`);
-	const localeContent = CLIUtils.readJsonFileSync<ILocaleDictionary>(localePath);
-	if (Is.objectValue(localeContent)) {
-		I18n.addDictionary(locale, localeContent);
+	// Merged in order so that later directories override earlier ones, matching
+	// the precedence the merge-locales tool uses when it builds a combined file.
+	let merged: ILocaleDictionary | undefined;
+
+	for (const localesDir of localesDirs) {
+		const localePath = path.join(localesDir, `${locale}.json`);
+		const localeContent = CLIUtils.readJsonFileSync<ILocaleDictionary>(localePath);
+		if (Is.objectValue(localeContent)) {
+			merged = Is.empty(merged) ? localeContent : ObjectHelper.merge(merged, localeContent);
+		}
+	}
+
+	if (Is.objectValue(merged)) {
+		I18n.addDictionary(locale, merged);
 		I18n.setLocale(locale);
 	}
 }

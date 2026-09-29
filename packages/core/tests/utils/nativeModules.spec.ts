@@ -1,0 +1,75 @@
+// Copyright 2026 IOTA Stiftung.
+// SPDX-License-Identifier: Apache-2.0.
+import { NativeModules } from "../../src/utils/nativeModules.js";
+import { SharedStore } from "../../src/utils/sharedStore.js";
+
+describe("NativeModules", () => {
+	test("getType returns the constructor for a global that exists in this environment", () => {
+		const bufferType = NativeModules.getType<BufferConstructor>("Buffer");
+		expect(bufferType).toBe(globalThis.Buffer);
+		expect(typeof bufferType?.from).toEqual("function");
+	});
+
+	test("getType returns undefined for a name that is not a global", () => {
+		expect(NativeModules.getType("thisGlobalDoesNotExist")).toBeUndefined();
+	});
+
+	test("getModule returns undefined for a Node builtin that init() was never called for", () => {
+		expect(NativeModules.getModule("node:crypto")).toBeUndefined();
+	});
+
+	test("names is empty before init() has been called", () => {
+		expect(NativeModules.names()).toEqual([]);
+	});
+
+	test("getModule resolves a Node builtin once init() has registered it", async () => {
+		await NativeModules.init(["node:crypto"]);
+
+		// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+		const nodeCrypto = NativeModules.getModule<typeof import("node:crypto")>("node:crypto");
+		expect(typeof nodeCrypto?.createHash).toEqual("function");
+	});
+
+	test("names lists the specifiers registered via init()", async () => {
+		await NativeModules.init(["node:crypto"]);
+
+		expect(NativeModules.names()).toContain("node:crypto");
+	});
+
+	test("getModule returns undefined for a specifier that is neither registered nor a builtin", () => {
+		expect(NativeModules.getModule("this-module-does-not-exist")).toBeUndefined();
+	});
+
+	test("init registers an importable, non-builtin module for getModule to return", async () => {
+		const failures = await NativeModules.init(["rfc6902"]);
+
+		expect(failures).toEqual({});
+
+		const rfc6902Module = NativeModules.getModule<{ createPatch: unknown }>("rfc6902");
+		expect(typeof rfc6902Module?.createPatch).toEqual("function");
+	});
+
+	test("init stores resolved modules in SharedStore, so multiple loaded copies of this class share one registry", async () => {
+		await NativeModules.init(["rfc6902"]);
+
+		const registry = SharedStore.get<{ [specifier: string]: { createPatch?: unknown } }>(
+			"nativeModulesRegistry"
+		);
+		expect(typeof registry?.rfc6902?.createPatch).toEqual("function");
+	});
+
+	test("init reports a failed specifier instead of throwing, and leaves it unresolved", async () => {
+		const failures = await NativeModules.init(["this-module-does-not-exist"]);
+
+		expect(failures["this-module-does-not-exist"]).toEqual(
+			expect.objectContaining({ name: expect.any(String), message: expect.any(String) })
+		);
+		expect(NativeModules.getModule("this-module-does-not-exist")).toBeUndefined();
+	});
+
+	test("names does not include a specifier that failed to load", async () => {
+		await NativeModules.init(["this-module-does-not-exist"]);
+
+		expect(NativeModules.names()).not.toContain("this-module-does-not-exist");
+	});
+});

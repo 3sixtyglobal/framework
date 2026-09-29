@@ -162,12 +162,8 @@ export class LfuCache<T> {
 	public get(key: string): T | undefined {
 		Guards.stringValue(LfuCache.CLASS_NAME, nameof(key), key);
 
-		const entry = this._keyMap.get(key);
+		const entry = this.lookupLive(key);
 		if (Is.empty(entry)) {
-			return undefined;
-		}
-		if (this.isExpired(entry, Date.now())) {
-			this.removeEntry(key);
 			return undefined;
 		}
 		this.promote(key, entry);
@@ -247,8 +243,10 @@ export class LfuCache<T> {
 		});
 
 		try {
-			if (this.has(key)) {
-				return this.get(key) as T;
+			const entry = this.lookupLive(key);
+			if (Is.notEmpty(entry)) {
+				this.promote(key, entry);
+				return entry.value;
 			}
 
 			const value = await valueFactory();
@@ -267,15 +265,7 @@ export class LfuCache<T> {
 	 */
 	public has(key: string): boolean {
 		Guards.stringValue(LfuCache.CLASS_NAME, nameof(key), key);
-		const entry = this._keyMap.get(key);
-		if (entry === undefined) {
-			return false;
-		}
-		if (this.isExpired(entry, Date.now())) {
-			this.removeEntry(key);
-			return false;
-		}
-		return true;
+		return Is.notEmpty(this.lookupLive(key));
 	}
 
 	/**
@@ -338,6 +328,28 @@ export class LfuCache<T> {
 		this._freqMap.clear();
 		this._minFreq = 0;
 		this._nextExpires = undefined;
+	}
+
+	/**
+	 * Resolve an entry which is present and has not expired, evicting it if it has.
+	 * The expiry check is evaluated once so a caller cannot observe an entry as live and
+	 * then as expired across two separate lookups.
+	 * @param key The key to resolve.
+	 * @returns The live entry, or undefined if the key is absent or has been evicted.
+	 * @internal
+	 */
+	private lookupLive(
+		key: string
+	): { value: T; freq: number; lastAccessed: number; expires: number | undefined } | undefined {
+		const entry = this._keyMap.get(key);
+		if (Is.empty(entry)) {
+			return undefined;
+		}
+		if (this.isExpired(entry, Date.now())) {
+			this.removeEntry(key);
+			return undefined;
+		}
+		return entry;
 	}
 
 	/**

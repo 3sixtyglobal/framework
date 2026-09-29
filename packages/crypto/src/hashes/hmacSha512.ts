@@ -4,9 +4,10 @@
 
 import { hmac } from "@noble/hashes/hmac.js";
 import { sha384, sha512, sha512_224, sha512_256 } from "@noble/hashes/sha2.js";
-import type { Hash } from "@noble/hashes/utils.js";
 import { GeneralError, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
+import type { IHashInstance } from "../models/IHashInstance.js";
 
 /**
  * Class to help with HmacSha512 scheme.
@@ -38,11 +39,21 @@ export class HmacSha512 {
 	public static readonly CLASS_NAME: string = nameof<HmacSha512>();
 
 	/**
+	 * The hash to request from node:crypto, keyed by bit size.
+	 * @internal
+	 */
+	private static readonly _HASHES: { [bits: number]: string } = {
+		224: "sha512-224",
+		256: "sha512-256",
+		384: "sha384",
+		512: "sha512"
+	};
+
+	/**
 	 * The instance of the hash.
 	 * @internal
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	private readonly _instance: Hash<any>;
+	private readonly _instance: IHashInstance;
 
 	/**
 	 * Create a new instance of HmacSha512.
@@ -60,7 +71,12 @@ export class HmacSha512 {
 			throw new GeneralError(HmacSha512.CLASS_NAME, "bitSize", { bitSize: bits });
 		}
 
-		if (bits === HmacSha512.SIZE_224) {
+		const hash = HmacSha512._HASHES[bits];
+		const nodeCrypto = NativeModulesCrypto.getNodeCryptoHash(hash);
+
+		if (nodeCrypto) {
+			this._instance = nodeCrypto.createHmac(hash, nodeCrypto.createSecretKey(key));
+		} else if (bits === HmacSha512.SIZE_224) {
 			this._instance = hmac.create(sha512_224, key);
 		} else if (bits === HmacSha512.SIZE_256) {
 			this._instance = hmac.create(sha512_256, key);
@@ -143,6 +159,6 @@ export class HmacSha512 {
 	 * @returns The computed hash as bytes.
 	 */
 	public digest(): Uint8Array {
-		return this._instance.digest();
+		return new Uint8Array(this._instance.digest());
 	}
 }

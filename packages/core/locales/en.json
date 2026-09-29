@@ -91,7 +91,7 @@
 		"factory": {
 			"noUnregister": "There is no {typeName} registered with the name \"{name}\"",
 			"noGet": "The requested {typeName} \"{name}\" does not exist in the factory",
-			"noCreate": "The requested {typeName} \"{name}\" cannot be created by the factory, with params \"{params}\"",
+			"noCreate": "The requested {typeName} \"{name}\" cannot be created by the factory, with params \"{args}\"",
 			"noFacade": "The requested facade \"{name}\" is not registered, so it cannot be applied to the {typeName} factory",
 			"noFacadeOnFacades": "Facades cannot be applied to the facade factory itself",
 			"noFacadeWrap": "The facade \"{name}\" did not return a wrapped instance for the {typeName} factory"
@@ -122,6 +122,14 @@
 			"notCreated": "The shared buffer for object \"{objectId}\" has not been created",
 			"capacityExceeded": "The payload size of {required} bytes exceeds the maximum capacity of {capacity} bytes for object \"{objectId}\"",
 			"bufferFetchFailed": "Failed to retrieve shared buffer for object \"{objectId}\" from the main thread"
+		},
+		"randomHelper": {
+			"maxLength": "Requested length \"{length}\" is greater than the maximum of \"{maxLength}\" bytes"
+		},
+		"envHelper": {
+			"invalidEnvVarValue": "Environment variable \"{key}\" has an invalid value \"{value}\", expected {type} type",
+			"invalidEnvVarPair": "Environment variable \"{key}\" has an invalid entry \"{value}\", expected unique name=integer pairs",
+			"unknownEnvVars": "Unknown environment variable properties [{keys}]. Check for typos in variable names, for custom variables use the {prefix}ENV_ALLOW_LIST."
 		}
 	},
 	"errorNames": {

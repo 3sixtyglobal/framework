@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import type { EntitySchemaPropertyFormat } from "./entitySchemaPropertyFormat.js";
 import type { EntitySchemaPropertyType } from "./entitySchemaPropertyType.js";
+import type { IEntitySchemaPropertyIndex } from "./IEntitySchemaPropertyIndex.js";
 import type { SortDirection } from "./sortDirection.js";
 
 /**
@@ -37,6 +38,13 @@ export interface IEntitySchemaProperty<T = unknown> {
 	 * Is this a secondary index property.
 	 */
 	isSecondary?: boolean;
+
+	/**
+	 * The composite indexes this property is part of.
+	 * Connectors can use these to build a composite index for each group name,
+	 * combining all the properties which share that name, ordered by their index.
+	 */
+	indexGroup?: IEntitySchemaPropertyIndex[];
 
 	/**
 	 * Is this property used as the optimistic-lock version token.

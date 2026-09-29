@@ -8,9 +8,9 @@ Initialize the global options.
 
 ### localesDirectory
 
-`string`
+`string` \| `string`[]
 
-The path to load the locales from.
+The path, or paths, to load the locales from.
 
 ## Returns
 

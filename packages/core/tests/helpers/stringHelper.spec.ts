@@ -1,6 +1,14 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { StringHelper } from "../../src/helpers/stringHelper.js";
+import { NativeModules } from "../../src/utils/nativeModules.js";
+
+/**
+ * Drop node:buffer from the NativeModules registry so isUtf8 falls back to validating in place.
+ */
+function unregisterNodeBuffer(): void {
+	delete NativeModules.getRegistry()["node:buffer"];
+}
 
 describe("StringHelper", () => {
 	describe("trimLeadingSlashes", () => {
@@ -73,97 +81,121 @@ describe("StringHelper", () => {
 		});
 	});
 
-	describe("isUtf8", () => {
+	describe.each([
+		{ implementation: "node:buffer", useNodeBuffer: true },
+		{ implementation: "pure JavaScript", useNodeBuffer: false }
+	])("isUtf8 ($implementation)", ({ useNodeBuffer }) => {
+		let stringHelper: typeof StringHelper;
+
+		beforeAll(async () => {
+			unregisterNodeBuffer();
+			if (useNodeBuffer) {
+				expect(await NativeModules.init(["node:buffer"])).toEqual({});
+				expect(NativeModules.getModule("node:buffer")).toBeDefined();
+			} else {
+				expect(NativeModules.getModule("node:buffer")).toBeUndefined();
+			}
+
+			// A fresh class each time, as the resolved module is cached in a static after
+			// the first call and would otherwise leak from one implementation to the next.
+			vi.resetModules();
+			stringHelper = (await import("../../src/helpers/stringHelper.js")).StringHelper;
+		});
+
+		afterAll(() => {
+			unregisterNodeBuffer();
+		});
+
 		test("returns false for non-Uint8Array input", () => {
-			expect(StringHelper.isUtf8(null as never)).toBe(false);
+			expect(stringHelper.isUtf8(null as never)).toBe(false);
 		});
 
 		test("returns true for an empty array", () => {
-			expect(StringHelper.isUtf8(new Uint8Array())).toBe(true);
+			expect(stringHelper.isUtf8(new Uint8Array())).toBe(true);
 		});
 
 		test("returns true for pure ASCII bytes", () => {
-			expect(StringHelper.isUtf8(new Uint8Array([0x00, 0x41, 0x7f]))).toBe(true);
+			expect(stringHelper.isUtf8(new Uint8Array([0x00, 0x41, 0x7f]))).toBe(true);
 		});
 
 		test("returns true for a valid 2-byte sequence", () => {
 			// £ = U+00A3 → 0xC2 0xA3
-			expect(StringHelper.isUtf8(new Uint8Array([0xc2, 0xa3]))).toBe(true);
+			expect(stringHelper.isUtf8(new Uint8Array([0xc2, 0xa3]))).toBe(true);
 		});
 
 		test("returns false for an invalid 2-byte sequence with bad continuation", () => {
 			// 0xC2 must be followed by 0x80-0xBF; 0x41 is not a continuation byte
-			expect(StringHelper.isUtf8(new Uint8Array([0xc2, 0x41]))).toBe(false);
+			expect(stringHelper.isUtf8(new Uint8Array([0xc2, 0x41]))).toBe(false);
 		});
 
 		test("returns false for overlong 2-byte lead bytes 0xC0 and 0xC1", () => {
 			// RFC 3629 excludes 0xC0 and 0xC1 — they would encode overlong ASCII
-			expect(StringHelper.isUtf8(new Uint8Array([0xc0, 0x80]))).toBe(false);
-			expect(StringHelper.isUtf8(new Uint8Array([0xc1, 0x80]))).toBe(false);
+			expect(stringHelper.isUtf8(new Uint8Array([0xc0, 0x80]))).toBe(false);
+			expect(stringHelper.isUtf8(new Uint8Array([0xc1, 0x80]))).toBe(false);
 		});
 
 		test("returns true for a valid 3-byte sequence (E0 range)", () => {
 			// U+0800 → 0xE0 0xA0 0x80
-			expect(StringHelper.isUtf8(new Uint8Array([0xe0, 0xa0, 0x80]))).toBe(true);
+			expect(stringHelper.isUtf8(new Uint8Array([0xe0, 0xa0, 0x80]))).toBe(true);
 		});
 
 		test("returns false for overlong 3-byte sequence (E0 with second byte below 0xA0)", () => {
 			// 0xE0 0x80 would be overlong encoding
-			expect(StringHelper.isUtf8(new Uint8Array([0xe0, 0x80, 0x80]))).toBe(false);
+			expect(stringHelper.isUtf8(new Uint8Array([0xe0, 0x80, 0x80]))).toBe(false);
 		});
 
 		test("returns true for a valid 3-byte sequence (E1-EC range)", () => {
 			// € = U+20AC → 0xE2 0x82 0xAC
-			expect(StringHelper.isUtf8(new Uint8Array([0xe2, 0x82, 0xac]))).toBe(true);
+			expect(stringHelper.isUtf8(new Uint8Array([0xe2, 0x82, 0xac]))).toBe(true);
 		});
 
 		test("returns true for a valid 3-byte sequence (ED range, non-surrogate)", () => {
 			// U+D000 → 0xED 0x80 0x80 (below surrogate range)
-			expect(StringHelper.isUtf8(new Uint8Array([0xed, 0x80, 0x80]))).toBe(true);
+			expect(stringHelper.isUtf8(new Uint8Array([0xed, 0x80, 0x80]))).toBe(true);
 		});
 
 		test("returns false for surrogate halves in ED range (0xED 0xA0+)", () => {
 			// U+D800 → 0xED 0xA0 0x80 — surrogate half, excluded by RFC 3629
-			expect(StringHelper.isUtf8(new Uint8Array([0xed, 0xa0, 0x80]))).toBe(false);
+			expect(stringHelper.isUtf8(new Uint8Array([0xed, 0xa0, 0x80]))).toBe(false);
 		});
 
 		test("returns true for a valid 4-byte sequence (F0 range)", () => {
 			// 😀 = U+1F600 → 0xF0 0x9F 0x98 0x80
-			expect(StringHelper.isUtf8(new Uint8Array([0xf0, 0x9f, 0x98, 0x80]))).toBe(true);
+			expect(stringHelper.isUtf8(new Uint8Array([0xf0, 0x9f, 0x98, 0x80]))).toBe(true);
 		});
 
 		test("returns false for invalid 4-byte sequence (F0 with second byte below 0x90)", () => {
 			// 0xF0 0x80 would be overlong
-			expect(StringHelper.isUtf8(new Uint8Array([0xf0, 0x80, 0x80, 0x80]))).toBe(false);
+			expect(stringHelper.isUtf8(new Uint8Array([0xf0, 0x80, 0x80, 0x80]))).toBe(false);
 		});
 
 		test("returns true for a valid 4-byte sequence (F1-F3 range)", () => {
 			// U+40000 → 0xF1 0x80 0x80 0x80
-			expect(StringHelper.isUtf8(new Uint8Array([0xf1, 0x80, 0x80, 0x80]))).toBe(true);
+			expect(stringHelper.isUtf8(new Uint8Array([0xf1, 0x80, 0x80, 0x80]))).toBe(true);
 		});
 
 		test("returns true for a valid 4-byte sequence (F4 range)", () => {
 			// U+100000 → 0xF4 0x80 0x80 0x80
-			expect(StringHelper.isUtf8(new Uint8Array([0xf4, 0x80, 0x80, 0x80]))).toBe(true);
+			expect(stringHelper.isUtf8(new Uint8Array([0xf4, 0x80, 0x80, 0x80]))).toBe(true);
 		});
 
 		test("returns false for lead byte above F4", () => {
-			expect(StringHelper.isUtf8(new Uint8Array([0xf5, 0x80, 0x80, 0x80]))).toBe(false);
+			expect(stringHelper.isUtf8(new Uint8Array([0xf5, 0x80, 0x80, 0x80]))).toBe(false);
 		});
 
 		test("returns false for a bare continuation byte as first byte", () => {
-			expect(StringHelper.isUtf8(new Uint8Array([0x80]))).toBe(false);
+			expect(stringHelper.isUtf8(new Uint8Array([0x80]))).toBe(false);
 		});
 
 		test("returns false for a truncated multi-byte sequence", () => {
 			// 0xC2 with no continuation byte
-			expect(StringHelper.isUtf8(new Uint8Array([0xc2]))).toBe(false);
+			expect(stringHelper.isUtf8(new Uint8Array([0xc2]))).toBe(false);
 		});
 
 		test("returns true for a mixed ASCII and multi-byte sequence", () => {
 			// "Hello, 世界" in UTF-8
 			const enc = new TextEncoder();
-			expect(StringHelper.isUtf8(enc.encode("Hello, 世界!"))).toBe(true);
+			expect(stringHelper.isUtf8(enc.encode("Hello, 世界!"))).toBe(true);
 		});
 
 		test("speed comparison: isUtf8 vs TextDecoder fatal on a large valid UTF-8 buffer", () => {
@@ -174,14 +206,14 @@ describe("StringHelper", () => {
 			const decoder = new TextDecoder("utf-8", { fatal: true });
 
 			// Warm up both paths
-			StringHelper.isUtf8(chunk);
+			stringHelper.isUtf8(chunk);
 			try {
 				decoder.decode(chunk);
 			} catch {}
 
 			const t1 = performance.now();
 			for (let i = 0; i < iterations; i++) {
-				StringHelper.isUtf8(chunk);
+				stringHelper.isUtf8(chunk);
 			}
 			const isUtf8Ms = performance.now() - t1;
 
@@ -200,7 +232,7 @@ describe("StringHelper", () => {
 			);
 
 			// Both must agree on validity
-			expect(StringHelper.isUtf8(chunk)).toBe(true);
+			expect(stringHelper.isUtf8(chunk)).toBe(true);
 			try {
 				decoder.decode(chunk);
 				expect(true).toBe(true);

@@ -2,12 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable no-continue */
 /* eslint-disable no-bitwise */
+import type * as NodeBuffer from "node:buffer";
 import { Is } from "../utils/is.js";
+import { NativeModules } from "../utils/nativeModules.js";
 
 /**
  * Class to help with string.
  */
 export class StringHelper {
+	/**
+	 * The node:buffer module, populated on first use. Not resolved in this initialiser, which
+	 * runs when the module is evaluated, before a host has awaited NativeModules.init().
+	 * @internal
+	 */
+	private static _nodeBuffer: typeof NodeBuffer | undefined;
+
 	/**
 	 * Implementation signature for trimTrailingSlashes.
 	 * @param value The value to trim.
@@ -191,7 +200,8 @@ export class StringHelper {
 	}
 
 	/**
-	 * Check if a Node.js Buffer or Uint8Array is UTF-8.
+	 * Check if a Node.js Buffer or Uint8Array is UTF-8. Delegates to isUtf8 from node:buffer
+	 * when a host has registered it with NativeModules.init(), otherwise validates in place.
 	 * @see https://tools.ietf.org/html/rfc3629
 	 * @see https://github.com/hcodes/isutf8
 	 * UTF8-char = UTF8-1 / UTF8-2 / UTF8-3 / UTF8-4.
@@ -211,6 +221,11 @@ export class StringHelper {
 	public static isUtf8(data: Uint8Array): boolean {
 		if (!Is.uint8Array(data)) {
 			return false;
+		}
+
+		StringHelper._nodeBuffer ??= NativeModules.getModule<typeof NodeBuffer>("node:buffer");
+		if (StringHelper._nodeBuffer) {
+			return StringHelper._nodeBuffer.isUtf8(data);
 		}
 
 		let i = 0;

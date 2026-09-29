@@ -1,5 +1,262 @@
 # Changelog
 
+## [0.10.1-next.12](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.10.1-next.11...cli-core-v0.10.1-next.12) (2026-09-25)
+
+
+### Miscellaneous Chores
+
+* **cli-core:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.11 to 0.10.1-next.12
+    * @twin.org/nameof bumped from 0.10.1-next.11 to 0.10.1-next.12
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.11 to 0.10.1-next.12
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.11 to 0.10.1-next.12
+
+## [0.10.1-next.11](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.10.1-next.10...cli-core-v0.10.1-next.11) (2026-09-25)
+
+
+### Miscellaneous Chores
+
+* **cli-core:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.10 to 0.10.1-next.11
+    * @twin.org/nameof bumped from 0.10.1-next.10 to 0.10.1-next.11
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.10 to 0.10.1-next.11
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.10 to 0.10.1-next.11
+
+## [0.10.1-next.10](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.10.1-next.9...cli-core-v0.10.1-next.10) (2026-09-22)
+
+
+### Miscellaneous Chores
+
+* **cli-core:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.9 to 0.10.1-next.10
+    * @twin.org/nameof bumped from 0.10.1-next.9 to 0.10.1-next.10
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.9 to 0.10.1-next.10
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.9 to 0.10.1-next.10
+
+## [0.10.1-next.9](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.10.1-next.8...cli-core-v0.10.1-next.9) (2026-09-21)
+
+
+### Features
+
+* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+* improve error formatting ([#313](https://github.com/iotaledger/twin-framework/issues/313)) ([5a19623](https://github.com/iotaledger/twin-framework/commit/5a196231bcbf088bf9ba92a93b7478d3b8c5593f))
+* improve node_modules location detection ([#486](https://github.com/iotaledger/twin-framework/issues/486)) ([c786853](https://github.com/iotaledger/twin-framework/commit/c7868538e9074f789577c0ab55552f3bcec0ef0e))
+* improve signatures ([bcc21ae](https://github.com/iotaledger/twin-framework/commit/bcc21aed3e10a264ef5c8515bde8dcac8a05c719))
+* improve signatures ([cdd24be](https://github.com/iotaledger/twin-framework/commit/cdd24be6fb898d33955b6f2f93c3ddbd73582269))
+* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* timeout return type ([4b40b23](https://github.com/iotaledger/twin-framework/commit/4b40b23a7e6b073c7e96cbccc1d41ba7caed2556))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* export the json locales for cli-core ([188b47d](https://github.com/iotaledger/twin-framework/commit/188b47d3339deb42d08c32715909337749fb0e4a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.8 to 0.10.1-next.9
+    * @twin.org/nameof bumped from 0.10.1-next.8 to 0.10.1-next.9
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.8 to 0.10.1-next.9
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.8 to 0.10.1-next.9
+
+## [0.10.1-next.8](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.10.1-next.7...cli-core-v0.10.1-next.8) (2026-09-21)
+
+
+### Features
+
+* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+* improve error formatting ([#313](https://github.com/iotaledger/twin-framework/issues/313)) ([5a19623](https://github.com/iotaledger/twin-framework/commit/5a196231bcbf088bf9ba92a93b7478d3b8c5593f))
+* improve node_modules location detection ([#486](https://github.com/iotaledger/twin-framework/issues/486)) ([c786853](https://github.com/iotaledger/twin-framework/commit/c7868538e9074f789577c0ab55552f3bcec0ef0e))
+* improve signatures ([bcc21ae](https://github.com/iotaledger/twin-framework/commit/bcc21aed3e10a264ef5c8515bde8dcac8a05c719))
+* improve signatures ([cdd24be](https://github.com/iotaledger/twin-framework/commit/cdd24be6fb898d33955b6f2f93c3ddbd73582269))
+* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* timeout return type ([4b40b23](https://github.com/iotaledger/twin-framework/commit/4b40b23a7e6b073c7e96cbccc1d41ba7caed2556))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* export the json locales for cli-core ([188b47d](https://github.com/iotaledger/twin-framework/commit/188b47d3339deb42d08c32715909337749fb0e4a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.7 to 0.10.1-next.8
+    * @twin.org/nameof bumped from 0.10.1-next.7 to 0.10.1-next.8
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.7 to 0.10.1-next.8
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.7 to 0.10.1-next.8
+
+## [0.10.1-next.7](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.10.1-next.6...cli-core-v0.10.1-next.7) (2026-09-21)
+
+
+### Features
+
+* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.6 to 0.10.1-next.7
+    * @twin.org/nameof bumped from 0.10.1-next.6 to 0.10.1-next.7
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.6 to 0.10.1-next.7
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.6 to 0.10.1-next.7
+
+## [0.10.1-next.6](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.10.1-next.5...cli-core-v0.10.1-next.6) (2026-09-21)
+
+
+### Miscellaneous Chores
+
+* **cli-core:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.5 to 0.10.1-next.6
+    * @twin.org/nameof bumped from 0.10.1-next.5 to 0.10.1-next.6
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.5 to 0.10.1-next.6
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.5 to 0.10.1-next.6
+
+## [0.10.1-next.5](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.10.1-next.4...cli-core-v0.10.1-next.5) (2026-09-18)
+
+
+### Miscellaneous Chores
+
+* **cli-core:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.4 to 0.10.1-next.5
+    * @twin.org/nameof bumped from 0.10.1-next.4 to 0.10.1-next.5
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.4 to 0.10.1-next.5
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.4 to 0.10.1-next.5
+
+## [0.10.1-next.4](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.10.1-next.3...cli-core-v0.10.1-next.4) (2026-09-18)
+
+
+### Miscellaneous Chores
+
+* **cli-core:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.3 to 0.10.1-next.4
+    * @twin.org/nameof bumped from 0.10.1-next.3 to 0.10.1-next.4
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.3 to 0.10.1-next.4
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.3 to 0.10.1-next.4
+
+## [0.10.1-next.3](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.10.1-next.2...cli-core-v0.10.1-next.3) (2026-09-18)
+
+
+### Miscellaneous Chores
+
+* **cli-core:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.2 to 0.10.1-next.3
+    * @twin.org/nameof bumped from 0.10.1-next.2 to 0.10.1-next.3
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.2 to 0.10.1-next.3
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.2 to 0.10.1-next.3
+
+## [0.10.1-next.2](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.10.1-next.1...cli-core-v0.10.1-next.2) (2026-09-17)
+
+
+### Miscellaneous Chores
+
+* **cli-core:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.1 to 0.10.1-next.2
+    * @twin.org/nameof bumped from 0.10.1-next.1 to 0.10.1-next.2
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.1 to 0.10.1-next.2
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.1 to 0.10.1-next.2
+
+## [0.10.1-next.1](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.10.1-next.0...cli-core-v0.10.1-next.1) (2026-09-17)
+
+
+### Features
+
+* improve error formatting ([#313](https://github.com/iotaledger/twin-framework/issues/313)) ([5a19623](https://github.com/iotaledger/twin-framework/commit/5a196231bcbf088bf9ba92a93b7478d3b8c5593f))
+* improve node_modules location detection ([#486](https://github.com/iotaledger/twin-framework/issues/486)) ([c786853](https://github.com/iotaledger/twin-framework/commit/c7868538e9074f789577c0ab55552f3bcec0ef0e))
+* improve signatures ([bcc21ae](https://github.com/iotaledger/twin-framework/commit/bcc21aed3e10a264ef5c8515bde8dcac8a05c719))
+* improve signatures ([cdd24be](https://github.com/iotaledger/twin-framework/commit/cdd24be6fb898d33955b6f2f93c3ddbd73582269))
+* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* timeout return type ([4b40b23](https://github.com/iotaledger/twin-framework/commit/4b40b23a7e6b073c7e96cbccc1d41ba7caed2556))
+* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+
+
+### Bug Fixes
+
+* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* export the json locales for cli-core ([188b47d](https://github.com/iotaledger/twin-framework/commit/188b47d3339deb42d08c32715909337749fb0e4a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/core bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/nameof bumped from 0.10.1-next.0 to 0.10.1-next.1
+  * devDependencies
+    * @twin.org/nameof-transformer bumped from 0.10.1-next.0 to 0.10.1-next.1
+    * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.0 to 0.10.1-next.1
+
 ## [0.10.0](https://github.com/iotaledger/twin-framework/compare/cli-core-v0.10.0...cli-core-v0.10.0) (2026-09-16)
 
 

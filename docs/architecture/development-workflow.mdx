@@ -5,7 +5,7 @@ order: 3
 
 # Development Workflow
 
-This document describes the shared development practices used across the TWIN repositories. It covers the outer workspace orchestration repo, the common npm script patterns used inside each submodule repo, and the `local-link` mechanism for testing unpublished changes across sibling repositories.
+This document describes the shared development practices used across the TWIN repositories. It covers the outer workspace orchestration repo, the common pnpm script patterns used inside each submodule repo, and the `local-link` mechanism for testing unpublished changes across sibling repositories.
 
 ## Two Levels of Workflow
 
@@ -20,21 +20,34 @@ The outer workspace is useful for broad maintenance and coordinated checks. Day-
 
 The top-level workspace repository provides orchestration commands that run across submodules in the order defined by the `submodules` array in its root `package.json`.
 
-The main commands are:
+Each command runs the matching pnpm script inside every submodule in turn. The main commands are:
 
-- `npm run submodule:install`
-- `npm run submodule:format`
-- `npm run submodule:lint`
-- `npm run submodule:dist`
-- `npm run submodule:dist-no-test`
-- `npm run submodule:docs`
-- `npm run submodule:refresh-deps-build`
+- `pnpm run submodule:install`
+- `pnpm run submodule:format`
+- `pnpm run submodule:lint`
+- `pnpm run submodule:lint:code`
+- `pnpm run submodule:dist`
+- `pnpm run submodule:dist-no-test`
+- `pnpm run submodule:test`
+- `pnpm run submodule:docs`
+- `pnpm run submodule:quality`
+- `pnpm run submodule:quality-no-test`
+- `pnpm run submodule:format-lint-dist-docs`
+- `pnpm run submodule:package-update`
+
+The `submodule:align-main` and `submodule:align-next` commands switch every submodule to the named branch.
 
 These commands can be used in three ways:
 
 - across all submodules,
 - from a named starting submodule onward,
-- against one specific submodule with the `:single` variant.
+- against one specific submodule by adding `single` after its name.
+
+```shell
+pnpm run submodule:dist
+pnpm run submodule:dist twin-data
+pnpm run submodule:dist twin-data single
+```
 
 That makes the workspace repo suitable for coordinated dependency refreshes, broad quality checks, and recovery from failures late in the submodule sequence.
 
@@ -42,29 +55,42 @@ That makes the workspace repo suitable for coordinated dependency refreshes, bro
 
 A typical implementation flow across the TWIN codebase is:
 
-1. run `npm install` at the repository root,
+1. run `pnpm install` at the repository root,
 2. make changes in the relevant package or app inside that repository,
 3. run targeted local commands while iterating,
-4. run repository-wide checks from the submodule root,
+4. run `pnpm run quality` from the submodule root,
 5. if the change depends on unpublished sibling repositories, use `local-link` to replace installed packages with local checkouts.
 
 If the work spans several repos, you can optionally finish with a workspace-level orchestration run from the outer `workspace` repository.
 
 ## Common Repository Scripts
 
+The TWIN repositories use pnpm as their package manager. The exact version is pinned in the `packageManager` field of the root `package.json`, and the packages and apps that make up the repository are listed in `pnpm-workspace.yaml`. There is no npm lockfile, so `npm install` does not set a repository up correctly.
+
 Most TWIN repositories expose the same root-level script pattern in their own `package.json`:
 
-- `npm run build`
-- `npm run dist`
-- `npm run dist:no-test`
-- `npm run docs`
-- `npm run format`
-- `npm run lint`
-- `npm run local-link`
+- `pnpm run build`
+- `pnpm run dist`
+- `pnpm run dist:no-test`
+- `pnpm run test`
+- `pnpm run test:coverage`
+- `pnpm run clean`
+- `pnpm run docs`
+- `pnpm run format`
+- `pnpm run lint`
+- `pnpm run lint:package`
+- `pnpm run quality`
+- `pnpm run quality:no-test`
+- `pnpm run package:update`
+- `pnpm run local-link`
 
-In the repositories that are npm workspaces, the build-style commands usually call a local `scripts/workspaces.mjs` helper. That helper reads the repo's workspace list, checks whether each workspace defines the requested npm script, and executes it in order.
+Most of these are thin wrappers over `pnpm -r`, which runs the named script in every workspace package that defines it. Only `build`, `merge-locales`, `dist` and `dist:no-test` walk the packages in dependency order, because they either produce output that later packages compile against, or contain a step that does. The remaining scripts such as `test`, `test:build`, `clean` and `validate-locales` run across all packages in parallel.
 
-The important behaviour is that these repo-level orchestration commands fail fast. If one package or app fails, the overall command stops immediately.
+The `lint` script runs the formatting, code, markdown and spelling checks concurrently. `lint:package` runs `publint` against each package manifest, so run it after a build.
+
+The `quality` script is the single command to run before review. It formats the code first, since formatting rewrites the files the later steps read, then runs `lint` alongside the compile chain (`clean`, `build`, `merge-locales` and `test:build`), and finishes by validating the locales and running the tests together. `quality:no-test` does the same without the tests.
+
+The important behaviour is that these repo-level commands fail fast. If one package or app fails, the overall command stops.
 
 In practice:
 
@@ -83,15 +109,16 @@ Across the TWIN repositories, most packages and apps follow the same script stru
 - `validate-locales` checks locale resources,
 - `test:build` type-checks tests,
 - `test` runs Vitest,
+- `test:coverage` runs Vitest with a coverage report written to `coverage`,
 - `docs` regenerates published documentation artefacts,
-- `dist` runs the full clean, build, locale, and test flow,
-- `dist:no-test` runs the distributable build without the runtime tests.
+- `dist` cleans, then runs the build, test type check and tests concurrently,
+- `dist:no-test` cleans, then runs the build and test type check without the runtime tests.
 
 Some packages add specialised stages such as schema generation, OpenAPI generation, locale merging, or executable startup, but the overall shape stays consistent.
 
 This consistency is intentional. It means you can move between repositories and expect the same basic workflow even when the package purpose changes.
 
-In many repositories, `npm run dev` is implemented as a watch loop that rebuilds the package when files change. That is particularly useful during cross-repository integration work.
+In many repositories, `pnpm run dev` is implemented as a watch loop that rebuilds the package when files change. That is particularly useful during cross-repository integration work.
 
 ## Recommended Command Pattern
 
@@ -99,19 +126,23 @@ For focused work, run commands in the package or app you are actively changing. 
 
 ```shell
 cd packages/some-package
-npm run build
-npm run test
+pnpm run build
+pnpm run test
+```
+
+You can also target a single package from the repository root with a pnpm filter:
+
+```shell
+pnpm --filter @twin.org/some-package run test
 ```
 
 For repository-wide validation, run commands from the submodule root:
 
 ```shell
-npm run format
-npm run lint
-npm run dist:no-test
+pnpm run quality
 ```
 
-Use `dist` when you need the full validation path including tests. Use `dist:no-test` when you need faster feedback or when the full test environment is not available.
+Use `quality` when you need the full validation path including tests. Use `quality:no-test` or `dist:no-test` when you need faster feedback or when the full test environment is not available.
 
 For broad coordinated checks across repositories, switch back to the outer workspace repo and use the `submodule:*` commands.
 
@@ -137,44 +168,45 @@ Use outer workspace orchestration when:
 
 ## Local Linking Across Sibling Repositories
 
-TWIN repositories normally consume each other through published npm packages. When you need to test local unpublished changes from one repository inside another, use the consuming repository's root `local-link` script.
+TWIN repositories normally consume each other through packages published to npm. When you need to test local unpublished changes from one repository inside another, use the consuming repository's root `local-link` script.
 
 The script supports both package patterns and explicit paths:
 
 ```shell
-npm run local-link "@twin.org/engine*"
-npm run local-link "@twin.org/dataspace*"
-npm run local-link "@twin.org//*"
-npm run local-link ..\engine\packages\engine-core
+pnpm run local-link "@twin.org/engine*"
+pnpm run local-link "@twin.org/dataspace*"
+pnpm run local-link "@twin.org//*"
+pnpm run local-link ..\twin-engine\packages\engine-core
 ```
 
 To restore the installed package, run the same target with `unlink`:
 
 ```shell
-npm run local-link "@twin.org/engine*" unlink
-npm run local-link ..\engine\packages\engine-core unlink
+pnpm run local-link "@twin.org/engine*" unlink
+pnpm run local-link ..\twin-engine\packages\engine-core unlink
 ```
 
 ## How local-link Works
 
-`scripts/local-link.mjs` does not use `npm link`. Instead, it swaps the installed package directory directly:
+`scripts/local-link.mjs` does not use `pnpm link` or `npm link`. Instead, it swaps the installed package entry directly:
 
 1. it resolves the requested package name or explicit path,
 2. for package names beginning with `@`, it scans sibling repositories one directory above the current repository,
-3. it reads each sibling repository root `package.json` and its workspaces to find matches,
-4. it renames the installed package in `node_modules` to a `.bak` directory,
-5. it creates a symlink from `node_modules/<package>` to the local workspace directory,
-6. on `unlink`, it removes the symlink and restores the backup directory.
+3. it looks for package folders under each sibling repository's `packages` and `apps` directories and matches them by folder name,
+4. it finds every `node_modules` directory in the consuming repository, both the root one and those inside each workspace package, because pnpm gives each package its own `node_modules`,
+5. in each location where the package is installed, it renames the entry to `<package>.bak` and creates a symlink from `node_modules/<package>` to the local package directory,
+6. on `unlink`, it removes each symlink and restores the backup.
 
-This makes the link explicit, reversible, and independent of global npm link state.
+With pnpm the backup is usually a symlink into the store rather than a real directory. This makes the link explicit, reversible, and independent of global link state.
 
-Because the symlink points at the real local package directory, any rebuilt output is picked up automatically by the consuming repository. In practice, if the source package exposes a `dev` script that watches files and reruns `build`, you can keep that `npm run dev` process running while testing the consumer through `local-link`, and the consumer will see the refreshed built output without re-linking after every change.
+Because the symlink points at the real local package directory, any rebuilt output is picked up automatically by the consuming repository. In practice, if the source package exposes a `dev` script that watches files and reruns `build`, you can keep that `pnpm run dev` process running while testing the consumer through `local-link`, and the consumer will see the refreshed built output without re-linking after every change.
 
 ## Practical Constraints
 
 There are a few practical constraints when using `local-link`:
 
-- the dependency must already exist in `node_modules`, so run `npm install` first,
+- the dependency must already exist in `node_modules`, so run `pnpm install` first,
+- always unlink before running `pnpm install` again, as the install overwrites the links and leaves the backups orphaned,
 - the linked package should already be built, because consumers usually read from `dist`,
 - sibling repositories are expected to sit beside each other in the shared workspace folder,
 - wildcard matching is based on workspace path segments, so patterns should match the workspace folder name prefix.
@@ -183,8 +215,8 @@ In practice, a safe cross-repository flow is:
 
 1. build the source package in its own repository,
 2. switch to the consuming repository,
-3. run `npm install` if needed,
-4. run `npm run local-link "@twin.org/package-name"`,
+3. run `pnpm install` if needed,
+4. run `pnpm run local-link "@twin.org/package-name"`,
 5. rebuild or retest the consuming repo,
 6. run `unlink` when finished.
 
@@ -194,13 +226,13 @@ The shared practices that work best across the repositories are:
 
 - do most coding and debugging inside the target submodule repository,
 - use package or app scripts for the inner loop,
-- use repo root scripts before review,
+- run `pnpm run quality` at the repo root before review,
 - use outer workspace orchestration only when you genuinely need cross-repo coordination,
 - build the source repository before linking it into another repo,
-- when available, run `npm run dev` in the linked source package to keep its built output current during integration testing,
+- when available, run `pnpm run dev` in the linked source package to keep its built output current during integration testing,
 - unlink temporary symlinks when the integration check is complete,
 - keep repositories on their intended branches while doing coordinated changes,
-- prefer `dist:no-test` for fast structural verification and reserve full `dist` for final checks.
+- prefer `quality:no-test` or `dist:no-test` for fast structural verification and reserve the full `quality` run for final checks.
 
 This keeps development predictable, reduces accidental environment drift, and makes multi-repo work much easier to reason about.
 
@@ -210,8 +242,8 @@ When a change spans repositories, a practical sequence is:
 
 1. update and build the source repository,
 2. switch to the consuming repository,
-3. run `npm install` if required,
-4. run `npm run local-link "@twin.org/package-name"`,
+3. run `pnpm install` if required,
+4. run `pnpm run local-link "@twin.org/package-name"`,
 5. run local build, lint, docs, or test commands in the consumer,
 6. repeat as needed while iterating,
 7. remove links with `unlink` after verification,

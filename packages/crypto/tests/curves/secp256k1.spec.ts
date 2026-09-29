@@ -3,8 +3,21 @@
 import { Converter } from "@twin.org/core";
 import testData from "./secp256k1.json" with { type: "json" };
 import { Secp256k1 } from "../../src/curves/secp256k1.js";
+import {
+	NATIVE_CRYPTO_VARIANTS,
+	unregisterNodeCrypto,
+	useNativeCryptoVariant
+} from "../nativeCryptoVariants.js";
 
-describe("Secp256k1", () => {
+describe.each(NATIVE_CRYPTO_VARIANTS)("Secp256k1 ($implementation)", ({ useNodeCrypto }) => {
+	beforeAll(async () => {
+		await useNativeCryptoVariant(useNodeCrypto);
+	});
+
+	afterAll(() => {
+		unregisterNodeCrypto();
+	});
+
 	test("Can generate a key pair from a seed", () => {
 		const privateKey = new Uint8Array(32).fill(170);
 		const publicKey = Secp256k1.publicKeyFromPrivateKey(privateKey);
@@ -72,5 +85,32 @@ describe("Secp256k1", () => {
 			const verified = Secp256k1.verify(bPublicKey, bData, calcSignature);
 			expect(verified).toEqual(true);
 		}
+	});
+
+	test("Derives the same public key as the other implementation", async () => {
+		const privateKey = new Uint8Array(32).fill(5);
+		const publicKey = Secp256k1.publicKeyFromPrivateKey(privateKey);
+
+		await useNativeCryptoVariant(!useNodeCrypto);
+
+		try {
+			expect(Secp256k1.publicKeyFromPrivateKey(privateKey)).toEqual(publicKey);
+		} finally {
+			await useNativeCryptoVariant(useNodeCrypto);
+		}
+	});
+
+	test("Signs deterministically per RFC 6979 on both implementations", () => {
+		// Signing stays on the pure implementation, as OpenSSL uses a random k
+		const privateKey = new Uint8Array(32).fill(5);
+		const block = new Uint8Array(32).fill(9);
+
+		expect(Secp256k1.sign(privateKey, block)).toEqual(Secp256k1.sign(privateKey, block));
+	});
+
+	test("Returns a plain Uint8Array rather than a platform buffer type", () => {
+		expect(Secp256k1.publicKeyFromPrivateKey(new Uint8Array(32).fill(5)).constructor).toEqual(
+			Uint8Array
+		);
 	});
 });

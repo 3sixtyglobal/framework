@@ -58,6 +58,16 @@ Is this a secondary index property.
 
 ***
 
+### indexGroup? {#indexgroup}
+
+> `optional` **indexGroup?**: [`IEntitySchemaPropertyIndex`](IEntitySchemaPropertyIndex.md)[]
+
+The composite indexes this property is part of.
+Connectors can use these to build a composite index for each group name,
+combining all the properties which share that name, ordered by their index.
+
+***
+
 ### isVersion? {#isversion}
 
 > `optional` **isVersion?**: `boolean`

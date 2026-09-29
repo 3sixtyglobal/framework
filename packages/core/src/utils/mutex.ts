@@ -13,12 +13,20 @@ import { MutexMessageTypes } from "../models/mutexMessageTypes.js";
 /**
  * A cross-thread mutex built on Atomics and SharedArrayBuffer.
  *
- * When isMainThread is true (main thread or fork-mode child process) the class acts as
- * the authoritative registry: it creates a SharedArrayBuffer-backed Int32Array for each
- * key on first use and never discards it, because worker threads may hold references to
- * the same underlying memory.
+ * The static methods are a facade over a single instance held in the SharedStore, so every
+ * load of this package on a thread shares one set of registries. Each thread has its own
+ * instance; the mutual exclusion between threads comes from the SharedArrayBuffer behind
+ * each key, not from the instance itself.
  *
- * When isMainThread is false (a true worker thread) the class synchronously negotiates
+ * When isMainThread is true (main thread or fork-mode child process) the instance acts as
+ * the authoritative registry: it creates a SharedArrayBuffer-backed Int32Array for each
+ * key on first use. An entry is discarded once the key is idle, so a workload which touches
+ * many distinct keys does not grow the registry without bound. A key which has been handed
+ * to a worker thread is retained for the life of the process, because the worker caches the
+ * Int32Array it was given and re-creating the buffer would hand two threads different memory
+ * for the same key, silently breaking mutual exclusion.
+ *
+ * When isMainThread is false (a true worker thread) the instance synchronously negotiates
  * the shared buffer with the main thread on first use of each key, then caches it locally.
  * The main thread must call Mutex.handleWorkerMessage(msg) from its worker message handler
  * before that worker first calls Mutex.lock().
@@ -40,28 +48,24 @@ export class Mutex {
 	public static readonly CLASS_NAME: string = nameof<Mutex>();
 
 	/**
-	 * SharedStore key for the per-thread sparse map from lock key strings to Int32Arrays.
+	 * SharedStore key for the per-thread instance which owns all of the lock state.
 	 * @internal
 	 */
-	private static readonly _LOCKS_KEY = "mutexLocks";
+	private static readonly _INSTANCE_KEY = "mutex";
 
 	/**
-	 * SharedStore key for the default timeout in milliseconds.
+	 * The default timeout in milliseconds used when a caller does not supply one.
 	 * @internal
 	 */
-	private static readonly _DEFAULT_TIMEOUT_KEY = "mutexDefaultTimeoutMs";
+	private static readonly _DEFAULT_TIMEOUT_MS = 5000;
 
 	/**
-	 * SharedStore key for the per-thread map from lock key strings to FIFO waiter queues.
+	 * How many new registry entries may be created before unlock() sweeps the idle ones. The
+	 * sweep is driven by creations rather than by every unlock so a key which is locked
+	 * repeatedly does not have its buffer discarded and re-allocated on each use.
 	 * @internal
 	 */
-	private static readonly _WAITERS_KEY = "mutexWaiters";
-
-	/**
-	 * SharedStore key for the per-thread map from lock key strings to the running watch task.
-	 * @internal
-	 */
-	private static readonly _WATCHERS_KEY = "mutexWatchers";
+	private static readonly _RECLAIM_THRESHOLD = 1024;
 
 	/**
 	 * How long the watch task waits on the shared lock before re-reading the queue, in
@@ -72,19 +76,72 @@ export class Mutex {
 	private static readonly _WATCH_TIMEOUT_MS = 250;
 
 	/**
+	 * Sparse map from lock key to the Int32Array guarding it. A Map rather than an object so
+	 * that keys which collide with object prototype members, such as __proto__, are stored
+	 * and retrieved as ordinary keys.
+	 * @internal
+	 */
+	private readonly _locks: Map<string, Int32Array>;
+
+	/**
+	 * Map from lock key to the FIFO queue of callers waiting on it.
+	 * @internal
+	 */
+	private readonly _waiters: Map<string, IMutexWaiter[]>;
+
+	/**
+	 * Map from lock key to the watch task currently running for it.
+	 * @internal
+	 */
+	private readonly _watchers: Map<string, Promise<void>>;
+
+	/**
+	 * Keys whose buffer has been handed to a worker thread and so can never be reclaimed.
+	 * @internal
+	 */
+	private readonly _workerShared: Set<string>;
+
+	/**
+	 * The number of registry entries created since the last sweep.
+	 * @internal
+	 */
+	private _createdSinceSweep: number;
+
+	/**
+	 * The default timeout in milliseconds for lock acquisition.
+	 * @internal
+	 */
+	private _defaultTimeoutMs: number;
+
+	/**
 	 * Cached reference to the node:worker_threads module, null if unavailable (browser).
 	 * @internal
 	 */
 	// false positive: this is a type not an actual import
 	// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-	private static _workerThreadsModule: typeof import("node:worker_threads") | null | undefined;
+	private _workerThreadsModule: typeof import("node:worker_threads") | null | undefined;
+
+	/**
+	 * Create a new instance of Mutex. Private so that all callers go through the shared
+	 * instance, which is what makes the registries consistent across package loads.
+	 * @internal
+	 */
+	private constructor() {
+		this._locks = new Map();
+		this._waiters = new Map();
+		this._watchers = new Map();
+		this._workerShared = new Set();
+		this._createdSinceSweep = 0;
+		this._defaultTimeoutMs = Mutex._DEFAULT_TIMEOUT_MS;
+		this._workerThreadsModule = undefined;
+	}
 
 	/**
 	 * Gets the default timeout in milliseconds for lock acquisition.
 	 * @returns The default timeout in milliseconds.
 	 */
 	public static getDefaultTimeoutMs(): number {
-		return SharedStore.get<number>(Mutex._DEFAULT_TIMEOUT_KEY) ?? 5000;
+		return Mutex.instance().getDefaultTimeoutMs();
 	}
 
 	/**
@@ -93,11 +150,7 @@ export class Mutex {
 	 * @throws GeneralError if timeoutMs is not a non-negative integer.
 	 */
 	public static setDefaultTimeoutMs(timeoutMs: number): void {
-		Guards.integer(Mutex.CLASS_NAME, nameof(timeoutMs), timeoutMs);
-		if (timeoutMs < 0) {
-			throw new GeneralError(Mutex.CLASS_NAME, "invalidTimeout", { timeoutMs });
-		}
-		SharedStore.set(Mutex._DEFAULT_TIMEOUT_KEY, timeoutMs);
+		Mutex.instance().setDefaultTimeoutMs(timeoutMs);
 	}
 
 	/**
@@ -120,6 +173,76 @@ export class Mutex {
 		key: string,
 		options?: { timeoutMs?: number; throwOnTimeout?: boolean }
 	): Promise<boolean> {
+		return Mutex.instance().lock(key, options);
+	}
+
+	/**
+	 * Releases the lock for the given key.
+	 * @param key The key to unlock.
+	 * @throws GeneralError if the key is invalid or the lock is not currently held.
+	 */
+	public static unlock(key: string): void {
+		Mutex.instance().unlock(key);
+	}
+
+	/**
+	 * Inspect a message received from a worker and, if it is a Mutex buffer-fetch request,
+	 * respond to it synchronously. Call from the main thread's worker message handler.
+	 * @param msg The raw message received from the worker.
+	 * @returns True if the message was a Mutex protocol message and was handled, false otherwise.
+	 */
+	public static handleWorkerMessage(msg: unknown): boolean {
+		return Mutex.instance().handleWorkerMessage(msg);
+	}
+
+	/**
+	 * Get the instance which owns the lock state for this thread, creating it if it does not
+	 * exist. It lives in the SharedStore so that separate loads of this package on the same
+	 * thread operate on the same registries.
+	 * @returns The shared instance.
+	 * @internal
+	 */
+	private static instance(): Mutex {
+		return SharedStore.get<Mutex>(Mutex._INSTANCE_KEY, () => new Mutex());
+	}
+
+	/**
+	 * Gets the default timeout in milliseconds for lock acquisition.
+	 * @returns The default timeout in milliseconds.
+	 * @internal
+	 */
+	public getDefaultTimeoutMs(): number {
+		return this._defaultTimeoutMs;
+	}
+
+	/**
+	 * Sets the default timeout in milliseconds for lock acquisition.
+	 * @param timeoutMs The default timeout in milliseconds.
+	 * @throws GeneralError if timeoutMs is not a non-negative integer.
+	 * @internal
+	 */
+	public setDefaultTimeoutMs(timeoutMs: number): void {
+		Guards.integer(Mutex.CLASS_NAME, nameof(timeoutMs), timeoutMs);
+		if (timeoutMs < 0) {
+			throw new GeneralError(Mutex.CLASS_NAME, "invalidTimeout", { timeoutMs });
+		}
+		this._defaultTimeoutMs = timeoutMs;
+	}
+
+	/**
+	 * Acquires a lock for the given key without blocking the event loop.
+	 * @param key The key to lock on.
+	 * @param options Lock options.
+	 * @param options.timeoutMs The maximum time to wait for the lock in milliseconds.
+	 * @param options.throwOnTimeout Whether to throw an error if the lock could not be acquired.
+	 * @returns True if the lock was acquired, false if it timed out and throwOnTimeout is false.
+	 * @throws GeneralError if the key is invalid or if the lock could not be acquired within the timeout and throwOnTimeout is true.
+	 * @internal
+	 */
+	public async lock(
+		key: string,
+		options?: { timeoutMs?: number; throwOnTimeout?: boolean }
+	): Promise<boolean> {
 		Guards.stringValue(Mutex.CLASS_NAME, nameof(key), key);
 		if (!Is.empty(options?.timeoutMs)) {
 			Guards.integer(Mutex.CLASS_NAME, nameof(options.timeoutMs), options.timeoutMs);
@@ -130,19 +253,20 @@ export class Mutex {
 			}
 		}
 
-		const timeoutMs = options?.timeoutMs ?? Mutex.getDefaultTimeoutMs();
+		const timeoutMs = options?.timeoutMs ?? this._defaultTimeoutMs;
 		const throwOnTimeout = options?.throwOnTimeout ?? false;
 		const deadline = Date.now() + timeoutMs;
 
 		// getOrFetchLock may block once per key on worker threads to negotiate the
 		// shared buffer with the main thread; that one-time fetch is acceptable here.
-		const lock = await Mutex.getOrFetchLock(key, deadline);
-		const queue = Mutex.getQueue(key);
+		const lock = await this.getOrFetchLock(key, deadline);
 
 		// Atomically swap 0 → 1; if the previous value was 0 we acquired the lock. Only take
 		// it outright when nothing on this thread is already queued, otherwise this caller
-		// would barge in front of waiters that arrived earlier.
-		if (queue.length === 0 && Atomics.compareExchange(lock, 0, 0, 1) === 0) {
+		// would barge in front of waiters that arrived earlier. The queue is read rather than
+		// created here, an uncontended caller must not leave an empty queue behind.
+		const queued = this.getWaiter(key)?.length ?? 0;
+		if (queued === 0 && Atomics.compareExchange(lock, 0, 0, 1) === 0) {
 			return true;
 		}
 
@@ -161,13 +285,13 @@ export class Mutex {
 		const granted = new Promise<boolean>(resolve => {
 			waiter.resolve = resolve;
 		});
-		queue.push(waiter);
+		this.getQueue(key).push(waiter);
 
 		// The deadline is enforced by a timer rather than only by the atomic wait, so a
 		// congested event loop cannot stretch the wait well beyond the requested timeout.
-		waiter.timer = setTimeout(() => Mutex.settleWaiter(key, waiter, false), deadline - Date.now());
+		waiter.timer = setTimeout(() => this.settleWaiter(key, waiter, false), deadline - Date.now());
 
-		Mutex.startWatching(key, lock);
+		this.startWatching(key, lock);
 
 		if (await granted) {
 			return true;
@@ -183,12 +307,12 @@ export class Mutex {
 	 * Releases the lock for the given key.
 	 * @param key The key to unlock.
 	 * @throws GeneralError if the key is invalid or the lock is not currently held.
+	 * @internal
 	 */
-	public static unlock(key: string): void {
+	public unlock(key: string): void {
 		Guards.stringValue(Mutex.CLASS_NAME, nameof(key), key);
 
-		const locks = Mutex.getLocks();
-		const lock = locks[key];
+		const lock = this._locks.get(key);
 		if (Is.empty(lock)) {
 			throw new GeneralError(Mutex.CLASS_NAME, "lockNotFound", { key });
 		}
@@ -201,22 +325,27 @@ export class Mutex {
 		// Hand the lock straight to the caller at the front of this thread's queue. Nothing
 		// else on this thread can run between the release above and the re-acquire below, so
 		// no later caller can see the released state and take it first.
-		const next = Mutex.getWaiters()[key]?.[0];
+		const next = this.getWaiter(key)?.[0];
 		if (!Is.empty(next) && Atomics.compareExchange(lock, 0, 0, 1) === 0) {
-			Mutex.settleWaiter(key, next, true);
+			this.settleWaiter(key, next, true);
 			return;
 		}
 
 		Atomics.notify(lock, 0, 1);
+
+		if (this._createdSinceSweep >= Mutex._RECLAIM_THRESHOLD) {
+			this.sweepLocks();
+		}
 	}
 
 	/**
 	 * Inspect a message received from a worker and, if it is a Mutex buffer-fetch request,
-	 * respond to it synchronously. Call from the main thread's worker message handler.
+	 * respond to it synchronously.
 	 * @param msg The raw message received from the worker.
 	 * @returns True if the message was a Mutex protocol message and was handled, false otherwise.
+	 * @internal
 	 */
-	public static handleWorkerMessage(msg: unknown): boolean {
+	public handleWorkerMessage(msg: unknown): boolean {
 		if (!Is.object<IMutexWorkerMessage>(msg) || msg.type !== MutexMessageTypes.GetBuffer) {
 			return false;
 		}
@@ -225,11 +354,17 @@ export class Mutex {
 		Guards.object<SharedArrayBuffer>(Mutex.CLASS_NAME, nameof(msg.signal), msg.signal);
 		Guards.object<MessagePort>(Mutex.CLASS_NAME, nameof(msg.port), msg.port);
 
-		const locks = Mutex.getLocks();
-		locks[msg.key] ??= new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
+		let lock = this._locks.get(msg.key);
+		if (Is.empty(lock)) {
+			lock = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
+			this._locks.set(msg.key, lock);
+		}
+		// The worker caches the buffer it is about to receive, so this key can never be
+		// reclaimed: a replacement buffer would not be the memory the worker is locking on.
+		this._workerShared.add(msg.key);
 		// Send the buffer before updating the signal so it is guaranteed to be in
 		// port1's receive queue when Atomics.wait returns on the worker side.
-		msg.port.postMessage({ buffer: locks[msg.key].buffer });
+		msg.port.postMessage({ buffer: lock.buffer });
 		// Set signal[0] = 1 before notifying. If the OS scheduled the main thread
 		// to process this request before the worker reached Atomics.wait, the notify
 		// would fire with no waiters (lost wakeup). Setting the value first means
@@ -251,24 +386,29 @@ export class Mutex {
 	 * @returns The Int32Array backed by a SharedArrayBuffer for this key.
 	 * @internal
 	 */
-	private static async getOrFetchLock(key: string, deadline: number): Promise<Int32Array> {
-		const locks = Mutex.getLocks();
-		if (!Is.empty(locks[key])) {
-			return locks[key];
+	private async getOrFetchLock(key: string, deadline: number): Promise<Int32Array> {
+		const existing = this._locks.get(key);
+		if (!Is.empty(existing)) {
+			return existing;
 		}
 
-		const wt = await Mutex.loadWorkerThreads();
+		const wt = await this.loadWorkerThreads();
 
 		// Re-check after the await: another coroutine that was also waiting on
 		// loadWorkerThreads() may have allocated the buffer while we yielded.
-		if (!Is.empty(locks[key])) {
-			return locks[key];
+		const created = this._locks.get(key);
+		if (!Is.empty(created)) {
+			return created;
 		}
 
 		if (Is.empty(wt) || wt.isMainThread) {
 			// Main thread, fork-mode process, or browser: own the registry entry.
-			locks[key] = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
-			return locks[key];
+			const lock = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
+			this._locks.set(key, lock);
+			// Only entries this thread owns are reclaimable, so only those are counted towards
+			// the next sweep. A worker's entry is a cache of the main thread's buffer.
+			this._createdSinceSweep++;
+			return lock;
 		}
 
 		// Worker thread: synchronously request the SharedArrayBuffer from the main thread.
@@ -309,8 +449,9 @@ export class Mutex {
 				throw new GeneralError(Mutex.CLASS_NAME, "bufferFetchFailed", { key });
 			}
 
-			locks[key] = new Int32Array(response.message.buffer);
-			return locks[key];
+			const fetched = new Int32Array(response.message.buffer);
+			this._locks.set(key, fetched);
+			return fetched;
 		} finally {
 			port1.close();
 		}
@@ -323,7 +464,7 @@ export class Mutex {
 	 * @param granted True when the waiter has been handed the lock and now owns it.
 	 * @internal
 	 */
-	private static settleWaiter(key: string, waiter: IMutexWaiter, granted: boolean): void {
+	private settleWaiter(key: string, waiter: IMutexWaiter, granted: boolean): void {
 		if (waiter.settled) {
 			return;
 		}
@@ -334,10 +475,15 @@ export class Mutex {
 			waiter.timer = undefined;
 		}
 
-		const queue = Mutex.getWaiters()[key];
+		const queue = this.getWaiter(key);
 		const index = queue?.indexOf(waiter) ?? -1;
-		if (index >= 0) {
+		if (Is.notEmpty(queue) && index >= 0) {
 			queue.splice(index, 1);
+			// Drop the queue as soon as it drains, otherwise the registry retains an empty
+			// array for every key that has ever been contended.
+			if (queue.length === 0) {
+				this._waiters.delete(key);
+			}
 		}
 
 		waiter.resolve?.(granted);
@@ -349,9 +495,10 @@ export class Mutex {
 	 * @param lock The shared lock for the key.
 	 * @internal
 	 */
-	private static startWatching(key: string, lock: Int32Array): void {
-		const watchers = Mutex.getWatchers();
-		watchers[key] ??= Mutex.runWatcher(key, lock);
+	private startWatching(key: string, lock: Int32Array): void {
+		if (!this._watchers.has(key)) {
+			this._watchers.set(key, this.runWatcher(key, lock));
+		}
 	}
 
 	/**
@@ -363,11 +510,11 @@ export class Mutex {
 	 * @returns A promise that resolves when the task ends.
 	 * @internal
 	 */
-	private static async runWatcher(key: string, lock: Int32Array): Promise<void> {
+	private async runWatcher(key: string, lock: Int32Array): Promise<void> {
 		try {
-			await Mutex.watchQueue(key, lock);
+			await this.watchQueue(key, lock);
 		} finally {
-			delete Mutex.getWatchers()[key];
+			this._watchers.delete(key);
 		}
 	}
 
@@ -380,17 +527,17 @@ export class Mutex {
 	 * @returns A promise that resolves when the task ends.
 	 * @internal
 	 */
-	private static async watchQueue(key: string, lock: Int32Array): Promise<void> {
+	private async watchQueue(key: string, lock: Int32Array): Promise<void> {
 		for (;;) {
 			// Re-read the front of the queue on every pass, waiters that reached their
 			// deadline have already removed themselves.
-			const head = Mutex.getWaiters()[key]?.[0];
+			const head = this.getWaiter(key)?.[0];
 			if (Is.empty(head)) {
 				return;
 			}
 
 			if (Atomics.compareExchange(lock, 0, 0, 1) === 0) {
-				Mutex.settleWaiter(key, head, true);
+				this.settleWaiter(key, head, true);
 			} else {
 				const waitResult = Atomics.waitAsync(lock, 0, 1, Mutex._WATCH_TIMEOUT_MS);
 				if (waitResult.async) {
@@ -401,42 +548,65 @@ export class Mutex {
 	}
 
 	/**
+	 * Discard the registry entry for every key which is idle, so a workload that touches many
+	 * distinct keys does not retain a SharedArrayBuffer for each one. Driven by the number of
+	 * entries created rather than by every unlock, so a key which is locked repeatedly keeps
+	 * its buffer instead of re-allocating one per use.
+	 * @internal
+	 */
+	private sweepLocks(): void {
+		this._createdSinceSweep = 0;
+
+		// Only the authoritative registry may discard a buffer. On a true worker thread the
+		// entry is a local cache of the main thread's buffer, and dropping it would only force
+		// a blocking re-fetch of the same memory.
+		const wt = this._workerThreadsModule;
+		if (Is.undefined(wt) || (Is.notEmpty(wt) && !wt.isMainThread)) {
+			return;
+		}
+
+		for (const [key, lock] of [...this._locks]) {
+			// A key is retained when any of the following holds:
+			// - a worker caches the Int32Array it was handed, so once a key has crossed a thread
+			//   boundary its buffer must live for the process;
+			// - the lock is held, so the entry is in use;
+			// - a caller is queued on it, or a watch task is still running. The watch task clears
+			//   its own entry only after the queue has drained, so both are checked.
+			const inUse =
+				this._workerShared.has(key) ||
+				Atomics.load(lock, 0) !== 0 ||
+				(this.getWaiter(key)?.length ?? 0) > 0 ||
+				this._watchers.has(key);
+
+			if (!inUse) {
+				this._locks.delete(key);
+			}
+		}
+	}
+
+	/**
+	 * Get the FIFO waiter queue for a key without creating one.
+	 * @param key The lock key.
+	 * @returns The waiter queue for the key, or undefined if the key has no queued callers.
+	 * @internal
+	 */
+	private getWaiter(key: string): IMutexWaiter[] | undefined {
+		return this._waiters.get(key);
+	}
+
+	/**
 	 * Get the FIFO waiter queue for a key, creating it if it does not exist.
 	 * @param key The lock key.
 	 * @returns The waiter queue for the key.
 	 * @internal
 	 */
-	private static getQueue(key: string): IMutexWaiter[] {
-		const waiters = Mutex.getWaiters();
-		waiters[key] ??= [];
-		return waiters[key];
-	}
-
-	/**
-	 * Get the shared waiter queues map, creating it if it does not exist.
-	 * @returns The shared waiter queues map.
-	 * @internal
-	 */
-	private static getWaiters(): { [key: string]: IMutexWaiter[] } {
-		return SharedStore.get<{ [key: string]: IMutexWaiter[] }>(Mutex._WAITERS_KEY, () => ({}));
-	}
-
-	/**
-	 * Get the shared watch tasks map, creating it if it does not exist.
-	 * @returns The shared watch tasks map.
-	 * @internal
-	 */
-	private static getWatchers(): { [key: string]: Promise<void> } {
-		return SharedStore.get<{ [key: string]: Promise<void> }>(Mutex._WATCHERS_KEY, () => ({}));
-	}
-
-	/**
-	 * Get the shared locks map, creating it if it does not exist.
-	 * @returns The shared locks map.
-	 * @internal
-	 */
-	private static getLocks(): { [key: string]: Int32Array } {
-		return SharedStore.get<{ [key: string]: Int32Array }>(Mutex._LOCKS_KEY, () => ({}));
+	private getQueue(key: string): IMutexWaiter[] {
+		let queue = this._waiters.get(key);
+		if (Is.empty(queue)) {
+			queue = [];
+			this._waiters.set(key, queue);
+		}
+		return queue;
 	}
 
 	/**
@@ -446,14 +616,14 @@ export class Mutex {
 	 */
 	// false positive: this is a type not an actual import
 	// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-	private static async loadWorkerThreads(): Promise<typeof import("node:worker_threads") | null> {
-		if (Mutex._workerThreadsModule === undefined) {
+	private async loadWorkerThreads(): Promise<typeof import("node:worker_threads") | null> {
+		if (this._workerThreadsModule === undefined) {
 			try {
-				Mutex._workerThreadsModule = await import("node:worker_threads");
+				this._workerThreadsModule = await import("node:worker_threads");
 			} catch {
-				Mutex._workerThreadsModule = null;
+				this._workerThreadsModule = null;
 			}
 		}
-		return Mutex._workerThreadsModule;
+		return this._workerThreadsModule;
 	}
 }

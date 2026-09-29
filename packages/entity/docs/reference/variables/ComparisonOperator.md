@@ -47,7 +47,7 @@ Less Than Or Equal.
 > `readonly` **Includes**: `"includes"` = `"includes"`
 
 Includes.
-A string in a substring.
+A string in a substring, this is a scan and cannot use an index.
 A set contains an element.
 A list contains an element.
 
@@ -59,6 +59,13 @@ Not Includes.
 A string not in a substring.
 A set does not contain an element.
 A list does not contain an element.
+
+### StartsWith {#startswith}
+
+> `readonly` **StartsWith**: `"starts-with"` = `"starts-with"`
+
+Starts With.
+A string begins with a prefix, the anchored match can use an index.
 
 ### In {#in}
 

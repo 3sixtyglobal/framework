@@ -22,23 +22,67 @@ Runtime name for the class.
 
 ## Methods
 
-### overrideImport() {#overrideimport}
+### setOptions() {#setoptions}
 
-> `static` **overrideImport**(`overrideImport`): `void`
+> `static` **setOptions**(`options`): `void`
 
-Override the import function for modules.
+Set the options for module resolution, this enables resolving local, package, npm: and https:
+modules from the execution directory for both main thread and worker thread imports.
+Setting the options clears the resolution caches.
 
 #### Parameters
 
-##### overrideImport
+##### options
 
-(`moduleName`) => `Promise`\<\{ `module?`: `unknown`; `useDefault`: `boolean`; \}\>
+[`IModuleHelperOptions`](../interfaces/IModuleHelperOptions.md)
 
-The override import function.
+The options for module resolution.
 
 #### Returns
 
 `void`
+
+***
+
+### getOptions() {#getoptions}
+
+> `static` **getOptions**(): [`IModuleHelperOptions`](../interfaces/IModuleHelperOptions.md) \| `undefined`
+
+Get the options for module resolution, worker threads are started with these options.
+
+#### Returns
+
+[`IModuleHelperOptions`](../interfaces/IModuleHelperOptions.md) \| `undefined`
+
+The options, or undefined if they have not been set.
+
+***
+
+### importModule() {#importmodule}
+
+> `static` **importModule**\<`T`\>(`module`): `Promise`\<`T`\>
+
+Import a module on the main thread, resolving and caching it.
+
+#### Type Parameters
+
+##### T
+
+`T` = \{\[`key`: `string`\]: `unknown`; \}
+
+#### Parameters
+
+##### module
+
+`string`
+
+The module.
+
+#### Returns
+
+`Promise`\<`T`\>
+
+The imported module.
 
 ***
 
@@ -216,7 +260,9 @@ GeneralError if executing the module entry failed.
 
 > `static` **execModuleMethodThreadMessage**(`module`, `completed`, `options?`): [`IModuleWorker`](../interfaces/IModuleWorker.md)
 
-Load the module and provide a messaging interface.
+Load the module and provide a messaging interface. The worker starts with the native
+modules already registered on this thread via NativeModules.init() and the options from
+setOptions, messages from the worker's onMessage option are forwarded to this thread.
 
 #### Parameters
 
@@ -254,44 +300,28 @@ GeneralError if executing the module entry failed.
 
 ***
 
-### isLocalModule() {#islocalmodule}
+### resolveModule() {#resolvemodule}
 
-> `static` **isLocalModule**(`name`): `boolean`
+> `static` **resolveModule**(`module`): `Promise`\<`string`\>
 
-Check if a module is a local module.
-
-#### Parameters
-
-##### name
-
-`string`
-
-The name of the module.
-
-#### Returns
-
-`boolean`
-
-True if the module is local, false otherwise.
-
-***
-
-### isRelativeModule() {#isrelativemodule}
-
-> `static` **isRelativeModule**(`name`): `boolean`
-
-Check if a module is a relative module.
+Resolve a module name to the specifier to import, using the options from setOptions. Without
+options, local and package modules are resolved from the working directory, npm: and https:
+modules are only resolved once options are set. The native modules needed are registered on first use.
 
 #### Parameters
 
-##### name
+##### module
 
 `string`
 
-The name of the module.
+The module name.
 
 #### Returns
 
-`boolean`
+`Promise`\<`string`\>
 
-True if the module is relative, false otherwise.
+The specifier to import, or the module name unchanged if it could not be resolved.
+
+#### Throws
+
+GeneralError if the module uses an insecure protocol or could not be installed or downloaded.

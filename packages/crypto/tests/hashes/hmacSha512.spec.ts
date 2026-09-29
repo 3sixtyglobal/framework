@@ -3,8 +3,21 @@
 import { Converter } from "@twin.org/core";
 import testData from "./hmacSha512.json" with { type: "json" };
 import { HmacSha512 } from "../../src/hashes/hmacSha512.js";
+import {
+	NATIVE_CRYPTO_VARIANTS,
+	unregisterNodeCrypto,
+	useNativeCryptoVariant
+} from "../nativeCryptoVariants.js";
 
-describe("HmacSha512", () => {
+describe.each(NATIVE_CRYPTO_VARIANTS)("HmacSha512 ($implementation)", ({ useNodeCrypto }) => {
+	beforeAll(async () => {
+		await useNativeCryptoVariant(useNodeCrypto);
+	});
+
+	afterAll(() => {
+		unregisterNodeCrypto();
+	});
+
 	test("Can perform a hmac on short text", () => {
 		const hmacSha512 = new HmacSha512(Converter.utf8ToBytes("mykey"));
 		hmacSha512.update(Converter.utf8ToBytes("abc"));
@@ -39,6 +52,48 @@ describe("HmacSha512", () => {
 					HmacSha512.sum512(Converter.hexToBytes(test.key), Converter.hexToBytes(test.input))
 				)
 			).toEqual(test.hash);
+		}
+	});
+
+	test("Returns a plain Uint8Array rather than a platform buffer type", () => {
+		const key = Converter.utf8ToBytes("key");
+		const block = Converter.utf8ToBytes("message");
+
+		expect(HmacSha512.sum224(key, block).constructor).toEqual(Uint8Array);
+		expect(HmacSha512.sum256(key, block).constructor).toEqual(Uint8Array);
+		expect(HmacSha512.sum384(key, block).constructor).toEqual(Uint8Array);
+		expect(HmacSha512.sum512(key, block).constructor).toEqual(Uint8Array);
+	});
+
+	test("Can accumulate multiple updates into one digest", () => {
+		const key = Converter.utf8ToBytes("key");
+		const chunked = new HmacSha512(key);
+		chunked.update(Converter.utf8ToBytes("The quick brown fox "));
+		chunked.update(Converter.utf8ToBytes("jumps over the lazy dog"));
+
+		const single = new HmacSha512(key);
+		single.update(Converter.utf8ToBytes("The quick brown fox jumps over the lazy dog"));
+
+		expect(chunked.digest()).toEqual(single.digest());
+	});
+
+	test("Produces the same digest as the other implementation", async () => {
+		const key = Converter.utf8ToBytes("cross implementation key");
+		const block = Converter.utf8ToBytes("cross implementation block ".repeat(10));
+		const sum224 = HmacSha512.sum224(key, block);
+		const sum256 = HmacSha512.sum256(key, block);
+		const sum384 = HmacSha512.sum384(key, block);
+		const sum512 = HmacSha512.sum512(key, block);
+
+		await useNativeCryptoVariant(!useNodeCrypto);
+
+		try {
+			expect(HmacSha512.sum224(key, block)).toEqual(sum224);
+			expect(HmacSha512.sum256(key, block)).toEqual(sum256);
+			expect(HmacSha512.sum384(key, block)).toEqual(sum384);
+			expect(HmacSha512.sum512(key, block)).toEqual(sum512);
+		} finally {
+			await useNativeCryptoVariant(useNodeCrypto);
 		}
 	});
 });

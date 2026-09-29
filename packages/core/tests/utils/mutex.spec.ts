@@ -2,33 +2,83 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { MessageChannel, Worker, receiveMessageOnPort } from "node:worker_threads";
 import { MutexMessageTypes } from "../../src/models/mutexMessageTypes.js";
-import { Is } from "../../src/utils/is.js";
 import { Mutex } from "../../src/utils/mutex.js";
 import { SharedStore } from "../../src/utils/sharedStore.js";
 
-const getLocks = (): { [key: string]: Int32Array } => {
-	let locks = SharedStore.get<{ [key: string]: Int32Array }>("mutexLocks");
-	if (!locks) {
-		locks = {};
-		SharedStore.set("mutexLocks", locks);
+// A worker blocked in an unbounded Atomics.wait never exits, which would hang the
+// suite until the vitest timeout. Every wait in the worker scripts below is bounded
+// and the test side terminates any worker which has not exited, so a starved worker
+// fails the test quickly instead of wedging it.
+// The worker side wait is deliberately shorter than the test side timeout, so a worker
+// which is never serviced times out first and reports why, rather than the test giving
+// up at the same instant and hiding the cause.
+const WORKER_WAIT_MS = 5000;
+const WORKER_EXIT_TIMEOUT_MS = 20000;
+
+/**
+ * Wait for workers to exit, terminating any which have not.
+ * @param exited Exit promises, registered when each worker was created so an early exit is not missed.
+ * @param workers The workers those promises belong to.
+ * @param errors Errors reported by the workers, surfaced so the cause is visible.
+ */
+async function waitForWorkerExits(
+	exited: Promise<void>[],
+	workers: Worker[],
+	errors: string[] = []
+): Promise<void> {
+	let timer: ReturnType<typeof setTimeout> | undefined;
+	const timedOut = new Promise<boolean>(resolve => {
+		timer = setTimeout(() => resolve(true), WORKER_EXIT_TIMEOUT_MS);
+	});
+
+	const didTimeOut = await Promise.race([Promise.all(exited).then(() => false), timedOut]);
+	clearTimeout(timer);
+
+	if (didTimeOut) {
+		await Promise.all(
+			workers.map(async worker => {
+				await worker.terminate();
+			})
+		);
+		throw new Error(`Workers did not exit within ${WORKER_EXIT_TIMEOUT_MS}ms`);
 	}
-	return locks;
-};
+
+	if (errors.length > 0) {
+		throw new Error(`A worker reported an error: ${errors[0]}`);
+	}
+}
+
+// All of the lock state lives on a single instance in the SharedStore, so the tests reach
+// through that instance and reset it by removing the one entry.
+interface IMutexInternal {
+	_locks: Map<string, Int32Array>;
+	_waiters: Map<string, unknown[]>;
+	_watchers: Map<string, Promise<void>>;
+	_workerShared: Set<string>;
+	_createdSinceSweep: number;
+	_workerThreadsModule: unknown;
+}
+
+const mutexInstance = (): IMutexInternal =>
+	(Mutex as unknown as { instance: () => IMutexInternal }).instance();
+
+const getLocks = (): Map<string, Int32Array> => mutexInstance()._locks;
 
 const mutexSetPrivateLock = (key: string, arr: Int32Array): void => {
-	getLocks()[key] = arr;
+	getLocks().set(key, arr);
 };
 
-const mutexGetPrivateLock = (key: string): Int32Array | undefined => getLocks()[key];
+const mutexGetPrivateLock = (key: string): Int32Array | undefined => getLocks().get(key);
 
-const mutexClearPrivateLocks = (): void => {
-	SharedStore.set("mutexLocks", {});
+const mutexResetInstance = (): void => {
+	SharedStore.remove("mutex");
 };
 
-const mutexClearPrivateQueues = (): void => {
-	SharedStore.set("mutexWaiters", {});
-	SharedStore.set("mutexWatchers", {});
-};
+const mutexGetPrivateQueue = (key: string): unknown[] | undefined =>
+	mutexInstance()._waiters.get(key);
+
+const mutexGetPrivateReclaimThreshold = (): number =>
+	(Mutex as unknown as { _RECLAIM_THRESHOLD: number })._RECLAIM_THRESHOLD;
 
 const mutexSimulateHeldLock = (key: string): Int32Array => {
 	const arr = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
@@ -37,15 +87,13 @@ const mutexSimulateHeldLock = (key: string): Int32Array => {
 	return arr;
 };
 
-const mutexResetDefaultTimeout = (): void => {
-	SharedStore.remove("mutexDefaultTimeoutMs");
+const mutexSetPrivateWorkerThreads = (module: unknown): void => {
+	mutexInstance()._workerThreadsModule = module;
 };
 
 describe("Mutex", () => {
 	afterEach(() => {
-		mutexClearPrivateLocks();
-		mutexClearPrivateQueues();
-		mutexResetDefaultTimeout();
+		mutexResetInstance();
 	});
 
 	describe("getDefaultTimeoutMs / setDefaultTimeoutMs", () => {
@@ -148,6 +196,16 @@ describe("Mutex", () => {
 			}
 		});
 
+		test("accepts keys which collide with object prototype members", async () => {
+			// The registries are Maps, so a key such as __proto__ is stored as an ordinary key
+			// rather than reassigning the prototype of a plain object and vanishing.
+			for (const key of ["__proto__", "constructor", "toString", "hasOwnProperty"]) {
+				expect(await Mutex.lock(key, { timeoutMs: 50 })).toEqual(true);
+				expect(mutexGetPrivateLock(key)).toBeInstanceOf(Int32Array);
+				Mutex.unlock(key);
+			}
+		});
+
 		test("accepts keys containing special characters", async () => {
 			const keys = ["a/b", "a.b", "a b", "a:b"];
 			for (const key of keys) {
@@ -228,11 +286,98 @@ describe("Mutex", () => {
 		});
 
 		test("retains the key entry in the registry after unlock with no waiters", async () => {
-			// parentPort is null in fork-mode test processes, so this process owns the
-			// registry and never deletes entries - worker threads may still hold references.
+			// Reclamation is amortised, so a single unlock leaves the entry in place; it is
+			// only discarded once enough new entries have been created to trigger a sweep.
 			await Mutex.lock("cleanup");
 			Mutex.unlock("cleanup");
 			expect(mutexGetPrivateLock("cleanup")).toBeDefined();
+		});
+	});
+
+	describe("registry reclamation", () => {
+		test("does not create a waiter queue for an uncontended lock", async () => {
+			await Mutex.lock("uncontended");
+			expect(mutexGetPrivateQueue("uncontended")).toBeUndefined();
+			Mutex.unlock("uncontended");
+			expect(mutexGetPrivateQueue("uncontended")).toBeUndefined();
+		});
+
+		test("removes the waiter queue for a key once contention ends", async () => {
+			await Mutex.lock("queue-drain");
+
+			const waiting = Mutex.lock("queue-drain", { timeoutMs: 1000 });
+			await new Promise(resolve => setTimeout(resolve, 1));
+			expect(mutexGetPrivateQueue("queue-drain")).toHaveLength(1);
+
+			Mutex.unlock("queue-drain");
+			expect(await waiting).toEqual(true);
+			expect(mutexGetPrivateQueue("queue-drain")).toBeUndefined();
+
+			Mutex.unlock("queue-drain");
+		});
+
+		test("removes the waiter queue for a key when the waiter times out", async () => {
+			await Mutex.lock("queue-timeout");
+
+			expect(await Mutex.lock("queue-timeout", { timeoutMs: 20 })).toEqual(false);
+			expect(mutexGetPrivateQueue("queue-timeout")).toBeUndefined();
+
+			Mutex.unlock("queue-timeout");
+		});
+
+		test("reclaims idle lock entries once the creation threshold is reached", async () => {
+			const threshold = mutexGetPrivateReclaimThreshold();
+			const total = threshold + 50;
+
+			for (let i = 0; i < total; i++) {
+				await Mutex.lock(`reclaim-${i}`);
+				Mutex.unlock(`reclaim-${i}`);
+			}
+
+			// The sweep runs on the unlock which crosses the threshold and clears every idle
+			// entry, so only the keys created after that sweep are still registered.
+			expect(getLocks().size).toEqual(total - threshold);
+
+			// The registry is still usable for a key whose entry was discarded.
+			expect(await Mutex.lock("reclaim-0")).toEqual(true);
+			Mutex.unlock("reclaim-0");
+		});
+
+		test("retains a lock entry which is still held when the sweep runs", async () => {
+			const threshold = mutexGetPrivateReclaimThreshold();
+			await Mutex.lock("held-through-sweep");
+
+			for (let i = 0; i < threshold; i++) {
+				await Mutex.lock(`churn-${i}`);
+				Mutex.unlock(`churn-${i}`);
+			}
+
+			expect(mutexGetPrivateLock("held-through-sweep")).toBeDefined();
+			Mutex.unlock("held-through-sweep");
+		});
+
+		test("retains a lock entry whose buffer has been handed to a worker", async () => {
+			const threshold = mutexGetPrivateReclaimThreshold();
+
+			// Negotiating the buffer marks the key as shared with a worker thread. The worker
+			// caches the Int32Array it receives, so replacing it would break mutual exclusion.
+			const { port1, port2 } = new MessageChannel();
+			const signal = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
+			Mutex.handleWorkerMessage({
+				type: MutexMessageTypes.GetBuffer,
+				key: "worker-shared",
+				signal: signal.buffer,
+				port: port2
+			});
+			const shared = mutexGetPrivateLock("worker-shared");
+			port1.close();
+
+			for (let i = 0; i < threshold; i++) {
+				await Mutex.lock(`churn-${i}`);
+				Mutex.unlock(`churn-${i}`);
+			}
+
+			expect(mutexGetPrivateLock("worker-shared")).toBe(shared);
 		});
 	});
 
@@ -325,7 +470,9 @@ describe("Mutex", () => {
 				{ type: "twin:mutex:getBuffer", key: "${key}", signal: signalBuf, port: port2 },
 				[port2]
 			);
-			Atomics.wait(signal, 0, 0);
+			if (Atomics.wait(signal, 0, 0, ${WORKER_WAIT_MS}) === "timed-out") {
+				throw new Error("Timed out waiting for the lock buffer from the main thread");
+			}
 			const response = receiveMessageOnPort(port1);
 			port1.close();
 			const lock = new Int32Array(response.message.buffer);
@@ -440,38 +587,21 @@ describe("Mutex", () => {
 		});
 
 		test("lock throws bufferFetchFailed when the main thread does not handle the buffer-fetch request", async () => {
-			const worker = new Worker(
-				`
-				(async () => {
-					const { parentPort } = require("worker_threads");
-					try {
-						const { Mutex } = await import("@twin.org/core");
-						await Mutex.lock("fetch-timeout", { timeoutMs: 200, throwOnTimeout: true });
-						parentPort.postMessage({ ok: true });
-					} catch (err) {
-						parentPort.postMessage({ error: err.message });
-					}
-				})();
-				`,
-				{ eval: true }
-			);
-
-			// Intentionally NOT wiring handleWorkerMessage - the signal will never be notified.
-			const result = await new Promise<{ ok?: boolean; error?: string }>(resolve => {
-				worker.on("message", (msg: unknown) => {
-					if (Is.object(msg) && !("type" in msg)) {
-						resolve(msg);
-					}
-				});
+			// Drive the worker branch by substituting the cached worker_threads module, rather
+			// than spawning a real worker which would have to import the package by name and
+			// so require the package to have been built first.
+			// parentPort accepts the buffer request and never answers it, which is exactly the
+			// state a worker is in when the main thread does not call handleWorkerMessage.
+			mutexSetPrivateWorkerThreads({
+				isMainThread: false,
+				parentPort: { postMessage: () => {} },
+				MessageChannel,
+				receiveMessageOnPort
 			});
 
-			// Worker should exit cleanly on its own - a leaked open port would keep it alive
-			// and prevent the worker's event loop from draining, causing this await to hang.
-			await new Promise<void>(resolve => {
-				worker.on("exit", resolve);
-			});
-
-			expect(result.error).toContain("bufferFetchFailed");
+			await expect(
+				Mutex.lock("fetch-timeout", { timeoutMs: 200, throwOnTimeout: true })
+			).rejects.toThrow("bufferFetchFailed");
 		});
 	});
 
@@ -624,7 +754,9 @@ describe("Mutex", () => {
 				{ type: "twin:mutex:getBuffer", key: workerData.key, signal: signalBuf, port: port2 },
 				[port2]
 			);
-			Atomics.wait(signal, 0, 0);
+			if (Atomics.wait(signal, 0, 0, ${WORKER_WAIT_MS}) === "timed-out") {
+				throw new Error("Timed out waiting for the lock buffer from the main thread");
+			}
 			const response = receiveMessageOnPort(port1);
 			port1.close();
 			const lock = new Int32Array(response.message.buffer);
@@ -648,11 +780,15 @@ describe("Mutex", () => {
 
 			// Register exit listeners immediately so workers that finish early are not missed.
 			const exited: Promise<void>[] = [];
+			const workers: Worker[] = [];
+			const errors: string[] = [];
 			for (let i = 0; i < workerCount; i++) {
 				const w = new Worker(incrementWorkerScript, {
 					eval: true,
 					workerData: { key: "stress-contention", counter: counterBuf }
 				});
+				workers.push(w);
+				w.on("error", err => errors.push(String(err)));
 				w.on("message", (msg: unknown) => {
 					Mutex.handleWorkerMessage(msg);
 				});
@@ -665,7 +801,7 @@ describe("Mutex", () => {
 				);
 			}
 
-			await Promise.all(exited);
+			await waitForWorkerExits(exited, workers, errors);
 
 			expect(Atomics.load(counter, 0)).toEqual(workerCount);
 		});
@@ -678,11 +814,15 @@ describe("Mutex", () => {
 
 			// Register exit listeners immediately so workers that finish early are not missed.
 			const exited: Promise<void>[] = [];
+			const workers: Worker[] = [];
+			const errors: string[] = [];
 			for (let i = 0; i < workerCount; i++) {
 				const w = new Worker(incrementWorkerScript, {
 					eval: true,
 					workerData: { key: "stress-mixed", counter: counterBuf }
 				});
+				workers.push(w);
+				w.on("error", err => errors.push(String(err)));
 				w.on("message", (msg: unknown) => {
 					Mutex.handleWorkerMessage(msg);
 				});
@@ -702,7 +842,7 @@ describe("Mutex", () => {
 				Mutex.unlock("stress-mixed");
 			}
 
-			await Promise.all(exited);
+			await waitForWorkerExits(exited, workers, errors);
 
 			expect(Atomics.load(counter, 0)).toEqual(workerCount + mainIncrements);
 		});
