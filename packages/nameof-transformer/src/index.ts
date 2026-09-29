@@ -15,7 +15,7 @@ export function factory(): ts.TransformerFactory<ts.Node> {
  * Exports the factory version.
  * @returns The factory.
  */
-export const version = "0.10.1-next.12"; // x-release-please-version
+export const version = "0.11.1-next.0"; // x-release-please-version
 
 /**
  * Exports the factory name.
