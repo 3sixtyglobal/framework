@@ -4,7 +4,7 @@
 	"description": "Command line interface for interacting with the crypto tools",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/iotaledger/twin-framework.git",
+		"url": "git+https://github.com/3sixtyglobal/twin-framework.git",
 		"directory": "apps/crypto-cli"
 	},
 	"author": "martyn.janes@iota.org",
@@ -84,7 +84,7 @@
 		"security"
 	],
 	"bugs": {
-		"url": "git+https://github.com/iotaledger/twin-framework/issues"
+		"url": "git+https://github.com/3sixtyglobal/twin-framework/issues"
 	},
 	"homepage": "https://twindev.org"
 }

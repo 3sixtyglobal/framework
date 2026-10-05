@@ -41,3 +41,7 @@ Alongside those libraries, the workspace includes applications that support oper
 ## Contributing
 
 To contribute to this package see the guidelines for building and publishing in [CONTRIBUTING](./CONTRIBUTING.md)
+
+## Origin
+
+This repository is derived from the original [iotaledger/twin-framework](https://github.com/iotaledger/twin-framework) repository.

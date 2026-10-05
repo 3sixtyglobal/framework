@@ -4,7 +4,7 @@
 	"description": "Merge locale files from all dependencies",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/iotaledger/twin-framework.git",
+		"url": "git+https://github.com/3sixtyglobal/twin-framework.git",
 		"directory": "apps/merge-locales"
 	},
 	"author": "martyn.janes@iota.org",
@@ -76,7 +76,7 @@
 		"test": "tests"
 	},
 	"bugs": {
-		"url": "git+https://github.com/iotaledger/twin-framework/issues"
+		"url": "git+https://github.com/3sixtyglobal/twin-framework/issues"
 	},
 	"homepage": "https://twindev.org",
 	"keywords": [

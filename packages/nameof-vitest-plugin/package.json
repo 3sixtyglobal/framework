@@ -4,7 +4,7 @@
 	"description": "Vitest plugin which perform the nameof transformation",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/iotaledger/twin-framework.git",
+		"url": "git+https://github.com/3sixtyglobal/twin-framework.git",
 		"directory": "packages/nameof-vitest-plugin"
 	},
 	"author": "martyn.janes@iota.org",
@@ -63,7 +63,7 @@
 		"blockchain"
 	],
 	"bugs": {
-		"url": "git+https://github.com/iotaledger/twin-framework/issues"
+		"url": "git+https://github.com/3sixtyglobal/twin-framework/issues"
 	},
 	"homepage": "https://twindev.org"
 }

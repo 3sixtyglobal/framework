@@ -1,30 +1,30 @@
 # Changelog
 
-## [0.11.0](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.11.0...merge-locales-v0.11.0) (2026-09-29)
+## [0.11.0](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.11.0...merge-locales-v0.11.0) (2026-09-29)
 
 
 ### Features
 
-* release to production ([b24cba1](https://github.com/iotaledger/twin-framework/commit/b24cba1b6a969278d638e632590602ec881e49fb))
-* release to production ([787287d](https://github.com/iotaledger/twin-framework/commit/787287d06ea8319657401589d61fff369310c422))
-* release to production ([53f4843](https://github.com/iotaledger/twin-framework/commit/53f484326b2851d7a506d2620db24c4a65cee7b3))
-* release to production ([56cda4d](https://github.com/iotaledger/twin-framework/commit/56cda4da93e978c5be19ec7cfd421ae2a7fe4147))
-* release to production ([f7c6586](https://github.com/iotaledger/twin-framework/commit/f7c6586f6976b903b647b4c5ac5ad9421e0c9051))
-* release to production ([829d53d](https://github.com/iotaledger/twin-framework/commit/829d53d3953b1e1b40b0243c04cfdfd3842aac7b))
-* release to production ([5cf3a76](https://github.com/iotaledger/twin-framework/commit/5cf3a76a09eff2e6414d0cba846c7c37400a11d6))
-* release to production ([#330](https://github.com/iotaledger/twin-framework/issues/330)) ([d73f565](https://github.com/iotaledger/twin-framework/commit/d73f565588d156d23ef49b2a5718973756f7a696))
-* release to production ([#382](https://github.com/iotaledger/twin-framework/issues/382)) ([bbed01a](https://github.com/iotaledger/twin-framework/commit/bbed01a605ee9724bda77a0f7feab249118c2d90))
-* release to production ([#417](https://github.com/iotaledger/twin-framework/issues/417)) ([59727e7](https://github.com/iotaledger/twin-framework/commit/59727e73903a137310ca48fe469189cf29879cb9))
-* release to production ([#459](https://github.com/iotaledger/twin-framework/issues/459)) ([e26e2d9](https://github.com/iotaledger/twin-framework/commit/e26e2d9a88767364c32494c45232033447b26e22))
-* release to production ([#504](https://github.com/iotaledger/twin-framework/issues/504)) ([cfde07f](https://github.com/iotaledger/twin-framework/commit/cfde07f7790c62269e71144b95243ec441df38ba))
-* release to production [skip ci] ([#550](https://github.com/iotaledger/twin-framework/issues/550)) ([83103ff](https://github.com/iotaledger/twin-framework/commit/83103ff4c3303e276aa103082b866cba649618fe))
+* release to production ([b24cba1](https://github.com/3sixtyglobal/twin-framework/commit/b24cba1b6a969278d638e632590602ec881e49fb))
+* release to production ([787287d](https://github.com/3sixtyglobal/twin-framework/commit/787287d06ea8319657401589d61fff369310c422))
+* release to production ([53f4843](https://github.com/3sixtyglobal/twin-framework/commit/53f484326b2851d7a506d2620db24c4a65cee7b3))
+* release to production ([56cda4d](https://github.com/3sixtyglobal/twin-framework/commit/56cda4da93e978c5be19ec7cfd421ae2a7fe4147))
+* release to production ([f7c6586](https://github.com/3sixtyglobal/twin-framework/commit/f7c6586f6976b903b647b4c5ac5ad9421e0c9051))
+* release to production ([829d53d](https://github.com/3sixtyglobal/twin-framework/commit/829d53d3953b1e1b40b0243c04cfdfd3842aac7b))
+* release to production ([5cf3a76](https://github.com/3sixtyglobal/twin-framework/commit/5cf3a76a09eff2e6414d0cba846c7c37400a11d6))
+* release to production ([#330](https://github.com/3sixtyglobal/twin-framework/issues/330)) ([d73f565](https://github.com/3sixtyglobal/twin-framework/commit/d73f565588d156d23ef49b2a5718973756f7a696))
+* release to production ([#382](https://github.com/3sixtyglobal/twin-framework/issues/382)) ([bbed01a](https://github.com/3sixtyglobal/twin-framework/commit/bbed01a605ee9724bda77a0f7feab249118c2d90))
+* release to production ([#417](https://github.com/3sixtyglobal/twin-framework/issues/417)) ([59727e7](https://github.com/3sixtyglobal/twin-framework/commit/59727e73903a137310ca48fe469189cf29879cb9))
+* release to production ([#459](https://github.com/3sixtyglobal/twin-framework/issues/459)) ([e26e2d9](https://github.com/3sixtyglobal/twin-framework/commit/e26e2d9a88767364c32494c45232033447b26e22))
+* release to production ([#504](https://github.com/3sixtyglobal/twin-framework/issues/504)) ([cfde07f](https://github.com/3sixtyglobal/twin-framework/commit/cfde07f7790c62269e71144b95243ec441df38ba))
+* release to production [skip ci] ([#550](https://github.com/3sixtyglobal/twin-framework/issues/550)) ([83103ff](https://github.com/3sixtyglobal/twin-framework/commit/83103ff4c3303e276aa103082b866cba649618fe))
 
 
 ### Miscellaneous Chores
 
-* release to production ([63cae24](https://github.com/iotaledger/twin-framework/commit/63cae2401f6c11f93b2a01260b665064e8bd28e0))
+* release to production ([63cae24](https://github.com/3sixtyglobal/twin-framework/commit/63cae2401f6c11f93b2a01260b665064e8bd28e0))
 
-## [0.10.1-next.12](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.10.1-next.11...merge-locales-v0.10.1-next.12) (2026-09-25)
+## [0.10.1-next.12](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.10.1-next.11...merge-locales-v0.10.1-next.12) (2026-09-25)
 
 
 ### Miscellaneous Chores
@@ -43,7 +43,7 @@
     * @twin.org/nameof-transformer bumped from 0.10.1-next.11 to 0.10.1-next.12
     * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.11 to 0.10.1-next.12
 
-## [0.10.1-next.11](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.10.1-next.10...merge-locales-v0.10.1-next.11) (2026-09-25)
+## [0.10.1-next.11](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.10.1-next.10...merge-locales-v0.10.1-next.11) (2026-09-25)
 
 
 ### Miscellaneous Chores
@@ -62,7 +62,7 @@
     * @twin.org/nameof-transformer bumped from 0.10.1-next.10 to 0.10.1-next.11
     * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.10 to 0.10.1-next.11
 
-## [0.10.1-next.10](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.10.1-next.9...merge-locales-v0.10.1-next.10) (2026-09-22)
+## [0.10.1-next.10](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.10.1-next.9...merge-locales-v0.10.1-next.10) (2026-09-22)
 
 
 ### Miscellaneous Chores
@@ -81,21 +81,21 @@
     * @twin.org/nameof-transformer bumped from 0.10.1-next.9 to 0.10.1-next.10
     * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.9 to 0.10.1-next.10
 
-## [0.10.1-next.9](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.10.1-next.8...merge-locales-v0.10.1-next.9) (2026-09-21)
+## [0.10.1-next.9](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.10.1-next.8...merge-locales-v0.10.1-next.9) (2026-09-21)
 
 
 ### Features
 
-* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
-* improve node_modules location detection ([#486](https://github.com/iotaledger/twin-framework/issues/486)) ([c786853](https://github.com/iotaledger/twin-framework/commit/c7868538e9074f789577c0ab55552f3bcec0ef0e))
-* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
-* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
-* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* dev tools ([#500](https://github.com/3sixtyglobal/twin-framework/issues/500)) ([0879e55](https://github.com/3sixtyglobal/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+* improve node_modules location detection ([#486](https://github.com/3sixtyglobal/twin-framework/issues/486)) ([c786853](https://github.com/3sixtyglobal/twin-framework/commit/c7868538e9074f789577c0ab55552f3bcec0ef0e))
+* linting and dependency update ([676b4e9](https://github.com/3sixtyglobal/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* typescript 6 update ([1d10f31](https://github.com/3sixtyglobal/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/3sixtyglobal/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
 
 
 ### Bug Fixes
 
-* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/3sixtyglobal/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
 
 
 ### Dependencies
@@ -109,21 +109,21 @@
     * @twin.org/nameof-transformer bumped from 0.10.1-next.8 to 0.10.1-next.9
     * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.8 to 0.10.1-next.9
 
-## [0.10.1-next.8](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.10.1-next.7...merge-locales-v0.10.1-next.8) (2026-09-21)
+## [0.10.1-next.8](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.10.1-next.7...merge-locales-v0.10.1-next.8) (2026-09-21)
 
 
 ### Features
 
-* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
-* improve node_modules location detection ([#486](https://github.com/iotaledger/twin-framework/issues/486)) ([c786853](https://github.com/iotaledger/twin-framework/commit/c7868538e9074f789577c0ab55552f3bcec0ef0e))
-* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
-* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
-* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* dev tools ([#500](https://github.com/3sixtyglobal/twin-framework/issues/500)) ([0879e55](https://github.com/3sixtyglobal/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+* improve node_modules location detection ([#486](https://github.com/3sixtyglobal/twin-framework/issues/486)) ([c786853](https://github.com/3sixtyglobal/twin-framework/commit/c7868538e9074f789577c0ab55552f3bcec0ef0e))
+* linting and dependency update ([676b4e9](https://github.com/3sixtyglobal/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* typescript 6 update ([1d10f31](https://github.com/3sixtyglobal/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/3sixtyglobal/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
 
 
 ### Bug Fixes
 
-* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/3sixtyglobal/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
 
 
 ### Dependencies
@@ -137,12 +137,12 @@
     * @twin.org/nameof-transformer bumped from 0.10.1-next.7 to 0.10.1-next.8
     * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.7 to 0.10.1-next.8
 
-## [0.10.1-next.7](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.10.1-next.6...merge-locales-v0.10.1-next.7) (2026-09-21)
+## [0.10.1-next.7](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.10.1-next.6...merge-locales-v0.10.1-next.7) (2026-09-21)
 
 
 ### Features
 
-* dev tools ([#500](https://github.com/iotaledger/twin-framework/issues/500)) ([0879e55](https://github.com/iotaledger/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
+* dev tools ([#500](https://github.com/3sixtyglobal/twin-framework/issues/500)) ([0879e55](https://github.com/3sixtyglobal/twin-framework/commit/0879e558c71dca5e992d14914c6bde560a191df2))
 
 
 ### Dependencies
@@ -156,7 +156,7 @@
     * @twin.org/nameof-transformer bumped from 0.10.1-next.6 to 0.10.1-next.7
     * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.6 to 0.10.1-next.7
 
-## [0.10.1-next.6](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.10.1-next.5...merge-locales-v0.10.1-next.6) (2026-09-21)
+## [0.10.1-next.6](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.10.1-next.5...merge-locales-v0.10.1-next.6) (2026-09-21)
 
 
 ### Miscellaneous Chores
@@ -175,7 +175,7 @@
     * @twin.org/nameof-transformer bumped from 0.10.1-next.5 to 0.10.1-next.6
     * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.5 to 0.10.1-next.6
 
-## [0.10.1-next.5](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.10.1-next.4...merge-locales-v0.10.1-next.5) (2026-09-18)
+## [0.10.1-next.5](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.10.1-next.4...merge-locales-v0.10.1-next.5) (2026-09-18)
 
 
 ### Miscellaneous Chores
@@ -194,7 +194,7 @@
     * @twin.org/nameof-transformer bumped from 0.10.1-next.4 to 0.10.1-next.5
     * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.4 to 0.10.1-next.5
 
-## [0.10.1-next.4](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.10.1-next.3...merge-locales-v0.10.1-next.4) (2026-09-18)
+## [0.10.1-next.4](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.10.1-next.3...merge-locales-v0.10.1-next.4) (2026-09-18)
 
 
 ### Miscellaneous Chores
@@ -213,7 +213,7 @@
     * @twin.org/nameof-transformer bumped from 0.10.1-next.3 to 0.10.1-next.4
     * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.3 to 0.10.1-next.4
 
-## [0.10.1-next.3](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.10.1-next.2...merge-locales-v0.10.1-next.3) (2026-09-18)
+## [0.10.1-next.3](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.10.1-next.2...merge-locales-v0.10.1-next.3) (2026-09-18)
 
 
 ### Miscellaneous Chores
@@ -232,7 +232,7 @@
     * @twin.org/nameof-transformer bumped from 0.10.1-next.2 to 0.10.1-next.3
     * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.2 to 0.10.1-next.3
 
-## [0.10.1-next.2](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.10.1-next.1...merge-locales-v0.10.1-next.2) (2026-09-17)
+## [0.10.1-next.2](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.10.1-next.1...merge-locales-v0.10.1-next.2) (2026-09-17)
 
 
 ### Miscellaneous Chores
@@ -251,20 +251,20 @@
     * @twin.org/nameof-transformer bumped from 0.10.1-next.1 to 0.10.1-next.2
     * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.1 to 0.10.1-next.2
 
-## [0.10.1-next.1](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.10.1-next.0...merge-locales-v0.10.1-next.1) (2026-09-17)
+## [0.10.1-next.1](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.10.1-next.0...merge-locales-v0.10.1-next.1) (2026-09-17)
 
 
 ### Features
 
-* improve node_modules location detection ([#486](https://github.com/iotaledger/twin-framework/issues/486)) ([c786853](https://github.com/iotaledger/twin-framework/commit/c7868538e9074f789577c0ab55552f3bcec0ef0e))
-* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
-* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
-* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* improve node_modules location detection ([#486](https://github.com/3sixtyglobal/twin-framework/issues/486)) ([c786853](https://github.com/3sixtyglobal/twin-framework/commit/c7868538e9074f789577c0ab55552f3bcec0ef0e))
+* linting and dependency update ([676b4e9](https://github.com/3sixtyglobal/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* typescript 6 update ([1d10f31](https://github.com/3sixtyglobal/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/3sixtyglobal/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
 
 
 ### Bug Fixes
 
-* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/3sixtyglobal/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
 
 
 ### Dependencies
@@ -278,30 +278,30 @@
     * @twin.org/nameof-transformer bumped from 0.10.1-next.0 to 0.10.1-next.1
     * @twin.org/nameof-vitest-plugin bumped from 0.10.1-next.0 to 0.10.1-next.1
 
-## [0.10.0](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.10.0...merge-locales-v0.10.0) (2026-09-16)
+## [0.10.0](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.10.0...merge-locales-v0.10.0) (2026-09-16)
 
 
 ### Features
 
-* release to production ([b24cba1](https://github.com/iotaledger/twin-framework/commit/b24cba1b6a969278d638e632590602ec881e49fb))
-* release to production ([787287d](https://github.com/iotaledger/twin-framework/commit/787287d06ea8319657401589d61fff369310c422))
-* release to production ([53f4843](https://github.com/iotaledger/twin-framework/commit/53f484326b2851d7a506d2620db24c4a65cee7b3))
-* release to production ([56cda4d](https://github.com/iotaledger/twin-framework/commit/56cda4da93e978c5be19ec7cfd421ae2a7fe4147))
-* release to production ([f7c6586](https://github.com/iotaledger/twin-framework/commit/f7c6586f6976b903b647b4c5ac5ad9421e0c9051))
-* release to production ([829d53d](https://github.com/iotaledger/twin-framework/commit/829d53d3953b1e1b40b0243c04cfdfd3842aac7b))
-* release to production ([5cf3a76](https://github.com/iotaledger/twin-framework/commit/5cf3a76a09eff2e6414d0cba846c7c37400a11d6))
-* release to production ([#330](https://github.com/iotaledger/twin-framework/issues/330)) ([d73f565](https://github.com/iotaledger/twin-framework/commit/d73f565588d156d23ef49b2a5718973756f7a696))
-* release to production ([#382](https://github.com/iotaledger/twin-framework/issues/382)) ([bbed01a](https://github.com/iotaledger/twin-framework/commit/bbed01a605ee9724bda77a0f7feab249118c2d90))
-* release to production ([#417](https://github.com/iotaledger/twin-framework/issues/417)) ([59727e7](https://github.com/iotaledger/twin-framework/commit/59727e73903a137310ca48fe469189cf29879cb9))
-* release to production ([#459](https://github.com/iotaledger/twin-framework/issues/459)) ([e26e2d9](https://github.com/iotaledger/twin-framework/commit/e26e2d9a88767364c32494c45232033447b26e22))
-* release to production ([#504](https://github.com/iotaledger/twin-framework/issues/504)) ([cfde07f](https://github.com/iotaledger/twin-framework/commit/cfde07f7790c62269e71144b95243ec441df38ba))
+* release to production ([b24cba1](https://github.com/3sixtyglobal/twin-framework/commit/b24cba1b6a969278d638e632590602ec881e49fb))
+* release to production ([787287d](https://github.com/3sixtyglobal/twin-framework/commit/787287d06ea8319657401589d61fff369310c422))
+* release to production ([53f4843](https://github.com/3sixtyglobal/twin-framework/commit/53f484326b2851d7a506d2620db24c4a65cee7b3))
+* release to production ([56cda4d](https://github.com/3sixtyglobal/twin-framework/commit/56cda4da93e978c5be19ec7cfd421ae2a7fe4147))
+* release to production ([f7c6586](https://github.com/3sixtyglobal/twin-framework/commit/f7c6586f6976b903b647b4c5ac5ad9421e0c9051))
+* release to production ([829d53d](https://github.com/3sixtyglobal/twin-framework/commit/829d53d3953b1e1b40b0243c04cfdfd3842aac7b))
+* release to production ([5cf3a76](https://github.com/3sixtyglobal/twin-framework/commit/5cf3a76a09eff2e6414d0cba846c7c37400a11d6))
+* release to production ([#330](https://github.com/3sixtyglobal/twin-framework/issues/330)) ([d73f565](https://github.com/3sixtyglobal/twin-framework/commit/d73f565588d156d23ef49b2a5718973756f7a696))
+* release to production ([#382](https://github.com/3sixtyglobal/twin-framework/issues/382)) ([bbed01a](https://github.com/3sixtyglobal/twin-framework/commit/bbed01a605ee9724bda77a0f7feab249118c2d90))
+* release to production ([#417](https://github.com/3sixtyglobal/twin-framework/issues/417)) ([59727e7](https://github.com/3sixtyglobal/twin-framework/commit/59727e73903a137310ca48fe469189cf29879cb9))
+* release to production ([#459](https://github.com/3sixtyglobal/twin-framework/issues/459)) ([e26e2d9](https://github.com/3sixtyglobal/twin-framework/commit/e26e2d9a88767364c32494c45232033447b26e22))
+* release to production ([#504](https://github.com/3sixtyglobal/twin-framework/issues/504)) ([cfde07f](https://github.com/3sixtyglobal/twin-framework/commit/cfde07f7790c62269e71144b95243ec441df38ba))
 
 
 ### Miscellaneous Chores
 
-* release to production ([63cae24](https://github.com/iotaledger/twin-framework/commit/63cae2401f6c11f93b2a01260b665064e8bd28e0))
+* release to production ([63cae24](https://github.com/3sixtyglobal/twin-framework/commit/63cae2401f6c11f93b2a01260b665064e8bd28e0))
 
-## [0.9.3-next.12](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.3-next.11...merge-locales-v0.9.3-next.12) (2026-09-14)
+## [0.9.3-next.12](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.3-next.11...merge-locales-v0.9.3-next.12) (2026-09-14)
 
 
 ### Miscellaneous Chores
@@ -320,7 +320,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.3-next.11 to 0.9.3-next.12
     * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.11 to 0.9.3-next.12
 
-## [0.9.3-next.11](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.3-next.10...merge-locales-v0.9.3-next.11) (2026-09-10)
+## [0.9.3-next.11](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.3-next.10...merge-locales-v0.9.3-next.11) (2026-09-10)
 
 
 ### Miscellaneous Chores
@@ -339,7 +339,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.3-next.10 to 0.9.3-next.11
     * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.10 to 0.9.3-next.11
 
-## [0.9.3-next.10](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.3-next.9...merge-locales-v0.9.3-next.10) (2026-09-10)
+## [0.9.3-next.10](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.3-next.9...merge-locales-v0.9.3-next.10) (2026-09-10)
 
 
 ### Miscellaneous Chores
@@ -358,7 +358,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.3-next.9 to 0.9.3-next.10
     * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.9 to 0.9.3-next.10
 
-## [0.9.3-next.9](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.3-next.8...merge-locales-v0.9.3-next.9) (2026-09-10)
+## [0.9.3-next.9](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.3-next.8...merge-locales-v0.9.3-next.9) (2026-09-10)
 
 
 ### Miscellaneous Chores
@@ -377,12 +377,12 @@
     * @twin.org/nameof-transformer bumped from 0.9.3-next.8 to 0.9.3-next.9
     * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.8 to 0.9.3-next.9
 
-## [0.9.3-next.8](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.3-next.7...merge-locales-v0.9.3-next.8) (2026-09-07)
+## [0.9.3-next.8](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.3-next.7...merge-locales-v0.9.3-next.8) (2026-09-07)
 
 
 ### Features
 
-* improve node_modules location detection ([#486](https://github.com/iotaledger/twin-framework/issues/486)) ([c786853](https://github.com/iotaledger/twin-framework/commit/c7868538e9074f789577c0ab55552f3bcec0ef0e))
+* improve node_modules location detection ([#486](https://github.com/3sixtyglobal/twin-framework/issues/486)) ([c786853](https://github.com/3sixtyglobal/twin-framework/commit/c7868538e9074f789577c0ab55552f3bcec0ef0e))
 
 
 ### Dependencies
@@ -396,7 +396,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.3-next.7 to 0.9.3-next.8
     * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.7 to 0.9.3-next.8
 
-## [0.9.3-next.7](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.3-next.6...merge-locales-v0.9.3-next.7) (2026-09-07)
+## [0.9.3-next.7](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.3-next.6...merge-locales-v0.9.3-next.7) (2026-09-07)
 
 
 ### Miscellaneous Chores
@@ -415,7 +415,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.3-next.6 to 0.9.3-next.7
     * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.6 to 0.9.3-next.7
 
-## [0.9.3-next.6](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.3-next.5...merge-locales-v0.9.3-next.6) (2026-09-07)
+## [0.9.3-next.6](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.3-next.5...merge-locales-v0.9.3-next.6) (2026-09-07)
 
 
 ### Miscellaneous Chores
@@ -434,7 +434,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.3-next.5 to 0.9.3-next.6
     * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.5 to 0.9.3-next.6
 
-## [0.9.3-next.5](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.3-next.4...merge-locales-v0.9.3-next.5) (2026-09-04)
+## [0.9.3-next.5](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.3-next.4...merge-locales-v0.9.3-next.5) (2026-09-04)
 
 
 ### Miscellaneous Chores
@@ -453,7 +453,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.3-next.4 to 0.9.3-next.5
     * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.4 to 0.9.3-next.5
 
-## [0.9.3-next.4](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.3-next.3...merge-locales-v0.9.3-next.4) (2026-09-04)
+## [0.9.3-next.4](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.3-next.3...merge-locales-v0.9.3-next.4) (2026-09-04)
 
 
 ### Miscellaneous Chores
@@ -472,7 +472,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.3-next.3 to 0.9.3-next.4
     * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.3 to 0.9.3-next.4
 
-## [0.9.3-next.3](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.3-next.2...merge-locales-v0.9.3-next.3) (2026-09-02)
+## [0.9.3-next.3](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.3-next.2...merge-locales-v0.9.3-next.3) (2026-09-02)
 
 
 ### Miscellaneous Chores
@@ -491,7 +491,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.3-next.2 to 0.9.3-next.3
     * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.2 to 0.9.3-next.3
 
-## [0.9.3-next.2](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.3-next.1...merge-locales-v0.9.3-next.2) (2026-08-28)
+## [0.9.3-next.2](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.3-next.1...merge-locales-v0.9.3-next.2) (2026-08-28)
 
 
 ### Miscellaneous Chores
@@ -510,21 +510,21 @@
     * @twin.org/nameof-transformer bumped from 0.9.3-next.1 to 0.9.3-next.2
     * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.1 to 0.9.3-next.2
 
-## [0.9.3-next.1](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.3-next.0...merge-locales-v0.9.3-next.1) (2026-08-26)
+## [0.9.3-next.1](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.3-next.0...merge-locales-v0.9.3-next.1) (2026-08-26)
 
 
 ### Features
 
-* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
-* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
-* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
-* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
-* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* add context id features ([#206](https://github.com/3sixtyglobal/twin-framework/issues/206)) ([ef0d4ee](https://github.com/3sixtyglobal/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* linting and dependency update ([676b4e9](https://github.com/3sixtyglobal/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* locales validation ([#197](https://github.com/3sixtyglobal/twin-framework/issues/197)) ([55fdadb](https://github.com/3sixtyglobal/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* typescript 6 update ([1d10f31](https://github.com/3sixtyglobal/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/3sixtyglobal/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
 
 
 ### Bug Fixes
 
-* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/3sixtyglobal/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
 
 
 ### Dependencies
@@ -538,29 +538,29 @@
     * @twin.org/nameof-transformer bumped from 0.9.3-next.0 to 0.9.3-next.1
     * @twin.org/nameof-vitest-plugin bumped from 0.9.3-next.0 to 0.9.3-next.1
 
-## [0.9.2](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.2...merge-locales-v0.9.2) (2026-08-24)
+## [0.9.2](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.2...merge-locales-v0.9.2) (2026-08-24)
 
 
 ### Features
 
-* release to production ([b24cba1](https://github.com/iotaledger/twin-framework/commit/b24cba1b6a969278d638e632590602ec881e49fb))
-* release to production ([787287d](https://github.com/iotaledger/twin-framework/commit/787287d06ea8319657401589d61fff369310c422))
-* release to production ([53f4843](https://github.com/iotaledger/twin-framework/commit/53f484326b2851d7a506d2620db24c4a65cee7b3))
-* release to production ([56cda4d](https://github.com/iotaledger/twin-framework/commit/56cda4da93e978c5be19ec7cfd421ae2a7fe4147))
-* release to production ([f7c6586](https://github.com/iotaledger/twin-framework/commit/f7c6586f6976b903b647b4c5ac5ad9421e0c9051))
-* release to production ([829d53d](https://github.com/iotaledger/twin-framework/commit/829d53d3953b1e1b40b0243c04cfdfd3842aac7b))
-* release to production ([5cf3a76](https://github.com/iotaledger/twin-framework/commit/5cf3a76a09eff2e6414d0cba846c7c37400a11d6))
-* release to production ([#330](https://github.com/iotaledger/twin-framework/issues/330)) ([d73f565](https://github.com/iotaledger/twin-framework/commit/d73f565588d156d23ef49b2a5718973756f7a696))
-* release to production ([#382](https://github.com/iotaledger/twin-framework/issues/382)) ([bbed01a](https://github.com/iotaledger/twin-framework/commit/bbed01a605ee9724bda77a0f7feab249118c2d90))
-* release to production ([#417](https://github.com/iotaledger/twin-framework/issues/417)) ([59727e7](https://github.com/iotaledger/twin-framework/commit/59727e73903a137310ca48fe469189cf29879cb9))
-* release to production ([#459](https://github.com/iotaledger/twin-framework/issues/459)) ([e26e2d9](https://github.com/iotaledger/twin-framework/commit/e26e2d9a88767364c32494c45232033447b26e22))
+* release to production ([b24cba1](https://github.com/3sixtyglobal/twin-framework/commit/b24cba1b6a969278d638e632590602ec881e49fb))
+* release to production ([787287d](https://github.com/3sixtyglobal/twin-framework/commit/787287d06ea8319657401589d61fff369310c422))
+* release to production ([53f4843](https://github.com/3sixtyglobal/twin-framework/commit/53f484326b2851d7a506d2620db24c4a65cee7b3))
+* release to production ([56cda4d](https://github.com/3sixtyglobal/twin-framework/commit/56cda4da93e978c5be19ec7cfd421ae2a7fe4147))
+* release to production ([f7c6586](https://github.com/3sixtyglobal/twin-framework/commit/f7c6586f6976b903b647b4c5ac5ad9421e0c9051))
+* release to production ([829d53d](https://github.com/3sixtyglobal/twin-framework/commit/829d53d3953b1e1b40b0243c04cfdfd3842aac7b))
+* release to production ([5cf3a76](https://github.com/3sixtyglobal/twin-framework/commit/5cf3a76a09eff2e6414d0cba846c7c37400a11d6))
+* release to production ([#330](https://github.com/3sixtyglobal/twin-framework/issues/330)) ([d73f565](https://github.com/3sixtyglobal/twin-framework/commit/d73f565588d156d23ef49b2a5718973756f7a696))
+* release to production ([#382](https://github.com/3sixtyglobal/twin-framework/issues/382)) ([bbed01a](https://github.com/3sixtyglobal/twin-framework/commit/bbed01a605ee9724bda77a0f7feab249118c2d90))
+* release to production ([#417](https://github.com/3sixtyglobal/twin-framework/issues/417)) ([59727e7](https://github.com/3sixtyglobal/twin-framework/commit/59727e73903a137310ca48fe469189cf29879cb9))
+* release to production ([#459](https://github.com/3sixtyglobal/twin-framework/issues/459)) ([e26e2d9](https://github.com/3sixtyglobal/twin-framework/commit/e26e2d9a88767364c32494c45232033447b26e22))
 
 
 ### Miscellaneous Chores
 
-* release to production ([63cae24](https://github.com/iotaledger/twin-framework/commit/63cae2401f6c11f93b2a01260b665064e8bd28e0))
+* release to production ([63cae24](https://github.com/3sixtyglobal/twin-framework/commit/63cae2401f6c11f93b2a01260b665064e8bd28e0))
 
-## [0.9.2-next.11](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.2-next.10...merge-locales-v0.9.2-next.11) (2026-08-20)
+## [0.9.2-next.11](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.2-next.10...merge-locales-v0.9.2-next.11) (2026-08-20)
 
 
 ### Miscellaneous Chores
@@ -579,7 +579,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.2-next.10 to 0.9.2-next.11
     * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.10 to 0.9.2-next.11
 
-## [0.9.2-next.10](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.2-next.9...merge-locales-v0.9.2-next.10) (2026-08-11)
+## [0.9.2-next.10](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.2-next.9...merge-locales-v0.9.2-next.10) (2026-08-11)
 
 
 ### Miscellaneous Chores
@@ -598,7 +598,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.2-next.9 to 0.9.2-next.10
     * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.9 to 0.9.2-next.10
 
-## [0.9.2-next.9](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.2-next.8...merge-locales-v0.9.2-next.9) (2026-08-10)
+## [0.9.2-next.9](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.2-next.8...merge-locales-v0.9.2-next.9) (2026-08-10)
 
 
 ### Miscellaneous Chores
@@ -617,7 +617,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.2-next.8 to 0.9.2-next.9
     * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.8 to 0.9.2-next.9
 
-## [0.9.2-next.8](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.2-next.7...merge-locales-v0.9.2-next.8) (2026-08-10)
+## [0.9.2-next.8](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.2-next.7...merge-locales-v0.9.2-next.8) (2026-08-10)
 
 
 ### Miscellaneous Chores
@@ -636,12 +636,12 @@
     * @twin.org/nameof-transformer bumped from 0.9.2-next.7 to 0.9.2-next.8
     * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.7 to 0.9.2-next.8
 
-## [0.9.2-next.7](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.2-next.6...merge-locales-v0.9.2-next.7) (2026-08-07)
+## [0.9.2-next.7](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.2-next.6...merge-locales-v0.9.2-next.7) (2026-08-07)
 
 
 ### Features
 
-* linting and dependency update ([676b4e9](https://github.com/iotaledger/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
+* linting and dependency update ([676b4e9](https://github.com/3sixtyglobal/twin-framework/commit/676b4e9d9bce158065200bbf875bb31da81d166d))
 
 
 ### Dependencies
@@ -655,7 +655,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.2-next.6 to 0.9.2-next.7
     * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.6 to 0.9.2-next.7
 
-## [0.9.2-next.6](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.2-next.5...merge-locales-v0.9.2-next.6) (2026-08-04)
+## [0.9.2-next.6](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.2-next.5...merge-locales-v0.9.2-next.6) (2026-08-04)
 
 
 ### Miscellaneous Chores
@@ -674,7 +674,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.2-next.5 to 0.9.2-next.6
     * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.5 to 0.9.2-next.6
 
-## [0.9.2-next.5](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.2-next.4...merge-locales-v0.9.2-next.5) (2026-08-03)
+## [0.9.2-next.5](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.2-next.4...merge-locales-v0.9.2-next.5) (2026-08-03)
 
 
 ### Miscellaneous Chores
@@ -693,7 +693,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.2-next.4 to 0.9.2-next.5
     * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.4 to 0.9.2-next.5
 
-## [0.9.2-next.4](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.2-next.3...merge-locales-v0.9.2-next.4) (2026-07-31)
+## [0.9.2-next.4](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.2-next.3...merge-locales-v0.9.2-next.4) (2026-07-31)
 
 
 ### Miscellaneous Chores
@@ -712,7 +712,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.2-next.3 to 0.9.2-next.4
     * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.3 to 0.9.2-next.4
 
-## [0.9.2-next.3](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.2-next.2...merge-locales-v0.9.2-next.3) (2026-07-30)
+## [0.9.2-next.3](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.2-next.2...merge-locales-v0.9.2-next.3) (2026-07-30)
 
 
 ### Miscellaneous Chores
@@ -731,7 +731,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.2-next.2 to 0.9.2-next.3
     * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.2 to 0.9.2-next.3
 
-## [0.9.2-next.2](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.2-next.1...merge-locales-v0.9.2-next.2) (2026-07-29)
+## [0.9.2-next.2](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.2-next.1...merge-locales-v0.9.2-next.2) (2026-07-29)
 
 
 ### Miscellaneous Chores
@@ -750,23 +750,23 @@
     * @twin.org/nameof-transformer bumped from 0.9.2-next.1 to 0.9.2-next.2
     * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.1 to 0.9.2-next.2
 
-## [0.9.2-next.1](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.2-next.0...merge-locales-v0.9.2-next.1) (2026-07-28)
+## [0.9.2-next.1](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.2-next.0...merge-locales-v0.9.2-next.1) (2026-07-28)
 
 
 ### Features
 
-* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
-* eslint migration to flat config ([74427d7](https://github.com/iotaledger/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
-* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
-* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
-* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
-* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
-* use cause instead of inner for errors ([1f4acc4](https://github.com/iotaledger/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+* add context id features ([#206](https://github.com/3sixtyglobal/twin-framework/issues/206)) ([ef0d4ee](https://github.com/3sixtyglobal/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* eslint migration to flat config ([74427d7](https://github.com/3sixtyglobal/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* locales validation ([#197](https://github.com/3sixtyglobal/twin-framework/issues/197)) ([55fdadb](https://github.com/3sixtyglobal/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* typescript 6 update ([1d10f31](https://github.com/3sixtyglobal/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/3sixtyglobal/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* update dependencies ([f3bd015](https://github.com/3sixtyglobal/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/3sixtyglobal/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
 
 
 ### Bug Fixes
 
-* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/3sixtyglobal/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
 
 
 ### Dependencies
@@ -780,28 +780,28 @@
     * @twin.org/nameof-transformer bumped from 0.9.2-next.0 to 0.9.2-next.1
     * @twin.org/nameof-vitest-plugin bumped from 0.9.2-next.0 to 0.9.2-next.1
 
-## [0.9.1](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.1...merge-locales-v0.9.1) (2026-07-26)
+## [0.9.1](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.1...merge-locales-v0.9.1) (2026-07-26)
 
 
 ### Features
 
-* release to production ([b24cba1](https://github.com/iotaledger/twin-framework/commit/b24cba1b6a969278d638e632590602ec881e49fb))
-* release to production ([787287d](https://github.com/iotaledger/twin-framework/commit/787287d06ea8319657401589d61fff369310c422))
-* release to production ([53f4843](https://github.com/iotaledger/twin-framework/commit/53f484326b2851d7a506d2620db24c4a65cee7b3))
-* release to production ([56cda4d](https://github.com/iotaledger/twin-framework/commit/56cda4da93e978c5be19ec7cfd421ae2a7fe4147))
-* release to production ([f7c6586](https://github.com/iotaledger/twin-framework/commit/f7c6586f6976b903b647b4c5ac5ad9421e0c9051))
-* release to production ([829d53d](https://github.com/iotaledger/twin-framework/commit/829d53d3953b1e1b40b0243c04cfdfd3842aac7b))
-* release to production ([5cf3a76](https://github.com/iotaledger/twin-framework/commit/5cf3a76a09eff2e6414d0cba846c7c37400a11d6))
-* release to production ([#330](https://github.com/iotaledger/twin-framework/issues/330)) ([d73f565](https://github.com/iotaledger/twin-framework/commit/d73f565588d156d23ef49b2a5718973756f7a696))
-* release to production ([#382](https://github.com/iotaledger/twin-framework/issues/382)) ([bbed01a](https://github.com/iotaledger/twin-framework/commit/bbed01a605ee9724bda77a0f7feab249118c2d90))
-* release to production ([#417](https://github.com/iotaledger/twin-framework/issues/417)) ([59727e7](https://github.com/iotaledger/twin-framework/commit/59727e73903a137310ca48fe469189cf29879cb9))
+* release to production ([b24cba1](https://github.com/3sixtyglobal/twin-framework/commit/b24cba1b6a969278d638e632590602ec881e49fb))
+* release to production ([787287d](https://github.com/3sixtyglobal/twin-framework/commit/787287d06ea8319657401589d61fff369310c422))
+* release to production ([53f4843](https://github.com/3sixtyglobal/twin-framework/commit/53f484326b2851d7a506d2620db24c4a65cee7b3))
+* release to production ([56cda4d](https://github.com/3sixtyglobal/twin-framework/commit/56cda4da93e978c5be19ec7cfd421ae2a7fe4147))
+* release to production ([f7c6586](https://github.com/3sixtyglobal/twin-framework/commit/f7c6586f6976b903b647b4c5ac5ad9421e0c9051))
+* release to production ([829d53d](https://github.com/3sixtyglobal/twin-framework/commit/829d53d3953b1e1b40b0243c04cfdfd3842aac7b))
+* release to production ([5cf3a76](https://github.com/3sixtyglobal/twin-framework/commit/5cf3a76a09eff2e6414d0cba846c7c37400a11d6))
+* release to production ([#330](https://github.com/3sixtyglobal/twin-framework/issues/330)) ([d73f565](https://github.com/3sixtyglobal/twin-framework/commit/d73f565588d156d23ef49b2a5718973756f7a696))
+* release to production ([#382](https://github.com/3sixtyglobal/twin-framework/issues/382)) ([bbed01a](https://github.com/3sixtyglobal/twin-framework/commit/bbed01a605ee9724bda77a0f7feab249118c2d90))
+* release to production ([#417](https://github.com/3sixtyglobal/twin-framework/issues/417)) ([59727e7](https://github.com/3sixtyglobal/twin-framework/commit/59727e73903a137310ca48fe469189cf29879cb9))
 
 
 ### Miscellaneous Chores
 
-* release to production ([63cae24](https://github.com/iotaledger/twin-framework/commit/63cae2401f6c11f93b2a01260b665064e8bd28e0))
+* release to production ([63cae24](https://github.com/3sixtyglobal/twin-framework/commit/63cae2401f6c11f93b2a01260b665064e8bd28e0))
 
-## [0.9.1-next.10](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.1-next.9...merge-locales-v0.9.1-next.10) (2026-07-20)
+## [0.9.1-next.10](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.1-next.9...merge-locales-v0.9.1-next.10) (2026-07-20)
 
 
 ### Miscellaneous Chores
@@ -820,7 +820,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.1-next.9 to 0.9.1-next.10
     * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.9 to 0.9.1-next.10
 
-## [0.9.1-next.9](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.1-next.8...merge-locales-v0.9.1-next.9) (2026-07-20)
+## [0.9.1-next.9](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.1-next.8...merge-locales-v0.9.1-next.9) (2026-07-20)
 
 
 ### Miscellaneous Chores
@@ -839,7 +839,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.1-next.8 to 0.9.1-next.9
     * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.8 to 0.9.1-next.9
 
-## [0.9.1-next.8](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.1-next.7...merge-locales-v0.9.1-next.8) (2026-07-20)
+## [0.9.1-next.8](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.1-next.7...merge-locales-v0.9.1-next.8) (2026-07-20)
 
 
 ### Miscellaneous Chores
@@ -858,7 +858,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.1-next.7 to 0.9.1-next.8
     * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.7 to 0.9.1-next.8
 
-## [0.9.1-next.7](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.1-next.6...merge-locales-v0.9.1-next.7) (2026-07-09)
+## [0.9.1-next.7](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.1-next.6...merge-locales-v0.9.1-next.7) (2026-07-09)
 
 
 ### Miscellaneous Chores
@@ -877,7 +877,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.1-next.6 to 0.9.1-next.7
     * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.6 to 0.9.1-next.7
 
-## [0.9.1-next.6](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.1-next.5...merge-locales-v0.9.1-next.6) (2026-07-03)
+## [0.9.1-next.6](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.1-next.5...merge-locales-v0.9.1-next.6) (2026-07-03)
 
 
 ### Miscellaneous Chores
@@ -896,7 +896,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.1-next.5 to 0.9.1-next.6
     * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.5 to 0.9.1-next.6
 
-## [0.9.1-next.5](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.1-next.4...merge-locales-v0.9.1-next.5) (2026-06-29)
+## [0.9.1-next.5](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.1-next.4...merge-locales-v0.9.1-next.5) (2026-06-29)
 
 
 ### Miscellaneous Chores
@@ -915,7 +915,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.1-next.4 to 0.9.1-next.5
     * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.4 to 0.9.1-next.5
 
-## [0.9.1-next.4](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.1-next.3...merge-locales-v0.9.1-next.4) (2026-06-26)
+## [0.9.1-next.4](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.1-next.3...merge-locales-v0.9.1-next.4) (2026-06-26)
 
 
 ### Miscellaneous Chores
@@ -934,23 +934,23 @@
     * @twin.org/nameof-transformer bumped from 0.9.1-next.3 to 0.9.1-next.4
     * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.3 to 0.9.1-next.4
 
-## [0.9.1-next.3](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.1-next.2...merge-locales-v0.9.1-next.3) (2026-06-26)
+## [0.9.1-next.3](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.1-next.2...merge-locales-v0.9.1-next.3) (2026-06-26)
 
 
 ### Features
 
-* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
-* eslint migration to flat config ([74427d7](https://github.com/iotaledger/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
-* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
-* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
-* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
-* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
-* use cause instead of inner for errors ([1f4acc4](https://github.com/iotaledger/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+* add context id features ([#206](https://github.com/3sixtyglobal/twin-framework/issues/206)) ([ef0d4ee](https://github.com/3sixtyglobal/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* eslint migration to flat config ([74427d7](https://github.com/3sixtyglobal/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* locales validation ([#197](https://github.com/3sixtyglobal/twin-framework/issues/197)) ([55fdadb](https://github.com/3sixtyglobal/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* typescript 6 update ([1d10f31](https://github.com/3sixtyglobal/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/3sixtyglobal/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* update dependencies ([f3bd015](https://github.com/3sixtyglobal/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/3sixtyglobal/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
 
 
 ### Bug Fixes
 
-* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/3sixtyglobal/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
 
 
 ### Dependencies
@@ -964,7 +964,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.1-next.2 to 0.9.1-next.3
     * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.2 to 0.9.1-next.3
 
-## [0.9.1-next.2](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.1-next.1...merge-locales-v0.9.1-next.2) (2026-06-26)
+## [0.9.1-next.2](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.1-next.1...merge-locales-v0.9.1-next.2) (2026-06-26)
 
 
 ### Miscellaneous Chores
@@ -983,23 +983,23 @@
     * @twin.org/nameof-transformer bumped from 0.9.1-next.1 to 0.9.1-next.2
     * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.1 to 0.9.1-next.2
 
-## [0.9.1-next.1](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.1-next.0...merge-locales-v0.9.1-next.1) (2026-06-25)
+## [0.9.1-next.1](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.1-next.0...merge-locales-v0.9.1-next.1) (2026-06-25)
 
 
 ### Features
 
-* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
-* eslint migration to flat config ([74427d7](https://github.com/iotaledger/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
-* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
-* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
-* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
-* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
-* use cause instead of inner for errors ([1f4acc4](https://github.com/iotaledger/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+* add context id features ([#206](https://github.com/3sixtyglobal/twin-framework/issues/206)) ([ef0d4ee](https://github.com/3sixtyglobal/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* eslint migration to flat config ([74427d7](https://github.com/3sixtyglobal/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* locales validation ([#197](https://github.com/3sixtyglobal/twin-framework/issues/197)) ([55fdadb](https://github.com/3sixtyglobal/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* typescript 6 update ([1d10f31](https://github.com/3sixtyglobal/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/3sixtyglobal/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* update dependencies ([f3bd015](https://github.com/3sixtyglobal/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/3sixtyglobal/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
 
 
 ### Bug Fixes
 
-* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/3sixtyglobal/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
 
 
 ### Dependencies
@@ -1013,45 +1013,45 @@
     * @twin.org/nameof-transformer bumped from 0.9.1-next.0 to 0.9.1-next.1
     * @twin.org/nameof-vitest-plugin bumped from 0.9.1-next.0 to 0.9.1-next.1
 
-## [0.9.0](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.0...merge-locales-v0.9.0) (2026-06-22)
+## [0.9.0](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.0...merge-locales-v0.9.0) (2026-06-22)
 
 
 ### Features
 
-* release to production ([b24cba1](https://github.com/iotaledger/twin-framework/commit/b24cba1b6a969278d638e632590602ec881e49fb))
-* release to production ([787287d](https://github.com/iotaledger/twin-framework/commit/787287d06ea8319657401589d61fff369310c422))
-* release to production ([53f4843](https://github.com/iotaledger/twin-framework/commit/53f484326b2851d7a506d2620db24c4a65cee7b3))
-* release to production ([56cda4d](https://github.com/iotaledger/twin-framework/commit/56cda4da93e978c5be19ec7cfd421ae2a7fe4147))
-* release to production ([f7c6586](https://github.com/iotaledger/twin-framework/commit/f7c6586f6976b903b647b4c5ac5ad9421e0c9051))
-* release to production ([829d53d](https://github.com/iotaledger/twin-framework/commit/829d53d3953b1e1b40b0243c04cfdfd3842aac7b))
-* release to production ([5cf3a76](https://github.com/iotaledger/twin-framework/commit/5cf3a76a09eff2e6414d0cba846c7c37400a11d6))
-* release to production ([#330](https://github.com/iotaledger/twin-framework/issues/330)) ([d73f565](https://github.com/iotaledger/twin-framework/commit/d73f565588d156d23ef49b2a5718973756f7a696))
-* release to production ([#382](https://github.com/iotaledger/twin-framework/issues/382)) ([bbed01a](https://github.com/iotaledger/twin-framework/commit/bbed01a605ee9724bda77a0f7feab249118c2d90))
+* release to production ([b24cba1](https://github.com/3sixtyglobal/twin-framework/commit/b24cba1b6a969278d638e632590602ec881e49fb))
+* release to production ([787287d](https://github.com/3sixtyglobal/twin-framework/commit/787287d06ea8319657401589d61fff369310c422))
+* release to production ([53f4843](https://github.com/3sixtyglobal/twin-framework/commit/53f484326b2851d7a506d2620db24c4a65cee7b3))
+* release to production ([56cda4d](https://github.com/3sixtyglobal/twin-framework/commit/56cda4da93e978c5be19ec7cfd421ae2a7fe4147))
+* release to production ([f7c6586](https://github.com/3sixtyglobal/twin-framework/commit/f7c6586f6976b903b647b4c5ac5ad9421e0c9051))
+* release to production ([829d53d](https://github.com/3sixtyglobal/twin-framework/commit/829d53d3953b1e1b40b0243c04cfdfd3842aac7b))
+* release to production ([5cf3a76](https://github.com/3sixtyglobal/twin-framework/commit/5cf3a76a09eff2e6414d0cba846c7c37400a11d6))
+* release to production ([#330](https://github.com/3sixtyglobal/twin-framework/issues/330)) ([d73f565](https://github.com/3sixtyglobal/twin-framework/commit/d73f565588d156d23ef49b2a5718973756f7a696))
+* release to production ([#382](https://github.com/3sixtyglobal/twin-framework/issues/382)) ([bbed01a](https://github.com/3sixtyglobal/twin-framework/commit/bbed01a605ee9724bda77a0f7feab249118c2d90))
 
 
 ### Miscellaneous Chores
 
-* release to production ([63cae24](https://github.com/iotaledger/twin-framework/commit/63cae2401f6c11f93b2a01260b665064e8bd28e0))
+* release to production ([63cae24](https://github.com/3sixtyglobal/twin-framework/commit/63cae2401f6c11f93b2a01260b665064e8bd28e0))
 
-## [0.9.0-next.1](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.9.0-next.0...merge-locales-v0.9.0-next.1) (2026-06-22)
+## [0.9.0-next.1](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.9.0-next.0...merge-locales-v0.9.0-next.1) (2026-06-22)
 
 
 ### Features
 
-* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
-* eslint migration to flat config ([74427d7](https://github.com/iotaledger/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
-* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
-* relocate core packages from tools ([bcab8f3](https://github.com/iotaledger/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
-* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
-* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
-* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
-* use cause instead of inner for errors ([1f4acc4](https://github.com/iotaledger/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+* add context id features ([#206](https://github.com/3sixtyglobal/twin-framework/issues/206)) ([ef0d4ee](https://github.com/3sixtyglobal/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* eslint migration to flat config ([74427d7](https://github.com/3sixtyglobal/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* locales validation ([#197](https://github.com/3sixtyglobal/twin-framework/issues/197)) ([55fdadb](https://github.com/3sixtyglobal/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* relocate core packages from tools ([bcab8f3](https://github.com/3sixtyglobal/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* typescript 6 update ([1d10f31](https://github.com/3sixtyglobal/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/3sixtyglobal/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* update dependencies ([f3bd015](https://github.com/3sixtyglobal/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/3sixtyglobal/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
 
 
 ### Bug Fixes
 
-* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
-* repo urls in package.json for moved packages ([31ae463](https://github.com/iotaledger/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/3sixtyglobal/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* repo urls in package.json for moved packages ([31ae463](https://github.com/3sixtyglobal/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
 
 
 ### Dependencies
@@ -1065,7 +1065,7 @@
     * @twin.org/nameof-transformer bumped from 0.9.0-next.0 to 0.9.0-next.1
     * @twin.org/nameof-vitest-plugin bumped from 0.9.0-next.0 to 0.9.0-next.1
 
-## [0.0.4-next.15](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.4-next.14...merge-locales-v0.0.4-next.15) (2026-06-19)
+## [0.0.4-next.15](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.4-next.14...merge-locales-v0.0.4-next.15) (2026-06-19)
 
 
 ### Miscellaneous Chores
@@ -1084,7 +1084,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.4-next.14 to 0.0.4-next.15
     * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.14 to 0.0.4-next.15
 
-## [0.0.4-next.14](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.4-next.13...merge-locales-v0.0.4-next.14) (2026-06-18)
+## [0.0.4-next.14](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.4-next.13...merge-locales-v0.0.4-next.14) (2026-06-18)
 
 
 ### Miscellaneous Chores
@@ -1103,7 +1103,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.4-next.13 to 0.0.4-next.14
     * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.13 to 0.0.4-next.14
 
-## [0.0.4-next.13](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.4-next.12...merge-locales-v0.0.4-next.13) (2026-06-18)
+## [0.0.4-next.13](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.4-next.12...merge-locales-v0.0.4-next.13) (2026-06-18)
 
 
 ### Miscellaneous Chores
@@ -1122,7 +1122,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.4-next.12 to 0.0.4-next.13
     * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.12 to 0.0.4-next.13
 
-## [0.0.4-next.12](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.4-next.11...merge-locales-v0.0.4-next.12) (2026-06-18)
+## [0.0.4-next.12](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.4-next.11...merge-locales-v0.0.4-next.12) (2026-06-18)
 
 
 ### Miscellaneous Chores
@@ -1141,7 +1141,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.4-next.11 to 0.0.4-next.12
     * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.11 to 0.0.4-next.12
 
-## [0.0.4-next.11](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.4-next.10...merge-locales-v0.0.4-next.11) (2026-06-15)
+## [0.0.4-next.11](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.4-next.10...merge-locales-v0.0.4-next.11) (2026-06-15)
 
 
 ### Miscellaneous Chores
@@ -1160,25 +1160,25 @@
     * @twin.org/nameof-transformer bumped from 0.0.4-next.10 to 0.0.4-next.11
     * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.10 to 0.0.4-next.11
 
-## [0.0.4-next.10](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.4-next.9...merge-locales-v0.0.4-next.10) (2026-06-15)
+## [0.0.4-next.10](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.4-next.9...merge-locales-v0.0.4-next.10) (2026-06-15)
 
 
 ### Features
 
-* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
-* eslint migration to flat config ([74427d7](https://github.com/iotaledger/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
-* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
-* relocate core packages from tools ([bcab8f3](https://github.com/iotaledger/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
-* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
-* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
-* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
-* use cause instead of inner for errors ([1f4acc4](https://github.com/iotaledger/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+* add context id features ([#206](https://github.com/3sixtyglobal/twin-framework/issues/206)) ([ef0d4ee](https://github.com/3sixtyglobal/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* eslint migration to flat config ([74427d7](https://github.com/3sixtyglobal/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* locales validation ([#197](https://github.com/3sixtyglobal/twin-framework/issues/197)) ([55fdadb](https://github.com/3sixtyglobal/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* relocate core packages from tools ([bcab8f3](https://github.com/3sixtyglobal/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* typescript 6 update ([1d10f31](https://github.com/3sixtyglobal/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/3sixtyglobal/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* update dependencies ([f3bd015](https://github.com/3sixtyglobal/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/3sixtyglobal/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
 
 
 ### Bug Fixes
 
-* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
-* repo urls in package.json for moved packages ([31ae463](https://github.com/iotaledger/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/3sixtyglobal/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* repo urls in package.json for moved packages ([31ae463](https://github.com/3sixtyglobal/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
 
 
 ### Dependencies
@@ -1192,7 +1192,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.4-next.9 to 0.0.4-next.10
     * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.9 to 0.0.4-next.10
 
-## [0.0.4-next.9](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.4-next.8...merge-locales-v0.0.4-next.9) (2026-06-15)
+## [0.0.4-next.9](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.4-next.8...merge-locales-v0.0.4-next.9) (2026-06-15)
 
 
 ### Miscellaneous Chores
@@ -1211,7 +1211,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.4-next.8 to 0.0.4-next.9
     * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.8 to 0.0.4-next.9
 
-## [0.0.4-next.8](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.4-next.7...merge-locales-v0.0.4-next.8) (2026-06-10)
+## [0.0.4-next.8](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.4-next.7...merge-locales-v0.0.4-next.8) (2026-06-10)
 
 
 ### Miscellaneous Chores
@@ -1230,7 +1230,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.4-next.7 to 0.0.4-next.8
     * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.7 to 0.0.4-next.8
 
-## [0.0.4-next.7](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.4-next.6...merge-locales-v0.0.4-next.7) (2026-06-10)
+## [0.0.4-next.7](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.4-next.6...merge-locales-v0.0.4-next.7) (2026-06-10)
 
 
 ### Miscellaneous Chores
@@ -1249,7 +1249,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.4-next.6 to 0.0.4-next.7
     * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.6 to 0.0.4-next.7
 
-## [0.0.4-next.6](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.4-next.5...merge-locales-v0.0.4-next.6) (2026-06-05)
+## [0.0.4-next.6](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.4-next.5...merge-locales-v0.0.4-next.6) (2026-06-05)
 
 
 ### Miscellaneous Chores
@@ -1268,7 +1268,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.4-next.5 to 0.0.4-next.6
     * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.5 to 0.0.4-next.6
 
-## [0.0.4-next.5](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.4-next.4...merge-locales-v0.0.4-next.5) (2026-06-04)
+## [0.0.4-next.5](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.4-next.4...merge-locales-v0.0.4-next.5) (2026-06-04)
 
 
 ### Miscellaneous Chores
@@ -1287,7 +1287,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.4-next.4 to 0.0.4-next.5
     * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.4 to 0.0.4-next.5
 
-## [0.0.4-next.4](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.4-next.3...merge-locales-v0.0.4-next.4) (2026-06-02)
+## [0.0.4-next.4](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.4-next.3...merge-locales-v0.0.4-next.4) (2026-06-02)
 
 
 ### Miscellaneous Chores
@@ -1306,7 +1306,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.4-next.3 to 0.0.4-next.4
     * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.3 to 0.0.4-next.4
 
-## [0.0.4-next.3](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.4-next.2...merge-locales-v0.0.4-next.3) (2026-05-28)
+## [0.0.4-next.3](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.4-next.2...merge-locales-v0.0.4-next.3) (2026-05-28)
 
 
 ### Miscellaneous Chores
@@ -1325,7 +1325,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.4-next.2 to 0.0.4-next.3
     * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.2 to 0.0.4-next.3
 
-## [0.0.4-next.2](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.4-next.1...merge-locales-v0.0.4-next.2) (2026-05-28)
+## [0.0.4-next.2](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.4-next.1...merge-locales-v0.0.4-next.2) (2026-05-28)
 
 
 ### Miscellaneous Chores
@@ -1344,25 +1344,25 @@
     * @twin.org/nameof-transformer bumped from 0.0.4-next.1 to 0.0.4-next.2
     * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.1 to 0.0.4-next.2
 
-## [0.0.4-next.1](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.4-next.0...merge-locales-v0.0.4-next.1) (2026-05-27)
+## [0.0.4-next.1](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.4-next.0...merge-locales-v0.0.4-next.1) (2026-05-27)
 
 
 ### Features
 
-* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
-* eslint migration to flat config ([74427d7](https://github.com/iotaledger/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
-* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
-* relocate core packages from tools ([bcab8f3](https://github.com/iotaledger/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
-* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
-* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
-* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
-* use cause instead of inner for errors ([1f4acc4](https://github.com/iotaledger/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+* add context id features ([#206](https://github.com/3sixtyglobal/twin-framework/issues/206)) ([ef0d4ee](https://github.com/3sixtyglobal/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* eslint migration to flat config ([74427d7](https://github.com/3sixtyglobal/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* locales validation ([#197](https://github.com/3sixtyglobal/twin-framework/issues/197)) ([55fdadb](https://github.com/3sixtyglobal/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* relocate core packages from tools ([bcab8f3](https://github.com/3sixtyglobal/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* typescript 6 update ([1d10f31](https://github.com/3sixtyglobal/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* update dependencies ([4da77ab](https://github.com/3sixtyglobal/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* update dependencies ([f3bd015](https://github.com/3sixtyglobal/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/3sixtyglobal/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
 
 
 ### Bug Fixes
 
-* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
-* repo urls in package.json for moved packages ([31ae463](https://github.com/iotaledger/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/3sixtyglobal/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* repo urls in package.json for moved packages ([31ae463](https://github.com/3sixtyglobal/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
 
 
 ### Dependencies
@@ -1376,26 +1376,26 @@
     * @twin.org/nameof-transformer bumped from 0.0.4-next.0 to 0.0.4-next.1
     * @twin.org/nameof-vitest-plugin bumped from 0.0.4-next.0 to 0.0.4-next.1
 
-## [0.0.3](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3...merge-locales-v0.0.3) (2026-05-27)
+## [0.0.3](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3...merge-locales-v0.0.3) (2026-05-27)
 
 
 ### Features
 
-* release to production ([b24cba1](https://github.com/iotaledger/twin-framework/commit/b24cba1b6a969278d638e632590602ec881e49fb))
-* release to production ([787287d](https://github.com/iotaledger/twin-framework/commit/787287d06ea8319657401589d61fff369310c422))
-* release to production ([53f4843](https://github.com/iotaledger/twin-framework/commit/53f484326b2851d7a506d2620db24c4a65cee7b3))
-* release to production ([56cda4d](https://github.com/iotaledger/twin-framework/commit/56cda4da93e978c5be19ec7cfd421ae2a7fe4147))
-* release to production ([f7c6586](https://github.com/iotaledger/twin-framework/commit/f7c6586f6976b903b647b4c5ac5ad9421e0c9051))
-* release to production ([829d53d](https://github.com/iotaledger/twin-framework/commit/829d53d3953b1e1b40b0243c04cfdfd3842aac7b))
-* release to production ([5cf3a76](https://github.com/iotaledger/twin-framework/commit/5cf3a76a09eff2e6414d0cba846c7c37400a11d6))
-* release to production ([#330](https://github.com/iotaledger/twin-framework/issues/330)) ([d73f565](https://github.com/iotaledger/twin-framework/commit/d73f565588d156d23ef49b2a5718973756f7a696))
+* release to production ([b24cba1](https://github.com/3sixtyglobal/twin-framework/commit/b24cba1b6a969278d638e632590602ec881e49fb))
+* release to production ([787287d](https://github.com/3sixtyglobal/twin-framework/commit/787287d06ea8319657401589d61fff369310c422))
+* release to production ([53f4843](https://github.com/3sixtyglobal/twin-framework/commit/53f484326b2851d7a506d2620db24c4a65cee7b3))
+* release to production ([56cda4d](https://github.com/3sixtyglobal/twin-framework/commit/56cda4da93e978c5be19ec7cfd421ae2a7fe4147))
+* release to production ([f7c6586](https://github.com/3sixtyglobal/twin-framework/commit/f7c6586f6976b903b647b4c5ac5ad9421e0c9051))
+* release to production ([829d53d](https://github.com/3sixtyglobal/twin-framework/commit/829d53d3953b1e1b40b0243c04cfdfd3842aac7b))
+* release to production ([5cf3a76](https://github.com/3sixtyglobal/twin-framework/commit/5cf3a76a09eff2e6414d0cba846c7c37400a11d6))
+* release to production ([#330](https://github.com/3sixtyglobal/twin-framework/issues/330)) ([d73f565](https://github.com/3sixtyglobal/twin-framework/commit/d73f565588d156d23ef49b2a5718973756f7a696))
 
 
 ### Miscellaneous Chores
 
-* release to production ([63cae24](https://github.com/iotaledger/twin-framework/commit/63cae2401f6c11f93b2a01260b665064e8bd28e0))
+* release to production ([63cae24](https://github.com/3sixtyglobal/twin-framework/commit/63cae2401f6c11f93b2a01260b665064e8bd28e0))
 
-## [0.0.3-next.47](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.46...merge-locales-v0.0.3-next.47) (2026-05-25)
+## [0.0.3-next.47](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.46...merge-locales-v0.0.3-next.47) (2026-05-25)
 
 
 ### Miscellaneous Chores
@@ -1414,7 +1414,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.46 to 0.0.3-next.47
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.46 to 0.0.3-next.47
 
-## [0.0.3-next.46](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.45...merge-locales-v0.0.3-next.46) (2026-05-22)
+## [0.0.3-next.46](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.45...merge-locales-v0.0.3-next.46) (2026-05-22)
 
 
 ### Miscellaneous Chores
@@ -1433,7 +1433,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.45 to 0.0.3-next.46
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.45 to 0.0.3-next.46
 
-## [0.0.3-next.45](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.44...merge-locales-v0.0.3-next.45) (2026-05-21)
+## [0.0.3-next.45](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.44...merge-locales-v0.0.3-next.45) (2026-05-21)
 
 
 ### Miscellaneous Chores
@@ -1452,12 +1452,12 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.44 to 0.0.3-next.45
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.44 to 0.0.3-next.45
 
-## [0.0.3-next.44](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.43...merge-locales-v0.0.3-next.44) (2026-05-19)
+## [0.0.3-next.44](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.43...merge-locales-v0.0.3-next.44) (2026-05-19)
 
 
 ### Features
 
-* update dependencies ([4da77ab](https://github.com/iotaledger/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
+* update dependencies ([4da77ab](https://github.com/3sixtyglobal/twin-framework/commit/4da77ab30f499e52825ac5a76f51436ceb59c26e))
 
 
 ### Dependencies
@@ -1471,7 +1471,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.43 to 0.0.3-next.44
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.43 to 0.0.3-next.44
 
-## [0.0.3-next.43](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.42...merge-locales-v0.0.3-next.43) (2026-05-18)
+## [0.0.3-next.43](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.42...merge-locales-v0.0.3-next.43) (2026-05-18)
 
 
 ### Miscellaneous Chores
@@ -1490,7 +1490,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.42 to 0.0.3-next.43
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.42 to 0.0.3-next.43
 
-## [0.0.3-next.42](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.41...merge-locales-v0.0.3-next.42) (2026-05-15)
+## [0.0.3-next.42](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.41...merge-locales-v0.0.3-next.42) (2026-05-15)
 
 
 ### Miscellaneous Chores
@@ -1509,7 +1509,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.41 to 0.0.3-next.42
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.41 to 0.0.3-next.42
 
-## [0.0.3-next.41](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.40...merge-locales-v0.0.3-next.41) (2026-05-13)
+## [0.0.3-next.41](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.40...merge-locales-v0.0.3-next.41) (2026-05-13)
 
 
 ### Miscellaneous Chores
@@ -1528,7 +1528,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.40 to 0.0.3-next.41
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.40 to 0.0.3-next.41
 
-## [0.0.3-next.40](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.39...merge-locales-v0.0.3-next.40) (2026-05-13)
+## [0.0.3-next.40](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.39...merge-locales-v0.0.3-next.40) (2026-05-13)
 
 
 ### Miscellaneous Chores
@@ -1547,7 +1547,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.39 to 0.0.3-next.40
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.39 to 0.0.3-next.40
 
-## [0.0.3-next.39](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.38...merge-locales-v0.0.3-next.39) (2026-05-13)
+## [0.0.3-next.39](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.38...merge-locales-v0.0.3-next.39) (2026-05-13)
 
 
 ### Miscellaneous Chores
@@ -1566,12 +1566,12 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.38 to 0.0.3-next.39
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.38 to 0.0.3-next.39
 
-## [0.0.3-next.38](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.37...merge-locales-v0.0.3-next.38) (2026-05-11)
+## [0.0.3-next.38](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.37...merge-locales-v0.0.3-next.38) (2026-05-11)
 
 
 ### Features
 
-* typescript 6 update ([1d10f31](https://github.com/iotaledger/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
+* typescript 6 update ([1d10f31](https://github.com/3sixtyglobal/twin-framework/commit/1d10f31e6516ec622773f45e88af82fe749b384a))
 
 
 ### Dependencies
@@ -1585,7 +1585,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.37 to 0.0.3-next.38
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.37 to 0.0.3-next.38
 
-## [0.0.3-next.37](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.36...merge-locales-v0.0.3-next.37) (2026-05-07)
+## [0.0.3-next.37](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.36...merge-locales-v0.0.3-next.37) (2026-05-07)
 
 
 ### Miscellaneous Chores
@@ -1604,7 +1604,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.36 to 0.0.3-next.37
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.36 to 0.0.3-next.37
 
-## [0.0.3-next.36](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.35...merge-locales-v0.0.3-next.36) (2026-05-07)
+## [0.0.3-next.36](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.35...merge-locales-v0.0.3-next.36) (2026-05-07)
 
 
 ### Miscellaneous Chores
@@ -1623,7 +1623,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.35 to 0.0.3-next.36
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.35 to 0.0.3-next.36
 
-## [0.0.3-next.35](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.34...merge-locales-v0.0.3-next.35) (2026-05-06)
+## [0.0.3-next.35](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.34...merge-locales-v0.0.3-next.35) (2026-05-06)
 
 
 ### Miscellaneous Chores
@@ -1642,7 +1642,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.34 to 0.0.3-next.35
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.34 to 0.0.3-next.35
 
-## [0.0.3-next.34](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.33...merge-locales-v0.0.3-next.34) (2026-05-06)
+## [0.0.3-next.34](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.33...merge-locales-v0.0.3-next.34) (2026-05-06)
 
 
 ### Miscellaneous Chores
@@ -1661,7 +1661,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.33 to 0.0.3-next.34
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.33 to 0.0.3-next.34
 
-## [0.0.3-next.33](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.32...merge-locales-v0.0.3-next.33) (2026-05-05)
+## [0.0.3-next.33](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.32...merge-locales-v0.0.3-next.33) (2026-05-05)
 
 
 ### Miscellaneous Chores
@@ -1680,7 +1680,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.32 to 0.0.3-next.33
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.32 to 0.0.3-next.33
 
-## [0.0.3-next.32](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.31...merge-locales-v0.0.3-next.32) (2026-04-30)
+## [0.0.3-next.32](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.31...merge-locales-v0.0.3-next.32) (2026-04-30)
 
 
 ### Miscellaneous Chores
@@ -1699,7 +1699,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.31 to 0.0.3-next.32
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.31 to 0.0.3-next.32
 
-## [0.0.3-next.31](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.30...merge-locales-v0.0.3-next.31) (2026-04-14)
+## [0.0.3-next.31](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.30...merge-locales-v0.0.3-next.31) (2026-04-14)
 
 
 ### Miscellaneous Chores
@@ -1718,7 +1718,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.30 to 0.0.3-next.31
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.30 to 0.0.3-next.31
 
-## [0.0.3-next.30](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.29...merge-locales-v0.0.3-next.30) (2026-04-14)
+## [0.0.3-next.30](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.29...merge-locales-v0.0.3-next.30) (2026-04-14)
 
 
 ### Miscellaneous Chores
@@ -1737,7 +1737,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.29 to 0.0.3-next.30
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.29 to 0.0.3-next.30
 
-## [0.0.3-next.29](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.28...merge-locales-v0.0.3-next.29) (2026-04-14)
+## [0.0.3-next.29](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.28...merge-locales-v0.0.3-next.29) (2026-04-14)
 
 
 ### Miscellaneous Chores
@@ -1756,7 +1756,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.28 to 0.0.3-next.29
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.28 to 0.0.3-next.29
 
-## [0.0.3-next.28](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.27...merge-locales-v0.0.3-next.28) (2026-03-27)
+## [0.0.3-next.28](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.27...merge-locales-v0.0.3-next.28) (2026-03-27)
 
 
 ### Miscellaneous Chores
@@ -1775,7 +1775,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.27 to 0.0.3-next.28
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.27 to 0.0.3-next.28
 
-## [0.0.3-next.27](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.26...merge-locales-v0.0.3-next.27) (2026-03-27)
+## [0.0.3-next.27](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.26...merge-locales-v0.0.3-next.27) (2026-03-27)
 
 
 ### Miscellaneous Chores
@@ -1794,7 +1794,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.26 to 0.0.3-next.27
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.26 to 0.0.3-next.27
 
-## [0.0.3-next.26](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.25...merge-locales-v0.0.3-next.26) (2026-03-24)
+## [0.0.3-next.26](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.25...merge-locales-v0.0.3-next.26) (2026-03-24)
 
 
 ### Miscellaneous Chores
@@ -1813,7 +1813,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.25 to 0.0.3-next.26
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.25 to 0.0.3-next.26
 
-## [0.0.3-next.25](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.24...merge-locales-v0.0.3-next.25) (2026-03-23)
+## [0.0.3-next.25](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.24...merge-locales-v0.0.3-next.25) (2026-03-23)
 
 
 ### Miscellaneous Chores
@@ -1832,12 +1832,12 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.24 to 0.0.3-next.25
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.24 to 0.0.3-next.25
 
-## [0.0.3-next.24](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.23...merge-locales-v0.0.3-next.24) (2026-03-19)
+## [0.0.3-next.24](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.23...merge-locales-v0.0.3-next.24) (2026-03-19)
 
 
 ### Bug Fixes
 
-* ensure __decorate is defined for decorators ([103a563](https://github.com/iotaledger/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
+* ensure __decorate is defined for decorators ([103a563](https://github.com/3sixtyglobal/twin-framework/commit/103a563ce01ebdef6240d2e590e7b026e8692684))
 
 
 ### Dependencies
@@ -1851,7 +1851,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.23 to 0.0.3-next.24
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.23 to 0.0.3-next.24
 
-## [0.0.3-next.23](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.22...merge-locales-v0.0.3-next.23) (2026-03-17)
+## [0.0.3-next.23](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.22...merge-locales-v0.0.3-next.23) (2026-03-17)
 
 
 ### Miscellaneous Chores
@@ -1870,7 +1870,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.22 to 0.0.3-next.23
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.22 to 0.0.3-next.23
 
-## [0.0.3-next.22](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.21...merge-locales-v0.0.3-next.22) (2026-02-26)
+## [0.0.3-next.22](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.21...merge-locales-v0.0.3-next.22) (2026-02-26)
 
 
 ### Miscellaneous Chores
@@ -1889,22 +1889,22 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.21 to 0.0.3-next.22
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.21 to 0.0.3-next.22
 
-## [0.0.3-next.21](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.20...merge-locales-v0.0.3-next.21) (2026-02-26)
+## [0.0.3-next.21](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.20...merge-locales-v0.0.3-next.21) (2026-02-26)
 
 
 ### Features
 
-* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
-* eslint migration to flat config ([74427d7](https://github.com/iotaledger/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
-* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
-* relocate core packages from tools ([bcab8f3](https://github.com/iotaledger/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
-* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
-* use cause instead of inner for errors ([1f4acc4](https://github.com/iotaledger/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+* add context id features ([#206](https://github.com/3sixtyglobal/twin-framework/issues/206)) ([ef0d4ee](https://github.com/3sixtyglobal/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* eslint migration to flat config ([74427d7](https://github.com/3sixtyglobal/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* locales validation ([#197](https://github.com/3sixtyglobal/twin-framework/issues/197)) ([55fdadb](https://github.com/3sixtyglobal/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* relocate core packages from tools ([bcab8f3](https://github.com/3sixtyglobal/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* update dependencies ([f3bd015](https://github.com/3sixtyglobal/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/3sixtyglobal/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
 
 
 ### Bug Fixes
 
-* repo urls in package.json for moved packages ([31ae463](https://github.com/iotaledger/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
+* repo urls in package.json for moved packages ([31ae463](https://github.com/3sixtyglobal/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
 
 
 ### Dependencies
@@ -1918,7 +1918,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.20 to 0.0.3-next.21
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.20 to 0.0.3-next.21
 
-## [0.0.3-next.20](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.19...merge-locales-v0.0.3-next.20) (2026-02-26)
+## [0.0.3-next.20](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.19...merge-locales-v0.0.3-next.20) (2026-02-26)
 
 
 ### Miscellaneous Chores
@@ -1937,7 +1937,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.19 to 0.0.3-next.20
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.19 to 0.0.3-next.20
 
-## [0.0.3-next.19](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.18...merge-locales-v0.0.3-next.19) (2026-02-26)
+## [0.0.3-next.19](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.18...merge-locales-v0.0.3-next.19) (2026-02-26)
 
 
 ### Miscellaneous Chores
@@ -1956,7 +1956,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.18 to 0.0.3-next.19
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.18 to 0.0.3-next.19
 
-## [0.0.3-next.18](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.17...merge-locales-v0.0.3-next.18) (2026-02-23)
+## [0.0.3-next.18](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.17...merge-locales-v0.0.3-next.18) (2026-02-23)
 
 
 ### Miscellaneous Chores
@@ -1975,7 +1975,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.17 to 0.0.3-next.18
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.17 to 0.0.3-next.18
 
-## [0.0.3-next.17](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.16...merge-locales-v0.0.3-next.17) (2026-02-09)
+## [0.0.3-next.17](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.16...merge-locales-v0.0.3-next.17) (2026-02-09)
 
 
 ### Miscellaneous Chores
@@ -1994,7 +1994,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.16 to 0.0.3-next.17
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.16 to 0.0.3-next.17
 
-## [0.0.3-next.16](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.15...merge-locales-v0.0.3-next.16) (2026-02-06)
+## [0.0.3-next.16](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.15...merge-locales-v0.0.3-next.16) (2026-02-06)
 
 
 ### Miscellaneous Chores
@@ -2013,7 +2013,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.15 to 0.0.3-next.16
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.15 to 0.0.3-next.16
 
-## [0.0.3-next.15](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.14...merge-locales-v0.0.3-next.15) (2026-01-29)
+## [0.0.3-next.15](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.14...merge-locales-v0.0.3-next.15) (2026-01-29)
 
 
 ### Miscellaneous Chores
@@ -2032,7 +2032,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.14 to 0.0.3-next.15
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.14 to 0.0.3-next.15
 
-## [0.0.3-next.14](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.13...merge-locales-v0.0.3-next.14) (2026-01-22)
+## [0.0.3-next.14](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.13...merge-locales-v0.0.3-next.14) (2026-01-22)
 
 
 ### Miscellaneous Chores
@@ -2051,7 +2051,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.13 to 0.0.3-next.14
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.13 to 0.0.3-next.14
 
-## [0.0.3-next.13](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.12...merge-locales-v0.0.3-next.13) (2026-01-08)
+## [0.0.3-next.13](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.12...merge-locales-v0.0.3-next.13) (2026-01-08)
 
 
 ### Miscellaneous Chores
@@ -2070,7 +2070,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.12 to 0.0.3-next.13
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.12 to 0.0.3-next.13
 
-## [0.0.3-next.12](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.11...merge-locales-v0.0.3-next.12) (2026-01-08)
+## [0.0.3-next.12](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.11...merge-locales-v0.0.3-next.12) (2026-01-08)
 
 
 ### Miscellaneous Chores
@@ -2089,7 +2089,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.11 to 0.0.3-next.12
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.11 to 0.0.3-next.12
 
-## [0.0.3-next.11](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.10...merge-locales-v0.0.3-next.11) (2026-01-07)
+## [0.0.3-next.11](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.10...merge-locales-v0.0.3-next.11) (2026-01-07)
 
 
 ### Miscellaneous Chores
@@ -2108,7 +2108,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.10 to 0.0.3-next.11
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.10 to 0.0.3-next.11
 
-## [0.0.3-next.10](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.9...merge-locales-v0.0.3-next.10) (2026-01-07)
+## [0.0.3-next.10](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.9...merge-locales-v0.0.3-next.10) (2026-01-07)
 
 
 ### Miscellaneous Chores
@@ -2127,7 +2127,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.9 to 0.0.3-next.10
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.9 to 0.0.3-next.10
 
-## [0.0.3-next.9](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.8...merge-locales-v0.0.3-next.9) (2026-01-05)
+## [0.0.3-next.9](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.8...merge-locales-v0.0.3-next.9) (2026-01-05)
 
 
 ### Miscellaneous Chores
@@ -2146,7 +2146,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.8 to 0.0.3-next.9
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.8 to 0.0.3-next.9
 
-## [0.0.3-next.8](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.7...merge-locales-v0.0.3-next.8) (2025-11-26)
+## [0.0.3-next.8](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.7...merge-locales-v0.0.3-next.8) (2025-11-26)
 
 
 ### Miscellaneous Chores
@@ -2165,22 +2165,22 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.7 to 0.0.3-next.8
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.7 to 0.0.3-next.8
 
-## [0.0.3-next.7](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.6...merge-locales-v0.0.3-next.7) (2025-11-25)
+## [0.0.3-next.7](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.6...merge-locales-v0.0.3-next.7) (2025-11-25)
 
 
 ### Features
 
-* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
-* eslint migration to flat config ([74427d7](https://github.com/iotaledger/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
-* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
-* relocate core packages from tools ([bcab8f3](https://github.com/iotaledger/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
-* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
-* use cause instead of inner for errors ([1f4acc4](https://github.com/iotaledger/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+* add context id features ([#206](https://github.com/3sixtyglobal/twin-framework/issues/206)) ([ef0d4ee](https://github.com/3sixtyglobal/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* eslint migration to flat config ([74427d7](https://github.com/3sixtyglobal/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* locales validation ([#197](https://github.com/3sixtyglobal/twin-framework/issues/197)) ([55fdadb](https://github.com/3sixtyglobal/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* relocate core packages from tools ([bcab8f3](https://github.com/3sixtyglobal/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* update dependencies ([f3bd015](https://github.com/3sixtyglobal/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/3sixtyglobal/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
 
 
 ### Bug Fixes
 
-* repo urls in package.json for moved packages ([31ae463](https://github.com/iotaledger/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
+* repo urls in package.json for moved packages ([31ae463](https://github.com/3sixtyglobal/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
 
 
 ### Dependencies
@@ -2194,7 +2194,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.6 to 0.0.3-next.7
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.6 to 0.0.3-next.7
 
-## [0.0.3-next.6](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.5...merge-locales-v0.0.3-next.6) (2025-11-25)
+## [0.0.3-next.6](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.5...merge-locales-v0.0.3-next.6) (2025-11-25)
 
 
 ### Miscellaneous Chores
@@ -2213,7 +2213,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.5 to 0.0.3-next.6
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.5 to 0.0.3-next.6
 
-## [0.0.3-next.5](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.4...merge-locales-v0.0.3-next.5) (2025-11-20)
+## [0.0.3-next.5](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.4...merge-locales-v0.0.3-next.5) (2025-11-20)
 
 
 ### Miscellaneous Chores
@@ -2232,7 +2232,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.4 to 0.0.3-next.5
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.4 to 0.0.3-next.5
 
-## [0.0.3-next.4](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.3...merge-locales-v0.0.3-next.4) (2025-11-13)
+## [0.0.3-next.4](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.3...merge-locales-v0.0.3-next.4) (2025-11-13)
 
 
 ### Miscellaneous Chores
@@ -2251,7 +2251,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.3 to 0.0.3-next.4
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.3 to 0.0.3-next.4
 
-## [0.0.3-next.3](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.2...merge-locales-v0.0.3-next.3) (2025-11-12)
+## [0.0.3-next.3](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.2...merge-locales-v0.0.3-next.3) (2025-11-12)
 
 
 ### Miscellaneous Chores
@@ -2270,7 +2270,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.2 to 0.0.3-next.3
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.2 to 0.0.3-next.3
 
-## [0.0.3-next.2](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.1...merge-locales-v0.0.3-next.2) (2025-11-12)
+## [0.0.3-next.2](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.1...merge-locales-v0.0.3-next.2) (2025-11-12)
 
 
 ### Miscellaneous Chores
@@ -2289,22 +2289,22 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.1 to 0.0.3-next.2
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.1 to 0.0.3-next.2
 
-## [0.0.3-next.1](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.3-next.0...merge-locales-v0.0.3-next.1) (2025-11-10)
+## [0.0.3-next.1](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.3-next.0...merge-locales-v0.0.3-next.1) (2025-11-10)
 
 
 ### Features
 
-* add context id features ([#206](https://github.com/iotaledger/twin-framework/issues/206)) ([ef0d4ee](https://github.com/iotaledger/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
-* eslint migration to flat config ([74427d7](https://github.com/iotaledger/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
-* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
-* relocate core packages from tools ([bcab8f3](https://github.com/iotaledger/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
-* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
-* use cause instead of inner for errors ([1f4acc4](https://github.com/iotaledger/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+* add context id features ([#206](https://github.com/3sixtyglobal/twin-framework/issues/206)) ([ef0d4ee](https://github.com/3sixtyglobal/twin-framework/commit/ef0d4ee11a4f5fc6cc6f52a4958ce905c04ee13b))
+* eslint migration to flat config ([74427d7](https://github.com/3sixtyglobal/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* locales validation ([#197](https://github.com/3sixtyglobal/twin-framework/issues/197)) ([55fdadb](https://github.com/3sixtyglobal/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* relocate core packages from tools ([bcab8f3](https://github.com/3sixtyglobal/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* update dependencies ([f3bd015](https://github.com/3sixtyglobal/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/3sixtyglobal/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
 
 
 ### Bug Fixes
 
-* repo urls in package.json for moved packages ([31ae463](https://github.com/iotaledger/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
+* repo urls in package.json for moved packages ([31ae463](https://github.com/3sixtyglobal/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
 
 
 ### Dependencies
@@ -2318,7 +2318,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.3-next.0 to 0.0.3-next.1
     * @twin.org/nameof-vitest-plugin bumped from 0.0.3-next.0 to 0.0.3-next.1
 
-## [0.0.2-next.22](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.21...merge-locales-v0.0.2-next.22) (2025-10-10)
+## [0.0.2-next.22](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.21...merge-locales-v0.0.2-next.22) (2025-10-10)
 
 
 ### Miscellaneous Chores
@@ -2337,12 +2337,12 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.21 to 0.0.2-next.22
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.21 to 0.0.2-next.22
 
-## [0.0.2-next.21](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.20...merge-locales-v0.0.2-next.21) (2025-10-09)
+## [0.0.2-next.21](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.20...merge-locales-v0.0.2-next.21) (2025-10-09)
 
 
 ### Features
 
-* locales validation ([#197](https://github.com/iotaledger/twin-framework/issues/197)) ([55fdadb](https://github.com/iotaledger/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
+* locales validation ([#197](https://github.com/3sixtyglobal/twin-framework/issues/197)) ([55fdadb](https://github.com/3sixtyglobal/twin-framework/commit/55fdadb13595ce0047f787bd1d4135d429a99f12))
 
 
 ### Dependencies
@@ -2356,7 +2356,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.20 to 0.0.2-next.21
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.20 to 0.0.2-next.21
 
-## [0.0.2-next.20](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.19...merge-locales-v0.0.2-next.20) (2025-10-02)
+## [0.0.2-next.20](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.19...merge-locales-v0.0.2-next.20) (2025-10-02)
 
 
 ### Miscellaneous Chores
@@ -2375,7 +2375,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.19 to 0.0.2-next.20
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.19 to 0.0.2-next.20
 
-## [0.0.2-next.19](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.18...merge-locales-v0.0.2-next.19) (2025-09-30)
+## [0.0.2-next.19](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.18...merge-locales-v0.0.2-next.19) (2025-09-30)
 
 
 ### Miscellaneous Chores
@@ -2394,7 +2394,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.18 to 0.0.2-next.19
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.18 to 0.0.2-next.19
 
-## [0.0.2-next.18](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.17...merge-locales-v0.0.2-next.18) (2025-09-29)
+## [0.0.2-next.18](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.17...merge-locales-v0.0.2-next.18) (2025-09-29)
 
 
 ### Miscellaneous Chores
@@ -2413,7 +2413,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.17 to 0.0.2-next.18
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.17 to 0.0.2-next.18
 
-## [0.0.2-next.17](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.16...merge-locales-v0.0.2-next.17) (2025-09-29)
+## [0.0.2-next.17](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.16...merge-locales-v0.0.2-next.17) (2025-09-29)
 
 
 ### Miscellaneous Chores
@@ -2432,7 +2432,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.16 to 0.0.2-next.17
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.16 to 0.0.2-next.17
 
-## [0.0.2-next.16](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.15...merge-locales-v0.0.2-next.16) (2025-09-28)
+## [0.0.2-next.16](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.15...merge-locales-v0.0.2-next.16) (2025-09-28)
 
 
 ### Miscellaneous Chores
@@ -2451,7 +2451,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.15 to 0.0.2-next.16
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.15 to 0.0.2-next.16
 
-## [0.0.2-next.15](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.14...merge-locales-v0.0.2-next.15) (2025-09-22)
+## [0.0.2-next.15](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.14...merge-locales-v0.0.2-next.15) (2025-09-22)
 
 
 ### Miscellaneous Chores
@@ -2470,7 +2470,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.14 to 0.0.2-next.15
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.14 to 0.0.2-next.15
 
-## [0.0.2-next.14](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.13...merge-locales-v0.0.2-next.14) (2025-09-22)
+## [0.0.2-next.14](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.13...merge-locales-v0.0.2-next.14) (2025-09-22)
 
 
 ### Miscellaneous Chores
@@ -2489,7 +2489,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.13 to 0.0.2-next.14
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.13 to 0.0.2-next.14
 
-## [0.0.2-next.13](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.12...merge-locales-v0.0.2-next.13) (2025-09-22)
+## [0.0.2-next.13](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.12...merge-locales-v0.0.2-next.13) (2025-09-22)
 
 
 ### Miscellaneous Chores
@@ -2508,7 +2508,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.12 to 0.0.2-next.13
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.12 to 0.0.2-next.13
 
-## [0.0.2-next.12](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.11...merge-locales-v0.0.2-next.12) (2025-09-15)
+## [0.0.2-next.12](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.11...merge-locales-v0.0.2-next.12) (2025-09-15)
 
 
 ### Miscellaneous Chores
@@ -2527,7 +2527,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.11 to 0.0.2-next.12
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.11 to 0.0.2-next.12
 
-## [0.0.2-next.11](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.10...merge-locales-v0.0.2-next.11) (2025-09-15)
+## [0.0.2-next.11](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.10...merge-locales-v0.0.2-next.11) (2025-09-15)
 
 
 ### Miscellaneous Chores
@@ -2546,7 +2546,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.10 to 0.0.2-next.11
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.10 to 0.0.2-next.11
 
-## [0.0.2-next.10](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.9...merge-locales-v0.0.2-next.10) (2025-09-11)
+## [0.0.2-next.10](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.9...merge-locales-v0.0.2-next.10) (2025-09-11)
 
 
 ### Miscellaneous Chores
@@ -2565,7 +2565,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.9 to 0.0.2-next.10
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.9 to 0.0.2-next.10
 
-## [0.0.2-next.9](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.8...merge-locales-v0.0.2-next.9) (2025-09-08)
+## [0.0.2-next.9](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.8...merge-locales-v0.0.2-next.9) (2025-09-08)
 
 
 ### Miscellaneous Chores
@@ -2584,7 +2584,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.8 to 0.0.2-next.9
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.8 to 0.0.2-next.9
 
-## [0.0.2-next.8](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.7...merge-locales-v0.0.2-next.8) (2025-09-05)
+## [0.0.2-next.8](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.7...merge-locales-v0.0.2-next.8) (2025-09-05)
 
 
 ### Miscellaneous Chores
@@ -2603,12 +2603,12 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.7 to 0.0.2-next.8
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.7 to 0.0.2-next.8
 
-## [0.0.2-next.7](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.6...merge-locales-v0.0.2-next.7) (2025-08-29)
+## [0.0.2-next.7](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.6...merge-locales-v0.0.2-next.7) (2025-08-29)
 
 
 ### Features
 
-* eslint migration to flat config ([74427d7](https://github.com/iotaledger/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
+* eslint migration to flat config ([74427d7](https://github.com/3sixtyglobal/twin-framework/commit/74427d78d342167f7850e49ab87269326355befe))
 
 
 ### Dependencies
@@ -2622,7 +2622,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.6 to 0.0.2-next.7
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.6 to 0.0.2-next.7
 
-## [0.0.2-next.6](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.5...merge-locales-v0.0.2-next.6) (2025-08-27)
+## [0.0.2-next.6](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.5...merge-locales-v0.0.2-next.6) (2025-08-27)
 
 
 ### Miscellaneous Chores
@@ -2641,12 +2641,12 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.5 to 0.0.2-next.6
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.5 to 0.0.2-next.6
 
-## [0.0.2-next.5](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.4...merge-locales-v0.0.2-next.5) (2025-08-19)
+## [0.0.2-next.5](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.4...merge-locales-v0.0.2-next.5) (2025-08-19)
 
 
 ### Features
 
-* use cause instead of inner for errors ([1f4acc4](https://github.com/iotaledger/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
+* use cause instead of inner for errors ([1f4acc4](https://github.com/3sixtyglobal/twin-framework/commit/1f4acc4d7a6b71a134d9547da9bf40de1e1e49da))
 
 
 ### Dependencies
@@ -2660,7 +2660,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.4 to 0.0.2-next.5
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.4 to 0.0.2-next.5
 
-## [0.0.2-next.4](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.3...merge-locales-v0.0.2-next.4) (2025-08-15)
+## [0.0.2-next.4](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.3...merge-locales-v0.0.2-next.4) (2025-08-15)
 
 
 ### Miscellaneous Chores
@@ -2679,18 +2679,18 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.3 to 0.0.2-next.4
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.3 to 0.0.2-next.4
 
-## [0.0.2-next.3](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.2...merge-locales-v0.0.2-next.3) (2025-08-06)
+## [0.0.2-next.3](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.2...merge-locales-v0.0.2-next.3) (2025-08-06)
 
 
 ### Features
 
-* relocate core packages from tools ([bcab8f3](https://github.com/iotaledger/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
-* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* relocate core packages from tools ([bcab8f3](https://github.com/3sixtyglobal/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* update dependencies ([f3bd015](https://github.com/3sixtyglobal/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
 
 
 ### Bug Fixes
 
-* repo urls in package.json for moved packages ([31ae463](https://github.com/iotaledger/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
+* repo urls in package.json for moved packages ([31ae463](https://github.com/3sixtyglobal/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
 
 
 ### Dependencies
@@ -2704,18 +2704,18 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.2 to 0.0.2-next.3
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.2 to 0.0.2-next.3
 
-## [0.0.2-next.2](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.1...merge-locales-v0.0.2-next.2) (2025-08-06)
+## [0.0.2-next.2](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.1...merge-locales-v0.0.2-next.2) (2025-08-06)
 
 
 ### Features
 
-* relocate core packages from tools ([bcab8f3](https://github.com/iotaledger/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
-* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* relocate core packages from tools ([bcab8f3](https://github.com/3sixtyglobal/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* update dependencies ([f3bd015](https://github.com/3sixtyglobal/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
 
 
 ### Bug Fixes
 
-* repo urls in package.json for moved packages ([31ae463](https://github.com/iotaledger/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
+* repo urls in package.json for moved packages ([31ae463](https://github.com/3sixtyglobal/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
 
 
 ### Dependencies
@@ -2729,18 +2729,18 @@
     * @twin.org/nameof-transformer bumped from 0.0.2-next.1 to 0.0.2-next.2
     * @twin.org/nameof-vitest-plugin bumped from 0.0.2-next.1 to 0.0.2-next.2
 
-## [0.0.2-next.1](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.2-next.0...merge-locales-v0.0.2-next.1) (2025-08-06)
+## [0.0.2-next.1](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.2-next.0...merge-locales-v0.0.2-next.1) (2025-08-06)
 
 
 ### Features
 
-* relocate core packages from tools ([bcab8f3](https://github.com/iotaledger/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
-* update dependencies ([f3bd015](https://github.com/iotaledger/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
+* relocate core packages from tools ([bcab8f3](https://github.com/3sixtyglobal/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* update dependencies ([f3bd015](https://github.com/3sixtyglobal/twin-framework/commit/f3bd015efd169196b7e0335f5cab876ba6ca1d75))
 
 
 ### Bug Fixes
 
-* repo urls in package.json for moved packages ([31ae463](https://github.com/iotaledger/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
+* repo urls in package.json for moved packages ([31ae463](https://github.com/3sixtyglobal/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
 
 
 ### Dependencies
@@ -2759,8 +2759,8 @@
 
 ### Features
 
-* release to production ([829d53d](https://github.com/iotaledger/twin-framework/commit/829d53d3953b1e1b40b0243c04cfdfd3842aac7b))
-* release to production ([5cf3a76](https://github.com/iotaledger/twin-framework/commit/5cf3a76a09eff2e6414d0cba846c7c37400a11d6))
+* release to production ([829d53d](https://github.com/3sixtyglobal/twin-framework/commit/829d53d3953b1e1b40b0243c04cfdfd3842aac7b))
+* release to production ([5cf3a76](https://github.com/3sixtyglobal/twin-framework/commit/5cf3a76a09eff2e6414d0cba846c7c37400a11d6))
 
 
 ### Dependencies
@@ -2774,17 +2774,17 @@
     * @twin.org/nameof-transformer bumped from ^0.0.0 to ^0.0.1
     * @twin.org/nameof-vitest-plugin bumped from ^0.0.0 to ^0.0.1
 
-## [0.0.1-next.70](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.1-next.69...merge-locales-v0.0.1-next.70) (2025-07-02)
+## [0.0.1-next.70](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.1-next.69...merge-locales-v0.0.1-next.70) (2025-07-02)
 
 
 ### Features
 
-* relocate core packages from tools ([bcab8f3](https://github.com/iotaledger/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* relocate core packages from tools ([bcab8f3](https://github.com/3sixtyglobal/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
 
 
 ### Bug Fixes
 
-* repo urls in package.json for moved packages ([31ae463](https://github.com/iotaledger/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
+* repo urls in package.json for moved packages ([31ae463](https://github.com/3sixtyglobal/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
 
 
 ### Dependencies
@@ -2798,17 +2798,17 @@
     * @twin.org/nameof-transformer bumped from 0.0.1-next.69 to 0.0.1-next.70
     * @twin.org/nameof-vitest-plugin bumped from 0.0.1-next.69 to 0.0.1-next.70
 
-## [0.0.1-next.69](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.1-next.68...merge-locales-v0.0.1-next.69) (2025-07-02)
+## [0.0.1-next.69](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.1-next.68...merge-locales-v0.0.1-next.69) (2025-07-02)
 
 
 ### Features
 
-* relocate core packages from tools ([bcab8f3](https://github.com/iotaledger/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* relocate core packages from tools ([bcab8f3](https://github.com/3sixtyglobal/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
 
 
 ### Bug Fixes
 
-* repo urls in package.json for moved packages ([31ae463](https://github.com/iotaledger/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
+* repo urls in package.json for moved packages ([31ae463](https://github.com/3sixtyglobal/twin-framework/commit/31ae463095dfa8c0e48bb5bb12316f1e8abb9a4c))
 
 
 ### Dependencies
@@ -2822,12 +2822,12 @@
     * @twin.org/nameof-transformer bumped from 0.0.1-next.68 to 0.0.1-next.69
     * @twin.org/nameof-vitest-plugin bumped from 0.0.1-next.68 to 0.0.1-next.69
 
-## [0.0.1-next.68](https://github.com/iotaledger/twin-framework/compare/merge-locales-v0.0.1-next.67...merge-locales-v0.0.1-next.68) (2025-07-02)
+## [0.0.1-next.68](https://github.com/3sixtyglobal/twin-framework/compare/merge-locales-v0.0.1-next.67...merge-locales-v0.0.1-next.68) (2025-07-02)
 
 
 ### Features
 
-* relocate core packages from tools ([bcab8f3](https://github.com/iotaledger/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
+* relocate core packages from tools ([bcab8f3](https://github.com/3sixtyglobal/twin-framework/commit/bcab8f3160442ea4fcaf442947462504f3d6a17d))
 
 
 ### Dependencies
@@ -2841,7 +2841,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.1-next.67 to 0.0.1-next.68
     * @twin.org/nameof-vitest-plugin bumped from 0.0.1-next.67 to 0.0.1-next.68
 
-## [0.0.1-next.28](https://github.com/iotaledger/twin-tools/compare/merge-locales-v0.0.1-next.27...merge-locales-v0.0.1-next.28) (2025-06-18)
+## [0.0.1-next.28](https://github.com/3sixtyglobal/twin-tools/compare/merge-locales-v0.0.1-next.27...merge-locales-v0.0.1-next.28) (2025-06-18)
 
 
 ### Miscellaneous Chores
@@ -2858,7 +2858,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.1-next.27 to 0.0.1-next.28
     * @twin.org/nameof-vitest-plugin bumped from 0.0.1-next.27 to 0.0.1-next.28
 
-## [0.0.1-next.27](https://github.com/iotaledger/twin-tools/compare/merge-locales-v0.0.1-next.26...merge-locales-v0.0.1-next.27) (2025-06-17)
+## [0.0.1-next.27](https://github.com/3sixtyglobal/twin-tools/compare/merge-locales-v0.0.1-next.26...merge-locales-v0.0.1-next.27) (2025-06-17)
 
 
 ### Miscellaneous Chores
@@ -2875,7 +2875,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.1-next.26 to 0.0.1-next.27
     * @twin.org/nameof-vitest-plugin bumped from 0.0.1-next.26 to 0.0.1-next.27
 
-## [0.0.1-next.26](https://github.com/iotaledger/twin-tools/compare/merge-locales-v0.0.1-next.25...merge-locales-v0.0.1-next.26) (2025-06-11)
+## [0.0.1-next.26](https://github.com/3sixtyglobal/twin-tools/compare/merge-locales-v0.0.1-next.25...merge-locales-v0.0.1-next.26) (2025-06-11)
 
 
 ### Miscellaneous Chores
@@ -2892,12 +2892,12 @@
     * @twin.org/nameof-transformer bumped from 0.0.1-next.25 to 0.0.1-next.26
     * @twin.org/nameof-vitest-plugin bumped from 0.0.1-next.25 to 0.0.1-next.26
 
-## [0.0.1-next.25](https://github.com/iotaledger/twin-tools/compare/merge-locales-v0.0.1-next.24...merge-locales-v0.0.1-next.25) (2025-06-10)
+## [0.0.1-next.25](https://github.com/3sixtyglobal/twin-tools/compare/merge-locales-v0.0.1-next.24...merge-locales-v0.0.1-next.25) (2025-06-10)
 
 
 ### Features
 
-* add ts-to-schema overrides ([3c54504](https://github.com/iotaledger/twin-tools/commit/3c5450468eb998204a75576b7791a7ca4027da62))
+* add ts-to-schema overrides ([3c54504](https://github.com/3sixtyglobal/twin-tools/commit/3c5450468eb998204a75576b7791a7ca4027da62))
 
 
 ### Dependencies
@@ -2909,7 +2909,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.1-next.24 to 0.0.1-next.25
     * @twin.org/nameof-vitest-plugin bumped from 0.0.1-next.24 to 0.0.1-next.25
 
-## [0.0.1-next.24](https://github.com/iotaledger/twin-tools/compare/merge-locales-v0.0.1-next.23...merge-locales-v0.0.1-next.24) (2025-06-05)
+## [0.0.1-next.24](https://github.com/3sixtyglobal/twin-tools/compare/merge-locales-v0.0.1-next.23...merge-locales-v0.0.1-next.24) (2025-06-05)
 
 
 ### Miscellaneous Chores
@@ -2926,7 +2926,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.1-next.23 to 0.0.1-next.24
     * @twin.org/nameof-vitest-plugin bumped from 0.0.1-next.23 to 0.0.1-next.24
 
-## [0.0.1-next.23](https://github.com/iotaledger/twin-tools/compare/merge-locales-v0.0.1-next.22...merge-locales-v0.0.1-next.23) (2025-06-03)
+## [0.0.1-next.23](https://github.com/3sixtyglobal/twin-tools/compare/merge-locales-v0.0.1-next.22...merge-locales-v0.0.1-next.23) (2025-06-03)
 
 
 ### Miscellaneous Chores
@@ -2943,7 +2943,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.1-next.22 to 0.0.1-next.23
     * @twin.org/nameof-vitest-plugin bumped from 0.0.1-next.22 to 0.0.1-next.23
 
-## [0.0.1-next.22](https://github.com/iotaledger/twin-tools/compare/merge-locales-v0.0.1-next.21...merge-locales-v0.0.1-next.22) (2025-06-03)
+## [0.0.1-next.22](https://github.com/3sixtyglobal/twin-tools/compare/merge-locales-v0.0.1-next.21...merge-locales-v0.0.1-next.22) (2025-06-03)
 
 
 ### Miscellaneous Chores
@@ -2960,12 +2960,12 @@
     * @twin.org/nameof-transformer bumped from 0.0.1-next.21 to 0.0.1-next.22
     * @twin.org/nameof-vitest-plugin bumped from 0.0.1-next.21 to 0.0.1-next.22
 
-## [0.0.1-next.21](https://github.com/iotaledger/twin-tools/compare/merge-locales-v0.0.1-next.20...merge-locales-v0.0.1-next.21) (2025-04-17)
+## [0.0.1-next.21](https://github.com/3sixtyglobal/twin-tools/compare/merge-locales-v0.0.1-next.20...merge-locales-v0.0.1-next.21) (2025-04-17)
 
 
 ### Features
 
-* use shared store mechanism ([#31](https://github.com/iotaledger/twin-tools/issues/31)) ([d9fe68b](https://github.com/iotaledger/twin-tools/commit/d9fe68b903d1268c7cb3c64772df5cb78fd63667))
+* use shared store mechanism ([#31](https://github.com/3sixtyglobal/twin-tools/issues/31)) ([d9fe68b](https://github.com/3sixtyglobal/twin-tools/commit/d9fe68b903d1268c7cb3c64772df5cb78fd63667))
 
 
 ### Dependencies
@@ -2977,7 +2977,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.1-next.20 to 0.0.1-next.21
     * @twin.org/nameof-vitest-plugin bumped from 0.0.1-next.20 to 0.0.1-next.21
 
-## [0.0.1-next.20](https://github.com/iotaledger/twin-tools/compare/merge-locales-v0.0.1-next.19...merge-locales-v0.0.1-next.20) (2025-03-28)
+## [0.0.1-next.20](https://github.com/3sixtyglobal/twin-tools/compare/merge-locales-v0.0.1-next.19...merge-locales-v0.0.1-next.20) (2025-03-28)
 
 
 ### Miscellaneous Chores
@@ -2994,7 +2994,7 @@
     * @twin.org/nameof-transformer bumped from 0.0.1-next.19 to 0.0.1-next.20
     * @twin.org/nameof-vitest-plugin bumped from 0.0.1-next.19 to 0.0.1-next.20
 
-## [0.0.1-next.19](https://github.com/iotaledger/twin-tools/compare/merge-locales-v0.0.1-next.18...merge-locales-v0.0.1-next.19) (2025-03-26)
+## [0.0.1-next.19](https://github.com/3sixtyglobal/twin-tools/compare/merge-locales-v0.0.1-next.18...merge-locales-v0.0.1-next.19) (2025-03-26)
 
 
 ### Miscellaneous Chores

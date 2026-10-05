@@ -4,7 +4,7 @@
 	"description": "Helper methods and classes which implement cryptographic functions",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/iotaledger/twin-framework.git",
+		"url": "git+https://github.com/3sixtyglobal/twin-framework.git",
 		"directory": "packages/crypto"
 	},
 	"author": "martyn.janes@iota.org",
@@ -82,7 +82,7 @@
 		"security"
 	],
 	"bugs": {
-		"url": "git+https://github.com/iotaledger/twin-framework/issues"
+		"url": "git+https://github.com/3sixtyglobal/twin-framework/issues"
 	},
 	"homepage": "https://twindev.org"
 }

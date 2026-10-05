@@ -4,7 +4,7 @@
 	"description": "Validate source files against the locales",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/iotaledger/twin-framework.git",
+		"url": "git+https://github.com/3sixtyglobal/twin-framework.git",
 		"directory": "apps/validate-locales"
 	},
 	"author": "martyn.janes@iota.org",
@@ -77,7 +77,7 @@
 		"test": "tests"
 	},
 	"bugs": {
-		"url": "git+https://github.com/iotaledger/twin-framework/issues"
+		"url": "git+https://github.com/3sixtyglobal/twin-framework/issues"
 	},
 	"homepage": "https://twindev.org",
 	"keywords": [
