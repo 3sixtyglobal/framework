@@ -31,10 +31,6 @@ The repositories are organised by capability domains such as blob storage. Each 
 
 The stack is layered from top to bottom. The base layer provides standards, data conventions, and API foundations. Components and connectors provide the operational services and infrastructure integrations. DLT connectors expose ledger-focused capabilities. Building blocks compose higher-level business modules, which then flow into runtime execution across engine, node, and UI surfaces. Applications sit at the bottom as the product-facing layer built on top of these capabilities.
 
-## GitHub and Packaging
-
-The codebase is maintained under [TWIN Foundation on GitHub](https://github.com/iotaledger) and published through the [twin.org npm organisation](https://www.npmjs.com/org/twin.org). It currently spans approximately 190 packages, with automated pipelines for build, test, release publishing, and documentation generation.
-
 ## Usage Model
 
 Connectors are designed to be consumed independently when needed. For composed solutions, the engine is used to configure and instantiate components, and the engine server is used to expose those components over REST. Application teams then build their own business logic by extending engine and engine server capabilities and by adding application-specific endpoints that can call engine services directly.
