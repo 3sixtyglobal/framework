@@ -48,6 +48,89 @@ async function waitForWorkerExits(
 	}
 }
 
+/**
+ * A worker started by startMutexWorker, with its lifecycle tracked from creation.
+ */
+interface IMutexTestWorker {
+	/**
+	 * The worker.
+	 */
+	worker: Worker;
+
+	/**
+	 * Resolves when the worker exits.
+	 */
+	exited: Promise<void>;
+
+	/**
+	 * Errors reported by the worker.
+	 */
+	errors: string[];
+
+	/**
+	 * String messages posted by the worker.
+	 */
+	messages: string[];
+}
+
+/**
+ * Start an eval worker which has its Mutex buffer requests answered by the main thread. The
+ * exit, error and message listeners are registered immediately, so an event which fires
+ * before the test awaits it is not missed.
+ * @param script The worker script.
+ * @param workerData Data passed to the worker.
+ * @returns The worker and its tracked lifecycle.
+ */
+function startMutexWorker(script: string, workerData?: unknown): IMutexTestWorker {
+	const worker = new Worker(script, { eval: true, workerData });
+	const errors: string[] = [];
+	const messages: string[] = [];
+	worker.on("error", err => errors.push(String(err)));
+	worker.on("message", (msg: unknown) => {
+		if (!Mutex.handleWorkerMessage(msg)) {
+			messages.push(String(msg));
+		}
+	});
+	const exited = new Promise<void>(resolve => {
+		worker.on("exit", () => {
+			resolve();
+		});
+	});
+	return { worker, exited, errors, messages };
+}
+
+/**
+ * Wait for a worker to post a message, failing if it exits or does not post it in time.
+ * @param testWorker The worker to wait on.
+ * @param expected The message to wait for.
+ */
+async function waitForWorkerMessage(testWorker: IMutexTestWorker, expected: string): Promise<void> {
+	if (testWorker.messages.includes(expected)) {
+		return;
+	}
+
+	let timer: ReturnType<typeof setTimeout> | undefined;
+	const received = new Promise<boolean>(resolve => {
+		testWorker.worker.on("message", (msg: unknown) => {
+			if (msg === expected) {
+				resolve(true);
+			}
+		});
+	});
+	const timedOut = new Promise<boolean>(resolve => {
+		timer = setTimeout(() => resolve(false), WORKER_EXIT_TIMEOUT_MS);
+	});
+
+	const didReceive = await Promise.race([received, testWorker.exited.then(() => false), timedOut]);
+	clearTimeout(timer);
+
+	if (!didReceive) {
+		await testWorker.worker.terminate();
+		const cause = testWorker.errors.length > 0 ? `: ${testWorker.errors[0]}` : "";
+		throw new Error(`Worker did not post "${expected}"${cause}`);
+	}
+}
+
 // All of the lock state lives on a single instance in the SharedStore, so the tests reach
 // through that instance and reset it by removing the one entry.
 interface IMutexInternal {
@@ -484,65 +567,47 @@ describe("Mutex", () => {
 		`;
 
 		test("acquires the lock once a worker releases it", async () => {
-			// Worker acquires the lock, signals main, then releases after 150 ms.
-			const worker = new Worker(
+			// Worker acquires the lock, signals main, then flags and releases it after 150 ms
+			// and exits.
+			const released = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
+			const testWorker = startMutexWorker(
 				`${fetchAndAcquireScript("worker-key")}
+				const released = new Int32Array(require("worker_threads").workerData);
 				parentPort.postMessage("locked");
 				setTimeout(() => {
+					Atomics.store(released, 0, 1);
 					Atomics.store(lock, 0, 0);
 					Atomics.notify(lock, 0, 1);
 				}, 150);`,
-				{ eval: true }
+				released.buffer
 			);
-			worker.on("message", (msg: unknown) => {
-				Mutex.handleWorkerMessage(msg);
-			});
 
 			// Wait until the worker has the lock before we block in Mutex.lock.
-			await new Promise<void>(resolve => {
-				worker.on("message", (msg: unknown) => {
-					if (msg === "locked") {
-						resolve();
-					}
-				});
-			});
+			await waitForWorkerMessage(testWorker, "locked");
 
-			const start = Date.now();
 			const acquired = await Mutex.lock("worker-key", { timeoutMs: 2000 });
-			const elapsed = Date.now() - start;
 
+			// Checked through shared memory rather than elapsed time, which a loaded machine
+			// can shorten by delaying delivery of the "locked" message.
 			expect(acquired).toEqual(true);
-			expect(elapsed).toBeGreaterThanOrEqual(140);
+			expect(Atomics.load(released, 0)).toEqual(1);
 			Mutex.unlock("worker-key");
 
-			await new Promise<void>(resolve => {
-				worker.on("exit", () => {
-					resolve();
-				});
-			});
+			// The worker can exit as soon as it releases, before this point is reached.
+			await waitForWorkerExits([testWorker.exited], [testWorker.worker], testWorker.errors);
 		});
 
 		test("times out when the worker never releases the lock", async () => {
 			// Worker acquires the lock and holds it indefinitely.
-			const worker = new Worker(
+			const testWorker = startMutexWorker(
 				`${fetchAndAcquireScript("held-forever")}
-				parentPort.postMessage("locked");`,
-				{ eval: true }
+				parentPort.postMessage("locked");`
 			);
-			worker.on("message", (msg: unknown) => {
-				Mutex.handleWorkerMessage(msg);
-			});
 
-			await new Promise<void>(resolve => {
-				worker.on("message", (msg: unknown) => {
-					if (msg === "locked") {
-						resolve();
-					}
-				});
-			});
+			await waitForWorkerMessage(testWorker, "locked");
 
 			expect(await Mutex.lock("held-forever", { timeoutMs: 100 })).toEqual(false);
-			await worker.terminate();
+			await testWorker.worker.terminate();
 		});
 
 		test("retains the key entry while a waiter is queued", async () => {
@@ -550,22 +615,10 @@ describe("Mutex", () => {
 			await Mutex.lock("contested");
 
 			// Worker fetches the same buffer via the protocol, then blocks waiting for main to release.
-			const worker = new Worker(
+			const testWorker = startMutexWorker(
 				`${fetchAndAcquireScript("contested")}
-				parentPort.postMessage("acquired");`,
-				{ eval: true }
+				parentPort.postMessage("acquired");`
 			);
-			worker.on("message", (msg: unknown) => {
-				Mutex.handleWorkerMessage(msg);
-			});
-
-			const workerAcquired = new Promise<void>(resolve => {
-				worker.on("message", (msg: unknown) => {
-					if (msg === "acquired") {
-						resolve();
-					}
-				});
-			});
 
 			// Yield to the event loop so the worker can fetch its buffer and block on the lock.
 			await new Promise<void>(resolve => {
@@ -577,13 +630,9 @@ describe("Mutex", () => {
 
 			// Release - worker wakes and acquires.
 			Mutex.unlock("contested");
-			await workerAcquired;
+			await waitForWorkerMessage(testWorker, "acquired");
 
-			await new Promise<void>(resolve => {
-				worker.on("exit", () => {
-					resolve();
-				});
-			});
+			await waitForWorkerExits([testWorker.exited], [testWorker.worker], testWorker.errors);
 		});
 
 		test("lock throws bufferFetchFailed when the main thread does not handle the buffer-fetch request", async () => {
