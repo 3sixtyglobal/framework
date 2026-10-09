@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import path from "node:path";
-import { I18n } from "@twin.org/core";
+import { I18n } from "@3sixty/core";
 import chalk from "chalk";
 import { CLIBase } from "../src/cliBase.js";
 import { CLIDisplay } from "../src/cliDisplay.js";
@@ -219,11 +219,11 @@ describe("CLI", () => {
 				version: "0.0.1",
 				icon: "🔐"
 			},
-			["@twin.org/core", localesDir],
+			["@3sixty/core", localesDir],
 			["", path.join(__dirname, "test-app"), "--version"]
 		);
 		expect(exitCode).toBe(0);
-		// Only defined in the @twin.org/core locales, so it can only be present
+		// Only defined in the @3sixty/core locales, so it can only be present
 		// if the package name was resolved to its locales directory.
 		expect(I18n.formatMessage("errorNames.generalError")).toEqual("General");
 		// The directory entry is merged in as well.
@@ -239,7 +239,7 @@ describe("CLI", () => {
 				version: "0.0.1",
 				icon: "🔐"
 			},
-			["@twin.org/not-a-real-package", localesDir],
+			["@3sixty/not-a-real-package", localesDir],
 			["", path.join(__dirname, "test-app"), "--version"]
 		);
 		expect(exitCode).toBe(0);

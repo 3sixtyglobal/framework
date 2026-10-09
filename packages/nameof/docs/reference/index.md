@@ -1,4 +1,4 @@
-# @twin.org/nameof
+# @3sixty/nameof
 
 ## Functions
 

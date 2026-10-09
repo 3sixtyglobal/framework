@@ -1,4 +1,4 @@
-# TWIN Framework
+# 3Sixty Framework
 
 This repository brings together shared libraries and practical command line tools that make it easier to build, validate, and maintain framework-based projects with a consistent developer experience. The packages focus on common concerns such as runtime helpers, data modelling, cryptography, media handling, and web-facing utilities.
 

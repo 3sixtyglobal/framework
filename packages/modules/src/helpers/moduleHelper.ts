@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Worker } from "node:worker_threads";
-import type { IContextIds } from "@twin.org/context";
+import type { IContextIds } from "@3sixty/context";
 import {
 	BaseError,
 	GeneralError,
@@ -10,8 +10,8 @@ import {
 	NativeModules,
 	SharedObjectBuffer,
 	SharedStore
-} from "@twin.org/core";
-import { nameof } from "@twin.org/nameof";
+} from "@3sixty/core";
+import { nameof } from "@3sixty/nameof";
 import { ModuleResolutionHelper } from "./moduleResolutionHelper.js";
 import type { IModuleHelperOptions } from "../models/IModuleHelperOptions.js";
 import type { IModuleWorker } from "../models/IModuleWorker.js";
@@ -424,8 +424,8 @@ export class ModuleHelper {
 						? { ...moduleHelperOptions, onMessage: undefined }
 						: undefined,
 					forwardMessages: Is.function(moduleHelperOptions?.onMessage),
-					contextUrl: import.meta.resolve("@twin.org/context"),
-					coreUrl: import.meta.resolve("@twin.org/core")
+					contextUrl: import.meta.resolve("@3sixty/context"),
+					coreUrl: import.meta.resolve("@3sixty/core")
 				},
 				name: threadName
 			}

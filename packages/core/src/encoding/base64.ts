@@ -3,7 +3,7 @@
 /* eslint-disable no-bitwise */
 /* eslint-disable no-mixed-operators */
 
-import { nameof } from "@twin.org/nameof";
+import { nameof } from "@3sixty/nameof";
 import { GeneralError } from "../errors/generalError.js";
 import { Guards } from "../utils/guards.js";
 import { NativeModules } from "../utils/nativeModules.js";

@@ -1,4 +1,4 @@
-# @twin.org/modules
+# @3sixty/modules
 
 ## Classes
 

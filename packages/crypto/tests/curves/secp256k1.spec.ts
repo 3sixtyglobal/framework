@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Converter } from "@twin.org/core";
+import { Converter } from "@3sixty/core";
 import testData from "./secp256k1.json" with { type: "json" };
 import { Secp256k1 } from "../../src/curves/secp256k1.js";
 import {

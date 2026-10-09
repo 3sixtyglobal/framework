@@ -1,9 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+import { GeneralError, Guards } from "@3sixty/core";
+import { nameof } from "@3sixty/nameof";
 // eslint-disable-next-line camelcase
 import { sha3_224, sha3_256, sha3_384, sha3_512 } from "@noble/hashes/sha3.js";
-import { GeneralError, Guards } from "@twin.org/core";
-import { nameof } from "@twin.org/nameof";
 import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
 import type { IHashInstance } from "../models/IHashInstance.js";
 

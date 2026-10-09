@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Converter } from "@twin.org/core";
+import { Converter } from "@3sixty/core";
 import { Totp } from "../../src/otp/totp.js";
 import {
 	NATIVE_CRYPTO_VARIANTS,

@@ -1,11 +1,11 @@
-# TWIN CLI Core
+# 3Sixty CLI Core
 
 This package is part of the framework workspace and provides core classes for building a CLI to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install @twin.org/cli-core
+npm install @3sixty/cli-core
 ```
 
 ## Examples

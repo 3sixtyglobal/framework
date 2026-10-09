@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import "reflect-metadata";
 import "tslib";
-import { Is } from "@twin.org/core";
+import { Is } from "@3sixty/core";
 import type { IEntitySchema } from "../models/IEntitySchema.js";
 
 const META_DATA_KEY = "EntitySchemaMetadata";

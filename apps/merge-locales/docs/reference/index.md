@@ -1,4 +1,4 @@
-# @twin.org/merge-locales
+# @3sixty/merge-locales
 
 ## Classes
 

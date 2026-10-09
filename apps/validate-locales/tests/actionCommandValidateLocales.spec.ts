@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0.
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { CLIDisplay, CLIUtils } from "@twin.org/cli-core";
-import { I18n, type ILocaleDictionary } from "@twin.org/core";
+import { CLIDisplay, CLIUtils } from "@3sixty/cli-core";
+import { I18n, type ILocaleDictionary } from "@3sixty/core";
 import { actionCommandValidateLocales } from "../src/commands/validateLocales.js";
 
 const testDir = path.dirname(fileURLToPath(import.meta.url));

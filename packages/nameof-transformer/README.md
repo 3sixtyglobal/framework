@@ -1,11 +1,11 @@
-# TWIN Nameof TypeScript Transformer
+# 3Sixty Nameof TypeScript Transformer
 
 This package is part of the framework workspace and provides typed transformer which converts types and properties to their actual name for use at runtime to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install -D @twin.org/nameof-transformer
+npm install -D @3sixty/nameof-transformer
 ```
 
 ## Configuration

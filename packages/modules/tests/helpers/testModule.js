@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-const { ContextIdStore } = await import('@twin.org/context');
-const { Mutex, NativeModules, SharedStore } = await import('@twin.org/core');
+const { ContextIdStore } = await import('@3sixty/context');
+const { Mutex, NativeModules, SharedStore } = await import('@3sixty/core');
 
 export function testMethod() {
 	return 1;

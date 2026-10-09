@@ -5,7 +5,7 @@ Use these snippets to create QR symbols from different input modes and render th
 ## QR
 
 ```typescript
-import { QR } from '@twin.org/qr';
+import { QR } from '@3sixty/qr';
 
 const qr = new QR(4, 'M');
 
@@ -16,7 +16,7 @@ matrix.length > 0; // true
 ```
 
 ```typescript
-import { QR } from '@twin.org/qr';
+import { QR } from '@3sixty/qr';
 
 const qr = new QR(2, 'Q');
 
@@ -28,7 +28,7 @@ qr.generate();
 ## TextRenderer
 
 ```typescript
-import { QR, TextRenderer } from '@twin.org/qr';
+import { QR, TextRenderer } from '@3sixty/qr';
 
 const qr = new QR(2, 'L');
 qr.addText('Hello world');
@@ -42,7 +42,7 @@ text.length > 0; // true
 ## PngRenderer
 
 ```typescript
-import { PngRenderer, QR } from '@twin.org/qr';
+import { PngRenderer, QR } from '@3sixty/qr';
 
 const qr = new QR(3, 'M');
 qr.addText('QR as PNG');
@@ -58,7 +58,7 @@ pngBytes.length > 0; // true
 ## JpegRenderer
 
 ```typescript
-import { JpegRenderer, QR } from '@twin.org/qr';
+import { JpegRenderer, QR } from '@3sixty/qr';
 
 const qr = new QR(3, 'M');
 qr.addText('QR as JPEG');

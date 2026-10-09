@@ -18,7 +18,7 @@ nameof<MyType>();
 
 cannot be resolved by normal JavaScript execution.
 
-In this repository, `@twin.org/nameof` exports placeholder functions that intentionally return an error-style fallback string when no transform is applied. The `@twin.org/nameof-transformer` package rewrites these calls during compilation so runtime code contains plain strings instead.
+In this repository, `@3sixty/nameof` exports placeholder functions that intentionally return an error-style fallback string when no transform is applied. The `@3sixty/nameof-transformer` package rewrites these calls during compilation so runtime code contains plain strings instead.
 
 ### Refactor Safety and Name Synchronisation
 
@@ -110,7 +110,7 @@ The AST transformer in `packages/nameof-transformer/src/transformer.ts` performs
 
 1. Detects calls to `nameof`, `nameofCamelCase`, and `nameofKebabCase`.
 2. Replaces recognised calls with string literals (or concatenation for parent replacement).
-3. Removes imports from `@twin.org/nameof` after transformation so compiled output does not keep
+3. Removes imports from `@3sixty/nameof` after transformation so compiled output does not keep
    unused placeholder imports.
 
 ## tsconfig Integration
@@ -120,7 +120,7 @@ Framework packages and apps register the transformer through TypeScript plugin c
 ```json
 {
   "compilerOptions": {
-    "plugins": [{ "transform": "@twin.org/nameof-transformer" }]
+    "plugins": [{ "transform": "@3sixty/nameof-transformer" }]
   }
 }
 ```
@@ -141,10 +141,10 @@ At workspace level, scripts such as `npm run build` and `npm run dist` fan out i
 
 ## Test Pipeline (Vitest)
 
-Vitest commonly uses esbuild transforms, which do not apply TypeScript transformer plugins from `tsconfig` by default. To keep behaviour aligned with build output, framework packages register the `@twin.org/nameof-vitest-plugin` plugin:
+Vitest commonly uses esbuild transforms, which do not apply TypeScript transformer plugins from `tsconfig` by default. To keep behaviour aligned with build output, framework packages register the `@3sixty/nameof-vitest-plugin` plugin:
 
 ```typescript
-import { NameOfPlugin } from '@twin.org/nameof-vitest-plugin';
+import { NameOfPlugin } from '@3sixty/nameof-vitest-plugin';
 
 export default defineConfig({
   plugins: [NameOfPlugin]
@@ -155,7 +155,7 @@ The plugin runs as a pre-transform and applies the same string rewriting logic u
 
 ## Additional Pipelines Using Manual Transform
 
-Some tooling flows process source-like strings outside normal TypeScript compilation. For those cases, the repository uses `manual(...)` from `@twin.org/nameof-transformer` directly.
+Some tooling flows process source-like strings outside normal TypeScript compilation. For those cases, the repository uses `manual(...)` from `@3sixty/nameof-transformer` directly.
 
 Example: locale validation command expansion in
 `apps/validate-locales/src/commands/validateLocales.ts`.
@@ -164,8 +164,8 @@ This keeps `nameof` expansion consistent even when code is handled as text fragm
 
 ## Practical Guidance
 
-- Always import operators from `@twin.org/nameof`.
-- Ensure `compilerOptions.plugins` includes `@twin.org/nameof-transformer` in any new package/app
+- Always import operators from `@3sixty/nameof`.
+- Ensure `compilerOptions.plugins` includes `@3sixty/nameof-transformer` in any new package/app
   tsconfig.
 - Use `tspc` in build and type-check scripts where transformer behaviour is required.
 - Add `NameOfPlugin` to `vitest.config.ts` so test-time behaviour matches compiled output.

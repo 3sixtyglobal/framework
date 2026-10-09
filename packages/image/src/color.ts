@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable no-bitwise */
 
-import { GeneralError, Guards, Is } from "@twin.org/core";
-import { nameof } from "@twin.org/nameof";
+import { GeneralError, Guards, Is } from "@3sixty/core";
+import { nameof } from "@3sixty/nameof";
 
 /**
  * Class to represent a color.

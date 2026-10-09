@@ -1,4 +1,4 @@
-# @twin.org/crypto-cli
+# @3sixty/crypto-cli
 
 ## Classes
 

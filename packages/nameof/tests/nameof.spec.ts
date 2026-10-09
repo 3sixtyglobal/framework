@@ -5,7 +5,7 @@ import { nameof } from "../src/nameof.js";
 describe("Nameof", () => {
 	test("the nameof method returns an error", () => {
 		expect(nameof()).toEqual(
-			"@twin.org/nameof-transformer is not in the build pipeline, you need to use a compiler that supports transformer plugins."
+			"@3sixty/nameof-transformer is not in the build pipeline, you need to use a compiler that supports transformer plugins."
 		);
 	});
 });

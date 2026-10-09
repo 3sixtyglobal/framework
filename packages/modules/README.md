@@ -1,11 +1,11 @@
-# TWIN Framework Modules
+# 3Sixty Framework Modules
 
 This package is part of the framework workspace and provides helper classes for loading and executing from modules to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install @twin.org/modules
+npm install @3sixty/modules
 ```
 
 ## Examples

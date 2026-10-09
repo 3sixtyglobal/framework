@@ -14,7 +14,7 @@ export class MyClass {
 
 	public async doSomething(): Promise<void> {
 		const result = await ModuleHelper.execModuleMethod(
-			"@twin.org/engine-core",
+			"@3sixty/engine-core",
 			"EngineCoreBuilder.fromClone",
 			{ param: "value" }
 		);

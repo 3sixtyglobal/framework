@@ -5,7 +5,7 @@ Use these snippets to validate input, transform data and handle errors consisten
 ## Is
 
 ```typescript
-import { Is } from '@twin.org/core';
+import { Is } from '@3sixty/core';
 
 console.log(Is.string('alpha')); // true
 console.log(Is.number(42)); // true
@@ -22,8 +22,8 @@ console.log(Is.uuidV7('019531ce-6f7d-7c08-a6f3-f6f7cf9f41b0')); // true
 ## Guards
 
 ```typescript
-import { Guards } from '@twin.org/core';
-import { nameof } from '@twin.org/nameof';
+import { Guards } from '@3sixty/core';
+import { nameof } from '@3sixty/nameof';
 
 const name = 'Ari';
 const profile = {
@@ -55,8 +55,8 @@ try {
 ## Validation
 
 ```typescript
-import type { IValidationFailure } from '@twin.org/core';
-import { Validation } from '@twin.org/core';
+import type { IValidationFailure } from '@3sixty/core';
+import { Validation } from '@3sixty/core';
 
 const failures: IValidationFailure[] = [];
 
@@ -76,7 +76,7 @@ console.log(failures.length); // 0
 ## ObjectHelper
 
 ```typescript
-import { ObjectHelper } from '@twin.org/core';
+import { ObjectHelper } from '@3sixty/core';
 
 const source = {
   id: 'u-01',
@@ -94,7 +94,7 @@ ObjectHelper.clone(source).id; // 'u-01'
 ## Converter
 
 ```typescript
-import { Converter } from '@twin.org/core';
+import { Converter } from '@3sixty/core';
 
 const bytes = Converter.utf8ToBytes('twin');
 Converter.bytesToHex(bytes); // '7477696e'
@@ -104,7 +104,7 @@ Converter.bytesToBase64Url(bytes); // 'dHdpbg'
 ## Coerce
 
 ```typescript
-import { Coerce } from '@twin.org/core';
+import { Coerce } from '@3sixty/core';
 
 Coerce.integer('19'); // 19
 Coerce.boolean('true'); // true
@@ -114,7 +114,7 @@ Coerce.dateTime('2026-03-09T11:32:00Z')?.toISOString(); // '2026-03-09T11:32:00.
 ## StringHelper
 
 ```typescript
-import { StringHelper } from '@twin.org/core';
+import { StringHelper } from '@3sixty/core';
 
 StringHelper.kebabCase('OrderCreatedEvent'); // 'order-created-event'
 StringHelper.camelCase('order-created-event'); // 'orderCreatedEvent'
@@ -136,7 +136,7 @@ import {
   UnauthorizedError,
   UnprocessableError,
   ValidationError
-} from '@twin.org/core';
+} from '@3sixty/core';
 
 const base = new BaseError(this.CLASS_NAME, 'baseUnexpectedFailure', { module: 'orders' });
 new AlreadyExistsError(this.CLASS_NAME, 'alreadyExistsOrder', { orderId: 'o-1' });
@@ -159,7 +159,7 @@ base.toJsonObject().name; // 'BaseError'
 ## Factory
 
 ```typescript
-import { Factory } from '@twin.org/core';
+import { Factory } from '@3sixty/core';
 
 interface IHasher {
   hash(value: string): string;
@@ -182,7 +182,7 @@ factory.create('simple').hash('abc'); // 'abc-hash'
 A facade wraps the components a factory produces, so a cross cutting concern can be applied without modifying them.
 
 ```typescript
-import { ComponentFactory, FacadeFactory, Is, type IFacade } from '@twin.org/core';
+import { ComponentFactory, FacadeFactory, Is, type IFacade } from '@3sixty/core';
 
 class LoggingFacade implements IFacade {
   public wrap(target: unknown): unknown {
@@ -217,7 +217,7 @@ An instance is passed through the facades in the order they were activated, so t
 ## Encoding and Compression
 
 ```typescript
-import { Base32, Base58, Base64, Base64Url, Compression, HexHelper } from '@twin.org/core';
+import { Base32, Base58, Base64, Base64Url, Compression, HexHelper } from '@3sixty/core';
 
 const bytes = new Uint8Array([1, 2, 3, 4]);
 
@@ -232,7 +232,7 @@ HexHelper.addPrefix('aabbcc'); // '0xaabbcc'
 ## AsyncCache and SharedStore
 
 ```typescript
-import { AsyncCache, SharedStore } from '@twin.org/core';
+import { AsyncCache, SharedStore } from '@3sixty/core';
 
 const cache = new AsyncCache<string, number>({ expirySeconds: 30 });
 await cache.exec('invoice-1', async () => 4200); // 4200
@@ -244,7 +244,7 @@ SharedStore.get<string>('region'); // 'eu-west-1'
 ## NativeModules
 
 ```typescript
-import { NativeModules } from '@twin.org/core';
+import { NativeModules } from '@3sixty/core';
 
 // Pass the constructor type, not the instance type, to reach statics such as Buffer.from
 NativeModules.getType<BufferConstructor>('Buffer'); // the Buffer constructor on Node, undefined in a browser
@@ -259,7 +259,7 @@ NativeModules.names(); // ['node:crypto']
 ## RandomHelper and NumberHelper
 
 ```typescript
-import { NumberHelper, RandomHelper } from '@twin.org/core';
+import { NumberHelper, RandomHelper } from '@3sixty/core';
 
 NumberHelper.clamp(150, 0, 100); // 100
 RandomHelper.generate(16).length; // 16
@@ -269,7 +269,7 @@ RandomHelper.generateUuidV7(); // 'xxxxxxxx-xxxx-7xxx-xxxx-xxxxxxxxxxxx'
 ## Url, Urn and BitString
 
 ```typescript
-import { BitString, Url, Urn } from '@twin.org/core';
+import { BitString, Url, Urn } from '@3sixty/core';
 
 const url = Url.fromParts({
   scheme: 'https',
@@ -287,7 +287,7 @@ bits.getLength(); // 4
 ## JsonHelper
 
 ```typescript
-import { JsonHelper } from '@twin.org/core';
+import { JsonHelper } from '@3sixty/core';
 
 const left = { id: 'u-1', active: true };
 const right = { id: 'u-1', active: false };
@@ -299,7 +299,7 @@ JsonHelper.patch(left, patch); // { id: 'u-1', active: false }
 ## ErrorHelper
 
 ```typescript
-import { BaseError, ErrorHelper } from '@twin.org/core';
+import { BaseError, ErrorHelper } from '@3sixty/core';
 
 const error = new BaseError(this.CLASS_NAME, 'saveFailed', { entityId: 'u-1' });
 const messages = ErrorHelper.formatErrors(error);
@@ -310,7 +310,7 @@ messages[0]; // 'saveFailed'
 ## Type Utilities
 
 ```typescript
-import type { ObjectOrArray, SingleOccurrenceArray } from '@twin.org/core';
+import type { ObjectOrArray, SingleOccurrenceArray } from '@3sixty/core';
 
 type IdOrIds = ObjectOrArray<string>;
 
@@ -338,7 +338,7 @@ const mixedObjects: SingleOccurrenceArray<IFoo, IBar> = [
 ## Array, Uint8Array, Filename and Env Helpers
 
 ```typescript
-import { ArrayHelper, EnvHelper, FilenameHelper, Uint8ArrayHelper } from '@twin.org/core';
+import { ArrayHelper, EnvHelper, FilenameHelper, Uint8ArrayHelper } from '@3sixty/core';
 
 ArrayHelper.matches([1, 2, 3], [1, 2, 3]); // true
 Uint8ArrayHelper.concat(new Uint8Array([1, 2]), new Uint8Array([3, 4]));
@@ -349,7 +349,7 @@ EnvHelper.envToJson('API_KEY=abc\nLOG_LEVEL=debug'); // { API_KEY: 'abc', LOG_LE
 ## I18n
 
 ```typescript
-import { I18n } from '@twin.org/core';
+import { I18n } from '@3sixty/core';
 
 I18n.setLocale('en');
 I18n.addDictionary('en', {

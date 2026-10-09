@@ -1,10 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import type * as NodeCrypto from "node:crypto";
+import { Guards, Is, Uint8ArrayHelper } from "@3sixty/core";
+import { nameof } from "@3sixty/nameof";
 import { chacha20poly1305 } from "@noble/ciphers/chacha.js";
 import type { CipherWithOutput } from "@noble/ciphers/utils.js";
-import { Guards, Is, Uint8ArrayHelper } from "@twin.org/core";
-import { nameof } from "@twin.org/nameof";
 import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
 
 /**

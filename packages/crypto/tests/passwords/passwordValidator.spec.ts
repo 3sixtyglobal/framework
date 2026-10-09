@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { IValidationFailure } from "@twin.org/core";
+import type { IValidationFailure } from "@3sixty/core";
 import { PasswordGenerator } from "../../src/passwords/passwordGenerator.js";
 import { PasswordValidator } from "../../src/passwords/passwordValidator.js";
 

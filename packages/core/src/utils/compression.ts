@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import type * as NodeZlib from "node:zlib";
-import { nameof } from "@twin.org/nameof";
+import { nameof } from "@3sixty/nameof";
 import { Guards } from "./guards.js";
 import { NativeModules } from "./nativeModules.js";
 import { CompressionType } from "../models/compressionType.js";

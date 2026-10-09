@@ -74,7 +74,7 @@ TWIN_NODE_TENANT_ENABLED=true
 
 ### Abstracting Over Deployment Mode
 
-Background tasks, scheduled operations, and any code that needs to run the same logic for every active tenant can use `IPlatformComponent` (implemented by `PlatformService` in `@twin.org/api-service`). This component abstracts over the deployment mode so that the calling code does not need to know whether the node is single-tenant or multi-tenant.
+Background tasks, scheduled operations, and any code that needs to run the same logic for every active tenant can use `IPlatformComponent` (implemented by `PlatformService` in `@3sixty/api-service`). This component abstracts over the deployment mode so that the calling code does not need to know whether the node is single-tenant or multi-tenant.
 
 `IPlatformComponent` exposes two methods:
 

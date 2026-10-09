@@ -1,10 +1,10 @@
 {
-	"name": "@twin.org/image",
-	"version": "0.11.1-next.0",
+	"name": "@3sixty/image",
+	"version": "0.20.0-next.0",
 	"description": "Classes for image manipulation",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/3sixtyglobal/twin-framework.git",
+		"url": "git+https://github.com/3sixtyglobal/framework.git",
 		"directory": "packages/image"
 	},
 	"author": "martyn.janes@iota.org",
@@ -28,13 +28,13 @@
 		"dist:no-test": "pnpm run clean && concurrently -g -n build,locales,types \"pnpm run build\" \"pnpm run validate-locales\" \"pnpm run test:build\""
 	},
 	"dependencies": {
-		"@twin.org/core": "0.11.1-next.0",
-		"@twin.org/nameof": "0.11.1-next.0"
+		"@3sixty/core": "0.20.0-next.0",
+		"@3sixty/nameof": "0.20.0-next.0"
 	},
 	"devDependencies": {
-		"@twin.org/nameof-transformer": "0.11.1-next.0",
-		"@twin.org/nameof-vitest-plugin": "0.11.1-next.0",
-		"@twin.org/validate-locales": "0.11.1-next.0",
+		"@3sixty/nameof-transformer": "0.20.0-next.0",
+		"@3sixty/nameof-vitest-plugin": "0.20.0-next.0",
+		"@3sixty/validate-locales": "0.20.0-next.0",
 		"@vitest/coverage-v8": "5.0.1",
 		"copyfiles": "2.4.1",
 		"concurrently": "10.0.5",
@@ -69,7 +69,7 @@
 		"blockchain"
 	],
 	"bugs": {
-		"url": "git+https://github.com/3sixtyglobal/twin-framework/issues"
+		"url": "git+https://github.com/3sixtyglobal/framework/issues"
 	},
-	"homepage": "https://twindev.org"
+	"homepage": "https://3sixty.global"
 }

@@ -1,11 +1,11 @@
-# TWIN QR
+# 3Sixty QR
 
 This package is part of the framework workspace and provides creating QR codes to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install @twin.org/qr
+npm install @3sixty/qr
 ```
 
 ## Examples

@@ -117,25 +117,25 @@ export function PartitionKeyDiagram() {
 			}}
 		>
 			<style>{`
-        .twin-pk-row {
+        .brand-pk-row {
           display: grid;
           grid-template-columns: 2fr auto 1.3fr auto 1.2fr;
           gap: 8px;
           align-items: center;
         }
 
-        .twin-pk-arrow {
+        .brand-pk-arrow {
           text-align: center;
           color: #a0b8f0;
           font-size: 1.2rem;
         }
 
         @media (max-width: 700px) {
-          .twin-pk-row {
+          .brand-pk-row {
             grid-template-columns: 1fr;
           }
 
-          .twin-pk-arrow {
+          .brand-pk-arrow {
             transform: rotate(90deg);
           }
         }
@@ -144,7 +144,7 @@ export function PartitionKeyDiagram() {
 				Partition Key Derivation
 			</p>
 			<div style={{ display: 'grid', gap: '8px' }}>
-				<div className="twin-pk-row">
+				<div className="brand-pk-row">
 					<div
 						style={{
 							background: '#263f83',
@@ -156,7 +156,7 @@ export function PartitionKeyDiagram() {
 						<div style={{ fontSize: '0.78rem', opacity: 0.75 }}>node (full form)</div>
 						<M>did:iota:0x8c3f4a5e...1f0a</M>
 					</div>
-					<div className="twin-pk-arrow">→</div>
+					<div className="brand-pk-arrow">→</div>
 					<div
 						style={{
 							background: '#4b84e0',
@@ -171,7 +171,7 @@ export function PartitionKeyDiagram() {
 							extracts id segment, compacts hex to base64url
 						</div>
 					</div>
-					<div className="twin-pk-arrow">→</div>
+					<div className="brand-pk-arrow">→</div>
 					<div
 						style={{
 							background: '#1a3370',
@@ -185,7 +185,7 @@ export function PartitionKeyDiagram() {
 					</div>
 				</div>
 
-				<div className="twin-pk-row">
+				<div className="brand-pk-row">
 					<div
 						style={{
 							background: '#263f83',
@@ -197,7 +197,7 @@ export function PartitionKeyDiagram() {
 						<div style={{ fontSize: '0.78rem', opacity: 0.75 }}>tenant (full form)</div>
 						<M>7f3a9c1e0b4d6f8a...4e6f</M>
 					</div>
-					<div className="twin-pk-arrow">→</div>
+					<div className="brand-pk-arrow">→</div>
 					<div
 						style={{
 							background: '#4b84e0',
@@ -212,7 +212,7 @@ export function PartitionKeyDiagram() {
 							converts 32-hex tenant id to base64url
 						</div>
 					</div>
-					<div className="twin-pk-arrow">→</div>
+					<div className="brand-pk-arrow">→</div>
 					<div
 						style={{
 							background: '#1a3370',

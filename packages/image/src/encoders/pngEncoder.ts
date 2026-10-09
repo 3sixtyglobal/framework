@@ -3,7 +3,7 @@
 /* eslint-disable no-bitwise */
 /* eslint-disable no-mixed-operators */
 /* eslint-disable no-continue */
-import { Compression } from "@twin.org/core";
+import { Compression } from "@3sixty/core";
 import type { Frame } from "./png/frame.js";
 import type { ImageData } from "./png/imageData.js";
 import type { Leaf } from "./png/leaf.js";

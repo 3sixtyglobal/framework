@@ -3,8 +3,8 @@
 /* eslint-disable no-bitwise */
 /* eslint-disable no-continue */
 /* eslint-disable no-mixed-operators */
-import { GeneralError, Is } from "@twin.org/core";
-import { nameof } from "@twin.org/nameof";
+import { GeneralError, Is } from "@3sixty/core";
+import { nameof } from "@3sixty/nameof";
 import { QRAlphaNumeric } from "./data/qrAlphaNumeric.js";
 import { QRByte8 } from "./data/qrByte8.js";
 import type { QRDataBase } from "./data/qrDataBase.js";

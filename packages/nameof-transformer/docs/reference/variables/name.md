@@ -1,6 +1,6 @@
 # Variable: name
 
-> `const` **name**: `"@twin.org/nameof-transformer"` = `"@twin.org/nameof-transformer"`
+> `const` **name**: `"@3sixty/nameof-transformer"` = `"@3sixty/nameof-transformer"`
 
 Exports the factory name.
 

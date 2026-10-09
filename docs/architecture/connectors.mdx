@@ -21,7 +21,7 @@ The connector model also enables vendor independence. Rather than binding the pl
 
 ## The Connector Interface
 
-Every connector in the platform implements `IComponent`, an interface defined in the `@twin.org/core` package. The contract is deliberately minimal, consisting of four members: a required `className()` method that returns a stable string identifier for the implementing class, and three optional lifecycle methods named `bootstrap`, `start`, and `stop`. Each lifecycle method accepts an optional `nodeLoggingComponentType` string that allows log output generated during startup to be routed correctly through the logging subsystem before it is fully initialised.
+Every connector in the platform implements `IComponent`, an interface defined in the `@3sixty/core` package. The contract is deliberately minimal, consisting of four members: a required `className()` method that returns a stable string identifier for the implementing class, and three optional lifecycle methods named `bootstrap`, `start`, and `stop`. Each lifecycle method accepts an optional `nodeLoggingComponentType` string that allows log output generated during startup to be routed correctly through the logging subsystem before it is fully initialised.
 
 The separation between `bootstrap` and `start` allows connectors with ordering dependencies to signal their readiness in stages. A connector may use `bootstrap` to perform initialisation tasks that must complete before any other connector starts, and `start` to begin normal operation once all bootstrapped dependencies are available. The `stop` method provides a structured shutdown path, allowing connections to be closed and in-flight operations to complete cleanly before the process exits.
 
@@ -53,7 +53,7 @@ The identity, wallet, NFT, and verifiable storage domains each have IOTA Tangle-
 
 ## The Factory System
 
-Each connector domain's `-models` package exports a named factory singleton created through `Factory.createFactory<IXxxConnector>`, a generic utility from `@twin.org/core`. The factory stores named generator functions and holds lazily created instances. Because it is backed by a `SharedStore`, the same singleton is accessible across all module boundaries within a running process without any direct import coupling between the modules involved. A connector registered by the engine initialisation code is immediately available to any service that holds a reference to the same factory, even if the two modules have no knowledge of each other.
+Each connector domain's `-models` package exports a named factory singleton created through `Factory.createFactory<IXxxConnector>`, a generic utility from `@3sixty/core`. The factory stores named generator functions and holds lazily created instances. Because it is backed by a `SharedStore`, the same singleton is accessible across all module boundaries within a running process without any direct import coupling between the modules involved. A connector registered by the engine initialisation code is immediately available to any service that holds a reference to the same factory, even if the two modules have no knowledge of each other.
 
 Connector instances are registered by name using a call such as `EntityStorageConnectorFactory.register('my-store', () => instance)`. Consuming code retrieves instances by the same name using `EntityStorageConnectorFactory.get('my-store')`, which throws an informative error if the requested name has not been registered. The `hasName` method can be used to check availability before attempting retrieval. The factory name used for each registry, for example `'entity-storage'` or `'logging'`, scopes the instances to their specific connector interface type, preventing name collisions across domains.
 
@@ -85,48 +85,48 @@ Connectors that do not require any of these lifecycle phases simply omit the opt
 
 ## Available Connectors
 
-The table below lists the connector packages available across the platform. Package names follow the naming convention `@twin.org/<domain>-connector-<backend>`.
+The table below lists the connector packages available across the platform. Package names follow the naming convention `@3sixty/<domain>-connector-<backend>`.
 
-| Domain             | Backend            | Package                                                 |
-| ------------------ | ------------------ | ------------------------------------------------------- |
-| Entity Storage     | In-memory          | `@twin.org/entity-storage-connector-memory`             |
-| Entity Storage     | File system        | `@twin.org/entity-storage-connector-file`               |
-| Entity Storage     | MongoDB            | `@twin.org/entity-storage-connector-mongodb`            |
-| Entity Storage     | MySQL              | `@twin.org/entity-storage-connector-mysql`              |
-| Entity Storage     | PostgreSQL         | `@twin.org/entity-storage-connector-postgresql`         |
-| Entity Storage     | ScyllaDB           | `@twin.org/entity-storage-connector-scylladb`           |
-| Entity Storage     | AWS DynamoDB       | `@twin.org/entity-storage-connector-dynamodb`           |
-| Entity Storage     | Azure CosmosDB     | `@twin.org/entity-storage-connector-cosmosdb`           |
-| Entity Storage     | GCP Firestore      | `@twin.org/entity-storage-connector-gcp-firestore`      |
-| Entity Storage     | Synchronised       | `@twin.org/entity-storage-connector-synchronised`       |
-| Blob Storage       | IPFS               | `@twin.org/blob-storage-connector-ipfs`                 |
-| Blob Storage       | AWS S3             | `@twin.org/blob-storage-connector-aws-s3`               |
-| Blob Storage       | Azure Blob         | `@twin.org/blob-storage-connector-azure`                |
-| Blob Storage       | GCP Storage        | `@twin.org/blob-storage-connector-gcp`                  |
-| Blob Storage       | In-memory          | `@twin.org/blob-storage-connector-memory`               |
-| Blob Storage       | File system        | `@twin.org/blob-storage-connector-file`                 |
-| Logging            | Console            | `@twin.org/logging-connector-console`                   |
-| Logging            | Entity Storage     | `@twin.org/logging-connector-entity-storage`            |
-| Logging            | OpenTelemetry      | `@twin.org/logging-connector-opentelemetry`             |
-| Vault              | Entity Storage     | `@twin.org/vault-connector-entity-storage`              |
-| Vault              | HashiCorp Vault    | `@twin.org/vault-connector-hashicorp`                   |
-| Identity           | IOTA               | `@twin.org/identity-connector-iota`                     |
-| Identity           | Entity Storage     | `@twin.org/identity-connector-entity-storage`           |
-| Identity           | Universal Resolver | `@twin.org/identity-connector-universal`                |
-| Wallet             | IOTA               | `@twin.org/wallet-connector-iota`                       |
-| Wallet             | Entity Storage     | `@twin.org/wallet-connector-entity-storage`             |
-| NFT                | IOTA               | `@twin.org/nft-connector-iota`                          |
-| NFT                | Entity Storage     | `@twin.org/nft-connector-entity-storage`                |
-| Verifiable Storage | IOTA               | `@twin.org/verifiable-storage-connector-iota`           |
-| Verifiable Storage | Entity Storage     | `@twin.org/verifiable-storage-connector-entity-storage` |
-| Attestation        | NFT-based          | `@twin.org/attestation-connector-nft`                   |
-| Attestation        | Open Attestation   | `@twin.org/attestation-connector-open-attestation`      |
-| Event Bus          | In-process         | `@twin.org/event-bus-connector-local`                   |
-| Telemetry          | Entity Storage     | `@twin.org/telemetry-connector-entity-storage`          |
-| Telemetry          | OpenTelemetry      | `@twin.org/telemetry-connector-opentelemetry`           |
-| Notarization       | IOTA               | `@twin.org/notarization-connector-iota`                 |
-| Notarization       | Entity Storage     | `@twin.org/notarization-connector-entity-storage`       |
-| Hierarchies        | IOTA               | `@twin.org/hierarchies-connector-iota`                  |
-| Hierarchies        | Entity Storage     | `@twin.org/hierarchies-connector-entity-storage`        |
-| Messaging          | AWS                | `@twin.org/messaging-connector-aws`                     |
-| Messaging          | Entity Storage     | `@twin.org/messaging-connector-entity-storage`          |
+| Domain             | Backend            | Package                                               |
+| ------------------ | ------------------ | ----------------------------------------------------- |
+| Entity Storage     | In-memory          | `@3sixty/entity-storage-connector-memory`             |
+| Entity Storage     | File system        | `@3sixty/entity-storage-connector-file`               |
+| Entity Storage     | MongoDB            | `@3sixty/entity-storage-connector-mongodb`            |
+| Entity Storage     | MySQL              | `@3sixty/entity-storage-connector-mysql`              |
+| Entity Storage     | PostgreSQL         | `@3sixty/entity-storage-connector-postgresql`         |
+| Entity Storage     | ScyllaDB           | `@3sixty/entity-storage-connector-scylladb`           |
+| Entity Storage     | AWS DynamoDB       | `@3sixty/entity-storage-connector-dynamodb`           |
+| Entity Storage     | Azure CosmosDB     | `@3sixty/entity-storage-connector-cosmosdb`           |
+| Entity Storage     | GCP Firestore      | `@3sixty/entity-storage-connector-gcp-firestore`      |
+| Entity Storage     | Synchronised       | `@3sixty/entity-storage-connector-synchronised`       |
+| Blob Storage       | IPFS               | `@3sixty/blob-storage-connector-ipfs`                 |
+| Blob Storage       | AWS S3             | `@3sixty/blob-storage-connector-aws-s3`               |
+| Blob Storage       | Azure Blob         | `@3sixty/blob-storage-connector-azure`                |
+| Blob Storage       | GCP Storage        | `@3sixty/blob-storage-connector-gcp`                  |
+| Blob Storage       | In-memory          | `@3sixty/blob-storage-connector-memory`               |
+| Blob Storage       | File system        | `@3sixty/blob-storage-connector-file`                 |
+| Logging            | Console            | `@3sixty/logging-connector-console`                   |
+| Logging            | Entity Storage     | `@3sixty/logging-connector-entity-storage`            |
+| Logging            | OpenTelemetry      | `@3sixty/logging-connector-opentelemetry`             |
+| Vault              | Entity Storage     | `@3sixty/vault-connector-entity-storage`              |
+| Vault              | HashiCorp Vault    | `@3sixty/vault-connector-hashicorp`                   |
+| Identity           | IOTA               | `@3sixty/identity-connector-iota`                     |
+| Identity           | Entity Storage     | `@3sixty/identity-connector-entity-storage`           |
+| Identity           | Universal Resolver | `@3sixty/identity-connector-universal`                |
+| Wallet             | IOTA               | `@3sixty/wallet-connector-iota`                       |
+| Wallet             | Entity Storage     | `@3sixty/wallet-connector-entity-storage`             |
+| NFT                | IOTA               | `@3sixty/nft-connector-iota`                          |
+| NFT                | Entity Storage     | `@3sixty/nft-connector-entity-storage`                |
+| Verifiable Storage | IOTA               | `@3sixty/verifiable-storage-connector-iota`           |
+| Verifiable Storage | Entity Storage     | `@3sixty/verifiable-storage-connector-entity-storage` |
+| Attestation        | NFT-based          | `@3sixty/attestation-connector-nft`                   |
+| Attestation        | Open Attestation   | `@3sixty/attestation-connector-open-attestation`      |
+| Event Bus          | In-process         | `@3sixty/event-bus-connector-local`                   |
+| Telemetry          | Entity Storage     | `@3sixty/telemetry-connector-entity-storage`          |
+| Telemetry          | OpenTelemetry      | `@3sixty/telemetry-connector-opentelemetry`           |
+| Notarization       | IOTA               | `@3sixty/notarization-connector-iota`                 |
+| Notarization       | Entity Storage     | `@3sixty/notarization-connector-entity-storage`       |
+| Hierarchies        | IOTA               | `@3sixty/hierarchies-connector-iota`                  |
+| Hierarchies        | Entity Storage     | `@3sixty/hierarchies-connector-entity-storage`        |
+| Messaging          | AWS                | `@3sixty/messaging-connector-aws`                     |
+| Messaging          | Entity Storage     | `@3sixty/messaging-connector-entity-storage`          |

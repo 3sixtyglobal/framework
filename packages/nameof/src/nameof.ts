@@ -9,7 +9,7 @@
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function nameof<T>(property?: unknown, replaceParent?: string): string {
-	return "@twin.org/nameof-transformer is not in the build pipeline, you need to use a compiler that supports transformer plugins.";
+	return "@3sixty/nameof-transformer is not in the build pipeline, you need to use a compiler that supports transformer plugins.";
 }
 
 /**
@@ -20,7 +20,7 @@ export function nameof<T>(property?: unknown, replaceParent?: string): string {
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function nameofKebabCase<T>(property?: unknown, replaceParent?: string): string {
-	return "@twin.org/nameof-transformer is not in the build pipeline, you need to use a compiler that supports transformer plugins.";
+	return "@3sixty/nameof-transformer is not in the build pipeline, you need to use a compiler that supports transformer plugins.";
 }
 
 /**
@@ -31,5 +31,5 @@ export function nameofKebabCase<T>(property?: unknown, replaceParent?: string): 
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function nameofCamelCase<T>(property?: unknown, replaceParent?: string): string {
-	return "@twin.org/nameof-transformer is not in the build pipeline, you need to use a compiler that supports transformer plugins.";
+	return "@3sixty/nameof-transformer is not in the build pipeline, you need to use a compiler that supports transformer plugins.";
 }

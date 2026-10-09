@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import path from "node:path";
-import { SharedStore } from "@twin.org/core";
+import { SharedStore } from "@3sixty/core";
 import type { IContextIds } from "../../src/models/IContextIds.js";
 import { ContextIdStore } from "../../src/utils/contextIdStore.js";
 

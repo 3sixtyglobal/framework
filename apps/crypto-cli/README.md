@@ -1,11 +1,11 @@
-# TWIN Crypto CLI
+# 3Sixty Crypto CLI
 
 This application is part of the framework workspace and provides command line interface for interacting with the crypto tools to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install -D @twin.org/crypto-cli
+npm install -D @3sixty/crypto-cli
 ```
 
 ## Usage

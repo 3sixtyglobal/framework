@@ -1,4 +1,4 @@
-# @twin.org/web
+# @3sixty/web
 
 ## Classes
 

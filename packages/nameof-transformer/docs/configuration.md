@@ -29,7 +29,7 @@ Modify your `tsconfig.json` to use the transformer.
     "compilerOptions": {
         ...
         "plugins": [
-            { "transform": "@twin.org/nameof-transformer" }
+            { "transform": "@3sixty/nameof-transformer" }
         ]
     },
     ...

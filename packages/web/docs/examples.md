@@ -5,7 +5,7 @@ Use these snippets for token handling, fetch utilities and HTTP header helpers i
 ## Jwt
 
 ```typescript
-import { Jwt } from '@twin.org/web';
+import { Jwt } from '@3sixty/web';
 
 const payload = {
   sub: 'user-01',
@@ -20,7 +20,7 @@ Jwt.decode(token).sub; // 'user-01'
 ```
 
 ```typescript
-import { Jwt } from '@twin.org/web';
+import { Jwt } from '@3sixty/web';
 
 const token = Jwt.encode({ sub: 'u-2' }, { alg: 'HS256' });
 Jwt.verify(token, {
@@ -31,7 +31,7 @@ Jwt.verify(token, {
 ## FetchHelper
 
 ```typescript
-import { FetchHelper } from '@twin.org/web';
+import { FetchHelper } from '@3sixty/web';
 
 const response = await FetchHelper.fetchJson<{ status: string }>('https://api.example.org/status', {
   method: 'GET',
@@ -44,7 +44,7 @@ response.status; // 'ok'
 ## HeaderHelper
 
 ```typescript
-import { HeaderHelper } from '@twin.org/web';
+import { HeaderHelper } from '@3sixty/web';
 
 const header = HeaderHelper.createBearer('token-123');
 
@@ -54,7 +54,7 @@ HeaderHelper.extractBearer(header); // 'token-123'
 ## Jwk and Jws
 
 ```typescript
-import { Jwk, Jws } from '@twin.org/web';
+import { Jwk, Jws } from '@3sixty/web';
 
 const jwk = Jwk.fromEd25519Public(new Uint8Array(32));
 const compact = Jws.create(
@@ -75,7 +75,7 @@ jwk.kty; // 'OKP'
 ## CookieHelper
 
 ```typescript
-import { CookieHelper } from '@twin.org/web';
+import { CookieHelper } from '@3sixty/web';
 
 CookieHelper.createCookie('sessionId', 'abc123', {
   path: '/',
@@ -88,7 +88,7 @@ CookieHelper.createCookie('sessionId', 'abc123', {
 ## MimeTypeHelper
 
 ```typescript
-import { MimeTypeHelper } from '@twin.org/web';
+import { MimeTypeHelper } from '@3sixty/web';
 
 MimeTypeHelper.detect('avatar.png'); // 'image/png'
 MimeTypeHelper.defaultExtension('application/json'); // 'json'
@@ -97,7 +97,7 @@ MimeTypeHelper.defaultExtension('application/json'); // 'json'
 ## FetchError
 
 ```typescript
-import { FetchError } from '@twin.org/web';
+import { FetchError } from '@3sixty/web';
 
 const error = new FetchError(this.CLASS_NAME, 'fetchFailed', {
   statusCode: 503,

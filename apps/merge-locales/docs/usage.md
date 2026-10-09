@@ -7,14 +7,14 @@ Use this page to check available options before combining locale files from depe
 To install and run the CLI locally use the following commands:
 
 ```shell
-npm install @twin.org/merge-locales -g
+npm install @3sixty/merge-locales -g
 merge-locales
 ```
 
 or run directly using NPX:
 
 ```shell
-npx "@twin.org/merge-locales"
+npx "@3sixty/merge-locales"
 ```
 
 ## Help

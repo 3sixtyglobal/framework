@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { ArrayHelper, Is, ObjectHelper } from "@twin.org/core";
+import { ArrayHelper, Is, ObjectHelper } from "@3sixty/core";
 import { ComparisonOperator } from "../models/comparisonOperator.js";
 import type { EntityCondition } from "../models/entityCondition.js";
 import type { IComparator } from "../models/IComparator.js";

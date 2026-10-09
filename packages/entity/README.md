@@ -1,11 +1,11 @@
-# TWIN Entity
+# 3Sixty Entity
 
 This package is part of the framework workspace and provides helpers for defining and working with entities to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install @twin.org/entity
+npm install @3sixty/entity
 ```
 
 ## Examples

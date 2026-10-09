@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { CLIBase } from "@twin.org/cli-core";
+import { CLIBase } from "@3sixty/cli-core";
 import type { Command } from "commander";
 import { buildCommandValidateLocales } from "./commands/validateLocales.js";
 
@@ -26,9 +26,9 @@ export class CLI extends CLIBase {
 	): Promise<number> {
 		return this.execute(
 			{
-				title: "TWIN Validate Locales",
+				title: "3Sixty Validate Locales",
 				appName: "validate-locales",
-				version: "0.11.1-next.0", // x-release-please-version
+				version: "0.20.0-next.0", // x-release-please-version
 				icon: "⚙️ ",
 				supportsEnvFiles: false,
 				overrideOutputWidth: options?.overrideOutputWidth

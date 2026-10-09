@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Converter, NativeModules } from "@twin.org/core";
+import { Converter, NativeModules } from "@3sixty/core";
 import testVectors from "./chacha20poly1305.json" with { type: "json" };
 import { ChaCha20Poly1305 } from "../../src/ciphers/chaCha20Poly1305.js";
 import {

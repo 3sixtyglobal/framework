@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+import { BaseError, GeneralError, Guards, Is } from "@3sixty/core";
+import { nameof } from "@3sixty/nameof";
 import { bech32 } from "@scure/base";
-import { BaseError, GeneralError, Guards, Is } from "@twin.org/core";
-import { nameof } from "@twin.org/nameof";
 
 /**
  * Bech32 encoding and decoding.

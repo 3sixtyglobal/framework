@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { CLIDisplay, CLIUtils } from "@twin.org/cli-core";
+import { CLIDisplay, CLIUtils } from "@3sixty/cli-core";
 import {
 	GeneralError,
 	I18n,
@@ -10,7 +10,7 @@ import {
 	ObjectHelper,
 	type ILocale,
 	type ILocaleDictionary
-} from "@twin.org/core";
+} from "@3sixty/core";
 import type { Command } from "commander";
 import type { IMergeLocalesConfig } from "../models/IMergeLocalesConfig.js";
 import type { IPackageJson } from "../models/IPackageJson.js";
@@ -109,9 +109,9 @@ export async function mergeLocales(
 		packageLocations
 	);
 
-	excludePackages.push("@twin.org/merge-locales");
-	excludePackages.push("@twin.org/nameof");
-	excludePackages.push("@twin.org/nameof-transformer");
+	excludePackages.push("@3sixty/merge-locales");
+	excludePackages.push("@3sixty/nameof");
+	excludePackages.push("@3sixty/nameof-transformer");
 
 	const packageNames = Object.keys(packageLocations).filter(pkg => !excludePackages.includes(pkg));
 
@@ -257,7 +257,7 @@ async function findPackageDependencies(
 	packageName: string,
 	packageLocations: { [packageName: string]: string }
 ): Promise<void> {
-	if (!packageName.startsWith("@twin.org") || Is.stringValue(packageLocations[packageName])) {
+	if (!packageName.startsWith("@3sixty") || Is.stringValue(packageLocations[packageName])) {
 		return;
 	}
 

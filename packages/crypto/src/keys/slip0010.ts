@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+import { Converter, GeneralError } from "@3sixty/core";
+import { nameof } from "@3sixty/nameof";
 import { HDKey as HDKeySecp256k1 } from "@scure/bip32";
-import { Converter, GeneralError } from "@twin.org/core";
-import { nameof } from "@twin.org/nameof";
 import { HDKey as HDKeyEd25519 } from "micro-key-producer/slip10.js";
 import type { Bip32Path } from "./bip32Path.js";
 import { Ed25519 } from "../curves/ed25519.js";

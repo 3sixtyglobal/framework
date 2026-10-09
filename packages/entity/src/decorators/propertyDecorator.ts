@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import "reflect-metadata";
 import "tslib";
-import { GeneralError, Is } from "@twin.org/core";
+import { GeneralError, Is } from "@3sixty/core";
 import { EntitySchemaPropertyType } from "../models/entitySchemaPropertyType.js";
 import type { IEntitySchemaProperty } from "../models/IEntitySchemaProperty.js";
 import { DecoratorHelper } from "../utils/decoratorHelper.js";

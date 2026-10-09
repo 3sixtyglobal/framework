@@ -5,7 +5,7 @@ Use these snippets to keep trace identifiers consistent across asynchronous oper
 ## ContextIdHelper
 
 ```typescript
-import { ContextIdHelper } from '@twin.org/context';
+import { ContextIdHelper } from '@3sixty/context';
 
 const traceContext = {
   traceId: 'trc-0011223344556677',
@@ -17,7 +17,7 @@ ContextIdHelper.shortAll(traceContext); // { traceId: '0011223344556677', spanId
 ```
 
 ```typescript
-import { ContextIdHelper } from '@twin.org/context';
+import { ContextIdHelper } from '@3sixty/context';
 
 const contextIds = {
   traceId: 'trace-1234',
@@ -32,7 +32,7 @@ ContextIdHelper.shortSplit(combined); // ['1234', '5678', '90ab']
 ## ContextIdStore
 
 ```typescript
-import { ContextIdStore } from '@twin.org/context';
+import { ContextIdStore } from '@3sixty/context';
 
 await ContextIdStore.run({ traceId: 'trc-01', spanId: 'spn-02' }, async () => {
   ContextIdStore.getContextIds(); // { traceId: 'trc-01', spanId: 'spn-02' }
@@ -42,8 +42,8 @@ await ContextIdStore.run({ traceId: 'trc-01', spanId: 'spn-02' }, async () => {
 ## ContextIdHandlerFactory
 
 ```typescript
-import { ContextIdHandlerFactory } from '@twin.org/context';
-import type { IContextIdHandler } from '@twin.org/context';
+import { ContextIdHandlerFactory } from '@3sixty/context';
+import type { IContextIdHandler } from '@3sixty/context';
 
 class RequestContextHandler implements IContextIdHandler {
   public getContextIds() {

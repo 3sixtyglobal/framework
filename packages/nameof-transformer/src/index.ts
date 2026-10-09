@@ -15,13 +15,13 @@ export function factory(): ts.TransformerFactory<ts.Node> {
  * Exports the factory version.
  * @returns The factory.
  */
-export const version = "0.11.1-next.0"; // x-release-please-version
+export const version = "0.20.0-next.0"; // x-release-please-version
 
 /**
  * Exports the factory name.
  * @returns The factory.
  */
-export const name = "@twin.org/nameof-transformer";
+export const name = "@3sixty/nameof-transformer";
 
 export * from "./manual.js";
 export * from "./svelte.js";

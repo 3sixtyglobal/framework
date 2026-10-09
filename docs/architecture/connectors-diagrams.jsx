@@ -24,14 +24,14 @@ export function ConnectorFactoryDiagram() {
 			}}
 		>
 			<style>{`
-        .twin-cf-grid {
+        .brand-cf-grid {
           display: grid;
           grid-template-columns: 1fr auto 1fr;
           gap: 10px;
           align-items: center;
         }
 
-        .twin-cf-arrow {
+        .brand-cf-arrow {
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -40,11 +40,11 @@ export function ConnectorFactoryDiagram() {
         }
 
         @media (max-width: 680px) {
-          .twin-cf-grid {
+          .brand-cf-grid {
             grid-template-columns: 1fr;
           }
 
-          .twin-cf-arrow {
+          .brand-cf-arrow {
             flex-direction: row;
             justify-content: center;
           }
@@ -53,7 +53,7 @@ export function ConnectorFactoryDiagram() {
 			<p style={{ margin: '0 0 12px', color: '#ffffff', fontWeight: 700 }}>
 				Connector Factory: Registration and Resolution
 			</p>
-			<div className="twin-cf-grid">
+			<div className="brand-cf-grid">
 				<div
 					style={{
 						background: '#263f83',
@@ -70,7 +70,7 @@ export function ConnectorFactoryDiagram() {
 					</div>
 				</div>
 
-				<div className="twin-cf-arrow">
+				<div className="brand-cf-arrow">
 					<span style={{ fontSize: '1.3rem' }}>→</span>
 					<div
 						style={{

@@ -133,7 +133,7 @@ pnpm run test
 You can also target a single package from the repository root with a pnpm filter:
 
 ```shell
-pnpm --filter @twin.org/some-package run test
+pnpm --filter @3sixty/some-package run test
 ```
 
 For repository-wide validation, run commands from the submodule root:
@@ -173,16 +173,16 @@ TWIN repositories normally consume each other through packages published to npm.
 The script supports both package patterns and explicit paths:
 
 ```shell
-pnpm run local-link "@twin.org/engine*"
-pnpm run local-link "@twin.org/dataspace*"
-pnpm run local-link "@twin.org//*"
+pnpm run local-link "@3sixty/engine*"
+pnpm run local-link "@3sixty/dataspace*"
+pnpm run local-link "@3sixty//*"
 pnpm run local-link ..\twin-engine\packages\engine-core
 ```
 
 To restore the installed package, run the same target with `unlink`:
 
 ```shell
-pnpm run local-link "@twin.org/engine*" unlink
+pnpm run local-link "@3sixty/engine*" unlink
 pnpm run local-link ..\twin-engine\packages\engine-core unlink
 ```
 
@@ -216,7 +216,7 @@ In practice, a safe cross-repository flow is:
 1. build the source package in its own repository,
 2. switch to the consuming repository,
 3. run `pnpm install` if needed,
-4. run `pnpm run local-link "@twin.org/package-name"`,
+4. run `pnpm run local-link "@3sixty/package-name"`,
 5. rebuild or retest the consuming repo,
 6. run `unlink` when finished.
 
@@ -243,7 +243,7 @@ When a change spans repositories, a practical sequence is:
 1. update and build the source repository,
 2. switch to the consuming repository,
 3. run `pnpm install` if required,
-4. run `pnpm run local-link "@twin.org/package-name"`,
+4. run `pnpm run local-link "@3sixty/package-name"`,
 5. run local build, lint, docs, or test commands in the consumer,
 6. repeat as needed while iterating,
 7. remove links with `unlink` after verification,

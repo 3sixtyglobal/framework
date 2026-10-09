@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { CLIDisplay, CLIUtils } from "@twin.org/cli-core";
-import { GeneralError, I18n, Is, StringHelper, type ILocaleDictionary } from "@twin.org/core";
-import { manual } from "@twin.org/nameof-transformer";
+import { CLIDisplay, CLIUtils } from "@3sixty/cli-core";
+import { GeneralError, I18n, Is, StringHelper, type ILocaleDictionary } from "@3sixty/core";
+import { manual } from "@3sixty/nameof-transformer";
 import type { Command } from "commander";
 import * as glob from "glob";
 import * as ts from "typescript";
@@ -47,7 +47,7 @@ const SKIP_LITERALS = [
 	/\.lock$/i, // ending in .lock
 	/\.toml$/i, // ending in .toml
 	/\.{3}/i, // ...
-	/@twin\.org/, // starting with @twin.org
+	/@3sixty/, // starting with @3sixty
 	/^console.log/i // console.log
 ];
 

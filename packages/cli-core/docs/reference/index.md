@@ -1,4 +1,4 @@
-# @twin.org/cli-core
+# @3sixty/cli-core
 
 ## Classes
 

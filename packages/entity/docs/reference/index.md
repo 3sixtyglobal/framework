@@ -1,4 +1,4 @@
-# @twin.org/entity
+# @3sixty/entity
 
 ## Classes
 

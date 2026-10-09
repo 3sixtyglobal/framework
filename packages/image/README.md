@@ -1,11 +1,11 @@
-# TWIN Image
+# 3Sixty Image
 
 This package is part of the framework workspace and provides classes for image manipulation to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install @twin.org/image
+npm install @3sixty/image
 ```
 
 ## Examples

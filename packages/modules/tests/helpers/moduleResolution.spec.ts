@@ -4,7 +4,7 @@ import { mkdir, mkdtemp, realpath, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { NativeModules, SharedStore } from "@twin.org/core";
+import { NativeModules, SharedStore } from "@3sixty/core";
 import { ModuleHelper } from "../../src/helpers/moduleHelper.js";
 import { ModuleResolutionHelper } from "../../src/helpers/moduleResolutionHelper.js";
 import { ModuleProtocol } from "../../src/models/moduleProtocol.js";
@@ -16,11 +16,11 @@ describe("ModuleResolutionHelper", () => {
 
 	describe("parseModuleProtocol", () => {
 		test("should parse npm: protocol correctly", () => {
-			const result = ModuleResolutionHelper.parseModuleProtocol("npm:@twin.org/identity-service");
+			const result = ModuleResolutionHelper.parseModuleProtocol("npm:@3sixty/identity-service");
 
 			expect(result.protocol).toEqual(ModuleProtocol.Npm);
-			expect(result.identifier).toEqual("@twin.org/identity-service");
-			expect(result.original).toEqual("npm:@twin.org/identity-service");
+			expect(result.identifier).toEqual("@3sixty/identity-service");
+			expect(result.original).toEqual("npm:@3sixty/identity-service");
 		});
 
 		test("should parse npm: protocol with scoped package", () => {
@@ -72,11 +72,11 @@ describe("ModuleResolutionHelper", () => {
 		});
 
 		test("should parse default npm package correctly", () => {
-			const result = ModuleResolutionHelper.parseModuleProtocol("@twin.org/identity-service");
+			const result = ModuleResolutionHelper.parseModuleProtocol("@3sixty/identity-service");
 
 			expect(result.protocol).toEqual(ModuleProtocol.Default);
-			expect(result.identifier).toEqual("@twin.org/identity-service");
-			expect(result.original).toEqual("@twin.org/identity-service");
+			expect(result.identifier).toEqual("@3sixty/identity-service");
+			expect(result.original).toEqual("@3sixty/identity-service");
 		});
 
 		test("should parse unscoped npm package as default", () => {
@@ -88,10 +88,10 @@ describe("ModuleResolutionHelper", () => {
 		});
 
 		test("should trim whitespace from module name", () => {
-			const result = ModuleResolutionHelper.parseModuleProtocol("  npm:@twin.org/service  ");
+			const result = ModuleResolutionHelper.parseModuleProtocol("  npm:@3sixty/service  ");
 
 			expect(result.protocol).toEqual(ModuleProtocol.Npm);
-			expect(result.identifier).toEqual("@twin.org/service");
+			expect(result.identifier).toEqual("@3sixty/service");
 		});
 
 		test("should handle module name with path after protocol", () => {

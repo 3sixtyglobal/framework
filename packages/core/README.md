@@ -1,11 +1,11 @@
-# TWIN Framework Core
+# 3Sixty Framework Core
 
 This package is part of the framework workspace and provides helper methods/classes for data type checking/validation/guarding/error handling to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install @twin.org/core
+npm install @3sixty/core
 ```
 
 ## Examples

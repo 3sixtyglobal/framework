@@ -5,15 +5,15 @@ Use these snippets for dynamic module loading patterns at runtime extension poin
 ## ModuleHelper
 
 ```typescript
-import { ModuleHelper } from '@twin.org/modules';
+import { ModuleHelper } from '@3sixty/modules';
 
 console.log(ModuleHelper.isRelativeModule('./workers/sendEmail.js')); // true
 console.log(ModuleHelper.isLocalModule('./workers/sendEmail.js')); // true
-console.log(ModuleHelper.isLocalModule('@twin.org/core')); // false
+console.log(ModuleHelper.isLocalModule('@3sixty/core')); // false
 ```
 
 ```typescript
-import { ModuleHelper } from '@twin.org/modules';
+import { ModuleHelper } from '@3sixty/modules';
 
 const convertToFahrenheit = await ModuleHelper.getModuleMethod<(celsius: number) => number>(
   './workers/temperature.js',
@@ -24,7 +24,7 @@ console.log(convertToFahrenheit(18)); // 64.4
 ```
 
 ```typescript
-import { ModuleHelper } from '@twin.org/modules';
+import { ModuleHelper } from '@3sixty/modules';
 
 const sum = await ModuleHelper.getModuleEntry<(left: number, right: number) => number>(
   './workers/math.js',
@@ -35,7 +35,7 @@ console.log(sum(7, 5)); // 12
 ```
 
 ```typescript
-import { ModuleHelper } from '@twin.org/modules';
+import { ModuleHelper } from '@3sixty/modules';
 
 const result = await ModuleHelper.execModuleMethod<number>(
   './workers/temperature.js',
@@ -47,7 +47,7 @@ console.log(result); // 64.4
 ```
 
 ```typescript
-import { ModuleHelper } from '@twin.org/modules';
+import { ModuleHelper } from '@3sixty/modules';
 
 ModuleHelper.overrideImport(async moduleName => {
   if (moduleName === './workers/math.js') {
@@ -70,7 +70,7 @@ console.log(sum); // 7
 ```
 
 ```typescript
-import { ModuleHelper } from '@twin.org/modules';
+import { ModuleHelper } from '@3sixty/modules';
 
 const threaded = await ModuleHelper.execModuleMethodThread<number>(
   './workers/temperature.js',
@@ -86,7 +86,7 @@ console.log(threaded); // 64.4
 ```
 
 ```typescript
-import { ModuleHelper } from '@twin.org/modules';
+import { ModuleHelper } from '@3sixty/modules';
 
 // The worker starts with the native modules already registered on this thread
 // via NativeModules.init().

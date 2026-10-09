@@ -1,11 +1,11 @@
-# TWIN Framework Crypto
+# 3Sixty Framework Crypto
 
 This package is part of the framework workspace and provides helper methods and classes which implement cryptographic functions to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install @twin.org/crypto
+npm install @3sixty/crypto
 ```
 
 ## Examples

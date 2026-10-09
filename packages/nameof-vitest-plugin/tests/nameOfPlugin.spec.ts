@@ -28,7 +28,7 @@ describe("NameOfPlugin", () => {
 	});
 
 	test("can transform code with nameof import", () => {
-		let code = 'import { nameof } from "@twin.org/nameof";';
+		let code = 'import { nameof } from "@3sixty/nameof";';
 
 		code = nameOfPluginTransform(code, "test.ts");
 

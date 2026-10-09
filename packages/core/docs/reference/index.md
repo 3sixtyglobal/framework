@@ -1,4 +1,4 @@
-# @twin.org/core
+# @3sixty/core
 
 ## Classes
 

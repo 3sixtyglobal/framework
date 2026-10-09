@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import os from "node:os";
 import path from "node:path";
-import { Coerce, Mutex, NativeModules, SharedStore } from "@twin.org/core";
+import { Coerce, Mutex, NativeModules, SharedStore } from "@3sixty/core";
 import { ModuleHelper } from "../../src/helpers/moduleHelper.js";
 
 const TEST_MODULE = `file://${path.join(__dirname, "testModule.js")}`;
@@ -64,7 +64,7 @@ describe("ModuleHelper", () => {
 
 	test("execModuleMethod can get a result from a function with parameters from a module", async () => {
 		expect(
-			await ModuleHelper.execModuleMethod("@twin.org/core", "StringHelper.camelCase", ["foo-bar"])
+			await ModuleHelper.execModuleMethod("@3sixty/core", "StringHelper.camelCase", ["foo-bar"])
 		).toEqual("fooBar");
 	});
 
@@ -124,7 +124,7 @@ describe("ModuleHelper", () => {
 
 	test("execModuleMethodThread can get a result from a function with parameters from a module", async () => {
 		expect(
-			await ModuleHelper.execModuleMethodThread("@twin.org/core", "StringHelper.camelCase", [
+			await ModuleHelper.execModuleMethodThread("@3sixty/core", "StringHelper.camelCase", [
 				"foo-bar"
 			])
 		).toEqual("fooBar");

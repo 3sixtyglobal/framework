@@ -1,11 +1,11 @@
-# TWIN Nameof
+# 3Sixty Nameof
 
 This package is part of the framework workspace and provides the definitions for the methods which are processed by the nameof-transformer to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install @twin.org/nameof
+npm install @3sixty/nameof
 ```
 
 ## Examples

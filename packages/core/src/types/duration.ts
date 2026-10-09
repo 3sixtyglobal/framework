@@ -1,6 +1,6 @@
 // Copyright 2026 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { nameof } from "@twin.org/nameof";
+import { nameof } from "@3sixty/nameof";
 import { DURATION_REG_EXP } from "./durationRegExp.js";
 import type { IDuration } from "../models/IDuration.js";
 import { Guards } from "../utils/guards.js";

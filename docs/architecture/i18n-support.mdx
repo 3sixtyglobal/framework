@@ -18,9 +18,9 @@ Third, i18n quality can be validated automatically. By treating locale keys as s
 
 The i18n model has three main parts:
 
-1. Runtime message formatting in `@twin.org/core` (`I18n`, `ErrorHelper`, error classes).
-2. Locale asset aggregation with `@twin.org/merge-locales`.
-3. Locale key and placeholder validation with `@twin.org/validate-locales`.
+1. Runtime message formatting in `@3sixty/core` (`I18n`, `ErrorHelper`, error classes).
+2. Locale asset aggregation with `@3sixty/merge-locales`.
+3. Locale key and placeholder validation with `@3sixty/validate-locales`.
 
 Together these provide:
 
@@ -116,11 +116,11 @@ Typical levels map to namespaces such as `error`, `warn`, and `log`.
 
 ## merge-locales Tool
 
-`@twin.org/merge-locales` builds distributable locale bundles.
+`@3sixty/merge-locales` builds distributable locale bundles.
 
 What it does:
 
-1. Resolves project dependencies recursively for `@twin.org/*` packages.
+1. Resolves project dependencies recursively for `@3sixty/*` packages.
 2. Excludes selected packages by default (including tooling packages).
 3. Reads each package `locales/<lang>.json`.
 4. Merges dictionaries into a single dictionary per language.
@@ -138,7 +138,7 @@ If no locales are configured, English (`en`) is used by default.
 
 ## validate-locales Tool
 
-`@twin.org/validate-locales` statically checks source and locale consistency.
+`@3sixty/validate-locales` statically checks source and locale consistency.
 
 What it validates:
 
@@ -155,7 +155,7 @@ It parses TypeScript AST and recognises key construction patterns from:
 - template-literal key construction,
 - logger object patterns (`level`, `source`, `message`, `data`).
 
-It also uses `@twin.org/nameof-transformer` manual expansion when resolving template parts that use
+It also uses `@3sixty/nameof-transformer` manual expansion when resolving template parts that use
 `nameof(...)` expressions.
 
 Validation failures throw a `GeneralError("validateLocales", "validationFailed")`, which maps to

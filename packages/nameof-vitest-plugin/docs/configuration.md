@@ -7,7 +7,7 @@ Instead we can include this plugin which will perform the same process as the Ty
 In you vitest config include the following:
 
 ```js
-import { NameOfPlugin } from "@twin.org/nameof-vitest-plugin";
+import { NameOfPlugin } from "@3sixty/nameof-vitest-plugin";
 
 export default defineConfig({
    ...

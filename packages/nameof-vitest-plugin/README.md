@@ -1,11 +1,11 @@
-# TWIN Nameof Vitest Plugin
+# 3Sixty Nameof Vitest Plugin
 
 This package is part of the framework workspace and provides vitest plugin which perform the nameof transformation to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install -D @twin.org/nameof-vitest-plugin
+npm install -D @3sixty/nameof-vitest-plugin
 ```
 
 ## Configuration

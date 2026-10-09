@@ -1,11 +1,11 @@
-# TWIN Merge Locales
+# 3Sixty Merge Locales
 
 This application is part of the framework workspace and provides merge locale files from all dependencies to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install -D @twin.org/merge-locales
+npm install -D @3sixty/merge-locales
 ```
 
 ## Usage

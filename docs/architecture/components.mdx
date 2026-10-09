@@ -13,7 +13,7 @@ A component is the business capability layer of the platform. Where connectors t
 
 ## Core Contract
 
-All components implement `IComponent` from `@twin.org/core`. The interface provides a required `className()` method and optional `bootstrap`, `start`, and `stop` lifecycle methods.
+All components implement `IComponent` from `@3sixty/core`. The interface provides a required `className()` method and optional `bootstrap`, `start`, and `stop` lifecycle methods.
 
 The component layer therefore shares the same lifecycle protocol as connectors, but has a different responsibility boundary. Components model domain behaviour, whilst connectors model infrastructure integration.
 

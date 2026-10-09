@@ -6,9 +6,9 @@ import {
 	CLIParam,
 	CLIUtils,
 	type CliOutputOptions
-} from "@twin.org/cli-core";
-import { Converter, I18n, Is } from "@twin.org/core";
-import { Bip44, KeyType } from "@twin.org/crypto";
+} from "@3sixty/cli-core";
+import { Converter, I18n, Is } from "@3sixty/core";
+import { Bip44, KeyType } from "@3sixty/crypto";
 import { Command, Option } from "commander";
 
 /**

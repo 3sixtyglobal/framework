@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Base32, RandomHelper } from "@twin.org/core";
+import { Base32, RandomHelper } from "@3sixty/core";
 import * as otp from "micro-key-producer/otp.js";
 import { Hotp } from "./hotp.js";
 import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";

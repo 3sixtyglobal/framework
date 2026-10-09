@@ -18,7 +18,7 @@
 		"declarationDir": "dist/types",
 		"lib": ["es2022", "es2024.sharedmemory"],
 		"types": ["node"],
-		"plugins": [{ "transform": "@twin.org/nameof-transformer" }],
+		"plugins": [{ "transform": "@3sixty/nameof-transformer" }],
 		"skipLibCheck": true
 	},
 	"include": ["src/**/*.ts"]

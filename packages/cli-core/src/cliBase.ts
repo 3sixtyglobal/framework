@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import path from "node:path";
-import { Coerce, I18n, Is } from "@twin.org/core";
+import { Coerce, I18n, Is } from "@3sixty/core";
 import { Command } from "commander";
 import { CLIDisplay } from "./cliDisplay.js";
 import { CLIUtils } from "./cliUtils.js";

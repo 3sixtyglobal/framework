@@ -12,7 +12,7 @@ export function manual(content: string): string {
 	// eslint-disable-next-line no-restricted-syntax
 	if (typeof content === "string" && content.includes("nameof")) {
 		// Remove the import
-		content = content.replace(/import.*from "@twin\.org\/nameof";/g, "");
+		content = content.replace(/import.*from "@3sixty\/nameof";/g, "");
 
 		// Replace the nameof<IMyObject>() with "IMyObject"
 		// or the nameof<IMyObject<IType2>>() with "IMyObject"

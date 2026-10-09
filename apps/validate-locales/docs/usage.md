@@ -7,14 +7,14 @@ Use this page to confirm validation options before scanning source files.
 To install and run the CLI locally use the following commands:
 
 ```shell
-npm install @twin.org/validate-locales -g
+npm install @3sixty/validate-locales -g
 validate-locales
 ```
 
 or run directly using NPX:
 
 ```shell
-npx "@twin.org/validate-locales"
+npx "@3sixty/validate-locales"
 ```
 
 ## Help

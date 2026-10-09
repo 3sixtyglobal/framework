@@ -7,22 +7,22 @@ Use this guide to run commands, inspect options and check expected terminal outp
 To install and run the CLI locally use the following commands:
 
 ```shell
-npm install @twin.org/crypto-cli -g
-twin-crypto
+npm install @3sixty/crypto-cli -g
+3sixty-crypto
 ```
 
 or run directly using NPX:
 
 ```shell
-npx "@twin.org/crypto-cli"
+npx "@3sixty/crypto-cli"
 ```
 
 You should see output similar to the following:
 
 ```shell
-🌍 TWIN Crypto v1.0.0
+🌍 3Sixty Crypto v1.0.0
 
-Usage: twin-crypto [command]
+Usage: 3sixty-crypto [command]
 
 Options:
   -V, --version       output the version number
@@ -40,13 +40,13 @@ Commands:
 The mnemonic command can be used to generate a new mnemonic for use in the other crypto functions.
 
 ```shell
-twin-crypto mnemonic
+3sixty-crypto mnemonic
 ```
 
 Output
 
 ```shell
-🌍 TWIN Crypto v1.0.0
+🌍 3Sixty Crypto v1.0.0
 
 Mnemonic: cricket pumpkin clump warrior accident appear trophy exchange width ginger thank common must tiny inform feed orient ritual tackle tortoise few survey client object
 Seed: 0x01fb73209537a33a2f03e419caed0eba48005b093b9a8ce35a93f5e3a1ad66ceaccb1afd4cd23ccaef3f0210e377a5118c90c7a5f1800be49a42d1c3dc0bb3fc
@@ -57,15 +57,15 @@ Done.
 There are additional options you can specify for this command, to get the detail on these options issue the following command to get help.
 
 ```shell
-twin-crypto mnemonic --help
+3sixty-crypto mnemonic --help
 ```
 
 Output
 
 ```shell
-🌍 TWIN Crypto v1.0.0
+🌍 3Sixty Crypto v1.0.0
 
-Usage: twin-crypto mnemonic [options]
+Usage: 3sixty-crypto mnemonic [options]
 
 Create a mnemonic, will also generate the equivalent seed in hex and base64 format.
 
@@ -83,7 +83,7 @@ Options:
 To output generate mnemonic and base64 formatted seed, store them in a JSON and env file but not display them to the console you would enter the following.
 
 ```shell
-twin-crypto mnemonic --seed-format base64 --no-console --json my.json --env my.env
+3sixty-crypto mnemonic --seed-format base64 --no-console --json my.json --env my.env
 ```
 
 The env file would look like:
@@ -107,13 +107,13 @@ and the JSON file would be:
 The address command can be used to generate addresses and key pairs based on the specified seed. The seed can be provided from the command line of read from an environment variable or .env file. By default 10 addresses will be generated starting at address index 0, for account 0.
 
 ```shell
-twin-crypto address --seed 0x01fb73209537a33a2f03e419caed0eba48005b093b9a8ce35a93f5e3a1ad66ceaccb1afd4cd23ccaef3f0210e377a5118c90c7a5f1800be49a42d1c3dc0bb3fc
+3sixty-crypto address --seed 0x01fb73209537a33a2f03e419caed0eba48005b093b9a8ce35a93f5e3a1ad66ceaccb1afd4cd23ccaef3f0210e377a5118c90c7a5f1800be49a42d1c3dc0bb3fc
 ```
 
 Output
 
 ```shell
-🌍 TWIN Crypto v1.0.0
+🌍 3Sixty Crypto v1.0.0
 
 Seed: 0x01fb73209537a33a2f03e419caed0eba48005b093b9a8ce35a93f5e3a1ad66ceaccb1afd4cd23ccaef3f0210e377a5118c90c7a5f1800be49a42d1c3dc0bb3fc
 Start: 0
@@ -181,15 +181,15 @@ Done.
 There are additional options you can specify for this command, to get the detail on these options issue the following command to get help.
 
 ```shell
-twin-crypto address --help
+3sixty-crypto address --help
 ```
 
 Output
 
 ```shell
-🌍 TWIN Crypto v1.0.0
+🌍 3Sixty Crypto v1.0.0
 
-Usage: twin-crypto address [options]
+Usage: 3sixty-crypto address [options]
 
 Create a number of addresses and their associated key pairs from the seed.
 
@@ -214,13 +214,13 @@ Options:
 To read from an env file and load the variable named SEED from the file, and output only 2 addresses, outputting the keys in base64 format.
 
 ```shell
-twin-crypto address --load-env my.env --seed !SEED --count 2 --key-format base64
+3sixty-crypto address --load-env my.env --seed !SEED --count 2 --key-format base64
 ```
 
 You can use the options to store the results in JSON or env files, and the `merge` options allow you to modify existing files should you wish.
 
 ```shell
-twin-crypto address --load-env my.env --seed !SEED --env address.env --merge-env --json address.json --merge-json
+3sixty-crypto address --load-env my.env --seed !SEED --env address.env --merge-env --json address.json --merge-json
 ```
 
 The output of this command would produce address.env

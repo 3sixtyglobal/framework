@@ -1,4 +1,4 @@
-# @twin.org/nameof-vitest-plugin
+# @3sixty/nameof-vitest-plugin
 
 ## Variables
 

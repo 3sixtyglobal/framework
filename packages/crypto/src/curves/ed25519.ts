@@ -1,9 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import type * as NodeCrypto from "node:crypto";
+import { GeneralError, Guards, Uint8ArrayHelper } from "@3sixty/core";
+import { nameof } from "@3sixty/nameof";
 import { ed25519 } from "@noble/curves/ed25519.js";
-import { GeneralError, Guards, Uint8ArrayHelper } from "@twin.org/core";
-import { nameof } from "@twin.org/nameof";
 import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
 
 /**

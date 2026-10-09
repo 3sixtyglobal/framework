@@ -5,7 +5,7 @@
 // built first. The published entry point is bin/index.js which runs the built output.
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { CLIUtils } from "@twin.org/cli-core";
+import { CLIUtils } from "@3sixty/cli-core";
 import { CLI } from "./cli.js";
 
 const devDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -16,7 +16,7 @@ const devDirectory = path.dirname(fileURLToPath(import.meta.url));
 // The dependency packages are resolved from this file rather than the working directory,
 // so the tool still finds them when it is run from another package in the workspace.
 const dependencyLocales = await Promise.all(
-	["@twin.org/cli-core", "@twin.org/core"].map(async packageName => {
+	["@3sixty/cli-core", "@3sixty/core"].map(async packageName => {
 		const packageRoot = await CLIUtils.findPackageRoot(packageName, devDirectory);
 		return packageRoot === undefined ? packageName : path.join(packageRoot, "locales");
 	})

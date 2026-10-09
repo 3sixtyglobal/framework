@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Converter, GeneralError, Guards, Is, JsonHelper, ObjectHelper } from "@twin.org/core";
-import { Ed25519, Sha256 } from "@twin.org/crypto";
-import { nameof } from "@twin.org/nameof";
+import { Converter, GeneralError, Guards, Is, JsonHelper, ObjectHelper } from "@3sixty/core";
+import { Ed25519, Sha256 } from "@3sixty/crypto";
+import { nameof } from "@3sixty/nameof";
 import { importJWK } from "jose";
 import type { IJwk } from "../models/IJwk.js";
 import type { JwkCryptoKey } from "../models/jwkCryptoKey.js";

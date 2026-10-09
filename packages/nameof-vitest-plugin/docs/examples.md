@@ -5,10 +5,10 @@ Use these snippets to enable compile-time name replacement during test execution
 ## nameOfPluginTransform
 
 ```typescript
-import { nameOfPluginTransform } from '@twin.org/nameof-vitest-plugin';
+import { nameOfPluginTransform } from '@3sixty/nameof-vitest-plugin';
 
 const source = `
-import { nameof } from '@twin.org/nameof';
+import { nameof } from '@3sixty/nameof';
 class UserSession {}
 const className = nameof<UserSession>();
 `;
@@ -22,7 +22,7 @@ transformed.includes("'UserSession'"); // true
 
 ```typescript
 import { defineConfig } from 'vitest/config';
-import { NameOfPlugin } from '@twin.org/nameof-vitest-plugin';
+import { NameOfPlugin } from '@3sixty/nameof-vitest-plugin';
 
 export default defineConfig({
   plugins: [NameOfPlugin],

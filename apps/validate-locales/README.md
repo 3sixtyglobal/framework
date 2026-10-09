@@ -1,11 +1,11 @@
-# TWIN Validate Locales
+# 3Sixty Validate Locales
 
 This application is part of the framework workspace and provides validate source files against the locales to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install -D @twin.org/validate-locales
+npm install -D @3sixty/validate-locales
 ```
 
 ## Usage

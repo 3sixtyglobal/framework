@@ -1,4 +1,4 @@
-# @twin.org/image
+# @3sixty/image
 
 ## Classes
 

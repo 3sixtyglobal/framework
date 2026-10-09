@@ -1,6 +1,6 @@
 // Copyright 2026 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Converter } from "@twin.org/core";
+import { Converter } from "@3sixty/core";
 import testVectors from "./argon2id.json" with { type: "json" };
 import { Argon2id } from "../../src/hashes/argon2id.js";
 import {

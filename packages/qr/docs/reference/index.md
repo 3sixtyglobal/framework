@@ -1,4 +1,4 @@
-# @twin.org/qr
+# @3sixty/qr
 
 ## Classes
 

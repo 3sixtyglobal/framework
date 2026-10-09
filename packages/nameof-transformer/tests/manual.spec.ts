@@ -28,7 +28,7 @@ describe("Manual", () => {
 	});
 
 	test("can transform code with nameof import", () => {
-		let code = 'import { nameof } from "@twin.org/nameof";';
+		let code = 'import { nameof } from "@3sixty/nameof";';
 
 		code = manual(code);
 
@@ -68,7 +68,7 @@ describe("Manual", () => {
 	});
 
 	test("can transform code with nameof import to camel case", () => {
-		let code = 'import { nameofCamelCase } from "@twin.org/nameof";';
+		let code = 'import { nameofCamelCase } from "@3sixty/nameof";';
 
 		code = manual(code);
 
@@ -108,7 +108,7 @@ describe("Manual", () => {
 	});
 
 	test("can transform code with nameof import to kebab case", () => {
-		let code = 'import { nameofKebabCase } from "@twin.org/nameof";';
+		let code = 'import { nameofKebabCase } from "@3sixty/nameof";';
 
 		code = manual(code);
 

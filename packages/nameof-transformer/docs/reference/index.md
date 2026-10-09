@@ -1,4 +1,4 @@
-# @twin.org/nameof-transformer
+# @3sixty/nameof-transformer
 
 ## Variables
 

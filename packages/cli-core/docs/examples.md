@@ -5,7 +5,7 @@ Use these snippets to compose clear command line workflows with consistent outpu
 ## CLIDisplay
 
 ```typescript
-import { CLIDisplay } from '@twin.org/cli-core';
+import { CLIDisplay } from '@3sixty/cli-core';
 
 CLIDisplay.header('Data Import', '1.2.0');
 CLIDisplay.section('Validation');
@@ -17,7 +17,7 @@ CLIDisplay.done();
 ## CLIParam
 
 ```typescript
-import { CLIParam } from '@twin.org/cli-core';
+import { CLIParam } from '@3sixty/cli-core';
 
 const parsedCount = CLIParam.integer('count', '25');
 const parsedDebug = CLIParam.boolean('debug', 'true');
@@ -31,7 +31,7 @@ console.log(parsedUrl.host); // api.example.org
 ## CLIBase
 
 ```typescript
-import { CLIBase } from '@twin.org/cli-core';
+import { CLIBase } from '@3sixty/cli-core';
 import type { Command } from 'commander';
 
 class ToolCli extends CLIBase {
@@ -57,7 +57,7 @@ console.log(exitCode); // 0
 ## CLIUtils
 
 ```typescript
-import { CLIUtils } from '@twin.org/cli-core';
+import { CLIUtils } from '@3sixty/cli-core';
 
 console.log(await CLIUtils.fileExists('./config/import.json')); // true
 const config = await CLIUtils.readJsonFile<{ source: string }>('./config/import.json');
@@ -70,7 +70,7 @@ console.log(config.source); // ./data/source.json
 ## CLIOptions
 
 ```typescript
-import { CLIOptions } from '@twin.org/cli-core';
+import { CLIOptions } from '@3sixty/cli-core';
 
 const options = new CLIOptions();
 

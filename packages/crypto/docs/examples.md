@@ -5,7 +5,7 @@ Use these snippets as practical building blocks for hashes, signatures, key deri
 ## Sha3, Sha512, HmacSha512
 
 ```typescript
-import { HmacSha512, Sha3, Sha512 } from '@twin.org/crypto';
+import { HmacSha512, Sha3, Sha512 } from '@3sixty/crypto';
 
 const message = new TextEncoder().encode('hello twin');
 const key = new TextEncoder().encode('super-secret');
@@ -18,7 +18,7 @@ HmacSha512.sum512(key, message);
 ## Blake2b, Blake3, Sha256, HmacSha256, Sha1, HmacSha1
 
 ```typescript
-import { Blake2b, Blake3, HmacSha1, HmacSha256, Sha1, Sha256 } from '@twin.org/crypto';
+import { Blake2b, Blake3, HmacSha1, HmacSha256, Sha1, Sha256 } from '@3sixty/crypto';
 
 const bytes = new TextEncoder().encode('digest me');
 const hmacKey = new TextEncoder().encode('key-01');
@@ -34,7 +34,7 @@ HmacSha1.sum(hmacKey, bytes);
 ## Ed25519, Secp256k1, X25519, Zip215
 
 ```typescript
-import { Ed25519, Secp256k1, X25519, Zip215 } from '@twin.org/crypto';
+import { Ed25519, Secp256k1, X25519, Zip215 } from '@3sixty/crypto';
 
 const privateKey = new Uint8Array(32).fill(7);
 const payload = new TextEncoder().encode('payload');
@@ -54,7 +54,7 @@ Zip215.verify(edPublic, payload, edSignature); // true
 ## Bip39, Bip32Path, Slip0010, Bip44, Bech32
 
 ```typescript
-import { Bech32, Bip32Path, Bip39, Bip44, Slip0010 } from '@twin.org/crypto';
+import { Bech32, Bip32Path, Bip39, Bip44, Slip0010 } from '@3sixty/crypto';
 
 const entropy = new Uint8Array(32).fill(1);
 const mnemonic = Bip39.entropyToMnemonic(entropy);
@@ -73,7 +73,7 @@ Bech32.encode('twin', new Uint8Array([1, 2, 3, 4]));
 ## ChaCha20Poly1305, Pbkdf2, IntegrityHelper, PemHelper
 
 ```typescript
-import { ChaCha20Poly1305, IntegrityHelper, Pbkdf2, PemHelper } from '@twin.org/crypto';
+import { ChaCha20Poly1305, IntegrityHelper, Pbkdf2, PemHelper } from '@3sixty/crypto';
 
 const password = new TextEncoder().encode('passw0rd!');
 const salt = new Uint8Array(16).fill(2);
@@ -93,7 +93,7 @@ PemHelper.formatPem('PUBLIC KEY', new Uint8Array([10, 11, 12]));
 ## Hotp and Totp
 
 ```typescript
-import { Hotp, Totp } from '@twin.org/crypto';
+import { Hotp, Totp } from '@3sixty/crypto';
 
 const secret = Totp.generateSecret();
 
@@ -114,7 +114,7 @@ Totp.verify(secret, token, {
 ## PasswordGenerator and PasswordValidator
 
 ```typescript
-import { PasswordGenerator, PasswordValidator } from '@twin.org/crypto';
+import { PasswordGenerator, PasswordValidator } from '@3sixty/crypto';
 
 const generated = PasswordGenerator.generate({
   length: 20,

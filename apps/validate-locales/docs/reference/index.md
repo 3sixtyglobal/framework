@@ -1,4 +1,4 @@
-# @twin.org/validate-locales
+# @3sixty/validate-locales
 
 ## Classes
 

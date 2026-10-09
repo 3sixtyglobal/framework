@@ -5,7 +5,7 @@ Use these snippets to build schemas, compose conditions and order data for query
 ## EntitySchemaHelper
 
 ```typescript
-import { EntitySchemaHelper } from '@twin.org/entity';
+import { EntitySchemaHelper } from '@3sixty/entity';
 
 class Product {
   public id!: string;
@@ -21,7 +21,7 @@ EntitySchemaHelper.getSortProperties(schema); // ['sku', 'price']
 ## EntityConditions
 
 ```typescript
-import { EntityConditions } from '@twin.org/entity';
+import { EntityConditions } from '@3sixty/entity';
 
 const product = {
   sku: 'A-100',
@@ -36,7 +36,7 @@ EntityConditions.check(product, [{ property: 'price', comparison: 'gt', value: 1
 ## EntitySorter
 
 ```typescript
-import { EntitySorter } from '@twin.org/entity';
+import { EntitySorter } from '@3sixty/entity';
 
 const records = [
   { sku: 'A-300', price: 15 },
@@ -50,7 +50,7 @@ EntitySorter.sort(records, [{ property: 'sku', sortDirection: 'ascending' }]);
 ## DecoratorHelper
 
 ```typescript
-import { DecoratorHelper } from '@twin.org/entity';
+import { DecoratorHelper } from '@3sixty/entity';
 
 class Customer {
   public id!: string;

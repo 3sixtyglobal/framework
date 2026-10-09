@@ -5,7 +5,7 @@ Use these snippets for colour handling and image encoding when generating image 
 ## Color
 
 ```typescript
-import { Color } from '@twin.org/image';
+import { Color } from '@3sixty/image';
 
 const accent = Color.fromHex('#4a90e2');
 
@@ -18,7 +18,7 @@ accent.hexWithAlpha(); // '#ff4a90e2'
 ## JpegEncoder
 
 ```typescript
-import { Color, JpegEncoder } from '@twin.org/image';
+import { Color, JpegEncoder } from '@3sixty/image';
 
 const pixels = [
   [Color.fromHex('#111111'), Color.fromHex('#eeeeee')],
@@ -35,7 +35,7 @@ jpegBytes.length > 0; // true
 ## PngEncoder
 
 ```typescript
-import { Color, PngEncoder } from '@twin.org/image';
+import { Color, PngEncoder } from '@3sixty/image';
 
 const pixels = [
   [Color.fromHex('#ff0000'), Color.fromHex('#00ff00')],

@@ -1,11 +1,11 @@
-# TWIN Framework Context
+# 3Sixty Framework Context
 
 This package is part of the framework workspace and provides helper methods/classes for context handling to support consistent development workflows across the ecosystem.
 
 ## Installation
 
 ```shell
-npm install @twin.org/context
+npm install @3sixty/context
 ```
 
 ## Examples

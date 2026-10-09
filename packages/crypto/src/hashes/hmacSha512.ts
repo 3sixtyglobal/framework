@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable camelcase */
 
+import { GeneralError, Guards } from "@3sixty/core";
+import { nameof } from "@3sixty/nameof";
 import { hmac } from "@noble/hashes/hmac.js";
 import { sha384, sha512, sha512_224, sha512_256 } from "@noble/hashes/sha2.js";
-import { GeneralError, Guards } from "@twin.org/core";
-import { nameof } from "@twin.org/nameof";
 import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
 import type { IHashInstance } from "../models/IHashInstance.js";
 

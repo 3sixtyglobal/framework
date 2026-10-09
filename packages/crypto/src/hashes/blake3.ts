@@ -1,9 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+import { Guards } from "@3sixty/core";
+import { nameof } from "@3sixty/nameof";
 import { blake3 } from "@noble/hashes/blake3.js";
 import type { Hash } from "@noble/hashes/utils.js";
-import { Guards } from "@twin.org/core";
-import { nameof } from "@twin.org/nameof";
 
 /**
  * Class to help with Blake3 Signature scheme.

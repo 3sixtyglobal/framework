@@ -1,7 +1,7 @@
 // Copyright 2026 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import type * as NodeCrypto from "node:crypto";
-import { Is, NativeModules } from "@twin.org/core";
+import { Is, NativeModules } from "@3sixty/core";
 
 /**
  * Resolve node:crypto for callers which can only use it when the platform also
