@@ -242,32 +242,32 @@ importers:
   apps/crypto-cli:
     dependencies:
       '@3sixty/cli-core':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../packages/cli-core
       '@3sixty/core':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../packages/core
       '@3sixty/crypto':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../packages/crypto
       '@3sixty/nameof':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../packages/nameof
       commander:
         specifier: 15.0.0
         version: 15.0.0
     devDependencies:
       '@3sixty/merge-locales':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../merge-locales
       '@3sixty/nameof-transformer':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../packages/nameof-transformer
       '@3sixty/nameof-vitest-plugin':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../packages/nameof-vitest-plugin
       '@3sixty/validate-locales':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../validate-locales
       '@types/node':
         specifier: 26.6.2
@@ -306,13 +306,13 @@ importers:
   apps/merge-locales:
     dependencies:
       '@3sixty/cli-core':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../packages/cli-core
       '@3sixty/core':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../packages/core
       '@3sixty/nameof':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../packages/nameof
       commander:
         specifier: 15.0.0
@@ -322,10 +322,10 @@ importers:
         version: 13.0.6
     devDependencies:
       '@3sixty/nameof-transformer':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../packages/nameof-transformer
       '@3sixty/nameof-vitest-plugin':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../packages/nameof-vitest-plugin
       '@types/node':
         specifier: 26.6.2
@@ -367,16 +367,16 @@ importers:
   apps/validate-locales:
     dependencies:
       '@3sixty/cli-core':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../packages/cli-core
       '@3sixty/core':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../packages/core
       '@3sixty/nameof':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../packages/nameof
       '@3sixty/nameof-transformer':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../packages/nameof-transformer
       commander:
         specifier: 15.0.0
@@ -389,10 +389,10 @@ importers:
         version: 6.0.3
     devDependencies:
       '@3sixty/merge-locales':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../merge-locales
       '@3sixty/nameof-vitest-plugin':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../packages/nameof-vitest-plugin
       '@types/node':
         specifier: 26.6.2
@@ -431,10 +431,10 @@ importers:
   packages/cli-core:
     dependencies:
       '@3sixty/core':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../core
       '@3sixty/nameof':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof
       chalk:
         specifier: 6.0.0
@@ -447,10 +447,10 @@ importers:
         version: 18.0.2
     devDependencies:
       '@3sixty/nameof-transformer':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-transformer
       '@3sixty/nameof-vitest-plugin':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-vitest-plugin
       '@types/node':
         specifier: 26.6.2
@@ -492,20 +492,20 @@ importers:
   packages/context:
     dependencies:
       '@3sixty/core':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../core
       '@3sixty/nameof':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof
     devDependencies:
       '@3sixty/nameof-transformer':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-transformer
       '@3sixty/nameof-vitest-plugin':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-vitest-plugin
       '@3sixty/validate-locales':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../apps/validate-locales
       '@types/node':
         specifier: 26.6.2
@@ -544,7 +544,7 @@ importers:
   packages/core:
     dependencies:
       '@3sixty/nameof':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof
       intl-messageformat:
         specifier: 12.1.2
@@ -554,10 +554,10 @@ importers:
         version: 5.3.0
     devDependencies:
       '@3sixty/nameof-transformer':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-transformer
       '@3sixty/nameof-vitest-plugin':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-vitest-plugin
       '@types/node':
         specifier: 26.6.2
@@ -599,10 +599,10 @@ importers:
   packages/crypto:
     dependencies:
       '@3sixty/core':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../core
       '@3sixty/nameof':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof
       '@noble/ciphers':
         specifier: 2.4.0
@@ -627,13 +627,13 @@ importers:
         version: 0.10.2
     devDependencies:
       '@3sixty/nameof-transformer':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-transformer
       '@3sixty/nameof-vitest-plugin':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-vitest-plugin
       '@3sixty/validate-locales':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../apps/validate-locales
       '@types/node':
         specifier: 26.6.2
@@ -672,10 +672,10 @@ importers:
   packages/entity:
     dependencies:
       '@3sixty/core':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../core
       '@3sixty/nameof':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof
       reflect-metadata:
         specifier: 0.2.2
@@ -685,13 +685,13 @@ importers:
         version: 2.8.1
     devDependencies:
       '@3sixty/nameof-transformer':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-transformer
       '@3sixty/nameof-vitest-plugin':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-vitest-plugin
       '@3sixty/validate-locales':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../apps/validate-locales
       '@vitest/coverage-v8':
         specifier: 5.0.1
@@ -727,20 +727,20 @@ importers:
   packages/image:
     dependencies:
       '@3sixty/core':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../core
       '@3sixty/nameof':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof
     devDependencies:
       '@3sixty/nameof-transformer':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-transformer
       '@3sixty/nameof-vitest-plugin':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-vitest-plugin
       '@3sixty/validate-locales':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../apps/validate-locales
       '@vitest/coverage-v8':
         specifier: 5.0.1
@@ -776,26 +776,26 @@ importers:
   packages/modules:
     dependencies:
       '@3sixty/context':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../context
       '@3sixty/core':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../core
       '@3sixty/crypto':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../crypto
       '@3sixty/nameof':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof
     devDependencies:
       '@3sixty/nameof-transformer':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-transformer
       '@3sixty/nameof-vitest-plugin':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-vitest-plugin
       '@3sixty/validate-locales':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../apps/validate-locales
       '@types/node':
         specifier: 26.6.2
@@ -834,7 +834,7 @@ importers:
   packages/nameof:
     devDependencies:
       '@3sixty/nameof-transformer':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-transformer
       '@vitest/coverage-v8':
         specifier: 5.0.1
@@ -901,7 +901,7 @@ importers:
   packages/nameof-vitest-plugin:
     dependencies:
       '@3sixty/nameof-transformer':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-transformer
       vitest:
         specifier: 5.0.1
@@ -935,23 +935,23 @@ importers:
   packages/qr:
     dependencies:
       '@3sixty/core':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../core
       '@3sixty/image':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../image
       '@3sixty/nameof':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof
     devDependencies:
       '@3sixty/nameof-transformer':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-transformer
       '@3sixty/nameof-vitest-plugin':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-vitest-plugin
       '@3sixty/validate-locales':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../apps/validate-locales
       '@vitest/coverage-v8':
         specifier: 5.0.1
@@ -987,26 +987,26 @@ importers:
   packages/web:
     dependencies:
       '@3sixty/core':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../core
       '@3sixty/crypto':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../crypto
       '@3sixty/nameof':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof
       jose:
         specifier: 6.2.12
         version: 6.2.12
     devDependencies:
       '@3sixty/nameof-transformer':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-transformer
       '@3sixty/nameof-vitest-plugin':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../nameof-vitest-plugin
       '@3sixty/validate-locales':
-        specifier: 0.20.0-next.0
+        specifier: 0.20.0-next.1
         version: link:../../apps/validate-locales
       '@types/node':
         specifier: 26.6.2
