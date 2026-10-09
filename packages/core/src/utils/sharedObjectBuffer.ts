@@ -202,7 +202,13 @@ export class SharedObjectBuffer {
 		// Deliver the buffer before waking the worker so it is in the port's receive
 		// queue when Atomics.wait returns (same ordering guarantee as Mutex).
 		port.postMessage({ buffer: buf });
-		Atomics.notify(new Int32Array(signal), 0, 1);
+		// Set signal[0] = 1 before notifying, as Mutex does. If this request is handled
+		// before the worker reaches Atomics.wait the notify has no waiter (lost wakeup),
+		// so the worker would block until it times out. With the value set first,
+		// Atomics.wait(signal, 0, 0) returns "not-equal" immediately instead.
+		const signalArr = new Int32Array(signal);
+		Atomics.store(signalArr, 0, 1);
+		Atomics.notify(signalArr, 0, 1);
 		port.close();
 
 		return true;
@@ -275,9 +281,10 @@ export class SharedObjectBuffer {
 		wt.parentPort.postMessage(request, [port2]);
 
 		try {
-			// Block until the main thread posts the buffer and fires Atomics.notify.
+			// Block until the main thread posts the buffer and sets the signal. Returns
+			// "not-equal" without blocking when the main thread has already responded.
 			// The response is guaranteed to be in port1's queue when wait returns because
-			// port.postMessage executes before Atomics.notify on the main thread.
+			// port.postMessage executes before the signal is set on the main thread.
 			const waitResult = Atomics.wait(signal, 0, 0, 30_000);
 			if (waitResult === "timed-out") {
 				throw new GeneralError(SharedObjectBuffer.CLASS_NAME, "bufferFetchFailed", { objectId });

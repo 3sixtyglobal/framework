@@ -55,14 +55,52 @@ async function waitForWorkerExits(
 }
 
 /**
- * Wait for a single worker to exit, terminating it if it does not.
- * @param worker The worker to wait for.
+ * Start a worker from an inline script, registering for its exit straight away so an
+ * early exit is not missed.
+ * @param script The worker script.
+ * @returns The worker and a promise which resolves when it exits.
  */
-async function waitForWorkerExit(worker: Worker): Promise<void> {
+function startWorker(script: string): { worker: Worker; exited: Promise<void> } {
+	const worker = new Worker(script, { eval: true });
 	const exited = new Promise<void>(resolve => {
 		worker.on("exit", () => resolve());
 	});
+	return { worker, exited };
+}
+
+/**
+ * Wait for a single worker to exit, terminating it if it does not.
+ * @param worker The worker to wait for.
+ * @param exited The exit promise registered when the worker was started.
+ */
+async function waitForWorkerExit(worker: Worker, exited: Promise<void>): Promise<void> {
 	await waitForWorkerExits([exited], [worker]);
+}
+
+/**
+ * Wait for a message from a worker, failing if the worker errors or exits first, so a
+ * starved worker fails the test straight away instead of hanging until the vitest timeout.
+ * @param worker The worker to listen to.
+ * @param isMatch Returns true for the message being waited for.
+ * @returns The matching message.
+ */
+async function waitForWorkerMessage<T>(
+	worker: Worker,
+	isMatch: (msg: unknown) => boolean
+): Promise<T> {
+	return new Promise<T>((resolve, reject) => {
+		worker.on("message", (msg: unknown) => {
+			if (isMatch(msg)) {
+				resolve(msg as T);
+			}
+		});
+		worker.on("error", err => {
+			reject(new Error(`A worker reported an error: ${String(err)}`));
+		});
+		worker.on("exit", code => {
+			reject(new Error(`Worker exited with code ${code} before sending the expected message`));
+		});
+	});
 }
 const MAX_CAP = SharedObjectBuffer.MAX_CAPACITY_BYTES;
 
@@ -573,19 +611,16 @@ describe("SharedObjectBuffer", () => {
 			await createAndWrite(objectId, { value: 1 });
 			const expectedLen = Atomics.load(new Int32Array(getBuffers()[objectId], 0, 1), 0);
 
-			const worker = new Worker(makeFetchAndReportScript(objectId), { eval: true });
+			const { worker, exited } = startWorker(makeFetchAndReportScript(objectId));
 			worker.on("message", (msg: unknown) => {
 				SharedObjectBuffer.handleWorkerMessage(msg);
 			});
 
-			const report = await new Promise<{ byteLength: number; dataLen: number }>(resolve => {
-				worker.on("message", (msg: unknown) => {
-					if (Is.object(msg) && "byteLength" in msg) {
-						resolve(msg as { byteLength: number; dataLen: number });
-					}
-				});
-			});
-			await waitForWorkerExit(worker);
+			const report = await waitForWorkerMessage<{ byteLength: number; dataLen: number }>(
+				worker,
+				msg => Is.object(msg) && "byteLength" in msg
+			);
+			await waitForWorkerExit(worker, exited);
 
 			expect(report.byteLength).toBe(getBuffers()[objectId].byteLength);
 			expect(report.dataLen).toBe(expectedLen);
@@ -595,20 +630,56 @@ describe("SharedObjectBuffer", () => {
 			const objectId = "thread-main-to-worker";
 			await createAndWrite(objectId, { signal: 42 });
 
-			const worker = new Worker(makeFetchAndReportScript(objectId), { eval: true });
+			const { worker, exited } = startWorker(makeFetchAndReportScript(objectId));
 			worker.on("message", (msg: unknown) => {
 				SharedObjectBuffer.handleWorkerMessage(msg);
 			});
 
-			const report = await new Promise<{ dataLen: number }>(resolve => {
-				worker.on("message", (msg: unknown) => {
-					if (Is.object(msg) && "dataLen" in msg) {
-						resolve(msg as { dataLen: number });
-					}
-				});
-			});
-			await waitForWorkerExit(worker);
+			const report = await waitForWorkerMessage<{ dataLen: number }>(
+				worker,
+				msg => Is.object(msg) && "dataLen" in msg
+			);
+			await waitForWorkerExit(worker, exited);
 
+			expect(report.dataLen).toBeGreaterThan(0);
+		});
+
+		test("worker is not left waiting when the main thread responds before it waits", async () => {
+			// The main thread can handle the request before the worker reaches Atomics.wait.
+			// The worker pauses after posting to force that ordering, the response must still
+			// be seen rather than the worker blocking until it times out (lost wakeup).
+			const objectId = "thread-early-response";
+			await createAndWrite(objectId, { early: true });
+
+			const script = `
+				const { parentPort, MessageChannel, receiveMessageOnPort } = require("worker_threads");
+				const { port1, port2 } = new MessageChannel();
+				const signalBuf = new SharedArrayBuffer(4);
+				const signal = new Int32Array(signalBuf);
+				parentPort.postMessage(
+					{ type: "twin:sharedObjectBuffer:getBuffer", objectId: "${objectId}", signal: signalBuf, port: port2 },
+					[port2]
+				);
+				Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 500);
+				const waitResult = Atomics.wait(signal, 0, 0, ${WORKER_WAIT_MS});
+				const resp = receiveMessageOnPort(port1);
+				port1.close();
+				const dataLen = resp ? Atomics.load(new Int32Array(resp.message.buffer, 0, 1), 0) : 0;
+				parentPort.postMessage({ waitResult, dataLen });
+			`;
+
+			const { worker, exited } = startWorker(script);
+			worker.on("message", (msg: unknown) => {
+				SharedObjectBuffer.handleWorkerMessage(msg);
+			});
+
+			const report = await waitForWorkerMessage<{ waitResult: string; dataLen: number }>(
+				worker,
+				msg => Is.object(msg) && "waitResult" in msg
+			);
+			await waitForWorkerExit(worker, exited);
+
+			expect(report.waitResult).toBe("not-equal");
 			expect(report.dataLen).toBeGreaterThan(0);
 		});
 
@@ -636,19 +707,13 @@ describe("SharedObjectBuffer", () => {
 				parentPort.postMessage("done");
 			`;
 
-			const worker = new Worker(writeScript, { eval: true });
+			const { worker, exited } = startWorker(writeScript);
 			worker.on("message", (msg: unknown) => {
 				SharedObjectBuffer.handleWorkerMessage(msg);
 			});
 
-			await new Promise<void>(resolve => {
-				worker.on("message", (msg: unknown) => {
-					if (msg === "done") {
-						resolve();
-					}
-				});
-			});
-			await waitForWorkerExit(worker);
+			await waitForWorkerMessage<string>(worker, msg => msg === "done");
+			await waitForWorkerExit(worker, exited);
 
 			const mainBuf = getBuffers()[objectId];
 			expect(mainBuf).toBeInstanceOf(SharedArrayBuffer);
@@ -710,18 +775,15 @@ describe("SharedObjectBuffer", () => {
 				port1.close();
 			`;
 
-			const worker = new Worker(script, { eval: true });
+			const { worker, exited } = startWorker(script);
 			// Intentionally NOT wiring handleWorkerMessage.
 
-			const result = await new Promise<{ waitResult: string }>(resolve => {
-				worker.on("message", (msg: unknown) => {
-					if (Is.object(msg) && "waitResult" in msg) {
-						resolve(msg as { waitResult: string });
-					}
-				});
-			});
+			const result = await waitForWorkerMessage<{ waitResult: string }>(
+				worker,
+				msg => Is.object(msg) && "waitResult" in msg
+			);
 
-			await waitForWorkerExit(worker);
+			await waitForWorkerExit(worker, exited);
 			expect(result.waitResult).toBe("timed-out");
 		});
 	});
