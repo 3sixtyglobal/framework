@@ -473,6 +473,9 @@ importers:
       ts-patch:
         specifier: 4.0.1
         version: 4.0.1
+      tsx:
+        specifier: 4.23.15
+        version: 4.23.15
       typedoc:
         specifier: 0.28.20
         version: 0.28.20(typescript@6.0.3)
@@ -577,6 +580,9 @@ importers:
       ts-patch:
         specifier: 4.0.1
         version: 4.0.1
+      tsx:
+        specifier: 4.23.15
+        version: 4.23.15
       typedoc:
         specifier: 0.28.20
         version: 0.28.20(typescript@6.0.3)
