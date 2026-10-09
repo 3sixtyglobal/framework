@@ -1,6 +1,6 @@
 {
 	"name": "@3sixty/crypto-cli",
-	"version": "0.20.0-next.0",
+	"version": "0.20.0-next.1",
 	"description": "Command line interface for interacting with the crypto tools",
 	"repository": {
 		"type": "git",
@@ -29,17 +29,17 @@
 		"dist:no-test": "pnpm run clean && concurrently -g -n build,merge,locales,types \"pnpm run build\" \"pnpm run merge-locales\" \"pnpm run validate-locales\" \"pnpm run test:build\""
 	},
 	"dependencies": {
-		"@3sixty/cli-core": "0.20.0-next.0",
-		"@3sixty/core": "0.20.0-next.0",
-		"@3sixty/crypto": "0.20.0-next.0",
-		"@3sixty/nameof": "0.20.0-next.0",
+		"@3sixty/cli-core": "0.20.0-next.1",
+		"@3sixty/core": "0.20.0-next.1",
+		"@3sixty/crypto": "0.20.0-next.1",
+		"@3sixty/nameof": "0.20.0-next.1",
 		"commander": "15.0.0"
 	},
 	"devDependencies": {
-		"@3sixty/merge-locales": "0.20.0-next.0",
-		"@3sixty/nameof-transformer": "0.20.0-next.0",
-		"@3sixty/nameof-vitest-plugin": "0.20.0-next.0",
-		"@3sixty/validate-locales": "0.20.0-next.0",
+		"@3sixty/merge-locales": "0.20.0-next.1",
+		"@3sixty/nameof-transformer": "0.20.0-next.1",
+		"@3sixty/nameof-vitest-plugin": "0.20.0-next.1",
+		"@3sixty/validate-locales": "0.20.0-next.1",
 		"@types/node": "26.6.2",
 		"@vitest/coverage-v8": "5.0.1",
 		"copyfiles": "2.4.1",
