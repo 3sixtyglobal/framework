@@ -208,6 +208,50 @@ runs:
         VERSION=$(node -e "const m=JSON.parse(require('fs').readFileSync('$MANIFEST','utf8'));console.log(Object.values(m)[0])")
         echo "RELEASE_VERSION=$VERSION" >> "$GITHUB_ENV"
 
+    # release-please treats the manifest version as the last release and looks up its tag.
+    # The version just written has no tag yet, so without an anchor the changelog would
+    # list the whole history. Point last-release-sha at the newest release tag of this
+    # line, it is committed with the versions so release-please reads it from the branch.
+    - name: Set last release SHA
+      shell: bash
+      run: |
+        cd "$TARGET_DIR"
+        if [ "${{ inputs.branch }}" = "next" ]; then
+          CONFIG="release/release-please-config.prerelease.json"
+          PATTERN='^.+-v[0-9]+\.[0-9]+\.[0-9]+-next\.[0-9]+$'
+        else
+          CONFIG="release/release-please-config.prod.json"
+          PATTERN='^.+-v[0-9]+\.[0-9]+\.[0-9]+$'
+        fi
+
+        git fetch --no-tags --force origin "+refs/tags/*:refs/tags/*"
+
+        LAST_RELEASE_SHA=""
+        LAST_RELEASE_TAG=""
+        while IFS=$'\t' read -r SHA REFS; do
+          for TAG in $(printf '%s\n' "$REFS" | grep -o 'tag: [^,]*' | sed 's/^tag: //'); do
+            if [[ "$TAG" =~ $PATTERN ]]; then
+              LAST_RELEASE_SHA="$SHA"
+              LAST_RELEASE_TAG="$TAG"
+              break 2
+            fi
+          done
+        done < <(git log "origin/${{ inputs.branch }}" --format='%H%x09%D' --decorate-refs='refs/tags/')
+
+        if [ -z "$LAST_RELEASE_SHA" ]; then
+          echo "::warning::No release tag found on ${{ inputs.branch }}, last-release-sha in $CONFIG is unchanged."
+          exit 0
+        fi
+
+        node -e "
+          const fs = require('fs');
+          const [file, sha] = process.argv.slice(1);
+          const config = JSON.parse(fs.readFileSync(file, 'utf8'));
+          config['last-release-sha'] = sha;
+          fs.writeFileSync(file, JSON.stringify(config, undefined, '\t') + '\n');
+        " "$CONFIG" "$LAST_RELEASE_SHA"
+        echo "Set last-release-sha in $CONFIG to $LAST_RELEASE_SHA ($LAST_RELEASE_TAG)"
+
     # Backstop for hotfix mode: never move next's version line downwards. A
     # hotfix released with a version below next's current line (possible with a
     # customVersion validated against stale data) must fail here rather than

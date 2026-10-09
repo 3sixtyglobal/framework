@@ -8,6 +8,7 @@
 	"release-type": "node",
 	"initial-version": "0.0.1",
 	"versioning": "default",
+	"last-release-sha": "d2c76c3bef08848003b4b771bbd90d86f030705f",
 	"packages": {
 		"packages/nameof-transformer": {
 			"package-name": "nameof-transformer",

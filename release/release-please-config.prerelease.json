@@ -10,6 +10,7 @@
 	"versioning": "prerelease",
 	"prerelease": true,
 	"prerelease-type": "next",
+	"last-release-sha": "c582f6eb94d61db0bf470282b38e42942c0f807b",
 	"packages": {
 		"packages/nameof-transformer": {
 			"package-name": "nameof-transformer",
