@@ -1,6 +1,6 @@
 {
 	"name": "@3sixty/qr",
-	"version": "0.20.0-next.0",
+	"version": "0.20.0-next.1",
 	"description": "Creating QR codes",
 	"repository": {
 		"type": "git",
@@ -28,14 +28,14 @@
 		"dist:no-test": "pnpm run clean && concurrently -g -n build,locales,types \"pnpm run build\" \"pnpm run validate-locales\" \"pnpm run test:build\""
 	},
 	"dependencies": {
-		"@3sixty/core": "0.20.0-next.0",
-		"@3sixty/image": "0.20.0-next.0",
-		"@3sixty/nameof": "0.20.0-next.0"
+		"@3sixty/core": "0.20.0-next.1",
+		"@3sixty/image": "0.20.0-next.1",
+		"@3sixty/nameof": "0.20.0-next.1"
 	},
 	"devDependencies": {
-		"@3sixty/nameof-transformer": "0.20.0-next.0",
-		"@3sixty/nameof-vitest-plugin": "0.20.0-next.0",
-		"@3sixty/validate-locales": "0.20.0-next.0",
+		"@3sixty/nameof-transformer": "0.20.0-next.1",
+		"@3sixty/nameof-vitest-plugin": "0.20.0-next.1",
+		"@3sixty/validate-locales": "0.20.0-next.1",
 		"@vitest/coverage-v8": "5.0.1",
 		"copyfiles": "2.4.1",
 		"concurrently": "10.0.5",
