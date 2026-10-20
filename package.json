@@ -1,5 +1,5 @@
 {
-	"name": "@3sixty/framework",
+	"name": "3sixty-framework",
 	"version": "0.0.0",
 	"description": "Shared foundation packages and developer tools for the framework ecosystem.",
 	"repository": {
