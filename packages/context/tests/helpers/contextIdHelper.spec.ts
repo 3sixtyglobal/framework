@@ -106,9 +106,10 @@ describe("ContextIdHelper", () => {
 		expect(() => ContextIdHelper.guard(ctx, ContextIdKeys.Account)).not.toThrow();
 	});
 
-	it("guard throws when the account id is missing", () => {
-		expect(() => ContextIdHelper.guard({}, ContextIdKeys.Account)).toThrow(
-			expect.objectContaining({ name: "GeneralError", message: "contextIdHelper.contextIdMissing" })
+	it("guard rejects an empty account id when no handler is registered", () => {
+		const ctx = { [ContextIdKeys.Account]: "" };
+		expect(() => ContextIdHelper.guard(ctx, ContextIdKeys.Account)).toThrow(
+			expect.objectContaining({ name: "GuardError", message: "guard.stringEmpty" })
 		);
 	});
 

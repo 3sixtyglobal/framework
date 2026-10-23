@@ -33,8 +33,8 @@ export const ContextIdKeys = {
 	UserOrganization: "userOrganization",
 
 	/**
-	 * Standard property type definition for account.
-	 * The token subject. This is not a DID.
+	 * Standard property type definition for account, the stable account identifier.
+	 * Unlike `User` this is not a DID.
 	 */
 	Account: "account"
 } as const;
