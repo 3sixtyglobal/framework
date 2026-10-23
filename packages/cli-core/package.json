@@ -25,8 +25,8 @@
 		"docs:clean": "rimraf docs/reference",
 		"docs:generate": "typedoc --options typedoc.config.mjs",
 		"docs": "pnpm run docs:clean && pnpm run docs:generate",
-		"dist": "pnpm run clean && concurrently -g -n build,merge,types,test \"pnpm run build\" \"pnpm run merge-locales\" \"pnpm run test:build\" \"pnpm run test\"",
-		"dist:no-test": "pnpm run clean && concurrently -g -n build,merge,types \"pnpm run build\" \"pnpm run merge-locales\" \"pnpm run test:build\""
+		"dist": "pnpm run clean && pnpm run merge-locales && concurrently -g -n build,types,test \"pnpm run build\" \"pnpm run test:build\" \"pnpm run test\"",
+		"dist:no-test": "pnpm run clean && pnpm run merge-locales && concurrently -g -n build,types \"pnpm run build\" \"pnpm run test:build\""
 	},
 	"dependencies": {
 		"@3sixty/core": "0.20.0-next.2",
