@@ -15,7 +15,7 @@ Call `destroy` when the cache is no longer needed to stop the background timer.
 
 ## Type Parameters
 
-### T
+### T {#t}
 
 `T` = `unknown`
 

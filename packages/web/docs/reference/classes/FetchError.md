@@ -36,6 +36,8 @@ The http status code.
 
 ##### properties?
 
+\{\[`id`: `string`\]: `unknown`; \}
+
 Any additional information for the error.
 
 ##### cause?

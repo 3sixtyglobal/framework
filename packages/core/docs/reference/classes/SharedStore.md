@@ -42,7 +42,7 @@ Get a property from the shared store.
 
 ##### Type Parameters
 
-###### T
+###### T {#t}
 
 `T` = `unknown`
 
@@ -71,7 +71,7 @@ this safe against concurrent callers.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-1}
 
 `T` = `unknown`
 
@@ -105,7 +105,7 @@ Set the property in the shared store.
 
 #### Type Parameters
 
-##### T
+##### T {#t-2}
 
 `T` = `unknown`
 

@@ -668,7 +668,7 @@ Is the property an object.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T` = \{\[`id`: `string`\]: `unknown`; \}
 
@@ -714,7 +714,7 @@ Is the property an array.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T`
 
@@ -760,7 +760,7 @@ Is the property an array with at least one item.
 
 #### Type Parameters
 
-##### T
+##### T {#t-2}
 
 `T`
 
@@ -806,7 +806,7 @@ Is the property one of a list of items.
 
 #### Type Parameters
 
-##### T
+##### T {#t-3}
 
 `T`
 
@@ -1021,6 +1021,8 @@ Map a list of failures to their properties in a map.
 The validation failures to combine into the map for the properties.
 
 ##### propertyMap
+
+\{\[`property`: `string`\]: [`IValidationFailure`](../interfaces/IValidationFailure.md)[]; \}
 
 The map to add the failures to.
 

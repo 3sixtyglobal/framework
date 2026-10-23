@@ -50,7 +50,7 @@ Convert an object or array to an array.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T` = `unknown`
 

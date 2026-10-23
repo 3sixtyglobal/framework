@@ -110,7 +110,7 @@ Read a JSON file and parse it.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T` = `unknown`
 
@@ -138,7 +138,7 @@ Read a JSON file and parse it, synchronously.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T` = `unknown`
 
@@ -307,7 +307,7 @@ Write a JSON file.
 
 #### Type Parameters
 
-##### T
+##### T {#t-2}
 
 `T` = `unknown`
 

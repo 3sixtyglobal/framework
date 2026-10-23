@@ -36,6 +36,8 @@ The id for the item.
 
 ##### properties?
 
+\{\[`id`: `string`\]: `unknown`; \}
+
 Any additional information for the error.
 
 ##### cause?

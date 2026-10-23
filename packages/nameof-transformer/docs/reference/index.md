@@ -10,6 +10,7 @@
 - [factory](functions/factory.md)
 - [manual](functions/manual.md)
 - [tsTransformersPreProcess](functions/tsTransformersPreProcess.md)
+- [tsTransform](functions/tsTransform.md)
 
 ## References
 

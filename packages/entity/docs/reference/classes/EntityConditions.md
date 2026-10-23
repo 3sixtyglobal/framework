@@ -22,7 +22,7 @@ See if the entity matches the conditions.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T`
 
@@ -56,7 +56,7 @@ See if the entity matches the conditions.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T`
 

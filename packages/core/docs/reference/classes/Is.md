@@ -88,7 +88,7 @@ Is the property not null or undefined.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T`
 
@@ -552,7 +552,7 @@ Is the value an object.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T` = \{\[`id`: `string`\]: `unknown`; \}
 
@@ -580,7 +580,7 @@ Is the value an object with at least one property.
 
 #### Type Parameters
 
-##### T
+##### T {#t-2}
 
 `T` = \{\[`id`: `string`\]: `unknown`; \}
 
@@ -608,7 +608,7 @@ Is the value an array.
 
 #### Type Parameters
 
-##### T
+##### T {#t-3}
 
 `T`
 
@@ -636,7 +636,7 @@ Is the value an array with at least one element.
 
 #### Type Parameters
 
-##### T
+##### T {#t-4}
 
 `T`
 
@@ -664,7 +664,7 @@ Is the value an array with at least one element.
 
 #### Type Parameters
 
-##### T
+##### T {#t-5}
 
 `T`
 
@@ -742,7 +742,7 @@ Is the property a function.
 
 #### Type Parameters
 
-##### T
+##### T {#t-6}
 
 `T` *extends* (...`args`) => `any` = (...`args`) => `any`
 
@@ -792,7 +792,7 @@ Is the value a promise.
 
 #### Type Parameters
 
-##### T
+##### T {#t-7}
 
 `T` = `unknown`
 
@@ -842,7 +842,7 @@ Is the provided object a class constructor.
 
 #### Type Parameters
 
-##### T
+##### T {#t-8}
 
 `T` = `unknown`
 

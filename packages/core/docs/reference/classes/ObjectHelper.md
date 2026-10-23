@@ -30,7 +30,7 @@ Convert an object to bytes.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T`
 
@@ -64,7 +64,7 @@ Convert a bytes to an object.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T`
 
@@ -96,7 +96,7 @@ Make a deep clone of an object.
 
 #### Type Parameters
 
-##### T
+##### T {#t-2}
 
 `T`
 
@@ -124,11 +124,11 @@ Deep merge objects.
 
 #### Type Parameters
 
-##### T
+##### T {#t-3}
 
 `T` = `unknown`
 
-##### U
+##### U {#u}
 
 `U` = `unknown`
 
@@ -162,7 +162,7 @@ Does one object equal another.
 
 #### Type Parameters
 
-##### T
+##### T {#t-4}
 
 `T`
 
@@ -202,7 +202,7 @@ Get the property of an unknown object.
 
 #### Type Parameters
 
-##### T
+##### T {#t-5}
 
 `T` = `unknown`
 
@@ -298,7 +298,7 @@ Extract a property from the object, providing alternative names.
 
 #### Type Parameters
 
-##### T
+##### T {#t-6}
 
 `T`
 
@@ -354,11 +354,11 @@ Pick a subset of properties from an object.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-7}
 
 `T`
 
-###### K
+###### K {#k}
 
 `K` *extends* `string` \| `number` \| `symbol`
 
@@ -390,11 +390,11 @@ Pick a subset of properties from an object.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-8}
 
 `T`
 
-###### K
+###### K {#k-1}
 
 `K` *extends* `string` \| `number` \| `symbol`
 
@@ -444,11 +444,11 @@ Omit a subset of properties from an object.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-9}
 
 `T`
 
-###### K
+###### K {#k-2}
 
 `K` *extends* `string` \| `number` \| `symbol`
 
@@ -480,11 +480,11 @@ Omit a subset of properties from an object.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-10}
 
 `T`
 
-###### K
+###### K {#k-3}
 
 `K` *extends* `string` \| `number` \| `symbol`
 
@@ -562,7 +562,7 @@ Remove empty properties from an object.
 
 #### Type Parameters
 
-##### T
+##### T {#t-11}
 
 `T` = `unknown`
 

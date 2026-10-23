@@ -22,7 +22,7 @@ Get the schema from the reflection metadata.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T` = `unknown`
 
@@ -50,7 +50,7 @@ Set the schema from the reflection metadata.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T` = `unknown`
 

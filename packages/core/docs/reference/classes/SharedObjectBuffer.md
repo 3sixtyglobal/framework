@@ -85,7 +85,7 @@ Must be called while holding Mutex.lock(objectId).
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T`
 
@@ -120,7 +120,7 @@ Must be called while holding Mutex.lock(objectId).
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T`
 

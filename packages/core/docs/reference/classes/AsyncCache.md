@@ -24,7 +24,7 @@ requestMethod themselves instead of waiting on the empty value.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T` = `unknown`
 
@@ -70,7 +70,7 @@ Get an entry from the cache.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T` = `unknown`
 
@@ -99,7 +99,7 @@ Set an entry into the cache.
 
 #### Type Parameters
 
-##### T
+##### T {#t-2}
 
 `T` = `unknown`
 

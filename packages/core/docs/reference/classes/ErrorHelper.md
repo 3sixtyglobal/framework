@@ -54,7 +54,7 @@ The error formatted including any causes errors.
 
 ### localizeErrors() {#localizeerrors}
 
-> `static` **localizeErrors**(`error`): [`IError`](../interfaces/IError.md) & `object`[]
+> `static` **localizeErrors**(`error`): ([`IError`](../interfaces/IError.md) & `object`)[]
 
 Localize the content of an error and any causes.
 
@@ -68,7 +68,7 @@ The error to format.
 
 #### Returns
 
-[`IError`](../interfaces/IError.md) & `object`[]
+([`IError`](../interfaces/IError.md) & `object`)[]
 
 The localized version of the errors flattened.
 

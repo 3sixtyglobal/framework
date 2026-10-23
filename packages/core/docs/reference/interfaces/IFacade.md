@@ -5,7 +5,7 @@ component being modified. The wrapped component is returned in place of the orig
 
 ## Type Parameters
 
-### T
+### T {#t}
 
 `T` = `unknown`
 

@@ -724,7 +724,7 @@ Is the property an object.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T` = \{\[`id`: `string`\]: `unknown`; \}
 
@@ -766,7 +766,7 @@ Is the property is an object with at least one property.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T` = \{\[`id`: `string`\]: `unknown`; \}
 
@@ -808,7 +808,7 @@ Is the property is an array.
 
 #### Type Parameters
 
-##### T
+##### T {#t-2}
 
 `T`
 
@@ -850,7 +850,7 @@ Is the property is an array with at least one item.
 
 #### Type Parameters
 
-##### T
+##### T {#t-3}
 
 `T`
 
@@ -892,7 +892,7 @@ Is the property one of a list of items.
 
 #### Type Parameters
 
-##### T
+##### T {#t-4}
 
 `T`
 
@@ -940,7 +940,7 @@ Does the array start with the specified data.
 
 #### Type Parameters
 
-##### T
+##### T {#t-5}
 
 `T`
 
@@ -988,7 +988,7 @@ Does the array end with the specified data.
 
 #### Type Parameters
 
-##### T
+##### T {#t-6}
 
 `T`
 
@@ -1072,7 +1072,7 @@ Is the property a function.
 
 #### Type Parameters
 
-##### T
+##### T {#t-7}
 
 `T` *extends* (...`args`) => `any` = (...`args`) => `any`
 

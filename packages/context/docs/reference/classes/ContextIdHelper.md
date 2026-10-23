@@ -30,11 +30,11 @@ Perform a runtime guard on the provided context ID value.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T` *extends* `object`
 
-##### K
+##### K {#k}
 
 `K` *extends* `string`
 
@@ -102,11 +102,11 @@ Perform a runtime guard on the provided context ID values.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T` *extends* `object`
 
-##### K
+##### K {#k-1}
 
 `K` *extends* `string`
 

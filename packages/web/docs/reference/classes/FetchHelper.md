@@ -76,11 +76,11 @@ Perform a request in json format.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T`
 
-##### U
+##### U {#u}
 
 `U`
 
@@ -132,7 +132,7 @@ Perform a request for binary data.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T`
 
@@ -196,7 +196,7 @@ Get a cache entry.
 
 #### Type Parameters
 
-##### T
+##### T {#t-2}
 
 `T`
 
@@ -224,7 +224,7 @@ Set a cache entry.
 
 #### Type Parameters
 
-##### T
+##### T {#t-3}
 
 `T`
 

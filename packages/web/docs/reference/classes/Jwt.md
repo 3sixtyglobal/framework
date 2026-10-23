@@ -30,11 +30,11 @@ Encode a token.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T` *extends* `JWTHeaderParameters`
 
-##### U
+##### U {#u}
 
 `U` *extends* `JWTPayload`
 
@@ -74,11 +74,11 @@ Encode a token.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T` *extends* `JWTHeaderParameters`
 
-##### U
+##### U {#u-1}
 
 `U` *extends* `JWTPayload`
 
@@ -118,11 +118,11 @@ Decode a token.
 
 #### Type Parameters
 
-##### T
+##### T {#t-2}
 
 `T` *extends* `JWTHeaderParameters`
 
-##### U
+##### U {#u-2}
 
 `U` *extends* `JWTPayload`
 
@@ -150,11 +150,11 @@ Verify a token.
 
 #### Type Parameters
 
-##### T
+##### T {#t-3}
 
 `T` *extends* `JWTHeaderParameters`
 
-##### U
+##### U {#u-3}
 
 `U` *extends* `JWTPayload`
 
@@ -188,11 +188,11 @@ Verify a token.
 
 #### Type Parameters
 
-##### T
+##### T {#t-4}
 
 `T` *extends* `JWTHeaderParameters`
 
-##### U
+##### U {#u-4}
 
 `U` *extends* `JWTPayload`
 
@@ -226,11 +226,11 @@ Verify a token by parts.
 
 #### Type Parameters
 
-##### T
+##### T {#t-5}
 
 `T` *extends* `JWTHeaderParameters`
 
-##### U
+##### U {#u-5}
 
 `U` *extends* `JWTPayload`
 
@@ -304,11 +304,11 @@ The default verifier for the JWT.
 
 #### Type Parameters
 
-##### T
+##### T {#t-6}
 
 `T` *extends* `JWTHeaderParameters`
 
-##### U
+##### U {#u-6}
 
 `U` *extends* `JWTPayload`
 
@@ -342,11 +342,11 @@ Create bytes for signing from header and payload.
 
 #### Type Parameters
 
-##### T
+##### T {#t-7}
 
 `T` *extends* `JWTHeaderParameters`
 
-##### U
+##### U {#u-7}
 
 `U` *extends* `JWTPayload`
 
@@ -380,11 +380,11 @@ Create header and payload from signing bytes.
 
 #### Type Parameters
 
-##### T
+##### T {#t-8}
 
 `T` *extends* `JWTHeaderParameters`
 
-##### U
+##### U {#u-8}
 
 `U` *extends* `JWTPayload`
 

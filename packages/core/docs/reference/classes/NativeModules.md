@@ -42,7 +42,7 @@ getType&lt;BufferConstructor&gt;("Buffer").
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T` = `unknown`
 
@@ -71,7 +71,7 @@ a Node builtin - a specifier init() was never called for returns undefined here.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T` = `unknown`
 

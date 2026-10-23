@@ -66,7 +66,7 @@ Import a module on the main thread, resolving and caching it.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T` = \{\[`key`: `string`\]: `unknown`; \}
 
@@ -94,7 +94,7 @@ Get the module entry.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T`
 
@@ -132,7 +132,7 @@ Get the method from a module.
 
 #### Type Parameters
 
-##### T
+##### T {#t-2}
 
 `T` *extends* (...`args`) => `any` = (...`args`) => `any`
 
@@ -170,7 +170,7 @@ Execute the method in the module.
 
 #### Type Parameters
 
-##### T
+##### T {#t-3}
 
 `T`
 
@@ -214,7 +214,7 @@ Execute the method in the module in a thread.
 
 #### Type Parameters
 
-##### T
+##### T {#t-4}
 
 `T`
 

@@ -30,13 +30,15 @@ Get the environment variable as an object with camel cased names.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T` = \{\[`id`: `string`\]: `string`; \}
 
 #### Parameters
 
 ##### envVars
+
+\{\[`id`: `string`\]: `string` \| `undefined`; \}
 
 The environment variables.
 
@@ -121,7 +123,7 @@ Returns an env var as a string when it holds a non-empty value, falling back to 
 
 ##### Type Parameters
 
-###### T
+###### T {#t-1}
 
 `T`
 
@@ -159,7 +161,7 @@ Returns an env var as a string when it holds a non-empty value, falling back to 
 
 ##### Type Parameters
 
-###### T
+###### T {#t-2}
 
 `T`
 
@@ -195,11 +197,11 @@ Returns an env var constrained to one of the supplied choices, falling back to t
 
 ##### Type Parameters
 
-###### T
+###### T {#t-3}
 
 `T`
 
-###### U
+###### U {#u}
 
 `U` *extends* `string`
 
@@ -247,11 +249,11 @@ Returns an env var constrained to one of the supplied choices, falling back to t
 
 ##### Type Parameters
 
-###### T
+###### T {#t-4}
 
 `T`
 
-###### U
+###### U {#u-1}
 
 `U` *extends* `string`
 
@@ -297,7 +299,7 @@ Coerces an env var to a boolean, falling back to the supplied default when not s
 
 ##### Type Parameters
 
-###### T
+###### T {#t-5}
 
 `T`
 
@@ -339,7 +341,7 @@ Coerces an env var to a boolean, falling back to the supplied default when not s
 
 ##### Type Parameters
 
-###### T
+###### T {#t-6}
 
 `T`
 
@@ -379,7 +381,7 @@ Coerces an env var that is already in milliseconds to an integer.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-7}
 
 `T`
 
@@ -421,7 +423,7 @@ Coerces an env var that is already in milliseconds to an integer.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-8}
 
 `T`
 
@@ -461,7 +463,7 @@ Coerces an env var that represents an integer count or size to an integer.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-9}
 
 `T`
 
@@ -503,7 +505,7 @@ Coerces an env var that represents an integer count or size to an integer.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-10}
 
 `T`
 
@@ -543,7 +545,7 @@ Coerces an env var that represents an integer to an actual integer.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-11}
 
 `T`
 
@@ -585,7 +587,7 @@ Coerces an env var that represents an integer to an actual integer.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-12}
 
 `T`
 
@@ -626,11 +628,11 @@ or a value already expanded from a @json: file reference.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-13}
 
 `T`
 
-###### U
+###### U {#u-2}
 
 `U`
 
@@ -669,11 +671,11 @@ or a value already expanded from a @json: file reference.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-14}
 
 `T`
 
-###### U
+###### U {#u-3}
 
 `U`
 
@@ -710,11 +712,11 @@ or a value already expanded from a @json: file reference.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-15}
 
 `T`
 
-###### U
+###### U {#u-4}
 
 `U`
 
@@ -753,11 +755,11 @@ or a value already expanded from a @json: file reference.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-16}
 
 `T`
 
-###### U
+###### U {#u-5}
 
 `U`
 
@@ -793,7 +795,7 @@ Coerces an env var that is already in seconds to an integer.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-17}
 
 `T`
 
@@ -835,7 +837,7 @@ Coerces an env var that is already in seconds to an integer.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-18}
 
 `T`
 
@@ -875,7 +877,7 @@ Coerces an env var that is already in minutes to an integer.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-19}
 
 `T`
 
@@ -917,7 +919,7 @@ Coerces an env var that is already in minutes to an integer.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-20}
 
 `T`
 
@@ -957,7 +959,7 @@ Coerces an env var that is a datetime string, throwing when the value is set but
 
 ##### Type Parameters
 
-###### T
+###### T {#t-21}
 
 `T`
 
@@ -999,7 +1001,7 @@ Coerces an env var that is a datetime string, throwing when the value is set but
 
 ##### Type Parameters
 
-###### T
+###### T {#t-22}
 
 `T`
 
@@ -1040,7 +1042,7 @@ Values of zero or less are returned unchanged so sentinels such as -1 keep their
 
 ##### Type Parameters
 
-###### T
+###### T {#t-23}
 
 `T`
 
@@ -1083,7 +1085,7 @@ Values of zero or less are returned unchanged so sentinels such as -1 keep their
 
 ##### Type Parameters
 
-###### T
+###### T {#t-24}
 
 `T`
 
@@ -1124,7 +1126,7 @@ Values of zero or less are returned unchanged so sentinels such as -1 keep their
 
 ##### Type Parameters
 
-###### T
+###### T {#t-25}
 
 `T`
 
@@ -1167,7 +1169,7 @@ Values of zero or less are returned unchanged so sentinels such as -1 keep their
 
 ##### Type Parameters
 
-###### T
+###### T {#t-26}
 
 `T`
 
@@ -1207,11 +1209,11 @@ Converts a comma separated list to an array.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-27}
 
 `T`
 
-###### U
+###### U {#u-6}
 
 `U`
 
@@ -1253,11 +1255,11 @@ Converts a comma separated list to an array.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-28}
 
 `T`
 
-###### U
+###### U {#u-7}
 
 `U`
 
@@ -1305,11 +1307,11 @@ Converts a comma separated list to an array.
 
 ##### Type Parameters
 
-###### T
+###### T {#t-29}
 
 `T`
 
-###### U
+###### U {#u-8}
 
 `U`
 
@@ -1361,7 +1363,7 @@ Converts a comma separated list to an array.
 
 ##### Type Parameters
 
-###### U
+###### U {#u-9}
 
 `U`
 
@@ -1387,7 +1389,7 @@ Converts a comma separated list to an array.
 
 ##### Type Parameters
 
-###### U
+###### U {#u-10}
 
 `U`
 
@@ -1421,7 +1423,7 @@ Gets named key integer pairs from an env var holding comma separated key=integer
 
 #### Type Parameters
 
-##### T
+##### T {#t-30}
 
 `T`
 
@@ -1489,6 +1491,8 @@ Report any environment variables which are still recognised but no longer used.
 #### Parameters
 
 ##### envVars
+
+\{\[`id`: `string`\]: `unknown`; \}
 
 The already-converted camelCase env variables.
 
