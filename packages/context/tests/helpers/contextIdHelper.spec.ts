@@ -1,8 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import { Guards } from "@3sixty/core";
 import { ContextIdHandlerFactory } from "../../src/factories/contextIdHandlerFactory.js";
 import { ContextIdHelper } from "../../src/helpers/contextIdHelper.js";
+import { ContextIdKeys } from "../../src/models/contextIdKeys.js";
 import type { IContextIdHandler } from "../../src/models/IContextIdHandler.js";
 
 /**
@@ -95,6 +97,17 @@ describe("ContextIdHelper", () => {
 	it("guard throws when key missing", () => {
 		const ctx = { organization: "ORG1234" };
 		expect(() => ContextIdHelper.guard(ctx, "user")).toThrow(
+			expect.objectContaining({ name: "GeneralError", message: "contextIdHelper.contextIdMissing" })
+		);
+	});
+
+	it("guard accepts an account id when no handler is registered", () => {
+		const ctx = { [ContextIdKeys.Account]: "01932a7e-0000-7000-8000-000000000001" };
+		expect(() => ContextIdHelper.guard(ctx, ContextIdKeys.Account)).not.toThrow();
+	});
+
+	it("guard throws when the account id is missing", () => {
+		expect(() => ContextIdHelper.guard({}, ContextIdKeys.Account)).toThrow(
 			expect.objectContaining({ name: "GeneralError", message: "contextIdHelper.contextIdMissing" })
 		);
 	});
