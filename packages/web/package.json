@@ -1,6 +1,6 @@
 {
 	"name": "@3sixty/web",
-	"version": "0.20.0-next.1",
+	"version": "0.20.0-next.2",
 	"description": "Classes for use with web operations",
 	"repository": {
 		"type": "git",
@@ -28,15 +28,15 @@
 		"dist:no-test": "pnpm run clean && concurrently -g -n build,locales,types \"pnpm run build\" \"pnpm run validate-locales\" \"pnpm run test:build\""
 	},
 	"dependencies": {
-		"@3sixty/core": "0.20.0-next.1",
-		"@3sixty/crypto": "0.20.0-next.1",
-		"@3sixty/nameof": "0.20.0-next.1",
+		"@3sixty/core": "0.20.0-next.2",
+		"@3sixty/crypto": "0.20.0-next.2",
+		"@3sixty/nameof": "0.20.0-next.2",
 		"jose": "6.2.12"
 	},
 	"devDependencies": {
-		"@3sixty/nameof-transformer": "0.20.0-next.1",
-		"@3sixty/nameof-vitest-plugin": "0.20.0-next.1",
-		"@3sixty/validate-locales": "0.20.0-next.1",
+		"@3sixty/nameof-transformer": "0.20.0-next.2",
+		"@3sixty/nameof-vitest-plugin": "0.20.0-next.2",
+		"@3sixty/validate-locales": "0.20.0-next.2",
 		"@types/node": "26.6.5",
 		"@vitest/coverage-v8": "5.0.5",
 		"concurrently": "10.0.6",
