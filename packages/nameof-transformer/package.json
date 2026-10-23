@@ -15,11 +15,11 @@
 	},
 	"scripts": {
 		"clean": "rimraf dist coverage .cache",
-		"build": "tsc --incremental --tsBuildInfoFile .cache/tsconfig.tsbuildinfo",
+		"build": "tsc",
 		"dev": "nodemon --watch src --ext ts --exec \"pnpm run build\"",
-		"test": "vitest --run --config ./vitest.config.ts --no-cache",
-		"test:coverage": "vitest --run --coverage --config ./vitest.config.ts --no-cache",
-		"test:build": "tsc -p ./tests/tsconfig.json --noEmit --incremental --tsBuildInfoFile .cache/tests.tsbuildinfo",
+		"test": "vitest --run --config ./vitest.config.ts",
+		"test:coverage": "vitest --run --coverage --config ./vitest.config.ts",
+		"test:build": "tsc -p ./tests/tsconfig.json --noEmit",
 		"validate-locales": "echo Can not perform locale validation on nameof-transformer package as the validate-locales package depends on nameof-transformer",
 		"docs:clean": "rimraf docs/reference",
 		"docs:generate": "typedoc --options typedoc.config.mjs",
@@ -28,9 +28,11 @@
 		"dist:no-test": "pnpm run clean && concurrently -g -n build,locales,types \"pnpm run build\" \"pnpm run validate-locales\" \"pnpm run test:build\""
 	},
 	"dependencies": {
-		"typescript": "6.0.3"
+		"typescript": "6.0.3",
+		"typescript-native": "npm:typescript@7.1.0-beta"
 	},
 	"devDependencies": {
+		"@types/node": "26.6.5",
 		"@vitest/coverage-v8": "5.0.5",
 		"concurrently": "10.0.6",
 		"copyfiles": "2.4.1",
@@ -50,11 +52,15 @@
 		}
 	},
 	"files": [
+		"bin",
 		"dist/es",
 		"dist/types",
 		"locales",
 		"docs"
 	],
+	"bin": {
+		"tstransform": "bin/tstransform.js"
+	},
 	"keywords": [
 		"twin",
 		"trade",

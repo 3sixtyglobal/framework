@@ -1,6 +1,7 @@
 {
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
+		"tsBuildInfoFile": "../.cache/tests.tsbuildinfo",
 		"rootDir": "..",
 		"types": ["vitest/globals"]
 	},

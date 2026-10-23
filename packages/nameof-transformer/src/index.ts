@@ -25,5 +25,6 @@ export const name = "@3sixty/nameof-transformer";
 
 export * from "./manual.js";
 export * from "./svelte.js";
+export * from "./tsTransform.js";
 
 export default factory;
