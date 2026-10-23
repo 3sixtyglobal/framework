@@ -6,6 +6,6 @@ Object or array data type
 
 ## Type Parameters
 
-### T
+### T {#t}
 
 `T` = `unknown`

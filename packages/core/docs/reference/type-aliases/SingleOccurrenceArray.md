@@ -6,10 +6,10 @@ Utility type to create a non-empty array with values of type T and exactly one v
 
 ## Type Parameters
 
-### T
+### T {#t}
 
 `T` = `unknown`
 
-### U
+### U {#u}
 
 `U` = `never`

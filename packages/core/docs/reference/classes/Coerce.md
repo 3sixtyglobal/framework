@@ -222,7 +222,7 @@ Coerce the value to an array.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T` = `unknown`
 
@@ -250,7 +250,7 @@ Coerce the value to an object.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T` = `unknown`
 

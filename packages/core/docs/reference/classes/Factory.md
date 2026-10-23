@@ -4,7 +4,7 @@ Factory for creating implementation of generic types.
 
 ## Type Parameters
 
-### T
+### T {#t}
 
 `T`
 
@@ -26,7 +26,7 @@ Create a new factory, which is shared throughout all library instances.
 
 #### Type Parameters
 
-##### U
+##### U {#u}
 
 `U`
 
@@ -80,7 +80,7 @@ Get a specific factory by type name.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T` = `unknown`
 
@@ -146,7 +146,7 @@ Register a new generator.
 
 #### Type Parameters
 
-##### U
+##### U {#u-1}
 
 `U`
 
@@ -206,7 +206,7 @@ Get a generator instance.
 
 #### Type Parameters
 
-##### U
+##### U {#u-2}
 
 `U`
 
@@ -242,7 +242,7 @@ Get a generator instance with no exceptions.
 
 #### Type Parameters
 
-##### U
+##### U {#u-3}
 
 `U`
 
@@ -270,7 +270,7 @@ Create a new instance without caching it.
 
 #### Type Parameters
 
-##### U
+##### U {#u-4}
 
 `U`
 
@@ -312,7 +312,7 @@ Create a new instance without caching it if it exists.
 
 #### Type Parameters
 
-##### U
+##### U {#u-5}
 
 `U`
 

@@ -4,11 +4,11 @@ The result of comparing two sets of entity schema properties.
 
 ## Type Parameters
 
-### T
+### T {#t}
 
 `T` = `unknown`
 
-### U
+### U {#u}
 
 `U` = `unknown`
 

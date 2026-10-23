@@ -42,7 +42,7 @@ Get the schema for the specified object.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T` = `unknown`
 
@@ -102,7 +102,7 @@ Get the primary key from the entity schema.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T`
 
@@ -134,7 +134,7 @@ Get the sort properties from the schema.
 
 #### Type Parameters
 
-##### T
+##### T {#t-2}
 
 `T`
 
@@ -165,7 +165,7 @@ of their index entry, and each is returned with the sort direction it declared f
 
 #### Type Parameters
 
-##### T
+##### T {#t-3}
 
 `T`
 
@@ -198,7 +198,7 @@ Build sort properties from the schema and override if necessary.
 
 #### Type Parameters
 
-##### T
+##### T {#t-4}
 
 `T`
 
@@ -232,7 +232,7 @@ Validate the entity against the schema.
 
 #### Type Parameters
 
-##### T
+##### T {#t-5}
 
 `T`
 
@@ -268,7 +268,7 @@ Find the property in the schema that is marked as the optimistic-lock version to
 
 #### Type Parameters
 
-##### T
+##### T {#t-6}
 
 `T`
 

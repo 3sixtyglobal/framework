@@ -30,6 +30,8 @@ The method for the error.
 
 ##### properties?
 
+\{\[`id`: `string`\]: `unknown`; \}
+
 Any additional information for the error.
 
 ##### cause?

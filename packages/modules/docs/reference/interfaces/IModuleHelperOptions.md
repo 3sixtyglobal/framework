@@ -90,6 +90,8 @@ The locale key of the message.
 
 ##### properties?
 
+\{\[`id`: `string`\]: `unknown`; \}
+
 The properties to format the message with.
 
 #### Returns

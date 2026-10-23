@@ -6,14 +6,14 @@ Helper with bounded recursion depth to keep type instantiation tractable.
 
 ## Type Parameters
 
-### T
+### T {#t}
 
 `T`
 
-### U
+### U {#u}
 
 `U`
 
-### Depth
+### Depth {#depth}
 
 `Depth` *extends* `0`[]

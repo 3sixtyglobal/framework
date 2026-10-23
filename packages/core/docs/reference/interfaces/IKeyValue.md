@@ -4,7 +4,7 @@ Interface describing a key/value pair.
 
 ## Type Parameters
 
-### T
+### T {#t}
 
 `T`
 

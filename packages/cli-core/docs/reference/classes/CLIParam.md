@@ -98,7 +98,7 @@ Check the option to see if the value exists in the specific array.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T` = `string`
 

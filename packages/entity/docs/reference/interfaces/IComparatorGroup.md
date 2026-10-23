@@ -4,7 +4,7 @@ Interface defining condition group operator.
 
 ## Type Parameters
 
-### T
+### T {#t}
 
 `T` = `unknown`
 

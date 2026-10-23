@@ -473,6 +473,8 @@ The relation type (e.g., "next", "prev", "self").
 
 ##### params?
 
+\{\[`id`: `string`\]: `string`; \}
+
 #### Returns
 
 `string`

@@ -22,7 +22,7 @@ Sort a list of entities using multiple keys and direction.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T`
 
@@ -56,7 +56,7 @@ Compare two properties.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T`
 

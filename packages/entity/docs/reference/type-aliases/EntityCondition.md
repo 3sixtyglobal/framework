@@ -6,6 +6,6 @@ Type defining condition for entities filtering.
 
 ## Type Parameters
 
-### T
+### T {#t}
 
 `T`

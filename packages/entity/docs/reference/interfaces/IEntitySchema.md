@@ -8,7 +8,7 @@ Definition for an entity schema.
 
 ## Type Parameters
 
-### T
+### T {#t}
 
 `T` = `unknown`
 

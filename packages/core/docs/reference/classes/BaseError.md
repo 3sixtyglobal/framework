@@ -53,6 +53,8 @@ The message as an i18n key.
 
 ##### properties?
 
+\{\[`id`: `string`\]: `unknown`; \}
+
 Any additional information for the error.
 
 ##### cause?

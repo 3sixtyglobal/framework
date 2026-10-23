@@ -6,7 +6,7 @@ Placeholder method which substitutes the type name as a string at runtime.
 
 ## Type Parameters
 
-### T
+### T {#t}
 
 `T`
 

@@ -37,11 +37,11 @@ When `renames` contains duplicate entries: if two entries share the same target,
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T`
 
-##### U
+##### U {#u}
 
 `U` = `T`
 
@@ -85,11 +85,11 @@ Returns true when the diff contains at least one added, removed, or modified pro
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T`
 
-##### U
+##### U {#u-1}
 
 `U`
 
@@ -118,11 +118,11 @@ The `property` name field and documentation fields (`description`, `examples`) a
 
 #### Type Parameters
 
-##### T
+##### T {#t-2}
 
 `T`
 
-##### U
+##### U {#u-2}
 
 `U`
 

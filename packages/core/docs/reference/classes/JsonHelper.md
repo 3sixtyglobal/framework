@@ -54,7 +54,7 @@ Based on https://www.rfc-editor.org/rfc/rfc6902.
 
 #### Type Parameters
 
-##### T
+##### T {#t}
 
 `T` = `unknown`
 
@@ -89,7 +89,7 @@ Based on https://www.rfc-editor.org/rfc/rfc6902.
 
 #### Type Parameters
 
-##### T
+##### T {#t-1}
 
 `T` = `unknown`
 
