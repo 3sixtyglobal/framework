@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.20.0-next.3](https://github.com/3sixtyglobal/framework/compare/image-v0.20.0-next.2...image-v0.20.0-next.3) (2026-10-25)
+
+
+### Features
+
+* release to next [skip ci] ([#36](https://github.com/3sixtyglobal/framework/issues/36)) ([5124339](https://github.com/3sixtyglobal/framework/commit/5124339f74d3a958c290ea9b239bf21b85eefbb1))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @3sixty/core bumped from 0.20.0-next.2 to 0.20.0-next.3
+    * @3sixty/nameof bumped from 0.20.0-next.2 to 0.20.0-next.3
+  * devDependencies
+    * @3sixty/nameof-transformer bumped from 0.20.0-next.2 to 0.20.0-next.3
+    * @3sixty/nameof-vitest-plugin bumped from 0.20.0-next.2 to 0.20.0-next.3
+    * @3sixty/validate-locales bumped from 0.20.0-next.2 to 0.20.0-next.3
+
 ## [0.20.0-next.2](https://github.com/3sixtyglobal/framework/compare/image-v0.20.0-next.1...image-v0.20.0-next.2) (2026-10-23)
 
 
