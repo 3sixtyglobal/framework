@@ -1,6 +1,6 @@
 // Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
-import type { BuildOrchestrator, CompilerOptions } from "typescript-native/sync";
+import type { BuildOrchestrator, CompilerOptions } from "typescript-native/async";
 
 /**
  * The internal API method for creating a build orchestrator.
@@ -22,5 +22,5 @@ export interface IBuildOrchestratorApi {
 			compilerOptions: CompilerOptions;
 			overrideCompilerOptions: CompilerOptions;
 		}
-	): BuildOrchestrator;
+	): Promise<BuildOrchestrator>;
 }

@@ -72,7 +72,8 @@
 		"wordprocessingml",
 		"spreadsheetml",
 		"presentationml",
-		"unuse"
+		"unuse",
+		"workerd"
 	],
 	"ignoreRegExpList": [
 		"/from\\s+(['\"]).*\\1/",
