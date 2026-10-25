@@ -1,9 +1,8 @@
 // Copyright 2026 IOTA Stiftung.
 // Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
-import { NativeModules } from "@3sixty/core";
+import { NativeModules, Runtime, RuntimeEngine } from "@3sixty/core";
 import { NativeModulesCrypto } from "../../src/helpers/nativeModulesCrypto.js";
-import { IS_BUN } from "../nativeCryptoVariants.js";
 
 /**
  * Drop node:crypto from the NativeModules registry.
@@ -28,13 +27,16 @@ describe("NativeModulesCrypto", () => {
 			expect(NativeModulesCrypto.getNodeCryptoCipher("chacha20-poly1305")).toBeUndefined();
 		});
 
-		test.skipIf(IS_BUN)("returns the module when the cipher is supported", async () => {
-			expect(await NativeModules.init(["node:crypto"])).toEqual({});
+		test.skipIf(Runtime.engine() === RuntimeEngine.Bun)(
+			"returns the module when the cipher is supported",
+			async () => {
+				expect(await NativeModules.init(["node:crypto"])).toEqual({});
 
-			const nodeCrypto = NativeModulesCrypto.getNodeCryptoCipher("chacha20-poly1305");
-			expect(nodeCrypto).toBeDefined();
-			expect(typeof nodeCrypto?.createCipheriv).toEqual("function");
-		});
+				const nodeCrypto = NativeModulesCrypto.getNodeCryptoCipher("chacha20-poly1305");
+				expect(nodeCrypto).toBeDefined();
+				expect(typeof nodeCrypto?.createCipheriv).toEqual("function");
+			}
+		);
 
 		test("returns undefined when the cipher is not one this build supports", async () => {
 			expect(await NativeModules.init(["node:crypto"])).toEqual({});
@@ -138,11 +140,14 @@ describe("NativeModulesCrypto", () => {
 			expect(NativeModulesCrypto.getNodeCryptoCurve("secp256k1")).toBeUndefined();
 		});
 
-		test.skipIf(IS_BUN)("returns the module when the curve is supported", async () => {
-			expect(await NativeModules.init(["node:crypto"])).toEqual({});
+		test.skipIf(Runtime.engine() === RuntimeEngine.Bun)(
+			"returns the module when the curve is supported",
+			async () => {
+				expect(await NativeModules.init(["node:crypto"])).toEqual({});
 
-			expect(NativeModulesCrypto.getNodeCryptoCurve("secp256k1")).toBeDefined();
-		});
+				expect(NativeModulesCrypto.getNodeCryptoCurve("secp256k1")).toBeDefined();
+			}
+		);
 
 		test("returns undefined when the curve is not one this build supports", async () => {
 			expect(await NativeModules.init(["node:crypto"])).toEqual({});

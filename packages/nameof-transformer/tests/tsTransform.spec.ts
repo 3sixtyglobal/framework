@@ -7,6 +7,9 @@ import { tsTransform } from "../src/tsTransform.js";
 
 let projectDir: string;
 
+// The native compiler's sync API reads Node internal pipe handles on POSIX, which Bun does not provide
+const UNSUPPORTED_RUNTIME = process.versions.bun !== undefined && process.platform !== "win32";
+
 /**
  * Write a project with the given source file.
  * @param source The content of the source file.
@@ -30,7 +33,7 @@ function writeProject(source: string): void {
 	writeFileSync(path.join(projectDir, "src", "index.ts"), source);
 }
 
-describe("tsTransform", () => {
+describe.skipIf(UNSUPPORTED_RUNTIME)("tsTransform", () => {
 	beforeEach(() => {
 		projectDir = mkdtempSync(path.join(tmpdir(), "tstransform-"));
 	});

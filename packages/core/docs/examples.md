@@ -256,6 +256,20 @@ NativeModules.getModule('node:crypto'); // the module, or undefined if init() wa
 NativeModules.names(); // ['node:crypto']
 ```
 
+## Runtime
+
+```typescript
+import { Runtime, RuntimeEngine, RuntimeOs } from '@3sixty/core';
+
+Runtime.engine(); // 'node', 'bun', 'deno', 'workerd', 'browser', 'webWorker' or 'unknown'
+Runtime.version(); // e.g. '24.18.0' on Node, the user agent in a browser
+Runtime.os(); // 'windows', 'mac', 'linux' or 'unknown'
+
+if (Runtime.engine() === RuntimeEngine.Bun && Runtime.os() === RuntimeOs.Linux) {
+  // Bun specific handling
+}
+```
+
 ## RandomHelper and NumberHelper
 
 ```typescript
