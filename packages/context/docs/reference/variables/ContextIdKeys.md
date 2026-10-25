@@ -35,3 +35,10 @@ Standard property type definition for user.
 > `readonly` **UserOrganization**: `"userOrganization"` = `"userOrganization"`
 
 Standard property type definition for user organization.
+
+### Account {#account}
+
+> `readonly` **Account**: `"account"` = `"account"`
+
+Standard property type definition for account, the stable account identifier.
+Unlike `User` this is not a DID.
