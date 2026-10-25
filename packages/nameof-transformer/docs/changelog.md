@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.20.0-next.3](https://github.com/3sixtyglobal/framework/compare/nameof-transformer-v0.20.0-next.2...nameof-transformer-v0.20.0-next.3) (2026-10-25)
+
+
+### Features
+
+* release to next [skip ci] ([#36](https://github.com/3sixtyglobal/framework/issues/36)) ([5124339](https://github.com/3sixtyglobal/framework/commit/5124339f74d3a958c290ea9b239bf21b85eefbb1))
+
 ## [0.20.0-next.2](https://github.com/3sixtyglobal/framework/compare/nameof-transformer-v0.20.0-next.1...nameof-transformer-v0.20.0-next.2) (2026-10-23)
 
 
