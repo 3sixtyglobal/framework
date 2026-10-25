@@ -42,8 +42,9 @@ The module to use natively, or undefined to use a pure JavaScript fallback.
 
 > `static` **getNodeCryptoHash**(`hash`): `__module` \| `undefined`
 
-Get node:crypto, but only when this build's OpenSSL actually lists the hash
-as supported, so a restricted build falls back rather than failing at call time.
+Get node:crypto, but only when this build supports the hash, so a restricted build
+falls back rather than failing at call time. A hash missing from getHashes() is
+probed with createHash, as Bun supports hashes such as blake2b512 without listing them.
 
 #### Parameters
 
@@ -117,7 +118,7 @@ The module to use natively, or undefined to use a pure JavaScript fallback.
 
 > `static` **reset**(): `void`
 
-Clear the cached Ed25519 capability, so the next call probes again.
+Clear the cached Ed25519 and hash probe results, so the next call probes again.
 Intended for tests which swap the registered node:crypto.
 
 #### Returns
