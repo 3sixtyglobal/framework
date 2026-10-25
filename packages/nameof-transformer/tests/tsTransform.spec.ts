@@ -7,9 +7,6 @@ import { tsTransform } from "../src/tsTransform.js";
 
 let projectDir: string;
 
-// The native compiler's sync API reads Node internal pipe handles on POSIX, which Bun does not provide
-const UNSUPPORTED_RUNTIME = process.versions.bun !== undefined && process.platform !== "win32";
-
 /**
  * Write a project with the given source file.
  * @param source The content of the source file.
@@ -33,7 +30,7 @@ function writeProject(source: string): void {
 	writeFileSync(path.join(projectDir, "src", "index.ts"), source);
 }
 
-describe.skipIf(UNSUPPORTED_RUNTIME)("tsTransform", () => {
+describe("tsTransform", () => {
 	beforeEach(() => {
 		projectDir = mkdtempSync(path.join(tmpdir(), "tstransform-"));
 	});
@@ -42,14 +39,14 @@ describe.skipIf(UNSUPPORTED_RUNTIME)("tsTransform", () => {
 		rmSync(projectDir, { recursive: true, force: true });
 	});
 
-	test("can compile a project replacing the nameof calls", () => {
+	test("can compile a project replacing the nameof calls", async () => {
 		writeProject(
 			"interface IMyObject { prop: number }\n" +
 				"export const typeName: string = nameof<IMyObject>();\n" +
 				"export const camelName: string = nameofCamelCase<IMyObject>();\n"
 		);
 
-		const output = tsTransform([], projectDir);
+		const output = await tsTransform([], projectDir);
 
 		expect(output).toEqual("");
 		const js = readFileSync(path.join(projectDir, "dist", "index.js"), "utf8");
@@ -57,21 +54,21 @@ describe.skipIf(UNSUPPORTED_RUNTIME)("tsTransform", () => {
 		expect(js).toContain('camelName = "myObject";');
 	});
 
-	test("can type check a project without emitting", () => {
+	test("can type check a project without emitting", async () => {
 		writeProject(
 			"export const typeName: string = nameof<IMyObject>();\ninterface IMyObject { prop: number }\n"
 		);
 
-		const output = tsTransform(["--noEmit"], projectDir);
+		const output = await tsTransform(["--noEmit"], projectDir);
 
 		expect(output).toEqual("");
 		expect(() => readFileSync(path.join(projectDir, "dist", "index.js"))).toThrow();
 	});
 
-	test("can compile a project incrementally", () => {
+	test("can compile a project incrementally", async () => {
 		writeProject("export const value = 1;\n");
 
-		const output = tsTransform(
+		const output = await tsTransform(
 			["--incremental", "--tsBuildInfoFile", ".cache/tsconfig.tsbuildinfo"],
 			projectDir
 		);
@@ -80,18 +77,18 @@ describe.skipIf(UNSUPPORTED_RUNTIME)("tsTransform", () => {
 		expect(existsSync(path.join(projectDir, ".cache", "tsconfig.tsbuildinfo"))).toEqual(true);
 	});
 
-	test("can return the diagnostics for a project with errors", () => {
+	test("can return the diagnostics for a project with errors", async () => {
 		writeProject('export const value: number = "text";\n');
 
-		const output = tsTransform([], projectDir);
+		const output = await tsTransform([], projectDir);
 
 		expect(output).toContain("TS2322");
 	});
 
-	test("can return the diagnostics for invalid command line arguments", () => {
+	test("can return the diagnostics for invalid command line arguments", async () => {
 		writeProject("export const value = 1;\n");
 
-		const output = tsTransform(["--notAnOption"], projectDir);
+		const output = await tsTransform(["--notAnOption"], projectDir);
 
 		expect(output).toContain("TS5023");
 	});

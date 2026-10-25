@@ -2,8 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import {
+	API,
+	type Diagnostic,
+	formatDiagnosticsWithColorAndContext
+} from "typescript-native/async";
 import { type FileSystemCallbacks, serverFS } from "typescript-native/fs";
-import { API, type Diagnostic, formatDiagnosticsWithColorAndContext } from "typescript-native/sync";
 import { manual } from "./manual.js";
 import type { IBuildOrchestratorApi } from "./models/IBuildOrchestratorApi.js";
 
@@ -42,12 +46,13 @@ function readFile(fileName: string): string | undefined | typeof serverFS.useOS 
 
 /**
  * Compile a project with the native TypeScript compiler, replacing the nameof calls
- * in the source files as they are read through a virtual file system.
+ * in the source files as they are read through a virtual file system. Uses the async
+ * API as the sync API relies on Node internal pipe handles that other runtimes lack.
  * @param args The tsc command line arguments.
  * @param cwd The working directory containing the project.
  * @returns The diagnostics output, empty if the compilation succeeded.
  */
-export function tsTransform(args: string[], cwd: string): string {
+export async function tsTransform(args: string[], cwd: string): Promise<string> {
 	const fs: FileSystemCallbacks = {
 		directoryExists: serverFS.useOS,
 		fileExists: serverFS.useOS,
@@ -61,7 +66,7 @@ export function tsTransform(args: string[], cwd: string): string {
 	const api = new API({ cwd, fs });
 
 	try {
-		const commandLine = api.parseCommandLine(args);
+		const commandLine = await api.parseCommandLine(args);
 		const diagnostics: Diagnostic[] = [...commandLine.errors];
 		if (diagnostics.length === 0) {
 			const { project, ...compilerOptions } = commandLine.options;
@@ -70,19 +75,23 @@ export function tsTransform(args: string[], cwd: string): string {
 			// Current clients spread the options so only the nested compilerOptions key
 			// reaches the server, clients with https://github.com/microsoft/TypeScript/pull/64759
 			// only send overrideCompilerOptions. Remove compilerOptions once that is released.
-			const orchestrator = (api as unknown as IBuildOrchestratorApi).createBuildOrchestrator(
+			const orchestrator = await (api as unknown as IBuildOrchestratorApi).createBuildOrchestrator(
 				[project ?? path.join(cwd, "tsconfig.json")],
-				{ cwd, compilerOptions, overrideCompilerOptions: compilerOptions }
+				{
+					cwd,
+					compilerOptions,
+					overrideCompilerOptions: compilerOptions
+				}
 			);
 			try {
-				diagnostics.push(...(orchestrator.build().diagnostics ?? []));
+				diagnostics.push(...((await orchestrator.build()).diagnostics ?? []));
 			} finally {
-				orchestrator.dispose();
+				await orchestrator.dispose();
 			}
 		}
 
 		return diagnostics.length > 0 ? formatDiagnosticsWithColorAndContext(diagnostics, api) : "";
 	} finally {
-		api.close();
+		await api.close();
 	}
 }
