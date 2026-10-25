@@ -250,9 +250,6 @@ importers:
       '@3sixty/crypto':
         specifier: 0.20.0-next.2
         version: link:../../packages/crypto
-      '@3sixty/nameof':
-        specifier: 0.20.0-next.2
-        version: link:../../packages/nameof
       commander:
         specifier: 15.0.0
         version: 15.0.0
@@ -278,9 +275,6 @@ importers:
       concurrently:
         specifier: 10.0.6
         version: 10.0.6
-      copyfiles:
-        specifier: 2.4.1
-        version: 2.4.1
       nodemon:
         specifier: 3.1.14
         version: 3.1.14
@@ -308,15 +302,9 @@ importers:
       '@3sixty/core':
         specifier: 0.20.0-next.2
         version: link:../../packages/core
-      '@3sixty/nameof':
-        specifier: 0.20.0-next.2
-        version: link:../../packages/nameof
       commander:
         specifier: 15.0.0
         version: 15.0.0
-      glob:
-        specifier: 13.0.6
-        version: 13.0.6
     devDependencies:
       '@3sixty/nameof-transformer':
         specifier: 0.20.0-next.2
@@ -397,9 +385,6 @@ importers:
       concurrently:
         specifier: 10.0.6
         version: 10.0.6
-      copyfiles:
-        specifier: 2.4.1
-        version: 2.4.1
       nodemon:
         specifier: 3.1.14
         version: 3.1.14
@@ -424,9 +409,6 @@ importers:
       '@3sixty/core':
         specifier: 0.20.0-next.2
         version: link:../core
-      '@3sixty/nameof':
-        specifier: 0.20.0-next.2
-        version: link:../nameof
       chalk:
         specifier: 6.0.1
         version: 6.0.1
@@ -504,9 +486,6 @@ importers:
       concurrently:
         specifier: 10.0.6
         version: 10.0.6
-      copyfiles:
-        specifier: 2.4.1
-        version: 2.4.1
       nodemon:
         specifier: 3.1.14
         version: 3.1.14
@@ -553,9 +532,6 @@ importers:
       concurrently:
         specifier: 10.0.6
         version: 10.0.6
-      copyfiles:
-        specifier: 2.4.1
-        version: 2.4.1
       nodemon:
         specifier: 3.1.14
         version: 3.1.14
@@ -626,9 +602,6 @@ importers:
       concurrently:
         specifier: 10.0.6
         version: 10.0.6
-      copyfiles:
-        specifier: 2.4.1
-        version: 2.4.1
       nodemon:
         specifier: 3.1.14
         version: 3.1.14
@@ -678,9 +651,6 @@ importers:
       concurrently:
         specifier: 10.0.6
         version: 10.0.6
-      copyfiles:
-        specifier: 2.4.1
-        version: 2.4.1
       nodemon:
         specifier: 3.1.14
         version: 3.1.14
@@ -724,9 +694,6 @@ importers:
       concurrently:
         specifier: 10.0.6
         version: 10.0.6
-      copyfiles:
-        specifier: 2.4.1
-        version: 2.4.1
       nodemon:
         specifier: 3.1.14
         version: 3.1.14
@@ -779,9 +746,6 @@ importers:
       concurrently:
         specifier: 10.0.6
         version: 10.0.6
-      copyfiles:
-        specifier: 2.4.1
-        version: 2.4.1
       nodemon:
         specifier: 3.1.14
         version: 3.1.14
@@ -812,9 +776,6 @@ importers:
       concurrently:
         specifier: 10.0.6
         version: 10.0.6
-      copyfiles:
-        specifier: 2.4.1
-        version: 2.4.1
       nodemon:
         specifier: 3.1.14
         version: 3.1.14
@@ -852,9 +813,6 @@ importers:
       concurrently:
         specifier: 10.0.6
         version: 10.0.6
-      copyfiles:
-        specifier: 2.4.1
-        version: 2.4.1
       nodemon:
         specifier: 3.1.14
         version: 3.1.14
@@ -886,9 +844,6 @@ importers:
       concurrently:
         specifier: 10.0.6
         version: 10.0.6
-      copyfiles:
-        specifier: 2.4.1
-        version: 2.4.1
       nodemon:
         specifier: 3.1.14
         version: 3.1.14
@@ -932,9 +887,6 @@ importers:
       concurrently:
         specifier: 10.0.6
         version: 10.0.6
-      copyfiles:
-        specifier: 2.4.1
-        version: 2.4.1
       nodemon:
         specifier: 3.1.14
         version: 3.1.14
@@ -987,9 +939,6 @@ importers:
       concurrently:
         specifier: 10.0.6
         version: 10.0.6
-      copyfiles:
-        specifier: 2.4.1
-        version: 2.4.1
       nodemon:
         specifier: 3.1.14
         version: 3.1.14

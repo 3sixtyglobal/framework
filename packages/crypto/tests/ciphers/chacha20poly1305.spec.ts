@@ -1,15 +1,20 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import { Converter, NativeModules } from "@3sixty/core";
 import testVectors from "./chacha20poly1305.json" with { type: "json" };
 import { ChaCha20Poly1305 } from "../../src/ciphers/chaCha20Poly1305.js";
 import {
+	IS_BUN,
 	NATIVE_CRYPTO_VARIANTS,
 	unregisterNodeCrypto,
 	useNativeCryptoVariant
 } from "../nativeCryptoVariants.js";
 
-describe.each(NATIVE_CRYPTO_VARIANTS)("ChaCha20Poly1305 ($implementation)", ({ useNodeCrypto }) => {
+// Bun does not provide chacha20-poly1305 natively, so only the pure JavaScript variant runs there
+const variants = NATIVE_CRYPTO_VARIANTS.filter(variant => !IS_BUN || !variant.useNodeCrypto);
+
+describe.each(variants)("ChaCha20Poly1305 ($implementation)", ({ useNodeCrypto }) => {
 	beforeAll(async () => {
 		await useNativeCryptoVariant(useNodeCrypto);
 		if (useNodeCrypto) {

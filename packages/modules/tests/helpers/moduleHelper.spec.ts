@@ -1,9 +1,12 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import os from "node:os";
 import path from "node:path";
+import { ContextIdStore, type IContextIds } from "@3sixty/context";
 import { Coerce, Mutex, NativeModules, SharedStore } from "@3sixty/core";
 import { ModuleHelper } from "../../src/helpers/moduleHelper.js";
+import type { IModuleWorker } from "../../src/models/IModuleWorker.js";
 
 const TEST_MODULE = `file://${path.join(__dirname, "testModule.js")}`;
 
@@ -197,6 +200,30 @@ describe("ModuleHelper", () => {
 		);
 
 		expect(res).toEqual({ node: "node-123", org: "org-456" });
+	});
+
+	test("execModuleMethodThreadMessage keeps the caller context in the completed callback", async () => {
+		let module: IModuleWorker | undefined;
+		const callbackContextIds = await ContextIdStore.run(
+			{ node: "node-123" },
+			async () =>
+				new Promise<IContextIds | undefined>((resolve, reject) => {
+					module = ModuleHelper.execModuleMethodThreadMessage(
+						TEST_MODULE,
+						(operation, result, err) => {
+							if (err) {
+								reject(err);
+							} else {
+								ContextIdStore.getContextIds().then(resolve).catch(reject);
+							}
+						}
+					);
+					module.executeMethod("testMethod");
+				})
+		);
+		await module?.terminate();
+
+		expect(callbackContextIds).toEqual({ node: "node-123" });
 	});
 
 	test("execModuleMethodThreadMessage can run a long background task", async () => {

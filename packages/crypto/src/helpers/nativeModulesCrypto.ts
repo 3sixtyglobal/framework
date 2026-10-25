@@ -1,4 +1,5 @@
 // Copyright 2026 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import type * as NodeCrypto from "node:crypto";
 import { Is, NativeModules } from "@3sixty/core";
@@ -16,6 +17,12 @@ export class NativeModulesCrypto {
 	private static _ed25519Supported: boolean | undefined;
 
 	/**
+	 * Probe results for hashes missing from getHashes(), keyed by hash name.
+	 * @internal
+	 */
+	private static _hashProbes: Map<string, boolean> | undefined;
+
+	/**
 	 * Get node:crypto, but only when this build's OpenSSL actually lists the cipher
 	 * as supported, so a restricted build falls back rather than failing at call time.
 	 * @param cipher The cipher to check for, e.g. "chacha20-poly1305".
@@ -27,14 +34,34 @@ export class NativeModulesCrypto {
 	}
 
 	/**
-	 * Get node:crypto, but only when this build's OpenSSL actually lists the hash
-	 * as supported, so a restricted build falls back rather than failing at call time.
+	 * Get node:crypto, but only when this build supports the hash, so a restricted build
+	 * falls back rather than failing at call time. A hash missing from getHashes() is
+	 * probed with createHash, as Bun supports hashes such as blake2b512 without listing them.
 	 * @param hash The hash to check for, e.g. "sha3-256".
 	 * @returns The module to use natively, or undefined to use a pure JavaScript fallback.
 	 */
 	public static getNodeCryptoHash(hash: string): typeof NodeCrypto | undefined {
 		const nodeCrypto = NativeModules.getModule<typeof NodeCrypto>("node:crypto");
-		return nodeCrypto?.getHashes().includes(hash) ? nodeCrypto : undefined;
+		if (Is.undefined(nodeCrypto)) {
+			return undefined;
+		}
+		if (nodeCrypto.getHashes().includes(hash)) {
+			return nodeCrypto;
+		}
+
+		NativeModulesCrypto._hashProbes ??= new Map<string, boolean>();
+		let supported = NativeModulesCrypto._hashProbes.get(hash);
+		if (Is.undefined(supported)) {
+			try {
+				nodeCrypto.createHash(hash);
+				supported = true;
+			} catch {
+				supported = false;
+			}
+			NativeModulesCrypto._hashProbes.set(hash, supported);
+		}
+
+		return supported ? nodeCrypto : undefined;
 	}
 
 	/**
@@ -81,10 +108,11 @@ export class NativeModulesCrypto {
 	}
 
 	/**
-	 * Clear the cached Ed25519 capability, so the next call probes again.
+	 * Clear the cached Ed25519 and hash probe results, so the next call probes again.
 	 * Intended for tests which swap the registered node:crypto.
 	 */
 	public static reset(): void {
 		NativeModulesCrypto._ed25519Supported = undefined;
+		NativeModulesCrypto._hashProbes = undefined;
 	}
 }

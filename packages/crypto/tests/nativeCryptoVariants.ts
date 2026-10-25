@@ -1,7 +1,13 @@
 // Copyright 2026 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
-import { NativeModules } from "@3sixty/core";
+import { Is, NativeModules } from "@3sixty/core";
 import { NativeModulesCrypto } from "../src/helpers/nativeModulesCrypto.js";
+
+/**
+ * True on Bun, whose BoringSSL based node:crypto lacks some algorithms OpenSSL provides.
+ */
+export const IS_BUN: boolean = Is.stringValue(process.versions.bun);
 
 /**
  * The implementations every class with a node:crypto backed path must behave identically under.

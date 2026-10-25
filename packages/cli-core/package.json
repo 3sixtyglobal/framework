@@ -11,7 +11,8 @@
 	"license": "Apache-2.0",
 	"type": "module",
 	"engines": {
-		"node": ">=24.0.0"
+		"node": ">=24.0.0",
+		"bun": ">=1.4.4"
 	},
 	"scripts": {
 		"clean": "rimraf dist coverage .cache",
@@ -19,6 +20,7 @@
 		"dev": "nodemon --watch src --ext ts --exec \"pnpm run build\"",
 		"merge-locales": "copyfiles locales/en.json dist",
 		"test": "vitest --run --config ./vitest.config.ts",
+		"test:bun": "bunx --bun vitest --run --config ./vitest.config.ts",
 		"test:coverage": "vitest --run --coverage --config ./vitest.config.ts",
 		"test:build": "tstransform -p ./tests/tsconfig.json",
 		"validate-locales": "tsx ../../apps/validate-locales/src/cli-dev.ts",
@@ -30,7 +32,6 @@
 	},
 	"dependencies": {
 		"@3sixty/core": "0.20.0-next.2",
-		"@3sixty/nameof": "0.20.0-next.2",
 		"chalk": "6.0.1",
 		"commander": "15.0.0",
 		"dotenv": "18.0.8"

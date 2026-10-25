@@ -1,5 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
+import { AsyncResource } from "node:async_hooks";
 import { Worker } from "node:worker_threads";
 import type { IContextIds } from "@3sixty/context";
 import {
@@ -389,8 +391,12 @@ export class ModuleHelper {
 		const { method, args, contextIds } = msg;
 
 		try {
-			const moduleInstance = modules[module] ?? (await import(module));
-			modules[module] = moduleInstance;
+			// Cache the import promise so concurrent messages resume in the order they arrived.
+			modules[module] ??= import(module).catch(err => {
+				delete modules[module];
+				throw err;
+			});
+			const moduleInstance = await modules[module];
 
 			const methodParts = method.split('.');
 			const moduleEntry = moduleInstance[methodParts[0]];
@@ -431,58 +437,68 @@ export class ModuleHelper {
 			}
 		);
 
-		worker.on("message", msg => {
-			if (Mutex.handleWorkerMessage(msg)) {
-				return;
-			}
-			if (SharedObjectBuffer.handleWorkerMessage(msg)) {
-				return;
-			}
-			if (Is.object(msg?.moduleHelperMessage)) {
-				moduleHelperOptions?.onMessage?.(
-					msg.moduleHelperMessage.level,
-					msg.moduleHelperMessage.key,
-					msg.moduleHelperMessage.properties
-				);
-				return;
-			}
-			if (!Is.stringValue(msg?.method)) {
-				return;
-			}
-			if (Is.stringValue(msg.errorType)) {
+		// Bind the listeners so they run in the creating async context, Bun does not do this itself.
+		worker.on(
+			"message",
+			AsyncResource.bind(msg => {
+				if (Mutex.handleWorkerMessage(msg)) {
+					return;
+				}
+				if (SharedObjectBuffer.handleWorkerMessage(msg)) {
+					return;
+				}
+				if (Is.object(msg?.moduleHelperMessage)) {
+					moduleHelperOptions?.onMessage?.(
+						msg.moduleHelperMessage.level,
+						msg.moduleHelperMessage.key,
+						msg.moduleHelperMessage.properties
+					);
+					return;
+				}
+				if (!Is.stringValue(msg?.method)) {
+					return;
+				}
+				if (Is.stringValue(msg.errorType)) {
+					completed(
+						msg.method,
+						undefined,
+						new GeneralError(
+							ModuleHelper.CLASS_NAME,
+							msg.errorType,
+							{ module, method: msg.method, args: msg.args },
+							msg.cause
+						)
+					);
+				} else {
+					completed(msg.method, msg.result);
+				}
+			})
+		);
+
+		worker.on(
+			"error",
+			AsyncResource.bind(err => {
 				completed(
-					msg.method,
+					"error",
 					undefined,
 					new GeneralError(
 						ModuleHelper.CLASS_NAME,
-						msg.errorType,
-						{ module, method: msg.method, args: msg.args },
-						msg.cause
+						"workerException",
+						{
+							module
+						},
+						err
 					)
 				);
-			} else {
-				completed(msg.method, msg.result);
-			}
-		});
+			})
+		);
 
-		worker.on("error", err => {
-			completed(
-				"error",
-				undefined,
-				new GeneralError(
-					ModuleHelper.CLASS_NAME,
-					"workerException",
-					{
-						module
-					},
-					err
-				)
-			);
-		});
-
-		worker.on("exit", code => {
-			completed("terminate", code);
-		});
+		worker.on(
+			"exit",
+			AsyncResource.bind(code => {
+				completed("terminate", code);
+			})
+		);
 
 		return worker;
 	}

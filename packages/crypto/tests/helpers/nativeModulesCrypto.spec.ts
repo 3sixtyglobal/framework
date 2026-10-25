@@ -1,7 +1,9 @@
 // Copyright 2026 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import { NativeModules } from "@3sixty/core";
 import { NativeModulesCrypto } from "../../src/helpers/nativeModulesCrypto.js";
+import { IS_BUN } from "../nativeCryptoVariants.js";
 
 /**
  * Drop node:crypto from the NativeModules registry.
@@ -26,7 +28,7 @@ describe("NativeModulesCrypto", () => {
 			expect(NativeModulesCrypto.getNodeCryptoCipher("chacha20-poly1305")).toBeUndefined();
 		});
 
-		test("returns the module when the cipher is supported", async () => {
+		test.skipIf(IS_BUN)("returns the module when the cipher is supported", async () => {
 			expect(await NativeModules.init(["node:crypto"])).toEqual({});
 
 			const nodeCrypto = NativeModulesCrypto.getNodeCryptoCipher("chacha20-poly1305");
@@ -100,6 +102,35 @@ describe("NativeModulesCrypto", () => {
 			expect(NativeModulesCrypto.getNodeCryptoHash("sha256")).toBeDefined();
 			expect(NativeModulesCrypto.getNodeCryptoHash("sha3-256")).toBeUndefined();
 		});
+
+		test("returns the module when an unlisted hash can be created", () => {
+			// Mirrors Bun, which supports blake2b512 without listing it in getHashes
+			NativeModules.getRegistry()["node:crypto"] = {
+				getHashes: () => ["sha256"],
+				createHash: () => ({})
+			};
+
+			expect(NativeModulesCrypto.getNodeCryptoHash("blake2b512")).toBeDefined();
+		});
+
+		test("caches the probe for an unlisted hash until reset is called", () => {
+			let probes = 0;
+			NativeModules.getRegistry()["node:crypto"] = {
+				getHashes: () => [],
+				createHash: () => {
+					probes++;
+					throw new Error("unsupported");
+				}
+			};
+
+			expect(NativeModulesCrypto.getNodeCryptoHash("blake2b512")).toBeUndefined();
+			expect(NativeModulesCrypto.getNodeCryptoHash("blake2b512")).toBeUndefined();
+			expect(probes).toEqual(1);
+
+			NativeModulesCrypto.reset();
+			NativeModulesCrypto.getNodeCryptoHash("blake2b512");
+			expect(probes).toEqual(2);
+		});
 	});
 
 	describe("getNodeCryptoCurve", () => {
@@ -107,7 +138,7 @@ describe("NativeModulesCrypto", () => {
 			expect(NativeModulesCrypto.getNodeCryptoCurve("secp256k1")).toBeUndefined();
 		});
 
-		test("returns the module when the curve is supported", async () => {
+		test.skipIf(IS_BUN)("returns the module when the curve is supported", async () => {
 			expect(await NativeModules.init(["node:crypto"])).toEqual({});
 
 			expect(NativeModulesCrypto.getNodeCryptoCurve("secp256k1")).toBeDefined();
