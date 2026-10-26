@@ -1,5 +1,6 @@
 // Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
+import { nameof } from "@3sixty/nameof";
 import { Is } from "./is.js";
 import { NativeModules } from "./nativeModules.js";
 import { RuntimeEngine } from "../models/runtimeEngine.js";
