@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.20.0-next.4](https://github.com/3sixtyglobal/framework/compare/modules-v0.20.0-next.3...modules-v0.20.0-next.4) (2026-10-26)
+
+
+### Features
+
+* release to next [skip ci] ([#41](https://github.com/3sixtyglobal/framework/issues/41)) ([c34c42e](https://github.com/3sixtyglobal/framework/commit/c34c42e38f1e28c06c9c45cfffe2eaa6dbbbd3f0))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @3sixty/context bumped from 0.20.0-next.3 to 0.20.0-next.4
+    * @3sixty/core bumped from 0.20.0-next.3 to 0.20.0-next.4
+    * @3sixty/crypto bumped from 0.20.0-next.3 to 0.20.0-next.4
+    * @3sixty/nameof bumped from 0.20.0-next.3 to 0.20.0-next.4
+  * devDependencies
+    * @3sixty/nameof-transformer bumped from 0.20.0-next.3 to 0.20.0-next.4
+    * @3sixty/nameof-vitest-plugin bumped from 0.20.0-next.3 to 0.20.0-next.4
+    * @3sixty/validate-locales bumped from 0.20.0-next.3 to 0.20.0-next.4
+
 ## [0.20.0-next.3](https://github.com/3sixtyglobal/framework/compare/modules-v0.20.0-next.2...modules-v0.20.0-next.3) (2026-10-25)
 
 

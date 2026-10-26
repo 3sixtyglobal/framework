@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.20.0-next.4](https://github.com/3sixtyglobal/framework/compare/nameof-transformer-v0.20.0-next.3...nameof-transformer-v0.20.0-next.4) (2026-10-26)
+
+
+### Features
+
+* add runtime detection ([#38](https://github.com/3sixtyglobal/framework/issues/38)) ([a35787c](https://github.com/3sixtyglobal/framework/commit/a35787c5fd0ea2ccb72a2747586d5bb0f38a4c7e))
+* release to next [skip ci] ([#41](https://github.com/3sixtyglobal/framework/issues/41)) ([c34c42e](https://github.com/3sixtyglobal/framework/commit/c34c42e38f1e28c06c9c45cfffe2eaa6dbbbd3f0))
+
 ## [0.20.0-next.3](https://github.com/3sixtyglobal/framework/compare/nameof-transformer-v0.20.0-next.2...nameof-transformer-v0.20.0-next.3) (2026-10-25)
 
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.20.0-next.4](https://github.com/3sixtyglobal/framework/compare/nameof-vitest-plugin-v0.20.0-next.3...nameof-vitest-plugin-v0.20.0-next.4) (2026-10-26)
+
+
+### Features
+
+* release to next [skip ci] ([#41](https://github.com/3sixtyglobal/framework/issues/41)) ([c34c42e](https://github.com/3sixtyglobal/framework/commit/c34c42e38f1e28c06c9c45cfffe2eaa6dbbbd3f0))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @3sixty/nameof-transformer bumped from 0.20.0-next.3 to 0.20.0-next.4
+
 ## [0.20.0-next.3](https://github.com/3sixtyglobal/framework/compare/nameof-vitest-plugin-v0.20.0-next.2...nameof-vitest-plugin-v0.20.0-next.3) (2026-10-25)
 
 
