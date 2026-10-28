@@ -5,6 +5,21 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { tsTransform } from "../src/tsTransform.js";
 
+const mocks = vi.hoisted(() => ({ compilerPath: undefined as string | undefined }));
+
+// Lets a test replace the compiler executable, to simulate the compiler process failing.
+vi.mock("typescript-native/async", async importOriginal => {
+	const original = (await importOriginal()) as {
+		API: new (options: { tsserverPath?: string }) => object;
+	};
+	class API extends original.API {
+		constructor(options: { tsserverPath?: string }) {
+			super({ ...options, tsserverPath: mocks.compilerPath ?? options.tsserverPath });
+		}
+	}
+	return { ...original, API };
+});
+
 let projectDir: string;
 
 /**
@@ -83,6 +98,20 @@ describe("tsTransform", () => {
 		const output = await tsTransform([], projectDir);
 
 		expect(output).toContain("TS2322");
+	});
+
+	test("rejects when the compiler process exits unexpectedly", async () => {
+		writeProject("export const value = 1;\n");
+		// Node rejects the compiler's --api argument and exits straight away.
+		mocks.compilerPath = "node";
+
+		try {
+			await expect(tsTransform([], projectDir)).rejects.toThrow(
+				"The TypeScript compiler exited unexpectedly"
+			);
+		} finally {
+			mocks.compilerPath = undefined;
+		}
 	});
 
 	test("can return the diagnostics for invalid command line arguments", async () => {
