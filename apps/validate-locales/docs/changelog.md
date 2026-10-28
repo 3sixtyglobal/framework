@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.20.0-next.6](https://github.com/3sixtyglobal/framework/compare/validate-locales-v0.20.0-next.5...validate-locales-v0.20.0-next.6) (2026-10-28)
+
+
+### Miscellaneous Chores
+
+* **validate-locales:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @3sixty/cli-core bumped from 0.20.0-next.5 to 0.20.0-next.6
+    * @3sixty/core bumped from 0.20.0-next.5 to 0.20.0-next.6
+    * @3sixty/nameof bumped from 0.20.0-next.5 to 0.20.0-next.6
+    * @3sixty/nameof-transformer bumped from 0.20.0-next.5 to 0.20.0-next.6
+  * devDependencies
+    * @3sixty/merge-locales bumped from 0.20.0-next.5 to 0.20.0-next.6
+    * @3sixty/nameof-vitest-plugin bumped from 0.20.0-next.5 to 0.20.0-next.6
+
 ## [0.20.0-next.5](https://github.com/3sixtyglobal/framework/compare/validate-locales-v0.20.0-next.4...validate-locales-v0.20.0-next.5) (2026-10-28)
 
 

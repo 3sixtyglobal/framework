@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.20.0-next.6](https://github.com/3sixtyglobal/framework/compare/nameof-transformer-v0.20.0-next.5...nameof-transformer-v0.20.0-next.6) (2026-10-28)
+
+
+### Bug Fixes
+
+* report tstransform compiler exits instead of hanging ([#43](https://github.com/3sixtyglobal/framework/issues/43)) ([fa44bc5](https://github.com/3sixtyglobal/framework/commit/fa44bc5499086fe02cf56ad55a709fd54fe81e6a))
+
 ## [0.20.0-next.5](https://github.com/3sixtyglobal/framework/compare/nameof-transformer-v0.20.0-next.4...nameof-transformer-v0.20.0-next.5) (2026-10-28)
 
 

@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.20.0-next.6](https://github.com/3sixtyglobal/framework/compare/web-v0.20.0-next.5...web-v0.20.0-next.6) (2026-10-28)
+
+
+### Bug Fixes
+
+* validate compressed and embedded IPv4 IPv6 addresses in header helper ([#47](https://github.com/3sixtyglobal/framework/issues/47)) ([f1f8456](https://github.com/3sixtyglobal/framework/commit/f1f84566421e326e96ba96d6a9424a5780311a22))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @3sixty/core bumped from 0.20.0-next.5 to 0.20.0-next.6
+    * @3sixty/crypto bumped from 0.20.0-next.5 to 0.20.0-next.6
+    * @3sixty/nameof bumped from 0.20.0-next.5 to 0.20.0-next.6
+  * devDependencies
+    * @3sixty/nameof-transformer bumped from 0.20.0-next.5 to 0.20.0-next.6
+    * @3sixty/nameof-vitest-plugin bumped from 0.20.0-next.5 to 0.20.0-next.6
+    * @3sixty/validate-locales bumped from 0.20.0-next.5 to 0.20.0-next.6
+
 ## [0.20.0-next.5](https://github.com/3sixtyglobal/framework/compare/web-v0.20.0-next.4...web-v0.20.0-next.5) (2026-10-28)
 
 
