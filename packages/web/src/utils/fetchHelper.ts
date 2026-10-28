@@ -1,4 +1,5 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import { AsyncCache, BaseError, Guards, Is, ObjectHelper, type IError } from "@3sixty/core";
 import { nameof, nameofCamelCase } from "@3sixty/nameof";
@@ -117,7 +118,7 @@ export class FetchHelper {
 					body: finalBody,
 					signal: controller ? controller.signal : undefined
 				};
-				if (Is.boolean(options?.includeCredentials)) {
+				if (options?.includeCredentials === true) {
 					requestOptions.credentials = "include";
 				}
 

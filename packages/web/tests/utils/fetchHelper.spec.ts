@@ -1,4 +1,5 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import type { HttpMethod } from "../../src/models/httpMethod.js";
 import { HttpStatusCode } from "../../src/models/httpStatusCode.js";
@@ -207,6 +208,19 @@ describe("FetchHelper", () => {
 		});
 		const json = await response.json();
 		expect(json.foo).toEqual("bar");
+		expect(fetchMock.mock.calls[0][1].credentials).toEqual("include");
+	});
+
+	test("does not include credentials when includeCredentials is false", async () => {
+		fetchMock.mockResolvedValue({
+			ok: true,
+			json: async () => new Promise(resolve => resolve({ foo: "bar" }))
+		});
+
+		await FetchHelper.fetch("source", "url", "GET", undefined, {
+			includeCredentials: false
+		});
+		expect(fetchMock.mock.calls[0][1].credentials).toBeUndefined();
 	});
 
 	test("can get a response from a fetch", async () => {
