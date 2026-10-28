@@ -28,7 +28,7 @@ export class CLI extends CLIBase {
 			{
 				title: "3Sixty Merge Locales",
 				appName: "merge-locales",
-				version: "0.20.0-next.5", // x-release-please-version
+				version: "0.20.0-next.6", // x-release-please-version
 				icon: "⚙️ ",
 				supportsEnvFiles: false,
 				overrideOutputWidth: options?.overrideOutputWidth
