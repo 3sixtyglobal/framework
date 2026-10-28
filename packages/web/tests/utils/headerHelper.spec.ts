@@ -1,4 +1,5 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import { HeaderHelper } from "../../src/utils/headerHelper.js";
 
@@ -249,6 +250,45 @@ describe("HeaderHelper", () => {
 	test("can reject an invalid IPv6 address", async () => {
 		const isValid = HeaderHelper.isIpAddressV6("2001:0db8:85a3:0000:0000:8a2e:0370:zzzz");
 		expect(isValid).toBe(false);
+	});
+
+	test("can validate compressed, embedded IPv4 and zoned IPv6 addresses", async () => {
+		for (const ip of [
+			"::",
+			"::1",
+			"2001:db8::",
+			"2001:db8::1",
+			"fd12::5",
+			"2001:db8:0:0:1::1",
+			"1::8",
+			"1:2:3:4:5:6:7::",
+			"::ffff:192.0.2.1",
+			"64:ff9b::192.0.2.33",
+			"1:2:3:4:5:6:192.0.2.1",
+			"fe80::1%eth0"
+		]) {
+			expect(HeaderHelper.isIpAddressV6(ip)).toBe(true);
+		}
+	});
+
+	test("can reject malformed IPv6 addresses", async () => {
+		for (const ip of [
+			"1::2::3",
+			"1:::2",
+			":1",
+			"1:",
+			"1:2:3:4:5:6:7",
+			"1:2:3:4:5:6:7:8:9",
+			"1:2:3:4:5:6:7::8",
+			"12345::",
+			"192.0.2.1::",
+			"::192.0.2.256",
+			"1:2:3:4:5:6:7:192.0.2.1",
+			"2001:db8::g",
+			"192.0.2.1"
+		]) {
+			expect(HeaderHelper.isIpAddressV6(ip)).toBe(false);
+		}
 	});
 
 	test("can validate IPv4 and IPv6 addresses using isIpAddress", async () => {
