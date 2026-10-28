@@ -285,7 +285,8 @@ True if valid, false otherwise.
 
 > `static` **isIpAddressV6**(`ip`): `boolean`
 
-Validate if a string is a valid IP address IPv6.
+Validate if a string is a valid IP address IPv6, including compressed forms such as
+`2001:db8::1`, an embedded IPv4 address such as `::ffff:192.0.2.1` and a zone such as `fe80::1%eth0`.
 
 #### Parameters
 
