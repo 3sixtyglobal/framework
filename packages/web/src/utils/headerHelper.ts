@@ -1,4 +1,5 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import { ArrayHelper, GeneralError, Guards, Is } from "@3sixty/core";
 import { nameof } from "@3sixty/nameof";
@@ -57,12 +58,18 @@ export class HeaderHelper {
 		/^(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}$/;
 
 	/**
-	 * Regex for valid IPv6 addresses.
-	 * Examples: `2001:0db8:85a3:0000:0000:8a2e:0370:7334`, `2001:db8::`, `::1`.
+	 * Regex for one group of an IPv6 address.
+	 * Examples: `2001`, `db8`, `0`.
 	 * @internal
 	 */
-	private static readonly _IP_V6_REGEX =
-		/^((?:[\dA-Fa-f]{1,4}:){7}[\dA-Fa-f]{1,4}|(?:[\dA-Fa-f]{1,4}:){1,7}:|:(?::[\dA-Fa-f]{1,4}){1,7})$/;
+	private static readonly _IP_V6_GROUP_REGEX = /^[\dA-Fa-f]{1,4}$/;
+
+	/**
+	 * Regex for the zone of a link local IPv6 address.
+	 * Examples: `%eth0`, `%1`.
+	 * @internal
+	 */
+	private static readonly _IP_V6_ZONE_REGEX = /%[\w.~-]+$/;
 
 	/**
 	 * Create a bearer token header.
@@ -230,7 +237,8 @@ export class HeaderHelper {
 	}
 
 	/**
-	 * Validate if a string is a valid IP address IPv6.
+	 * Validate if a string is a valid IP address IPv6, including compressed forms such as
+	 * `2001:db8::1`, an embedded IPv4 address such as `::ffff:192.0.2.1` and a zone such as `fe80::1%eth0`.
 	 * @param ip The IP address to validate.
 	 * @returns True if valid, false otherwise.
 	 */
@@ -238,7 +246,31 @@ export class HeaderHelper {
 		if (!Is.stringValue(ip)) {
 			return false;
 		}
-		return HeaderHelper._IP_V6_REGEX.test(ip);
+
+		const halves = ip.replace(HeaderHelper._IP_V6_ZONE_REGEX, "").split("::");
+		if (halves.length > 2) {
+			return false;
+		}
+		const compressed = halves.length === 2;
+		const head = halves[0] === "" ? [] : halves[0].split(":");
+		const tail = compressed && halves[1] !== "" ? halves[1].split(":") : [];
+		const groups = [...head, ...tail];
+
+		// An embedded IPv4 address is only allowed as the last part and counts as two groups.
+		let groupCount = groups.length;
+		const last = groups.at(-1);
+		if (Is.stringValue(last) && last.includes(".")) {
+			if ((compressed && tail.length === 0) || !HeaderHelper.isIpAddressV4(last)) {
+				return false;
+			}
+			groups.pop();
+			groupCount++;
+		}
+
+		if (!groups.every(group => HeaderHelper._IP_V6_GROUP_REGEX.test(group))) {
+			return false;
+		}
+		return compressed ? groupCount < 8 : groupCount === 8;
 	}
 
 	/**
