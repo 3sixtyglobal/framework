@@ -39,6 +39,23 @@ const text = TextRenderer.render(qr.generate(), {
 text.length > 0; // true
 ```
 
+## SvgRenderer
+
+```typescript
+import { ErrorCorrectLevel, QR, SvgRenderer } from '@3sixty/qr';
+
+const qr = new QR(3, ErrorCorrectLevel.M);
+qr.addText('QR as SVG');
+
+const svg = await SvgRenderer.render(qr.generate(), {
+  cellSize: 8,
+  marginSize: 16,
+  background: 'transparent'
+});
+
+svg.startsWith('<svg'); // true
+```
+
 ## PngRenderer
 
 ```typescript
