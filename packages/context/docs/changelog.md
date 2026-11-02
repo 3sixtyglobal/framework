@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.20.0-next.7](https://github.com/3sixtyglobal/framework/compare/context-v0.20.0-next.6...context-v0.20.0-next.7) (2026-11-02)
+
+
+### Miscellaneous Chores
+
+* **context:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @3sixty/core bumped from 0.20.0-next.6 to 0.20.0-next.7
+    * @3sixty/nameof bumped from 0.20.0-next.6 to 0.20.0-next.7
+  * devDependencies
+    * @3sixty/nameof-transformer bumped from 0.20.0-next.6 to 0.20.0-next.7
+    * @3sixty/nameof-vitest-plugin bumped from 0.20.0-next.6 to 0.20.0-next.7
+    * @3sixty/validate-locales bumped from 0.20.0-next.6 to 0.20.0-next.7
+
 ## [0.20.0-next.6](https://github.com/3sixtyglobal/framework/compare/context-v0.20.0-next.5...context-v0.20.0-next.6) (2026-10-28)
 
 
