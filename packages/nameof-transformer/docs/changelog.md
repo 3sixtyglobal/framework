@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.20.0-next.7](https://github.com/3sixtyglobal/framework/compare/nameof-transformer-v0.20.0-next.6...nameof-transformer-v0.20.0-next.7) (2026-11-02)
+
+
+### Miscellaneous Chores
+
+* **nameof-transformer:** Synchronize repo versions
+
 ## [0.20.0-next.6](https://github.com/3sixtyglobal/framework/compare/nameof-transformer-v0.20.0-next.5...nameof-transformer-v0.20.0-next.6) (2026-10-28)
 
 
