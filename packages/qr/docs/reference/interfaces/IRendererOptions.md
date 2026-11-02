@@ -5,6 +5,7 @@ Options for rendering.
 ## Extended by
 
 - [`IBitmapRendererOptions`](IBitmapRendererOptions.md)
+- [`ISvgRendererOptions`](ISvgRendererOptions.md)
 - [`ITextRendererOptions`](ITextRendererOptions.md)
 
 ## Properties
