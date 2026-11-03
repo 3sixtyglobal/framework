@@ -101,4 +101,3 @@
 - [RuntimeEngine](variables/RuntimeEngine.md)
 - [RuntimeOs](variables/RuntimeOs.md)
 - [SharedObjectBufferMessageTypes](variables/SharedObjectBufferMessageTypes.md)
-- [DURATION\_REG\_EXP](variables/DURATION_REG_EXP.md)

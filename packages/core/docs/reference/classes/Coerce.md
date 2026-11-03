@@ -196,7 +196,7 @@ The coerced time, or undefined if the value cannot be coerced.
 
 Coerce the value to a duration object.
 Accepts an IDuration object, ISO 8601 duration strings (e.g. "PT1H", "P1Y2M3DT4H5M6S"),
-or numeric values already expressed as seconds (stored in the seconds field).
+or numeric values already expressed as seconds, with fractional seconds stored in the sub-second fields.
 
 #### Parameters
 

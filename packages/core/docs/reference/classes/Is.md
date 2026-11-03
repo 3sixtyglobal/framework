@@ -368,6 +368,28 @@ True if the value is a big integer.
 
 ***
 
+### symbol() {#symbol}
+
+> `static` **symbol**(`value`): `value is symbol`
+
+Is the value a symbol.
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+The value to test.
+
+#### Returns
+
+`value is symbol`
+
+True if the value is a symbol.
+
+***
+
 ### boolean() {#boolean}
 
 > `static` **boolean**(`value`): `value is boolean`
@@ -887,25 +909,3 @@ The format of the UUIDv7 string.
 `value is string`
 
 True if the value is a uuidV7 string.
-
-***
-
-### duration() {#duration}
-
-> `static` **duration**(`value`): value is string \| IDuration
-
-Is the value a valid ISO 8601 duration string or an IDuration object.
-
-#### Parameters
-
-##### value
-
-`unknown`
-
-The value to test.
-
-#### Returns
-
-value is string \| IDuration
-
-True if the value is a valid ISO 8601 duration string or an IDuration object.

@@ -123,7 +123,11 @@ GeneralError if the patch fails.
 
 > `static` **stringifyEx**(`object`, `space?`): `string`
 
-Stringify the JSON with support for extended data types date/bigint/uint8array.
+Stringify the JSON with support for extended data types date/bigint/uint8array/symbol.
+Symbols in the global registry are restored as the same symbol, others as a new symbol with the
+same description.
+Circular references are stringified as the index of the object they refer to on the path
+from the root, an object referenced more than once without a cycle is stringified in full each time.
 
 #### Parameters
 
@@ -151,7 +155,8 @@ The stringified object.
 
 > `static` **parseEx**(`json`): `any`
 
-Parse the JSON string with support for extended data types date/bigint/uint8array.
+Parse the JSON string with support for extended data types date/bigint/uint8array/symbol,
+restoring circular references.
 
 #### Parameters
 
@@ -234,3 +239,26 @@ The value.
 `unknown`
 
 The value.
+
+***
+
+### toExtendedJson() {#toextendedjson}
+
+> `static` **toExtendedJson**(`value`): `unknown`
+
+Convert a value to plain JSON values, with the extended data types date/bigint/uint8array/symbol
+converted to their extended form and circular references converted to the index of the object they refer to on the path from the root.
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+The value to convert.
+
+#### Returns
+
+`unknown`
+
+The converted value.
