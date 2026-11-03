@@ -1470,7 +1470,7 @@ The camelCase key to test.
 
 ##### patternSet
 
-`ReadonlySet`\<`string`\> \| `Set`\<`string`\>
+`Set`\<`string`\> \| `ReadonlySet`\<`string`\>
 
 The set of exact keys and/or wildcard patterns (e.g. "restPath*").
 
