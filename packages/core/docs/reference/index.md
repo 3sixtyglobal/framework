@@ -75,6 +75,7 @@
 
 - [CoerceType](type-aliases/CoerceType.md)
 - [CompressionType](type-aliases/CompressionType.md)
+- [DurationConstants](type-aliases/DurationConstants.md)
 - [DurationFormatStyle](type-aliases/DurationFormatStyle.md)
 - [DurationRoundingMode](type-aliases/DurationRoundingMode.md)
 - [DurationUnit](type-aliases/DurationUnit.md)
@@ -92,6 +93,7 @@
 - [FacadeFactory](variables/FacadeFactory.md)
 - [CoerceType](variables/CoerceType.md)
 - [CompressionType](variables/CompressionType.md)
+- [DurationConstants](variables/DurationConstants.md)
 - [DurationFormatStyle](variables/DurationFormatStyle.md)
 - [DurationRoundingMode](variables/DurationRoundingMode.md)
 - [DurationUnit](variables/DurationUnit.md)
