@@ -838,4 +838,15 @@ describe("Is", () => {
 		const badVariant = `${uuid.slice(0, 19)}0${uuid.slice(20)}`;
 		expect(Is.uuidV7(badVariant)).toEqual(false);
 	});
+
+	test("symbol can fail if value is not a symbol", () => {
+		expect(Is.symbol(undefined)).toEqual(false);
+		expect(Is.symbol("Symbol(a)")).toEqual(false);
+		expect(Is.symbol({})).toEqual(false);
+	});
+
+	test("symbol can succeed if value is a symbol", () => {
+		expect(Is.symbol(Symbol("a"))).toEqual(true);
+		expect(Is.symbol(Symbol.iterator)).toEqual(true);
+	});
 });

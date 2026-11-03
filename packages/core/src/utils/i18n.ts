@@ -1,8 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import { IntlMessageFormat } from "intl-messageformat";
 import { Is } from "./is.js";
 import { SharedStore } from "./sharedStore.js";
+import { JsonHelper } from "../helpers/jsonHelper.js";
 import type { II18nShared } from "../models/II18nShared.js";
 import type { ILocaleDictionary } from "../models/ILocaleDictionary.js";
 
@@ -144,9 +146,10 @@ export class I18n {
 			return key;
 		}
 
+		const formatValues = I18n.stringifyObjectValues(values);
 		try {
 			let ret = new IntlMessageFormat(i18nShared.localeDictionaries[cl][key], cl).format(
-				values
+				formatValues
 			) as string;
 
 			if (i18nShared.currentLocale === "debug-x") {
@@ -159,7 +162,7 @@ export class I18n {
 			// is undefined, which the formatting library does not like
 			// in this case we get all the property names and ensure they are defined
 			const propertyNames = I18n.getPropertyNames(i18nShared.localeDictionaries[cl][key]);
-			const safeValues: { [key: string]: unknown } = values ?? {};
+			const safeValues: { [key: string]: unknown } = formatValues ?? {};
 
 			for (const propertyName of propertyNames) {
 				safeValues[propertyName] ??= "";
@@ -223,6 +226,32 @@ export class I18n {
 		} catch {
 			return [];
 		}
+	}
+
+	/**
+	 * Convert object and array values to JSON and symbols to strings, as the message formatter
+	 * returns an array of parts rather than a string for these values.
+	 * @param values The values to substitute into the message.
+	 * @returns The values with objects and arrays converted to JSON.
+	 * @internal
+	 */
+	private static stringifyObjectValues(values?: {
+		[key: string]: unknown;
+	}): { [key: string]: unknown } | undefined {
+		if (Is.undefined(values)) {
+			return undefined;
+		}
+		const formatValues: { [key: string]: unknown } = {};
+		for (const [key, value] of Object.entries(values)) {
+			if (Is.symbol(value)) {
+				formatValues[key] = value.toString();
+			} else if (Is.array(value) || (Is.object(value) && !Is.date(value))) {
+				formatValues[key] = JsonHelper.stringifyEx(value);
+			} else {
+				formatValues[key] = value;
+			}
+		}
+		return formatValues;
 	}
 
 	/**

@@ -6,7 +6,9 @@ import { DurationFormatStyle } from "../../src/models/durationFormatStyle.js";
 import { DurationRoundingMode } from "../../src/models/durationRoundingMode.js";
 import { DurationUnit } from "../../src/models/durationUnit.js";
 import type { IDuration } from "../../src/models/IDuration.js";
+import type { IError } from "../../src/models/IError.js";
 import { Duration as DurationImplementation } from "../../src/types/duration.js";
+import { I18n } from "../../src/utils/i18n.js";
 
 const implementations: {
 	name: string;
@@ -291,6 +293,22 @@ describe.each(implementations)(
 		});
 
 		describe.skipIf(isTemporal)("guard", () => {
+			test("formats the error message with the value as JSON", () => {
+				I18n.addDictionary("en", { error: { guard: { duration: 'it is "{value}"' } } });
+				try {
+					DurationImplementation.guard("source", "propName", { ...empty, years: 1, days: -1 });
+				} catch (error) {
+					const message = I18n.formatMessage(
+						`error.${(error as IError).message}`,
+						(error as IError).properties
+					);
+					expect(message).toEqual(
+						'it is "{"years":1,"months":0,"weeks":0,"days":-1,"hours":0,"minutes":0,"seconds":0}"'
+					);
+				}
+				expect.assertions(1);
+			});
+
 			test("does not throw for a valid duration", () => {
 				expect(() => DurationImplementation.guard("source", "propName", "PT1H")).not.toThrow();
 				expect(() =>

@@ -172,6 +172,17 @@ export class Is {
 	}
 
 	/**
+	 * Is the value a symbol.
+	 * @param value The value to test.
+	 * @returns True if the value is a symbol.
+	 */
+	public static symbol(value: unknown): value is symbol {
+		// this file is the only place typeof should be allowed, all other code should call these methods
+		// eslint-disable-next-line no-restricted-syntax
+		return typeof value === "symbol";
+	}
+
+	/**
 	 * Is the value a boolean.
 	 * @param value The value to test.
 	 * @returns True if the value is a boolean.

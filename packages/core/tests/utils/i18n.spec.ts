@@ -1,4 +1,5 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import { I18n } from "../../src/utils/i18n.js";
 import { SharedStore } from "../../src/utils/sharedStore.js";
@@ -33,6 +34,43 @@ describe("I18n", () => {
 		it("formats a simple message with substitution", () => {
 			const result = I18n.formatMessage("app.greeting", { name: "Alice" });
 			expect(result).toBe("Hello Alice");
+		});
+
+		it("formats an object value as JSON", () => {
+			const result = I18n.formatMessage("app.greeting", { name: { first: "Alice", age: 1n } });
+			expect(result).toBe('Hello {"first":"Alice","age":{"@ext":"bigint","value":"1"}}');
+		});
+
+		it("formats an object value with a circular reference", () => {
+			const name: { [key: string]: unknown } = { first: "Alice" };
+			name.self = name;
+			const result = I18n.formatMessage("app.greeting", { name });
+			expect(result).toBe('Hello {"first":"Alice","self":{"@ext":"circular","value":0}}');
+		});
+
+		it("formats a symbol value", () => {
+			const result = I18n.formatMessage("app.greeting", { name: Symbol("Alice") });
+			expect(result).toBe("Hello Symbol(Alice)");
+		});
+
+		it("formats an array value as JSON", () => {
+			const result = I18n.formatMessage("app.greeting", { name: ["Alice", "Bob"] });
+			expect(result).toBe('Hello ["Alice","Bob"]');
+		});
+
+		it("formats an object value when another value is missing", () => {
+			const result = I18n.formatMessage("app.fallbackMissing", {
+				other: { a: 1 }
+			});
+			expect(result).toBe("Missing prop  end");
+		});
+
+		it("does not convert a date value", () => {
+			const date = new Date(Date.UTC(2026, 0, 2));
+			const result = I18n.formatMessage("app.mixed", { name: "Alice", count: 1, date });
+			expect(result).toBe(
+				`Alice has 1 items on ${new Intl.DateTimeFormat("en", { dateStyle: "short" }).format(date)}`
+			);
 		});
 
 		it("formats using overrideLocale when provided", () => {
