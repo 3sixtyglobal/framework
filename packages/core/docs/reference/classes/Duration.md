@@ -22,11 +22,72 @@ Runtime name for the class.
 
 ## Methods
 
+### is() {#is}
+
+> `static` **is**(`value`): value is string \| IDuration
+
+Is the value a valid ISO 8601 duration string or an IDuration object.
+Components must be integers with a consistent sign, as required by Temporal.
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+The value to test.
+
+#### Returns
+
+value is string \| IDuration
+
+True if the value is a valid ISO 8601 duration string or an IDuration object.
+
+***
+
+### guard() {#guard}
+
+> `static` **guard**(`source`, `property`, `value`): asserts value is string \| IDuration
+
+Guard that the property is a valid ISO 8601 duration string or an IDuration object.
+
+#### Parameters
+
+##### source
+
+`string`
+
+The source of the error.
+
+##### property
+
+`string`
+
+The name of the property.
+
+##### value
+
+`unknown`
+
+The value to test.
+
+#### Returns
+
+asserts value is string \| IDuration
+
+#### Throws
+
+GuardError If the value is not a valid duration.
+
+***
+
 ### parse() {#parse}
 
 > `static` **parse**(`value`): [`IDuration`](../interfaces/IDuration.md) \| `undefined`
 
 Parse an ISO 8601 duration string into its component parts.
+A fraction on the smallest time unit is balanced into the smaller units, e.g. "PT1.5H" is
+1 hour 30 minutes, matching Temporal.
 
 #### Parameters
 
@@ -54,7 +115,7 @@ Convert a duration object to an ISO 8601 duration string.
 
 ##### duration
 
-[`IDuration`](../interfaces/IDuration.md)
+`string` \| [`IDuration`](../interfaces/IDuration.md)
 
 The duration to convert.
 
@@ -78,7 +139,7 @@ digital style which formats it as zero time, e.g. "0:00:00", matching Temporal.
 
 ##### duration
 
-[`IDuration`](../interfaces/IDuration.md)
+`string` \| [`IDuration`](../interfaces/IDuration.md)
 
 The duration to format.
 
@@ -102,10 +163,6 @@ The formatted duration.
 
 #### Throws
 
-GeneralError if any component is not an integer or the components have mixed signs.
-
-#### Throws
-
 GeneralError if the duration exceeds the limits of Intl.DurationFormat, years, months
 and weeks must be less than 2^32 and the remaining components less than 2^53 seconds.
 
@@ -122,7 +179,7 @@ Year and month components use the average values 365.25 days and 30.4375 days.
 
 ##### duration
 
-[`IDuration`](../interfaces/IDuration.md)
+`string` \| [`IDuration`](../interfaces/IDuration.md)
 
 The duration to convert.
 
@@ -156,7 +213,7 @@ The result is truncated towards zero to a whole number of units.
 
 ##### duration
 
-[`IDuration`](../interfaces/IDuration.md)
+`string` \| [`IDuration`](../interfaces/IDuration.md)
 
 The duration to convert.
 
@@ -219,13 +276,13 @@ Year and month components use the average values 365.25 days and 30.4375 days.
 
 ##### duration1
 
-[`IDuration`](../interfaces/IDuration.md)
+`string` \| [`IDuration`](../interfaces/IDuration.md)
 
 The first duration.
 
 ##### duration2
 
-[`IDuration`](../interfaces/IDuration.md)
+`string` \| [`IDuration`](../interfaces/IDuration.md)
 
 The second duration.
 
@@ -234,6 +291,35 @@ The second duration.
 `-1` \| `0` \| `1`
 
 -1 if the first duration is shorter, 1 if it is longer, 0 if they are equal.
+
+***
+
+### equals() {#equals}
+
+> `static` **equals**(`duration1`, `duration2`): `boolean`
+
+Check if two durations have the same total length, e.g. 1 hour and 60 minutes are equal.
+Year and month components use the average values 365.25 days and 30.4375 days.
+
+#### Parameters
+
+##### duration1
+
+`string` \| [`IDuration`](../interfaces/IDuration.md)
+
+The first duration.
+
+##### duration2
+
+`string` \| [`IDuration`](../interfaces/IDuration.md)
+
+The second duration.
+
+#### Returns
+
+`boolean`
+
+True if the durations have the same total number of nanoseconds.
 
 ***
 
@@ -249,7 +335,7 @@ Weeks are only included in the result when they are the largest or smallest unit
 
 ##### duration
 
-[`IDuration`](../interfaces/IDuration.md)
+`string` \| [`IDuration`](../interfaces/IDuration.md)
 
 The duration to round.
 
@@ -295,7 +381,7 @@ The date to add the duration to.
 
 ##### duration
 
-[`IDuration`](../interfaces/IDuration.md)
+`string` \| [`IDuration`](../interfaces/IDuration.md)
 
 The duration to add, negative durations subtract.
 
