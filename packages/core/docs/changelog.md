@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.20.0-next.10](https://github.com/3sixtyglobal/framework/compare/core-v0.20.0-next.9...core-v0.20.0-next.10) (2026-11-03)
+
+
+### Features
+
+* add duration equals and align duration validation with temporal ([#60](https://github.com/3sixtyglobal/framework/issues/60)) ([71dc4b4](https://github.com/3sixtyglobal/framework/commit/71dc4b46a2eef55c0e3d5722e86e6655b13c2132))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @3sixty/nameof bumped from 0.20.0-next.9 to 0.20.0-next.10
+  * devDependencies
+    * @3sixty/nameof-transformer bumped from 0.20.0-next.9 to 0.20.0-next.10
+    * @3sixty/nameof-vitest-plugin bumped from 0.20.0-next.9 to 0.20.0-next.10
+
 ## [0.20.0-next.9](https://github.com/3sixtyglobal/framework/compare/core-v0.20.0-next.8...core-v0.20.0-next.9) (2026-11-03)
 
 
