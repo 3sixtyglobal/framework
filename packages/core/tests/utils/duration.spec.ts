@@ -1,11 +1,14 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import { TemporalDuration } from "./temporalDuration.js";
 import { DurationFormatStyle } from "../../src/models/durationFormatStyle.js";
 import { DurationRoundingMode } from "../../src/models/durationRoundingMode.js";
 import { DurationUnit } from "../../src/models/durationUnit.js";
 import type { IDuration } from "../../src/models/IDuration.js";
+import type { IError } from "../../src/models/IError.js";
 import { Duration as DurationImplementation } from "../../src/types/duration.js";
+import { I18n } from "../../src/utils/i18n.js";
 
 const implementations: {
 	name: string;
@@ -50,6 +53,50 @@ describe.each(implementations)(
 		};
 
 		describe("parse", () => {
+			test.each([
+				["PT1.5H", { ...empty, hours: 1, minutes: 30 }],
+				["PT1,5H", { ...empty, hours: 1, minutes: 30 }],
+				["PT1.5M", { ...empty, minutes: 1, seconds: 30 }],
+				["-PT1.5H", { ...empty, hours: -1, minutes: -30 }],
+				[
+					"PT1.123456789H",
+					{
+						...empty,
+						hours: 1,
+						minutes: 7,
+						seconds: 24,
+						milliseconds: 444,
+						microseconds: 440,
+						nanoseconds: 400
+					}
+				],
+				["PT1.000000001H", { ...empty, hours: 1, microseconds: 3, nanoseconds: 600 }],
+				["P1DT1.5S", { ...empty, days: 1, seconds: 1, milliseconds: 500 }],
+				["pt1h", { ...empty, hours: 1 }],
+				["+P1D", { ...empty, days: 1 }],
+				["P1W1D", { ...empty, weeks: 1, days: 1 }]
+			])("parses %s", (value, expected) => {
+				expect(durationClass.parse(value)).toEqual(expected);
+			});
+
+			test.each([
+				"P",
+				"PT",
+				"P1DT",
+				"PT1.H",
+				"PT.5H",
+				"PT1.1234567891S",
+				"PT1.5H0M",
+				"PT0.5H30S",
+				"PT1.5M30S",
+				"P1.5D",
+				"P1.5Y",
+				"P1.0W",
+				"\u2212P1D"
+			])("returns undefined for %s", value => {
+				expect(durationClass.parse(value)).toBeUndefined();
+			});
+
 			test("returns undefined for an invalid string", () => {
 				expect(durationClass.parse("foo")).toBeUndefined();
 			});
@@ -178,6 +225,171 @@ describe.each(implementations)(
 					milliseconds: 234,
 					microseconds: 567,
 					nanoseconds: 890
+				});
+			});
+		});
+
+		describe.skipIf(isTemporal)("is", () => {
+			test("returns false for values which are not durations", () => {
+				expect(DurationImplementation.is(undefined)).toEqual(false);
+				expect(DurationImplementation.is(3600)).toEqual(false);
+				expect(DurationImplementation.is("foo")).toEqual(false);
+				expect(DurationImplementation.is("P")).toEqual(false);
+				expect(DurationImplementation.is({ years: 0, months: 0 })).toEqual(false);
+			});
+
+			test("returns true for ISO 8601 duration strings", () => {
+				expect(DurationImplementation.is("PT1H")).toEqual(true);
+				expect(DurationImplementation.is("P1Y2M3DT4H5M6S")).toEqual(true);
+				expect(DurationImplementation.is("-P1DT2H3M4S")).toEqual(true);
+			});
+
+			test("returns true for duration objects", () => {
+				expect(DurationImplementation.is({ ...empty, days: 1, hours: 2, minutes: 30 })).toEqual(
+					true
+				);
+				expect(
+					DurationImplementation.is({
+						...empty,
+						seconds: 1,
+						milliseconds: 250,
+						microseconds: 500,
+						nanoseconds: 250
+					})
+				).toEqual(true);
+			});
+
+			test("returns true for sub-second components above 999", () => {
+				expect(DurationImplementation.is({ ...empty, milliseconds: 1_000 })).toEqual(true);
+				expect(DurationImplementation.is({ ...empty, microseconds: -1_000 })).toEqual(true);
+				expect(
+					DurationImplementation.is({ ...empty, nanoseconds: Number.MAX_SAFE_INTEGER })
+				).toEqual(true);
+			});
+
+			test("returns false for fractional components", () => {
+				expect(DurationImplementation.is({ ...empty, hours: 1.5 })).toEqual(false);
+				expect(DurationImplementation.is({ ...empty, years: 0.5 })).toEqual(false);
+			});
+
+			test("returns false for mixed signs", () => {
+				expect(DurationImplementation.is({ ...empty, years: 1, days: -1 })).toEqual(false);
+				expect(DurationImplementation.is({ ...empty, seconds: 1, nanoseconds: -1 })).toEqual(false);
+			});
+
+			test("returns false for components which are not finite numbers", () => {
+				expect(DurationImplementation.is({ ...empty, hours: Number.NaN })).toEqual(false);
+				expect(DurationImplementation.is({ ...empty, days: Number.POSITIVE_INFINITY })).toEqual(
+					false
+				);
+				expect(DurationImplementation.is({ ...empty, hours: "1" })).toEqual(false);
+			});
+
+			test("returns false for fractional sub-second components", () => {
+				expect(DurationImplementation.is({ ...empty, milliseconds: 1.5 })).toEqual(false);
+				expect(DurationImplementation.is({ ...empty, microseconds: 0.5 })).toEqual(false);
+				expect(DurationImplementation.is({ ...empty, nanoseconds: 0.5 })).toEqual(false);
+			});
+		});
+
+		describe.skipIf(isTemporal)("guard", () => {
+			test("formats the error message with the value as JSON", () => {
+				I18n.addDictionary("en", { error: { guard: { duration: 'it is "{value}"' } } });
+				try {
+					DurationImplementation.guard("source", "propName", { ...empty, years: 1, days: -1 });
+				} catch (error) {
+					const message = I18n.formatMessage(
+						`error.${(error as IError).message}`,
+						(error as IError).properties
+					);
+					expect(message).toEqual(
+						'it is "{"years":1,"months":0,"weeks":0,"days":-1,"hours":0,"minutes":0,"seconds":0}"'
+					);
+				}
+				expect.assertions(1);
+			});
+
+			test("does not throw for a valid duration", () => {
+				expect(() => DurationImplementation.guard("source", "propName", "PT1H")).not.toThrow();
+				expect(() =>
+					DurationImplementation.guard("source", "propName", { ...empty, milliseconds: 1_000 })
+				).not.toThrow();
+			});
+
+			test("throws for an invalid duration", () => {
+				expect(() => DurationImplementation.guard("source", "propName", "foo")).toThrow(
+					expect.objectContaining({
+						name: "GuardError",
+						message: "guard.duration",
+						source: "source",
+						properties: expect.objectContaining({ property: "propName", value: "foo" })
+					})
+				);
+				expect(() =>
+					DurationImplementation.guard("source", "propName", { ...empty, years: 1, days: -1 })
+				).toThrow(expect.objectContaining({ name: "GuardError", message: "guard.duration" }));
+			});
+		});
+
+		describe("string arguments", () => {
+			test("accepts ISO 8601 duration strings", () => {
+				expect(durationClass.toNumber("PT1H30M", DurationUnit.Minutes)).toEqual(90);
+				expect(durationClass.toBigInt("-PT1.5S", DurationUnit.Milliseconds)).toEqual(-1_500n);
+				expect(durationClass.compare("PT1H", "PT59M")).toEqual(1);
+				expect(durationClass.equals("PT1H", { ...empty, minutes: 60 })).toEqual(true);
+				expect(durationClass.round("PT90M", { largestUnit: DurationUnit.Hours })).toEqual({
+					...empty,
+					hours: 1,
+					minutes: 30
+				});
+				expect(durationClass.toString("PT0.5S")).toEqual("PT0.5S");
+				expect(durationClass.toLocaleString("PT1H30M", DurationFormatStyle.Long, "en")).toEqual(
+					"1 hour, 30 minutes"
+				);
+			});
+
+			test("throws for an invalid ISO 8601 duration string", () => {
+				expect(() => durationClass.toNumber("1 hour", DurationUnit.Seconds)).toThrow(
+					errorLike(
+						expect.objectContaining({
+							name: "GuardError",
+							message: "guard.duration",
+							properties: expect.objectContaining({ property: "duration", value: "1 hour" })
+						})
+					)
+				);
+				expect(() => durationClass.compare("PT1H", "P")).toThrow(
+					errorLike(
+						expect.objectContaining({
+							name: "GuardError",
+							message: "guard.duration",
+							properties: expect.objectContaining({ property: "duration2", value: "P" })
+						})
+					)
+				);
+			});
+		});
+
+		describe("sub-second components above 999", () => {
+			test("formats them carried into seconds", () => {
+				expect(durationClass.toString({ ...empty, milliseconds: 1_500 })).toEqual("PT1.5S");
+				expect(
+					durationClass.toString({ ...empty, seconds: 1, nanoseconds: 1_500_000_001 })
+				).toEqual("PT2.500000001S");
+				expect(durationClass.toString({ ...empty, minutes: -1, microseconds: -2_000_000 })).toEqual(
+					"-PT1M2S"
+				);
+			});
+
+			test("accepts the results of from and round as arguments", () => {
+				const duration = durationClass.from(1_500_000_001n, DurationUnit.Nanoseconds);
+				expect(durationClass.toNumber(duration, DurationUnit.Seconds)).toEqual(1.500000001);
+				expect(durationClass.toString(duration)).toEqual("PT1.500000001S");
+				expect(durationClass.round(duration, { largestUnit: DurationUnit.Seconds })).toEqual({
+					...empty,
+					seconds: 1,
+					milliseconds: 500,
+					nanoseconds: 1
 				});
 			});
 		});
@@ -380,9 +592,12 @@ describe.each(implementations)(
 				).toEqual(-1.5);
 			});
 
-			// Temporal requires integer components, we support fractional components.
-			ownTest("converts fractional components", () => {
-				expect(durationClass.toNumber({ ...empty, hours: 1.5 }, DurationUnit.Minutes)).toEqual(90);
+			test("throws for fractional components", () => {
+				expect(() =>
+					durationClass.toNumber({ ...empty, hours: 1.5 }, DurationUnit.Minutes)
+				).toThrow(
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
+				);
 			});
 
 			test("throws for a component which is not a number", () => {
@@ -392,8 +607,8 @@ describe.each(implementations)(
 					errorLike(
 						expect.objectContaining({
 							name: "GuardError",
-							message: "guard.number",
-							properties: { property: "duration.hours", value: Number.NaN }
+							message: "guard.duration",
+							properties: expect.objectContaining({ property: "duration" })
 						})
 					)
 				);
@@ -403,7 +618,7 @@ describe.each(implementations)(
 						DurationUnit.Seconds
 					)
 				).toThrow(
-					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.number" }))
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
 				);
 			});
 
@@ -411,9 +626,7 @@ describe.each(implementations)(
 				expect(() =>
 					durationClass.toNumber(undefined as unknown as IDuration, DurationUnit.Seconds)
 				).toThrow(
-					errorLike(
-						expect.objectContaining({ name: "GuardError", message: "guard.objectUndefined" })
-					)
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
 				);
 			});
 			// Temporal loses precision beyond the safe integer range, we throw instead.
@@ -534,10 +747,13 @@ describe.each(implementations)(
 				).toEqual(31_557_600_000_000_001n);
 			});
 
-			// Temporal requires integer components, we support fractional components.
-			ownTest("converts fractional components to nanoseconds", () => {
+			// Temporal requires integer values, we balance fractional values into smaller units.
+			ownTest("converts a duration created from a fractional value", () => {
 				expect(
-					durationClass.toBigInt({ ...empty, seconds: 1.5 }, DurationUnit.Nanoseconds)
+					durationClass.toBigInt(
+						durationClass.from(1.5, DurationUnit.Seconds),
+						DurationUnit.Nanoseconds
+					)
 				).toEqual(1_500_000_000n);
 			});
 
@@ -553,9 +769,12 @@ describe.each(implementations)(
 			test("throws for an invalid unit", () => {
 				expect(() => durationClass.toBigInt(empty, "foo" as DurationUnit)).toThrow();
 			});
-			// Temporal requires integer components, we support fractional components.
-			ownTest("converts fractional components", () => {
-				expect(durationClass.toBigInt({ ...empty, hours: 1.5 }, DurationUnit.Minutes)).toEqual(90n);
+			test("throws for fractional components", () => {
+				expect(() =>
+					durationClass.toBigInt({ ...empty, hours: 1.5 }, DurationUnit.Minutes)
+				).toThrow(
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
+				);
 			});
 
 			test("throws for a component which is not a number", () => {
@@ -565,8 +784,8 @@ describe.each(implementations)(
 					errorLike(
 						expect.objectContaining({
 							name: "GuardError",
-							message: "guard.number",
-							properties: { property: "duration.days", value: Number.NaN }
+							message: "guard.duration",
+							properties: expect.objectContaining({ property: "duration" })
 						})
 					)
 				);
@@ -576,9 +795,7 @@ describe.each(implementations)(
 				expect(() =>
 					durationClass.toBigInt(undefined as unknown as IDuration, DurationUnit.Seconds)
 				).toThrow(
-					errorLike(
-						expect.objectContaining({ name: "GuardError", message: "guard.objectUndefined" })
-					)
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
 				);
 			});
 			// Temporal limits durations to less than 2^53 seconds, we support larger durations.
@@ -588,10 +805,13 @@ describe.each(implementations)(
 				).toEqual(BigInt(Number.MAX_VALUE) * 31_557_600_000_000_000n);
 			});
 
-			// Temporal requires integer components, we support fractional components.
-			ownTest("keeps the whole part of a large fractional component exact", () => {
+			// Temporal requires relativeTo for years, months and weeks, we use average lengths.
+			ownTest("keeps a large duration created from a fractional value exact", () => {
 				expect(
-					durationClass.toBigInt({ ...empty, years: 1_000_000.5 }, DurationUnit.Nanoseconds)
+					durationClass.toBigInt(
+						durationClass.from(1_000_000.5, DurationUnit.Years),
+						DurationUnit.Nanoseconds
+					)
 				).toEqual(31_557_615_778_800_000_000_000n);
 			});
 
@@ -611,7 +831,7 @@ describe.each(implementations)(
 				expect(durationClass.from(90, DurationUnit.Seconds)).toEqual({ ...empty, seconds: 90 });
 			});
 
-			// Temporal requires integer components, we support fractional components.
+			// Temporal requires integer values, we balance fractional values into smaller units.
 			ownTest("balances a fractional value into smaller units", () => {
 				expect(durationClass.from(1.5, DurationUnit.Hours)).toEqual({
 					...empty,
@@ -627,7 +847,7 @@ describe.each(implementations)(
 				});
 			});
 
-			// Temporal requires integer components, we support fractional components.
+			// Temporal requires integer values, we balance fractional values into smaller units.
 			ownTest("creates a negative duration", () => {
 				expect(durationClass.from(-1.25, DurationUnit.Seconds)).toEqual({
 					...empty,
@@ -636,7 +856,7 @@ describe.each(implementations)(
 				});
 			});
 
-			// Temporal requires integer components, we support fractional components.
+			// Temporal requires integer values, we balance fractional values into smaller units.
 			ownTest("roundtrips through toNumber", () => {
 				expect(
 					durationClass.toNumber(durationClass.from(12.345, DurationUnit.Days), DurationUnit.Days)
@@ -656,7 +876,7 @@ describe.each(implementations)(
 				expect(durationClass.from(2n, DurationUnit.Years)).toEqual({ ...empty, years: 2 });
 			});
 
-			// Temporal requires integer components, we support fractional components.
+			// Temporal requires integer values, we balance fractional values into smaller units.
 			ownTest("balances a fractional value into sub-second units", () => {
 				expect(durationClass.from(1.5, DurationUnit.Milliseconds)).toEqual({
 					...empty,
@@ -669,7 +889,7 @@ describe.each(implementations)(
 				expect(durationClass.from(0, DurationUnit.Hours)).toEqual(empty);
 			});
 
-			// Temporal requires integer components, we support fractional components.
+			// Temporal requires integer values, we balance fractional values into smaller units.
 			ownTest("rounds values smaller than a nanosecond", () => {
 				expect(durationClass.from(1e-10, DurationUnit.Seconds)).toEqual(empty);
 			});
@@ -754,23 +974,19 @@ describe.each(implementations)(
 			});
 			test("throws for an invalid first duration", () => {
 				expect(() => durationClass.compare(undefined as unknown as IDuration, empty)).toThrow(
-					errorLike(
-						expect.objectContaining({ name: "GuardError", message: "guard.objectUndefined" })
-					)
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
 				);
 			});
 
 			test("throws for an invalid second duration", () => {
 				expect(() => durationClass.compare(empty, undefined as unknown as IDuration)).toThrow(
-					errorLike(
-						expect.objectContaining({ name: "GuardError", message: "guard.objectUndefined" })
-					)
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
 				);
 			});
 
 			test("throws for a component which is not a number", () => {
 				expect(() => durationClass.compare(empty, { ...empty, seconds: Number.NaN })).toThrow(
-					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.number" }))
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
 				);
 			});
 			// Temporal requires relativeTo for years, months and weeks, we use average lengths.
@@ -787,6 +1003,107 @@ describe.each(implementations)(
 						{ ...empty, years: Number.MAX_VALUE }
 					)
 				).toEqual(0);
+			});
+		});
+
+		describe("equals", () => {
+			test("returns true for durations with the same components", () => {
+				expect(
+					durationClass.equals(
+						{ ...empty, days: 1, hours: 2, nanoseconds: 3 },
+						{ ...empty, days: 1, hours: 2, nanoseconds: 3 }
+					)
+				).toEqual(true);
+			});
+
+			test("returns true for different components with the same total length", () => {
+				expect(durationClass.equals({ ...empty, hours: 1 }, { ...empty, minutes: 60 })).toEqual(
+					true
+				);
+				expect(
+					durationClass.equals(
+						{ ...empty, days: 1, seconds: 1 },
+						{ ...empty, hours: 24, milliseconds: 1_000 }
+					)
+				).toEqual(true);
+			});
+
+			test("treats missing sub-second components as zero", () => {
+				expect(
+					durationClass.equals(empty, {
+						...empty,
+						milliseconds: 0,
+						microseconds: 0,
+						nanoseconds: 0
+					})
+				).toEqual(true);
+			});
+
+			test("treats negative zero as zero", () => {
+				expect(durationClass.equals({ ...empty, seconds: -0 }, empty)).toEqual(true);
+			});
+
+			test("returns false when the total length differs by a nanosecond", () => {
+				expect(
+					durationClass.equals({ ...empty, seconds: 1, nanoseconds: 1 }, { ...empty, seconds: 1 })
+				).toEqual(false);
+			});
+
+			test("returns false when the sign differs", () => {
+				expect(durationClass.equals({ ...empty, days: 1 }, { ...empty, days: -1 })).toEqual(false);
+			});
+
+			// Temporal requires relativeTo for years, months and weeks, we use average lengths.
+			ownTest("compares calendar components using average lengths", () => {
+				expect(durationClass.equals({ ...empty, years: 1 }, { ...empty, months: 12 })).toEqual(
+					true
+				);
+				expect(durationClass.equals({ ...empty, weeks: 1 }, { ...empty, days: 7 })).toEqual(true);
+				expect(durationClass.equals({ ...empty, months: 1 }, { ...empty, days: 30 })).toEqual(
+					false
+				);
+			});
+
+			test("throws for fractional components", () => {
+				expect(() =>
+					durationClass.equals({ ...empty, hours: 1.5 }, { ...empty, minutes: 90 })
+				).toThrow(
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
+				);
+			});
+
+			// Temporal limits durations to less than 2^53 seconds, we support larger durations.
+			ownTest("compares durations beyond the safe integer range exactly", () => {
+				expect(
+					durationClass.equals(
+						{ ...empty, years: 1_000, nanoseconds: 1 },
+						{ ...empty, years: 1_000 }
+					)
+				).toEqual(false);
+			});
+
+			test("throws for an invalid first duration", () => {
+				expect(() => durationClass.equals(undefined as unknown as IDuration, empty)).toThrow(
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
+				);
+			});
+
+			test("throws for an invalid second duration", () => {
+				expect(() => durationClass.equals(empty, undefined as unknown as IDuration)).toThrow(
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
+				);
+			});
+
+			test("throws for a component which is not a number", () => {
+				expect(() => durationClass.equals(empty, { ...empty, minutes: Number.NaN })).toThrow(
+					errorLike(
+						expect.objectContaining({
+							name: "GuardError",
+							message: "guard.duration",
+							properties: expect.objectContaining({ property: "duration2" })
+						})
+					)
+				);
 			});
 		});
 
@@ -978,7 +1295,7 @@ describe.each(implementations)(
 
 			test("throws for a component which is not a number", () => {
 				expect(() => durationClass.round({ ...empty, minutes: Number.NaN })).toThrow(
-					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.number" }))
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
 				);
 			});
 			test("throws when a component of the result exceeds the maximum safe integer", () => {
@@ -1137,16 +1454,15 @@ describe.each(implementations)(
 				).toEqual("2025-11-30T00:00:00.000Z");
 			});
 
-			// Temporal requires integer components, we support fractional components.
-			ownTest("adds fractional days as exact time", () => {
-				expect(
-					durationClass
-						.addToDate(new Date("2026-01-01T00:00:00.000Z"), {
-							...empty,
-							days: 1.5
-						})
-						.toISOString()
-				).toEqual("2026-01-02T12:00:00.000Z");
+			test("throws for fractional days", () => {
+				expect(() =>
+					durationClass.addToDate(new Date("2026-01-01T00:00:00.000Z"), {
+						...empty,
+						days: 1.5
+					})
+				).toThrow(
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
+				);
 			});
 
 			test("keeps years before 100 in the correct century", () => {
@@ -1177,7 +1493,7 @@ describe.each(implementations)(
 
 			test("throws for a component which is not a number", () => {
 				expect(() => durationClass.addToDate(new Date(), { ...empty, hours: Number.NaN })).toThrow(
-					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.number" }))
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
 				);
 			});
 
@@ -1185,9 +1501,7 @@ describe.each(implementations)(
 				expect(() =>
 					durationClass.addToDate(new Date(), undefined as unknown as IDuration)
 				).toThrow(
-					errorLike(
-						expect.objectContaining({ name: "GuardError", message: "guard.objectUndefined" })
-					)
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
 				);
 			});
 			test("adds up to the maximum date", () => {
@@ -1205,8 +1519,11 @@ describe.each(implementations)(
 					durationClass
 						.addToDate(new Date(-8.64e15), {
 							...empty,
-							days: 200_000_000,
-							milliseconds: -1
+							days: 199_999_999,
+							hours: 23,
+							minutes: 59,
+							seconds: 59,
+							milliseconds: 999
 						})
 						.getTime()
 				).toEqual(8.64e15 - 1);
@@ -1257,14 +1574,18 @@ describe.each(implementations)(
 				);
 			});
 
-			test("throws when a calendar interval leaves the range before the time brings it back", () => {
+			test("throws for mixed signs", () => {
 				expect(() =>
-					durationClass.addToDate(new Date(8.64e15), { ...empty, years: 1, days: -400 })
+					durationClass.addToDate(new Date(0), { ...empty, years: 1, days: -400 })
 				).toThrow(
-					errorLike(
-						expect.objectContaining({ name: "GeneralError", message: "duration.dateOutOfRange" })
-					)
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
 				);
+			});
+
+			test("adds an ISO 8601 duration string", () => {
+				expect(
+					durationClass.addToDate(new Date("2026-01-31T00:00:00.000Z"), "P1MT1H").toISOString()
+				).toEqual("2026-02-28T01:00:00.000Z");
 			});
 		});
 
@@ -1544,9 +1865,8 @@ describe.each(implementations)(
 				).toThrow(
 					errorLike(
 						expect.objectContaining({
-							name: "GeneralError",
-							message: "duration.invalidLocaleValue",
-							properties: { unit: "hours", value: 1.5 }
+							name: "GuardError",
+							message: "guard.duration"
 						})
 					)
 				);
@@ -1556,13 +1876,7 @@ describe.each(implementations)(
 				expect(() =>
 					durationClass.toLocaleString({ ...empty, hours: 1, minutes: -30 }, undefined, "en")
 				).toThrow(
-					errorLike(
-						expect.objectContaining({
-							name: "GeneralError",
-							message: "duration.invalidLocaleValue",
-							properties: { unit: "minutes", value: -30 }
-						})
-					)
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
 				);
 			});
 
@@ -1578,9 +1892,7 @@ describe.each(implementations)(
 
 			test("throws for an invalid duration", () => {
 				expect(() => durationClass.toLocaleString(undefined as unknown as IDuration)).toThrow(
-					errorLike(
-						expect.objectContaining({ name: "GuardError", message: "guard.objectUndefined" })
-					)
+					errorLike(expect.objectContaining({ name: "GuardError", message: "guard.duration" }))
 				);
 			});
 
@@ -1758,8 +2070,8 @@ describe.each(implementations)(
 					).toThrow(
 						errorLike(
 							expect.objectContaining({
-								name: "GeneralError",
-								message: "duration.invalidLocaleValue"
+								name: "GuardError",
+								message: "guard.duration"
 							})
 						)
 					);

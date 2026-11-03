@@ -1,4 +1,5 @@
 // Copyright 2026 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import { DurationFormatStyle } from "../../src/models/durationFormatStyle.js";
 import { DurationUnit } from "../../src/models/durationUnit.js";
@@ -38,7 +39,7 @@ export class TemporalDuration {
 	 * @param duration The duration to convert.
 	 * @returns The ISO 8601 duration string.
 	 */
-	public static toString(duration: IDuration): string {
+	public static toString(duration: string | IDuration): string {
 		return TemporalDuration.toTemporal(duration).toString();
 	}
 
@@ -50,7 +51,7 @@ export class TemporalDuration {
 	 * @returns The formatted duration.
 	 */
 	public static toLocaleString(
-		duration: IDuration,
+		duration: string | IDuration,
 		style?: DurationFormatStyle,
 		locale?: string
 	): string {
@@ -65,7 +66,7 @@ export class TemporalDuration {
 	 * @param units The units to convert the duration to.
 	 * @returns The total value in the requested units.
 	 */
-	public static toNumber(duration: IDuration, units: DurationUnit): number {
+	public static toNumber(duration: string | IDuration, units: DurationUnit): number {
 		return TemporalDuration.toTemporal(duration).total({ unit: units });
 	}
 
@@ -75,7 +76,7 @@ export class TemporalDuration {
 	 * @param units The units to convert the duration to.
 	 * @returns The total value in the requested units.
 	 */
-	public static toBigInt(duration: IDuration, units: DurationUnit): bigint {
+	public static toBigInt(duration: string | IDuration, units: DurationUnit): bigint {
 		return BigInt(Math.trunc(TemporalDuration.toNumber(duration, units)));
 	}
 
@@ -100,11 +101,21 @@ export class TemporalDuration {
 	 * @param duration2 The second duration.
 	 * @returns -1 if the first duration is shorter, 1 if it is longer, 0 if they are equal.
 	 */
-	public static compare(duration1: IDuration, duration2: IDuration): -1 | 0 | 1 {
+	public static compare(duration1: string | IDuration, duration2: string | IDuration): -1 | 0 | 1 {
 		return Temporal.Duration.compare(
 			TemporalDuration.toTemporal(duration1),
 			TemporalDuration.toTemporal(duration2)
 		) as -1 | 0 | 1;
+	}
+
+	/**
+	 * Check if two durations have the same total length.
+	 * @param duration1 The first duration.
+	 * @param duration2 The second duration.
+	 * @returns True if the durations have the same total length.
+	 */
+	public static equals(duration1: string | IDuration, duration2: string | IDuration): boolean {
+		return TemporalDuration.compare(duration1, duration2) === 0;
 	}
 
 	/**
@@ -113,7 +124,7 @@ export class TemporalDuration {
 	 * @param options The rounding options.
 	 * @returns The rounded duration.
 	 */
-	public static round(duration: IDuration, options?: IDurationRoundOptions): IDuration {
+	public static round(duration: string | IDuration, options?: IDurationRoundOptions): IDuration {
 		return TemporalDuration.fromTemporal(
 			TemporalDuration.toTemporal(duration).round({
 				largestUnit: options?.largestUnit,
@@ -129,7 +140,7 @@ export class TemporalDuration {
 	 * @param duration The duration to add.
 	 * @returns A new date with the duration added.
 	 */
-	public static addToDate(date: Date, duration: IDuration): Date {
+	public static addToDate(date: Date, duration: string | IDuration): Date {
 		const result = Temporal.Instant.fromEpochMilliseconds(date.getTime())
 			.toZonedDateTimeISO("UTC")
 			.add(TemporalDuration.toTemporal(duration));
@@ -141,7 +152,10 @@ export class TemporalDuration {
 	 * @param duration The duration to convert.
 	 * @returns The Temporal duration.
 	 */
-	private static toTemporal(duration: IDuration): Temporal.Duration {
+	private static toTemporal(duration: string | IDuration): Temporal.Duration {
+		if (Is.string(duration)) {
+			return Temporal.Duration.from(duration);
+		}
 		return Temporal.Duration.from({
 			years: duration.years,
 			months: duration.months,
