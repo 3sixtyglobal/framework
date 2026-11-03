@@ -108,6 +108,13 @@
 		"base58": {
 			"invalidCharacter": "Data contains a character \"{invalidCharacter}\" which is not in the charset"
 		},
+		"duration": {
+			"valueTooLarge": "The duration value \"{value}\" in \"{units}\" exceeds the maximum safe integer",
+			"largestUnitTooSmall": "The largest unit \"{largestUnit}\" must not be smaller than the smallest unit \"{smallestUnit}\"",
+			"invalidLocaleValue": "The duration value \"{value}\" for \"{unit}\" must be an integer with the same sign as the other components to format it for a locale",
+			"dateOutOfRange": "Adding the duration \"{duration}\" to the date \"{date}\" results in a date outside the supported range",
+			"localeValueTooLarge": "The duration \"{duration}\" is too large to format for a locale"
+		},
 		"jsonHelper": {
 			"failedPatch": "Failed to patch the JSON object, patch index \"{index}\" failed"
 		},

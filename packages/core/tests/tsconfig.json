@@ -2,6 +2,7 @@
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
 		"noEmit": true,
+		"lib": ["es2022", "es2024.sharedmemory", "esnext.temporal"],
 		"tsBuildInfoFile": "../.cache/tests.tsbuildinfo",
 		"rootDir": "..",
 		"types": ["node", "vitest/globals"]
