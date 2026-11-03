@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.20.0-next.9](https://github.com/3sixtyglobal/framework/compare/nameof-v0.20.0-next.8...nameof-v0.20.0-next.9) (2026-11-03)
+
+
+### Miscellaneous Chores
+
+* **nameof:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @3sixty/nameof-transformer bumped from 0.20.0-next.8 to 0.20.0-next.9
+
 ## [0.20.0-next.8](https://github.com/3sixtyglobal/framework/compare/nameof-v0.20.0-next.7...nameof-v0.20.0-next.8) (2026-11-03)
 
 

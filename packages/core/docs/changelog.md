@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.20.0-next.9](https://github.com/3sixtyglobal/framework/compare/core-v0.20.0-next.8...core-v0.20.0-next.9) (2026-11-03)
+
+
+### Features
+
+* add duration constants ([#57](https://github.com/3sixtyglobal/framework/issues/57)) ([8f95325](https://github.com/3sixtyglobal/framework/commit/8f95325a7c9b3b520504b6b9fe6d47055d780c1c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @3sixty/nameof bumped from 0.20.0-next.8 to 0.20.0-next.9
+  * devDependencies
+    * @3sixty/nameof-transformer bumped from 0.20.0-next.8 to 0.20.0-next.9
+    * @3sixty/nameof-vitest-plugin bumped from 0.20.0-next.8 to 0.20.0-next.9
+
 ## [0.20.0-next.8](https://github.com/3sixtyglobal/framework/compare/core-v0.20.0-next.7...core-v0.20.0-next.8) (2026-11-03)
 
 
