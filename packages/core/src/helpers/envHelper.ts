@@ -1,9 +1,11 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@3sixty/nameof";
 import { ObjectHelper } from "./objectHelper.js";
 import { StringHelper } from "./stringHelper.js";
 import { GeneralError } from "../errors/generalError.js";
+import { DurationConstants } from "../models/durationConstants.js";
 import { Coerce } from "../utils/coerce.js";
 import { Guards } from "../utils/guards.js";
 import { Is } from "../utils/is.js";
@@ -434,7 +436,7 @@ export class EnvHelper {
 				type: "integer"
 			});
 		}
-		return n <= 0 ? n : n * 60_000;
+		return n <= 0 ? n : n * DurationConstants.MsPerMinute;
 	}
 
 	/**

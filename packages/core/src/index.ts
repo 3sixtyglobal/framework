@@ -1,4 +1,5 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 export * from "./encoding/base32.js";
 export * from "./encoding/base58.js";
@@ -34,6 +35,7 @@ export * from "./models/coerceType.js";
 export * from "./models/IDuration.js";
 export * from "./models/IDurationRoundOptions.js";
 export * from "./models/compressionType.js";
+export * from "./models/durationConstants.js";
 export * from "./models/durationFormatStyle.js";
 export * from "./models/durationRoundingMode.js";
 export * from "./models/durationUnit.js";
