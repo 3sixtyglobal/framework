@@ -54,6 +54,7 @@
 
 - [IComponent](interfaces/IComponent.md)
 - [IDuration](interfaces/IDuration.md)
+- [IDurationRoundOptions](interfaces/IDurationRoundOptions.md)
 - [IError](interfaces/IError.md)
 - [IFacade](interfaces/IFacade.md)
 - [II18nShared](interfaces/II18nShared.md)
@@ -74,6 +75,9 @@
 
 - [CoerceType](type-aliases/CoerceType.md)
 - [CompressionType](type-aliases/CompressionType.md)
+- [DurationFormatStyle](type-aliases/DurationFormatStyle.md)
+- [DurationRoundingMode](type-aliases/DurationRoundingMode.md)
+- [DurationUnit](type-aliases/DurationUnit.md)
 - [MutexMessageTypes](type-aliases/MutexMessageTypes.md)
 - [RuntimeEngine](type-aliases/RuntimeEngine.md)
 - [RuntimeOs](type-aliases/RuntimeOs.md)
@@ -88,6 +92,9 @@
 - [FacadeFactory](variables/FacadeFactory.md)
 - [CoerceType](variables/CoerceType.md)
 - [CompressionType](variables/CompressionType.md)
+- [DurationFormatStyle](variables/DurationFormatStyle.md)
+- [DurationRoundingMode](variables/DurationRoundingMode.md)
+- [DurationUnit](variables/DurationUnit.md)
 - [MutexMessageTypes](variables/MutexMessageTypes.md)
 - [RuntimeEngine](variables/RuntimeEngine.md)
 - [RuntimeOs](variables/RuntimeOs.md)
