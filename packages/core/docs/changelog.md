@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.20.0-next.8](https://github.com/3sixtyglobal/framework/compare/core-v0.20.0-next.7...core-v0.20.0-next.8) (2026-11-03)
+
+
+### Features
+
+* add duration conversion, comparison, rounding and formatting methods ([#54](https://github.com/3sixtyglobal/framework/issues/54)) ([0071363](https://github.com/3sixtyglobal/framework/commit/0071363cfb5cb79157ec66b4c4033eb31bafa20b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @3sixty/nameof bumped from 0.20.0-next.7 to 0.20.0-next.8
+  * devDependencies
+    * @3sixty/nameof-transformer bumped from 0.20.0-next.7 to 0.20.0-next.8
+    * @3sixty/nameof-vitest-plugin bumped from 0.20.0-next.7 to 0.20.0-next.8
+
 ## [0.20.0-next.7](https://github.com/3sixtyglobal/framework/compare/core-v0.20.0-next.6...core-v0.20.0-next.7) (2026-11-02)
 
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.20.0-next.8](https://github.com/3sixtyglobal/framework/compare/nameof-vitest-plugin-v0.20.0-next.7...nameof-vitest-plugin-v0.20.0-next.8) (2026-11-03)
+
+
+### Miscellaneous Chores
+
+* **nameof-vitest-plugin:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @3sixty/nameof-transformer bumped from 0.20.0-next.7 to 0.20.0-next.8
+
 ## [0.20.0-next.7](https://github.com/3sixtyglobal/framework/compare/nameof-vitest-plugin-v0.20.0-next.6...nameof-vitest-plugin-v0.20.0-next.7) (2026-11-02)
 
 
