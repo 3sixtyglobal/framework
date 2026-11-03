@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Base32, RandomHelper } from "@3sixty/core";
+import { Base32, DurationConstants, RandomHelper } from "@3sixty/core";
 import * as otp from "micro-key-producer/otp.js";
 import { Hotp } from "./hotp.js";
 import { NativeModulesCrypto } from "../helpers/nativeModulesCrypto.js";
@@ -25,7 +25,7 @@ export class Totp {
 		const nodeCrypto = NativeModulesCrypto.getNodeCryptoHash("sha1");
 		if (nodeCrypto) {
 			// A time based password is a counter based one over the elapsed intervals
-			return Hotp.generate(key, Math.floor(timestamp / (interval * 1000)));
+			return Hotp.generate(key, Math.floor(timestamp / (interval * DurationConstants.MsPerSecond)));
 		}
 
 		return otp.totp({ secret: key, digits: 6, algorithm: "sha1", interval }, timestamp);
@@ -49,7 +49,7 @@ export class Totp {
 		timestamp: number = Date.now()
 	): number | undefined {
 		for (let i = -window; i < window; i++) {
-			const intervalWindow = i * interval * 1000;
+			const intervalWindow = i * interval * DurationConstants.MsPerSecond;
 			if (timestamp + intervalWindow > 0) {
 				const gen = Totp.generate(key, interval, timestamp + intervalWindow);
 				if (gen === token) {

@@ -1,5 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+import { DurationConstants } from "../../src/models/durationConstants.js";
 import { AsyncCache } from "../../src/utils/asyncCache.js";
 import { Is } from "../../src/utils/is.js";
 import { SharedStore } from "../../src/utils/sharedStore.js";
@@ -182,8 +183,10 @@ describe("AsyncCache", () => {
 	test("can settle in-flight requests after remove is called", async () => {
 		const deferred = createDeferred<number>();
 
-		const res = AsyncCache.exec("key", 1000, async () => deferred.promise);
-		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(SLOW_ACTION_MS));
+		const res = AsyncCache.exec("key", DurationConstants.MsPerSecond, async () => deferred.promise);
+		const res2 = AsyncCache.exec("key", DurationConstants.MsPerSecond, async () =>
+			counterIncrement(SLOW_ACTION_MS)
+		);
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -200,8 +203,10 @@ describe("AsyncCache", () => {
 	test("can retry queued requests after remove is called and the promise throws", async () => {
 		const deferred = createDeferred<number>();
 
-		const res = AsyncCache.exec("key", 1000, async () => deferred.promise);
-		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(SLOW_ACTION_MS));
+		const res = AsyncCache.exec("key", DurationConstants.MsPerSecond, async () => deferred.promise);
+		const res2 = AsyncCache.exec("key", DurationConstants.MsPerSecond, async () =>
+			counterIncrement(SLOW_ACTION_MS)
+		);
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -222,8 +227,18 @@ describe("AsyncCache", () => {
 	test("can settle cached failures after remove is called without reusing the error", async () => {
 		const deferred = createDeferred<number>();
 
-		const res = AsyncCache.exec("key", 1000, async () => deferred.promise, true);
-		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(SLOW_ACTION_MS), true);
+		const res = AsyncCache.exec(
+			"key",
+			DurationConstants.MsPerSecond,
+			async () => deferred.promise,
+			true
+		);
+		const res2 = AsyncCache.exec(
+			"key",
+			DurationConstants.MsPerSecond,
+			async () => counterIncrement(SLOW_ACTION_MS),
+			true
+		);
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -243,7 +258,12 @@ describe("AsyncCache", () => {
 				settledResult[1].reason.message === "Test error"
 		).toEqual(true);
 
-		const res3 = AsyncCache.exec("key", 1000, async () => counterIncrement(), true);
+		const res3 = AsyncCache.exec(
+			"key",
+			DurationConstants.MsPerSecond,
+			async () => counterIncrement(),
+			true
+		);
 		expect(await res3).toEqual(1);
 		expect(counterIncrement).toHaveBeenCalledTimes(1);
 	});
@@ -251,14 +271,18 @@ describe("AsyncCache", () => {
 	test("does not let a removed in-flight success overwrite a replacement entry", async () => {
 		const deferred = createDeferred<number>();
 
-		const res = AsyncCache.exec("key", 1000, async () => deferred.promise);
-		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(SLOW_ACTION_MS));
+		const res = AsyncCache.exec("key", DurationConstants.MsPerSecond, async () => deferred.promise);
+		const res2 = AsyncCache.exec("key", DurationConstants.MsPerSecond, async () =>
+			counterIncrement(SLOW_ACTION_MS)
+		);
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
 
 		AsyncCache.remove("key");
-		const res3 = AsyncCache.exec("key", 1000, async () => counterIncrement());
+		const res3 = AsyncCache.exec("key", DurationConstants.MsPerSecond, async () =>
+			counterIncrement()
+		);
 		deferred.resolve(2);
 
 		const settledResult = await Promise.allSettled([res, res2, res3]);
@@ -272,8 +296,10 @@ describe("AsyncCache", () => {
 	test("does not let a removed in-flight failure overwrite a replacement entry", async () => {
 		const deferred = createDeferred<number>();
 
-		const res = AsyncCache.exec("key", 1000, async () => deferred.promise);
-		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(SLOW_ACTION_MS));
+		const res = AsyncCache.exec("key", DurationConstants.MsPerSecond, async () => deferred.promise);
+		const res2 = AsyncCache.exec("key", DurationConstants.MsPerSecond, async () =>
+			counterIncrement(SLOW_ACTION_MS)
+		);
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -297,8 +323,10 @@ describe("AsyncCache", () => {
 	test("can settle in-flight requests after clearCache is called", async () => {
 		const deferred = createDeferred<number>();
 
-		const res = AsyncCache.exec("key", 1000, async () => deferred.promise);
-		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(SLOW_ACTION_MS));
+		const res = AsyncCache.exec("key", DurationConstants.MsPerSecond, async () => deferred.promise);
+		const res2 = AsyncCache.exec("key", DurationConstants.MsPerSecond, async () =>
+			counterIncrement(SLOW_ACTION_MS)
+		);
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -315,8 +343,10 @@ describe("AsyncCache", () => {
 	test("can retry queued requests after clearCache is called and the promise throws", async () => {
 		const deferred = createDeferred<number>();
 
-		const res = AsyncCache.exec("key", 1000, async () => deferred.promise);
-		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(SLOW_ACTION_MS));
+		const res = AsyncCache.exec("key", DurationConstants.MsPerSecond, async () => deferred.promise);
+		const res2 = AsyncCache.exec("key", DurationConstants.MsPerSecond, async () =>
+			counterIncrement(SLOW_ACTION_MS)
+		);
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -337,8 +367,18 @@ describe("AsyncCache", () => {
 	test("can settle cached failures after clearCache is called without reusing the error", async () => {
 		const deferred = createDeferred<number>();
 
-		const res = AsyncCache.exec("key", 1000, async () => deferred.promise, true);
-		const res2 = AsyncCache.exec("key", 1000, async () => counterIncrement(SLOW_ACTION_MS), true);
+		const res = AsyncCache.exec(
+			"key",
+			DurationConstants.MsPerSecond,
+			async () => deferred.promise,
+			true
+		);
+		const res2 = AsyncCache.exec(
+			"key",
+			DurationConstants.MsPerSecond,
+			async () => counterIncrement(SLOW_ACTION_MS),
+			true
+		);
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -358,7 +398,12 @@ describe("AsyncCache", () => {
 				settledResult[1].reason.message === "Test error"
 		).toEqual(true);
 
-		const res3 = AsyncCache.exec("key", 1000, async () => counterIncrement(), true);
+		const res3 = AsyncCache.exec(
+			"key",
+			DurationConstants.MsPerSecond,
+			async () => counterIncrement(),
+			true
+		);
 		expect(await res3).toEqual(1);
 		expect(counterIncrement).toHaveBeenCalledTimes(1);
 	});
@@ -366,8 +411,14 @@ describe("AsyncCache", () => {
 	test("can settle in-flight requests after clearing a matching prefix", async () => {
 		const deferred = createDeferred<number>();
 
-		const res = AsyncCache.exec("api-key", 1000, async () => deferred.promise);
-		const res2 = AsyncCache.exec("api-key", 1000, async () => counterIncrement(SLOW_ACTION_MS));
+		const res = AsyncCache.exec(
+			"api-key",
+			DurationConstants.MsPerSecond,
+			async () => deferred.promise
+		);
+		const res2 = AsyncCache.exec("api-key", DurationConstants.MsPerSecond, async () =>
+			counterIncrement(SLOW_ACTION_MS)
+		);
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -384,8 +435,14 @@ describe("AsyncCache", () => {
 	test("can retry queued requests after clearing a matching prefix and the promise throws", async () => {
 		const deferred = createDeferred<number>();
 
-		const res = AsyncCache.exec("api-key", 1000, async () => deferred.promise);
-		const res2 = AsyncCache.exec("api-key", 1000, async () => counterIncrement(SLOW_ACTION_MS));
+		const res = AsyncCache.exec(
+			"api-key",
+			DurationConstants.MsPerSecond,
+			async () => deferred.promise
+		);
+		const res2 = AsyncCache.exec("api-key", DurationConstants.MsPerSecond, async () =>
+			counterIncrement(SLOW_ACTION_MS)
+		);
 
 		expect(Is.promise(res)).toEqual(true);
 		expect(Is.promise(res2)).toEqual(true);
@@ -504,7 +561,7 @@ describe("AsyncCache", () => {
 		// Intentionally not awaited - we need the request to remain in-progress so we can
 		// verify that get() returns undefined while it is still pending.
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		AsyncCache.exec("key", 1000, async () => deferred.promise);
+		AsyncCache.exec("key", DurationConstants.MsPerSecond, async () => deferred.promise);
 		expect(await AsyncCache.get("key")).toBeUndefined();
 		deferred.resolve(1);
 	});

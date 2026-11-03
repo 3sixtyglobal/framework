@@ -6,7 +6,15 @@ import type * as NodeHttps from "node:https";
 import type * as NodeModule from "node:module";
 import type * as NodePath from "node:path";
 import type * as NodeUrl from "node:url";
-import { BaseError, Converter, GeneralError, Is, NativeModules, SharedStore } from "@3sixty/core";
+import {
+	BaseError,
+	Converter,
+	DurationConstants,
+	GeneralError,
+	Is,
+	NativeModules,
+	SharedStore
+} from "@3sixty/core";
 import { Sha256 } from "@3sixty/crypto";
 import { nameof } from "@3sixty/nameof";
 import type { ICacheMetadata } from "../models/ICacheMetadata.js";
@@ -311,7 +319,7 @@ export class ModuleResolutionHelper {
 
 		try {
 			const metadata = await ModuleResolutionHelper.loadJsonFile<ICacheMetadata>(metadataPath);
-			const ttlMillis = ttlHours * 60 * 60 * 1000;
+			const ttlMillis = ttlHours * DurationConstants.MsPerHour;
 			return Date.now() > metadata.downloadedAt + ttlMillis;
 		} catch {
 			// Missing or corrupted metadata is treated as expired.

@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Converter } from "@3sixty/core";
+import { Converter, DurationConstants } from "@3sixty/core";
 import { Totp } from "../../src/otp/totp.js";
 import {
 	NATIVE_CRYPTO_VARIANTS,
@@ -28,8 +28,12 @@ describe.each(NATIVE_CRYPTO_VARIANTS)("Totp ($implementation)", ({ useNodeCrypto
 		const deltas = [0, 1, -1];
 
 		for (let i = 0; i < times.length; i++) {
-			expect(Totp.generate(key, interval, baseTime * 1000)).toEqual(otps[i]);
-			expect(Totp.verify(otps[i], key, 2, interval, times[i] * 1000)).toEqual(deltas[i]);
+			expect(Totp.generate(key, interval, baseTime * DurationConstants.MsPerSecond)).toEqual(
+				otps[i]
+			);
+			expect(
+				Totp.verify(otps[i], key, 2, interval, times[i] * DurationConstants.MsPerSecond)
+			).toEqual(deltas[i]);
 		}
 	});
 

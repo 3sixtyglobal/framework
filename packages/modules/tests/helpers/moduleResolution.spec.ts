@@ -4,7 +4,7 @@ import { mkdir, mkdtemp, realpath, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { NativeModules, SharedStore } from "@3sixty/core";
+import { DurationConstants, NativeModules, SharedStore } from "@3sixty/core";
 import { ModuleHelper } from "../../src/helpers/moduleHelper.js";
 import { ModuleResolutionHelper } from "../../src/helpers/moduleResolutionHelper.js";
 import { ModuleProtocol } from "../../src/models/moduleProtocol.js";
@@ -275,7 +275,7 @@ describe("ModuleResolutionHelper", () => {
 		test("should return false when cache is not expired", async () => {
 			const tempDir = await mkdtemp(path.join(tmpdir(), "cache-test-"));
 			const metadataPath = path.join(tempDir, "test.meta");
-			const twelveHoursMillis = 12 * 60 * 60 * 1000;
+			const twelveHoursMillis = 12 * DurationConstants.MsPerHour;
 
 			// Create metadata with recent timestamp (not expired)
 			const metadata = {
@@ -295,7 +295,7 @@ describe("ModuleResolutionHelper", () => {
 		test("should return true when cache is expired", async () => {
 			const tempDir = await mkdtemp(path.join(tmpdir(), "cache-test-"));
 			const metadataPath = path.join(tempDir, "test.meta");
-			const twoDaysMillis = 48 * 60 * 60 * 1000;
+			const twoDaysMillis = 48 * DurationConstants.MsPerHour;
 			// Create metadata with old timestamp (expired)
 			const metadata = {
 				downloadedAt: Date.now() - twoDaysMillis, // 48 hours ago
@@ -331,7 +331,7 @@ describe("ModuleResolutionHelper", () => {
 
 			// Create metadata with any timestamp
 			const metadata = {
-				downloadedAt: Date.now() - 1000, // 1 second ago
+				downloadedAt: Date.now() - DurationConstants.MsPerSecond, // 1 second ago
 				url: "https://example.com/test.js",
 				size: 1024
 			};

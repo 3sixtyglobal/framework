@@ -1,5 +1,6 @@
 // Copyright 2026 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+import { DurationConstants } from "../../src/models/durationConstants.js";
 import { LfuCache } from "../../src/utils/lfuCache.js";
 import { SharedStore } from "../../src/utils/sharedStore.js";
 
@@ -12,15 +13,15 @@ describe("LfuCache", () => {
 
 	describe("constructor", () => {
 		test("throws if capacity is not an integer", () => {
-			expect(() => new LfuCache({ capacity: 1.5, ttiMs: 1000 })).toThrow();
+			expect(() => new LfuCache({ capacity: 1.5, ttiMs: DurationConstants.MsPerSecond })).toThrow();
 		});
 
 		test("throws if capacity is zero", () => {
-			expect(() => new LfuCache({ capacity: 0, ttiMs: 1000 })).toThrow();
+			expect(() => new LfuCache({ capacity: 0, ttiMs: DurationConstants.MsPerSecond })).toThrow();
 		});
 
 		test("throws if capacity is negative", () => {
-			expect(() => new LfuCache({ capacity: -1, ttiMs: 1000 })).toThrow();
+			expect(() => new LfuCache({ capacity: -1, ttiMs: DurationConstants.MsPerSecond })).toThrow();
 		});
 
 		test("throws if ttiMs is not an integer", () => {
@@ -36,15 +37,21 @@ describe("LfuCache", () => {
 		});
 
 		test("throws if mutexTimeoutMs is not an integer", () => {
-			expect(() => new LfuCache({ capacity: 10, ttiMs: 1000, mutexTimeoutMs: 10.5 })).toThrow();
+			expect(
+				() =>
+					new LfuCache({ capacity: 10, ttiMs: DurationConstants.MsPerSecond, mutexTimeoutMs: 10.5 })
+			).toThrow();
 		});
 
 		test("throws if mutexTimeoutMs is negative", () => {
-			expect(() => new LfuCache({ capacity: 10, ttiMs: 1000, mutexTimeoutMs: -1 })).toThrow();
+			expect(
+				() =>
+					new LfuCache({ capacity: 10, ttiMs: DurationConstants.MsPerSecond, mutexTimeoutMs: -1 })
+			).toThrow();
 		});
 
 		test("constructs successfully with valid arguments", () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			expect(cache.count()).toEqual(0);
 		});
 
@@ -58,7 +65,7 @@ describe("LfuCache", () => {
 		test("returns cached undefined without invoking the factory", async () => {
 			const undefinedCache = new LfuCache<number | undefined>({
 				capacity: 5,
-				ttiMs: 1000,
+				ttiMs: DurationConstants.MsPerSecond,
 				mutexTimeoutMs: 50
 			});
 
@@ -76,7 +83,11 @@ describe("LfuCache", () => {
 		});
 
 		test("returns an existing value without invoking the factory", async () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000, mutexTimeoutMs: 50 });
+			cache = new LfuCache<number>({
+				capacity: 5,
+				ttiMs: DurationConstants.MsPerSecond,
+				mutexTimeoutMs: 50
+			});
 			cache.set("a", 1);
 
 			const factory = vi.fn(async () => 2);
@@ -87,7 +98,11 @@ describe("LfuCache", () => {
 		});
 
 		test("returns the cached value when the entry expires mid-lookup", async () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000, mutexTimeoutMs: 50 });
+			cache = new LfuCache<number>({
+				capacity: 5,
+				ttiMs: DurationConstants.MsPerSecond,
+				mutexTimeoutMs: 50
+			});
 			cache.set("a", 1);
 
 			// An uncontended getOrSet reads the clock once for the mutex deadline and once to
@@ -112,7 +127,11 @@ describe("LfuCache", () => {
 		});
 
 		test("builds once when called concurrently for the same key", async () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000, mutexTimeoutMs: 1000 });
+			cache = new LfuCache<number>({
+				capacity: 5,
+				ttiMs: DurationConstants.MsPerSecond,
+				mutexTimeoutMs: DurationConstants.MsPerSecond
+			});
 			let buildCount = 0;
 
 			const first = cache.getOrSet("a", async () => {
@@ -136,7 +155,11 @@ describe("LfuCache", () => {
 		});
 
 		test("does not grow the mutex registries per distinct key", async () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000, mutexTimeoutMs: 1000 });
+			cache = new LfuCache<number>({
+				capacity: 5,
+				ttiMs: DurationConstants.MsPerMinute,
+				mutexTimeoutMs: DurationConstants.MsPerSecond
+			});
 
 			// Enough distinct keys to cross the reclamation threshold more than once, so an
 			// entry retained per key would be plainly visible in the registry sizes.
@@ -157,7 +180,11 @@ describe("LfuCache", () => {
 		});
 
 		test("throws when mutex acquisition times out", async () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000, mutexTimeoutMs: 20 });
+			cache = new LfuCache<number>({
+				capacity: 5,
+				ttiMs: DurationConstants.MsPerSecond,
+				mutexTimeoutMs: 20
+			});
 
 			let releaseFirst: (value: number) => void = () => {};
 			const first = cache.getOrSet(
@@ -179,25 +206,25 @@ describe("LfuCache", () => {
 
 	describe("set and get", () => {
 		test("returns undefined for a missing key", () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			expect(cache.get("missing")).toBeUndefined();
 		});
 
 		test("stores and retrieves a value", () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			cache.set("a", 1);
 			expect(cache.get("a")).toEqual(1);
 		});
 
 		test("overwriting a key updates the value and increments frequency", () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerMinute });
 			cache.set("a", 1);
 			cache.set("a", 2);
 			expect(cache.get("a")).toEqual(2);
 		});
 
 		test("count reflects the number of stored entries", () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			cache.set("a", 1);
 			cache.set("b", 2);
 			expect(cache.count()).toEqual(2);
@@ -206,12 +233,12 @@ describe("LfuCache", () => {
 
 	describe("has", () => {
 		test("returns false for a missing key", () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			expect(cache.has("x")).toEqual(false);
 		});
 
 		test("returns true for a present key", () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			cache.set("a", 1);
 			expect(cache.has("a")).toEqual(true);
 		});
@@ -219,12 +246,12 @@ describe("LfuCache", () => {
 
 	describe("keys", () => {
 		test("returns an empty array when the cache is empty", () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			expect(cache.keys()).toEqual([]);
 		});
 
 		test("returns keys in ascending frequency order", () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerMinute });
 			cache.set("a", 1);
 			cache.set("b", 2);
 			cache.set("c", 3);
@@ -236,7 +263,7 @@ describe("LfuCache", () => {
 		});
 
 		test("within the same frequency, returns keys in LRU order", () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerMinute });
 			cache.set("a", 1);
 			cache.set("b", 2);
 			cache.set("c", 3);
@@ -246,11 +273,11 @@ describe("LfuCache", () => {
 
 		test("evicts idle entries during iteration and excludes them", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			try {
 				cache.set("a", 1);
 				cache.set("b", 2);
-				vi.advanceTimersByTime(1000);
+				vi.advanceTimersByTime(DurationConstants.MsPerSecond);
 				cache.set("c", 3);
 				expect(cache.keys()).toEqual(["c"]);
 			} finally {
@@ -262,7 +289,7 @@ describe("LfuCache", () => {
 
 	describe("delete", () => {
 		test("removes the entry", () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			cache.set("a", 1);
 			cache.delete("a");
 			expect(cache.get("a")).toBeUndefined();
@@ -270,14 +297,14 @@ describe("LfuCache", () => {
 		});
 
 		test("is a no-op for a missing key", () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			expect(() => cache.delete("missing")).not.toThrow();
 		});
 	});
 
 	describe("clear", () => {
 		test("removes all entries", () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			cache.set("a", 1);
 			cache.set("b", 2);
 			cache.clear();
@@ -288,7 +315,7 @@ describe("LfuCache", () => {
 
 	describe("LFU eviction", () => {
 		test("evicts the least-frequently-used entry when capacity is exceeded", () => {
-			cache = new LfuCache<number>({ capacity: 3, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 3, ttiMs: DurationConstants.MsPerMinute });
 			cache.set("a", 1);
 			cache.set("b", 2);
 			cache.set("c", 3);
@@ -304,7 +331,7 @@ describe("LfuCache", () => {
 		});
 
 		test("breaks frequency ties by evicting the least-recently-used entry", () => {
-			cache = new LfuCache<number>({ capacity: 3, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 3, ttiMs: DurationConstants.MsPerMinute });
 			cache.set("a", 1); // a: freq=1, inserted first = LRU
 			cache.set("b", 2); // b: freq=1
 			cache.set("c", 3); // c: freq=1
@@ -317,7 +344,7 @@ describe("LfuCache", () => {
 		});
 
 		test("get increments frequency and prevents eviction", () => {
-			cache = new LfuCache<number>({ capacity: 3, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 3, ttiMs: DurationConstants.MsPerMinute });
 			cache.set("a", 1);
 			cache.set("b", 2);
 			cache.set("c", 3);
@@ -331,7 +358,7 @@ describe("LfuCache", () => {
 		});
 
 		test("set on an existing key increments frequency", () => {
-			cache = new LfuCache<number>({ capacity: 3, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 3, ttiMs: DurationConstants.MsPerMinute });
 			cache.set("a", 1);
 			cache.set("b", 2);
 			cache.set("c", 3);
@@ -345,7 +372,7 @@ describe("LfuCache", () => {
 		});
 
 		test("new entry after eviction resets _minFreq to 1", () => {
-			cache = new LfuCache<number>({ capacity: 2, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 2, ttiMs: DurationConstants.MsPerMinute });
 			cache.set("a", 1);
 			cache.get("a"); // a: freq=2
 			cache.set("b", 2); // b: freq=1
@@ -358,7 +385,7 @@ describe("LfuCache", () => {
 
 		test("count never exceeds capacity", () => {
 			const capacity = 3;
-			cache = new LfuCache<number>({ capacity, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity, ttiMs: DurationConstants.MsPerMinute });
 			for (let i = 0; i < 10; i++) {
 				cache.set(`k${i}`, i);
 				expect(cache.count()).toBeLessThanOrEqual(capacity);
@@ -369,10 +396,10 @@ describe("LfuCache", () => {
 	describe("TTI eviction", () => {
 		test("get evicts an idle entry and returns undefined", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			try {
 				cache.set("a", 1);
-				vi.advanceTimersByTime(1000);
+				vi.advanceTimersByTime(DurationConstants.MsPerSecond);
 				expect(cache.get("a")).toBeUndefined();
 			} finally {
 				cache.destroy();
@@ -382,7 +409,7 @@ describe("LfuCache", () => {
 
 		test("get does not evict an entry accessed just before TTI expires", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			try {
 				cache.set("a", 1);
 				vi.advanceTimersByTime(999);
@@ -395,7 +422,7 @@ describe("LfuCache", () => {
 
 		test("get resets the idle timer on a successful hit", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			try {
 				cache.set("a", 1);
 				vi.advanceTimersByTime(900);
@@ -410,10 +437,10 @@ describe("LfuCache", () => {
 
 		test("has evicts an idle entry and returns false", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			try {
 				cache.set("a", 1);
-				vi.advanceTimersByTime(1000);
+				vi.advanceTimersByTime(DurationConstants.MsPerSecond);
 				expect(cache.has("a")).toEqual(false);
 				expect(cache.count()).toEqual(0);
 			} finally {
@@ -424,7 +451,7 @@ describe("LfuCache", () => {
 
 		test("has does not reset TTI on a live entry", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			try {
 				cache.set("a", 1);
 				vi.advanceTimersByTime(800);
@@ -439,7 +466,7 @@ describe("LfuCache", () => {
 
 		test("set resets TTI for an existing key", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			try {
 				cache.set("a", 1);
 				vi.advanceTimersByTime(900);
@@ -454,12 +481,12 @@ describe("LfuCache", () => {
 
 		test("background timer evicts idle entries without any method call", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			try {
 				cache.set("a", 1);
 				cache.set("b", 2);
 				expect(cache.count()).toEqual(2);
-				vi.advanceTimersByTime(1000);
+				vi.advanceTimersByTime(DurationConstants.MsPerSecond);
 				expect(cache.count()).toEqual(0);
 			} finally {
 				cache.destroy();
@@ -471,12 +498,12 @@ describe("LfuCache", () => {
 	describe("TTI and capacity interaction", () => {
 		test("idle entries are swept before LFU eviction on set", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 3, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 3, ttiMs: DurationConstants.MsPerSecond });
 			try {
 				cache.set("a", 1);
 				cache.set("b", 2);
 				cache.set("c", 3);
-				vi.advanceTimersByTime(1000);
+				vi.advanceTimersByTime(DurationConstants.MsPerSecond);
 				cache.set("d", 4);
 				expect(cache.count()).toEqual(1);
 				expect(cache.get("d")).toEqual(4);
@@ -488,11 +515,11 @@ describe("LfuCache", () => {
 
 		test("only idle entries are swept; fresh entries survive", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 3, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 3, ttiMs: DurationConstants.MsPerSecond });
 			try {
 				cache.set("a", 1);
 				cache.set("b", 2);
-				vi.advanceTimersByTime(1000);
+				vi.advanceTimersByTime(DurationConstants.MsPerSecond);
 				cache.set("c", 3);
 				expect(cache.get("a")).toBeUndefined();
 				expect(cache.get("b")).toBeUndefined();
@@ -505,12 +532,12 @@ describe("LfuCache", () => {
 
 		test("an idle existing key is replaced as a new entry when set again", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			try {
 				cache.set("a", 1);
 				cache.get("a"); // a: freq=2
 				cache.get("a"); // a: freq=3
-				vi.advanceTimersByTime(1000); // a expires
+				vi.advanceTimersByTime(DurationConstants.MsPerSecond); // a expires
 				cache.set("a", 99); // a re-added with freq=1
 				expect(cache.get("a")).toEqual(99);
 				// Confirm frequency was reset by filling cache and checking eviction
@@ -518,7 +545,7 @@ describe("LfuCache", () => {
 				cache.set("a", 1);
 				cache.get("a"); // a: freq=2
 				cache.get("a"); // a: freq=3
-				vi.advanceTimersByTime(1000); // a expires
+				vi.advanceTimersByTime(DurationConstants.MsPerSecond); // a expires
 				cache.set("b", 2); // b: freq=1
 				cache.set("a", 99); // a re-added with freq=1 (not 4)
 				// both at freq=1; b was inserted first, so b is LRU
@@ -533,13 +560,13 @@ describe("LfuCache", () => {
 	});
 	describe("hard expiry timestamp", () => {
 		test("throws if expires is not an integer", () => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			expect(() => cache.set("a", 1, Date.now() + 100.5)).toThrow();
 		});
 
 		test("the entry expires at the timestamp however recently it was used", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			try {
 				cache.set("a", 1, Date.now() + 2000);
 				vi.advanceTimersByTime(900);
@@ -556,10 +583,10 @@ describe("LfuCache", () => {
 
 		test("the TTI still applies to an entry with a later expiry", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			try {
-				cache.set("a", 1, Date.now() + 60000);
-				vi.advanceTimersByTime(1000);
+				cache.set("a", 1, Date.now() + DurationConstants.MsPerMinute);
+				vi.advanceTimersByTime(DurationConstants.MsPerSecond);
 				expect(cache.get("a")).toBeUndefined();
 			} finally {
 				cache.destroy();
@@ -569,7 +596,7 @@ describe("LfuCache", () => {
 
 		test("the background timer removes the entry at the timestamp with no method calls", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerMinute });
 			try {
 				cache.set("a", 1);
 				cache.set("b", 2, Date.now() + 200);
@@ -586,7 +613,7 @@ describe("LfuCache", () => {
 
 		test("has reports an expired entry as absent and removes it", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerMinute });
 			try {
 				cache.set("a", 1, Date.now() + 200);
 				expect(cache.has("a")).toEqual(true);
@@ -601,7 +628,7 @@ describe("LfuCache", () => {
 
 		test("keys excludes entries past their expiry", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerMinute });
 			try {
 				cache.set("a", 1, Date.now() + 200);
 				cache.set("b", 2);
@@ -616,7 +643,7 @@ describe("LfuCache", () => {
 
 		test("setting the key again without an expiry clears the previous one", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerMinute });
 			try {
 				cache.set("a", 1, Date.now() + 200);
 				vi.advanceTimersByTime(100);
@@ -631,7 +658,7 @@ describe("LfuCache", () => {
 
 		test("setting the key again applies the new expiry", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerMinute });
 			try {
 				cache.set("a", 1);
 				vi.advanceTimersByTime(100);
@@ -647,7 +674,7 @@ describe("LfuCache", () => {
 
 		test("an entry set with a past timestamp is treated as expired", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerMinute });
 			try {
 				cache.set("a", 1, Date.now() - 1);
 				expect(cache.get("a")).toBeUndefined();
@@ -660,7 +687,7 @@ describe("LfuCache", () => {
 
 		test("expired entries are removed before capacity eviction", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 2, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 2, ttiMs: DurationConstants.MsPerMinute });
 			try {
 				cache.set("a", 1);
 				cache.set("b", 2, Date.now() + 200);
@@ -675,7 +702,11 @@ describe("LfuCache", () => {
 
 		test("getOrSet applies the expiry to a created value", async () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000, mutexTimeoutMs: 1000 });
+			cache = new LfuCache<number>({
+				capacity: 5,
+				ttiMs: DurationConstants.MsPerMinute,
+				mutexTimeoutMs: DurationConstants.MsPerSecond
+			});
 			try {
 				await cache.getOrSet("a", async () => 1, Date.now() + 200);
 				vi.advanceTimersByTime(199);
@@ -690,7 +721,7 @@ describe("LfuCache", () => {
 
 		test("repeated access keeps an entry alive across TTI windows until its expiry", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerSecond });
 			try {
 				cache.set("a", 1, Date.now() + 5000);
 				for (let i = 0; i < 5; i++) {
@@ -707,7 +738,7 @@ describe("LfuCache", () => {
 
 		test("a later expiry does not delay a pending earlier sweep", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerMinute });
 			try {
 				cache.set("a", 1, Date.now() + 200);
 				cache.set("b", 2, Date.now() + 5000);
@@ -722,7 +753,7 @@ describe("LfuCache", () => {
 
 		test("entries with different expiries are removed in their own order", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerMinute });
 			try {
 				cache.set("a", 1, Date.now() + 100);
 				cache.set("b", 2, Date.now() + 300);
@@ -739,7 +770,7 @@ describe("LfuCache", () => {
 
 		test("deleting the earliest-expiring entry leaves the others on their own schedule", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerMinute });
 			try {
 				cache.set("a", 1, Date.now() + 200);
 				cache.set("b", 2, Date.now() + 400);
@@ -756,7 +787,7 @@ describe("LfuCache", () => {
 
 		test("the cache still works after every entry has expired", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 5, ttiMs: DurationConstants.MsPerMinute });
 			try {
 				cache.set("a", 1, Date.now() + 200);
 				vi.advanceTimersByTime(200);
@@ -773,7 +804,11 @@ describe("LfuCache", () => {
 
 		test("getOrSet does not change the expiry of an existing entry", async () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000, mutexTimeoutMs: 1000 });
+			cache = new LfuCache<number>({
+				capacity: 5,
+				ttiMs: DurationConstants.MsPerMinute,
+				mutexTimeoutMs: DurationConstants.MsPerSecond
+			});
 			try {
 				cache.set("a", 1, Date.now() + 200);
 				const value = await cache.getOrSet("a", async () => 2, Date.now() + 5000);
@@ -788,7 +823,11 @@ describe("LfuCache", () => {
 
 		test("getOrSet creates a new value once the entry has expired", async () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 60000, mutexTimeoutMs: 1000 });
+			cache = new LfuCache<number>({
+				capacity: 5,
+				ttiMs: DurationConstants.MsPerMinute,
+				mutexTimeoutMs: DurationConstants.MsPerSecond
+			});
 			try {
 				cache.set("a", 1, Date.now() + 200);
 				vi.advanceTimersByTime(200);
@@ -803,7 +842,7 @@ describe("LfuCache", () => {
 
 		test("an expired existing key is replaced as a new entry with its frequency reset", () => {
 			vi.useFakeTimers();
-			cache = new LfuCache<number>({ capacity: 2, ttiMs: 60000 });
+			cache = new LfuCache<number>({ capacity: 2, ttiMs: DurationConstants.MsPerMinute });
 			try {
 				cache.set("a", 1, Date.now() + 200); // a: freq=1
 				cache.get("a"); // a: freq=2
@@ -824,7 +863,11 @@ describe("LfuCache", () => {
 
 	describe("parameter guards", () => {
 		beforeEach(() => {
-			cache = new LfuCache<number>({ capacity: 5, ttiMs: 1000, mutexTimeoutMs: 1000 });
+			cache = new LfuCache<number>({
+				capacity: 5,
+				ttiMs: DurationConstants.MsPerSecond,
+				mutexTimeoutMs: DurationConstants.MsPerSecond
+			});
 		});
 
 		test("get throws if the key is empty", () => {

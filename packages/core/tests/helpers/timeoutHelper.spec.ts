@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { GeneralError } from "../../src/errors/generalError.js";
 import { TimeoutHelper } from "../../src/helpers/timeoutHelper.js";
+import { DurationConstants } from "../../src/models/durationConstants.js";
 
 /**
  * Create a promise which resolves after the given delay.
@@ -38,28 +39,36 @@ function throwTimedOut(properties?: { [id: string]: unknown }): never {
 
 describe("TimeoutHelper", () => {
 	test("can return the operation result when it settles before the timeout", async () => {
-		const result = await TimeoutHelper.withTimeout(delayedResolve(5, "done"), 1000, () =>
-			throwTimedOut()
+		const result = await TimeoutHelper.withTimeout(
+			delayedResolve(5, "done"),
+			DurationConstants.MsPerSecond,
+			() => throwTimedOut()
 		);
 		expect(result).toEqual("done");
 	});
 
 	test("can return the operation result when it is already resolved", async () => {
-		const result = await TimeoutHelper.withTimeout(Promise.resolve("done"), 1000, () =>
-			throwTimedOut()
+		const result = await TimeoutHelper.withTimeout(
+			Promise.resolve("done"),
+			DurationConstants.MsPerSecond,
+			() => throwTimedOut()
 		);
 		expect(result).toEqual("done");
 	});
 
 	test("can propagate the operation error when it rejects before the timeout", async () => {
 		await expect(
-			TimeoutHelper.withTimeout(delayedReject(5, new Error("failed")), 1000, () => throwTimedOut())
+			TimeoutHelper.withTimeout(
+				delayedReject(5, new Error("failed")),
+				DurationConstants.MsPerSecond,
+				() => throwTimedOut()
+			)
 		).rejects.toThrow("failed");
 	});
 
 	test("can fail with the error thrown by the callback when the operation does not settle", async () => {
 		await expect(
-			TimeoutHelper.withTimeout(delayedResolve(1000, "done"), 10, () =>
+			TimeoutHelper.withTimeout(delayedResolve(DurationConstants.MsPerSecond, "done"), 10, () =>
 				throwTimedOut({ timeoutMs: 10 })
 			)
 		).rejects.toMatchObject({
@@ -82,12 +91,20 @@ describe("TimeoutHelper", () => {
 	test("can call the callback only when the wait expires", async () => {
 		const onTimeout = vi.fn(() => throwTimedOut());
 
-		await TimeoutHelper.withTimeout(delayedResolve(5, "done"), 1000, onTimeout);
+		await TimeoutHelper.withTimeout(
+			delayedResolve(5, "done"),
+			DurationConstants.MsPerSecond,
+			onTimeout
+		);
 
 		expect(onTimeout).not.toHaveBeenCalled();
 
 		await expect(
-			TimeoutHelper.withTimeout(delayedResolve(1000, "done"), 10, onTimeout)
+			TimeoutHelper.withTimeout(
+				delayedResolve(DurationConstants.MsPerSecond, "done"),
+				10,
+				onTimeout
+			)
 		).rejects.toThrow();
 
 		expect(onTimeout).toHaveBeenCalledTimes(1);
@@ -95,7 +112,7 @@ describe("TimeoutHelper", () => {
 
 	test("can complete with the fallback value when the callback returns instead of throwing", async () => {
 		const result = await TimeoutHelper.withTimeout(
-			delayedResolve(1000, "done"),
+			delayedResolve(DurationConstants.MsPerSecond, "done"),
 			10,
 			() => "fallback"
 		);
@@ -125,7 +142,9 @@ describe("TimeoutHelper", () => {
 	test("can clear the timer when the operation settles first", async () => {
 		const clearSpy = vi.spyOn(globalThis, "clearTimeout");
 
-		await TimeoutHelper.withTimeout(delayedResolve(5, "done"), 1000, () => throwTimedOut());
+		await TimeoutHelper.withTimeout(delayedResolve(5, "done"), DurationConstants.MsPerSecond, () =>
+			throwTimedOut()
+		);
 
 		expect(clearSpy).toHaveBeenCalled();
 
@@ -136,7 +155,11 @@ describe("TimeoutHelper", () => {
 		const clearSpy = vi.spyOn(globalThis, "clearTimeout");
 
 		await expect(
-			TimeoutHelper.withTimeout(delayedReject(5, new Error("failed")), 1000, () => throwTimedOut())
+			TimeoutHelper.withTimeout(
+				delayedReject(5, new Error("failed")),
+				DurationConstants.MsPerSecond,
+				() => throwTimedOut()
+			)
 		).rejects.toThrow("failed");
 
 		expect(clearSpy).toHaveBeenCalled();

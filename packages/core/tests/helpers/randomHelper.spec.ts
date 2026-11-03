@@ -1,6 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { RandomHelper } from "../../src/helpers/randomHelper.js";
+import { DurationConstants } from "../../src/models/durationConstants.js";
 
 describe("RandomHelper", () => {
 	describe("generate", () => {
@@ -51,7 +52,7 @@ describe("RandomHelper", () => {
 			const ts = Number.parseInt(tsHex, 16);
 			const now = Date.now();
 			// Allow a small time drift
-			expect(Math.abs(ts - now)).toBeLessThan(1000);
+			expect(Math.abs(ts - now)).toBeLessThan(DurationConstants.MsPerSecond);
 		});
 	});
 
@@ -60,7 +61,7 @@ describe("RandomHelper", () => {
 			const uuid = RandomHelper.generateUuidV7();
 			const ts = RandomHelper.uuidV7ExtractTimestamp(uuid);
 			const now = Date.now();
-			expect(Math.abs(ts - now)).toBeLessThan(1000);
+			expect(Math.abs(ts - now)).toBeLessThan(DurationConstants.MsPerSecond);
 		});
 
 		it("should throw for non-uuidv7 input", () => {

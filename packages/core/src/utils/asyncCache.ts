@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import { Is } from "./is.js";
 import { SharedStore } from "./sharedStore.js";
+import { DurationConstants } from "../models/durationConstants.js";
 
 /**
  * Cache the results from asynchronous requests.
@@ -205,7 +206,7 @@ export class AsyncCache {
 	 * @returns A promise that resolves when the entry has been stored.
 	 */
 	public static async set<T = unknown>(key: string, value: T, ttlMs?: number): Promise<void> {
-		const expires = Date.now() + (ttlMs ?? 1000);
+		const expires = Date.now() + (ttlMs ?? DurationConstants.MsPerSecond);
 		const cache = AsyncCache.getSharedCache();
 		cache[key] = {
 			result: value,

@@ -409,7 +409,7 @@ export class EnvHelper {
 				type: "integer"
 			});
 		}
-		return n <= 0 ? n : n * 1000;
+		return n <= 0 ? n : n * DurationConstants.MsPerSecond;
 	}
 
 	/**

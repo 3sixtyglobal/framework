@@ -1,6 +1,7 @@
 // Copyright 2026 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { MessageChannel, Worker, receiveMessageOnPort } from "node:worker_threads";
+import { DurationConstants } from "../../src/models/durationConstants.js";
 import { MutexMessageTypes } from "../../src/models/mutexMessageTypes.js";
 import { Mutex } from "../../src/utils/mutex.js";
 import { SharedStore } from "../../src/utils/sharedStore.js";
@@ -185,8 +186,8 @@ describe("Mutex", () => {
 		});
 
 		test("setDefaultTimeoutMs changes the value returned by getDefaultTimeoutMs", () => {
-			Mutex.setDefaultTimeoutMs(1000);
-			expect(Mutex.getDefaultTimeoutMs()).toEqual(1000);
+			Mutex.setDefaultTimeoutMs(DurationConstants.MsPerSecond);
+			expect(Mutex.getDefaultTimeoutMs()).toEqual(DurationConstants.MsPerSecond);
 		});
 
 		test("setDefaultTimeoutMs accepts 0", () => {
@@ -388,7 +389,7 @@ describe("Mutex", () => {
 		test("removes the waiter queue for a key once contention ends", async () => {
 			await Mutex.lock("queue-drain");
 
-			const waiting = Mutex.lock("queue-drain", { timeoutMs: 1000 });
+			const waiting = Mutex.lock("queue-drain", { timeoutMs: DurationConstants.MsPerSecond });
 			await new Promise(resolve => setTimeout(resolve, 1));
 			expect(mutexGetPrivateQueue("queue-drain")).toHaveLength(1);
 

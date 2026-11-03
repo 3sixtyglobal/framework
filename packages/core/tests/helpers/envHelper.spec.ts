@@ -1,6 +1,7 @@
 // Copyright 2026 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { EnvHelper } from "../../src/helpers/envHelper.js";
+import { DurationConstants } from "../../src/models/durationConstants.js";
 
 describe("EnvHelper", () => {
 	describe("envVarKeyToJsonKey", () => {
@@ -212,7 +213,9 @@ describe("EnvHelper", () => {
 		});
 
 		test("returns defaultValue when env var is absent", () => {
-			expect(EnvHelper.envMs<{ timeout?: number }>({}, "timeout", 1000)).toBe(1000);
+			expect(
+				EnvHelper.envMs<{ timeout?: number }>({}, "timeout", DurationConstants.MsPerSecond)
+			).toBe(DurationConstants.MsPerSecond);
 		});
 
 		test("returns integer value for a valid numeric string", () => {
@@ -220,7 +223,9 @@ describe("EnvHelper", () => {
 		});
 
 		test("returns integer value for a valid numeric string when default given", () => {
-			expect(EnvHelper.envMs({ timeout: "5000" }, "timeout", 1000)).toBe(5000);
+			expect(EnvHelper.envMs({ timeout: "5000" }, "timeout", DurationConstants.MsPerSecond)).toBe(
+				5000
+			);
 		});
 
 		test("throws GeneralError for a non-numeric string", () => {
@@ -386,15 +391,25 @@ describe("EnvHelper", () => {
 		});
 
 		test("returns defaultValue when env var is absent", () => {
-			expect(EnvHelper.envMinToMs<{ mins?: string }>({}, "mins", 60_000)).toBe(60_000);
+			expect(
+				EnvHelper.envMinToMs<{ mins?: string }>({}, "mins", DurationConstants.MsPerMinute)
+			).toBe(DurationConstants.MsPerMinute);
 		});
 
 		test("converts minutes to milliseconds", () => {
-			expect(EnvHelper.envMinToMs<{ mins?: string }>({ mins: "2" }, "mins")).toBe(120_000);
+			expect(EnvHelper.envMinToMs<{ mins?: string }>({ mins: "2" }, "mins")).toBe(
+				2 * DurationConstants.MsPerMinute
+			);
 		});
 
 		test("converts minutes to milliseconds when default given", () => {
-			expect(EnvHelper.envMinToMs<{ mins?: string }>({ mins: "2" }, "mins", 60_000)).toBe(120_000);
+			expect(
+				EnvHelper.envMinToMs<{ mins?: string }>(
+					{ mins: "2" },
+					"mins",
+					DurationConstants.MsPerMinute
+				)
+			).toBe(2 * DurationConstants.MsPerMinute);
 		});
 
 		test("returns zero unchanged", () => {
@@ -402,7 +417,13 @@ describe("EnvHelper", () => {
 		});
 
 		test("returns a negative sentinel unchanged", () => {
-			expect(EnvHelper.envMinToMs<{ mins?: string }>({ mins: "-1" }, "mins", 60_000)).toBe(-1);
+			expect(
+				EnvHelper.envMinToMs<{ mins?: string }>(
+					{ mins: "-1" },
+					"mins",
+					DurationConstants.MsPerMinute
+				)
+			).toBe(-1);
 		});
 
 		test("throws GeneralError for a non-numeric string", () => {
