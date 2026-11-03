@@ -77,7 +77,7 @@
 			"email": "Property \"{property}\" must be string in e-mail format, it is \"{value}\"",
 			"uuidV7": "Property \"{property}\" must be a UUIDv7 formatted string, it is \"{value}\"",
 			"uuidV7Compact": "Property \"{property}\" must be a UUIDv7 formatted string in compact mode, it is \"{value}\"",
-			"duration": "Property \"{property}\" must be an ISO 8601 duration string, it is \"{value}\""
+			"duration": "Property \"{property}\" must be an ISO 8601 duration string or a duration object with components of a consistent sign, it is \"{value}\""
 		},
 		"objectHelper": {
 			"failedBytesToJSON": "Failed converting bytes to JSON",
@@ -111,7 +111,6 @@
 		"duration": {
 			"valueTooLarge": "The duration value \"{value}\" in \"{units}\" exceeds the maximum safe integer",
 			"largestUnitTooSmall": "The largest unit \"{largestUnit}\" must not be smaller than the smallest unit \"{smallestUnit}\"",
-			"invalidLocaleValue": "The duration value \"{value}\" for \"{unit}\" must be an integer with the same sign as the other components to format it for a locale",
 			"dateOutOfRange": "Adding the duration \"{duration}\" to the date \"{date}\" results in a date outside the supported range",
 			"localeValueTooLarge": "The duration \"{duration}\" is too large to format for a locale"
 		},

@@ -1,8 +1,9 @@
 // Copyright 2026 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import { nameof } from "@3sixty/nameof";
-import { DURATION_REG_EXP } from "./durationRegExp.js";
 import { GeneralError } from "../errors/generalError.js";
+import { GuardError } from "../errors/guardError.js";
 import { DurationFormatStyle } from "../models/durationFormatStyle.js";
 import { DurationRoundingMode } from "../models/durationRoundingMode.js";
 import { DurationUnit } from "../models/durationUnit.js";
@@ -39,6 +40,14 @@ export class Duration {
 	};
 
 	/**
+	 * The regular expression for an ISO 8601 duration string, as accepted by Temporal.
+	 * Only the time units can have a fraction of up to 9 digits.
+	 * @internal
+	 */
+	private static readonly _REG_EXP: RegExp =
+		/^([+-])?P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?=\d)(?:(\d+)(?:[,.](\d{1,9}))?H)?(?:(\d+)(?:[,.](\d{1,9}))?M)?(?:(\d+)(?:[,.](\d{1,9}))?S)?)?$/i;
+
+	/**
 	 * The maximum safe integer as a bigint.
 	 * @internal
 	 */
@@ -70,42 +79,110 @@ export class Duration {
 	private static readonly _TIME_SEPARATORS: Map<string, string> = new Map<string, string>();
 
 	/**
+	 * Is the value a valid ISO 8601 duration string or an IDuration object.
+	 * Components must be integers with a consistent sign, as required by Temporal.
+	 * @param value The value to test.
+	 * @returns True if the value is a valid ISO 8601 duration string or an IDuration object.
+	 */
+	public static is(value: unknown): value is string | IDuration {
+		if (Is.object<IDuration>(value)) {
+			if (
+				!Is.integer(value.years) ||
+				!Is.integer(value.months) ||
+				!Is.integer(value.weeks) ||
+				!Is.integer(value.days) ||
+				!Is.integer(value.hours) ||
+				!Is.integer(value.minutes) ||
+				!Is.integer(value.seconds) ||
+				(!Is.undefined(value.milliseconds) && !Is.integer(value.milliseconds)) ||
+				(!Is.undefined(value.microseconds) && !Is.integer(value.microseconds)) ||
+				(!Is.undefined(value.nanoseconds) && !Is.integer(value.nanoseconds))
+			) {
+				return false;
+			}
+
+			let sign = 0;
+			for (const unit of Object.values(DurationUnit)) {
+				const component = value[unit] ?? 0;
+				if (component !== 0) {
+					const componentSign = component < 0 ? -1 : 1;
+					if (sign === 0) {
+						sign = componentSign;
+					} else if (sign !== componentSign) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		return Is.stringValue(value) && !Is.undefined(Duration.match(value));
+	}
+
+	/**
+	 * Guard that the property is a valid ISO 8601 duration string or an IDuration object.
+	 * @param source The source of the error.
+	 * @param property The name of the property.
+	 * @param value The value to test.
+	 * @throws GuardError If the value is not a valid duration.
+	 */
+	public static guard(
+		source: string,
+		property: string,
+		value: unknown
+	): asserts value is string | IDuration {
+		if (!Duration.is(value)) {
+			throw new GuardError(source, "guard.duration", property, value);
+		}
+	}
+
+	/**
 	 * Parse an ISO 8601 duration string into its component parts.
+	 * A fraction on the smallest time unit is balanced into the smaller units, e.g. "PT1.5H" is
+	 * 1 hour 30 minutes, matching Temporal.
 	 * @param value The string to parse.
 	 * @returns The parsed duration, or undefined if the string is not a valid ISO 8601 duration.
 	 */
 	public static parse(value: string): IDuration | undefined {
-		const match = DURATION_REG_EXP.exec(value);
-		if (!match?.slice(2).some(Boolean)) {
+		const match = Duration.match(value);
+		if (Is.undefined(match)) {
 			return undefined;
 		}
 
 		const sign = match[1] === "-" ? -1 : 1;
-		const secondsValue = match[8] ?? "0";
-		const [secondsIntegerPart, secondsFractionPart] = secondsValue.split(".");
-		const fractionPadded = `${secondsFractionPart ?? ""}000000000`.slice(0, 9);
-		const milliseconds = Number.parseInt(fractionPadded.slice(0, 3), 10);
-		const microseconds = Number.parseInt(fractionPadded.slice(3, 6), 10);
-		const nanoseconds = Number.parseInt(fractionPadded.slice(6, 9), 10);
-
 		const duration: IDuration = {
 			years: Duration.applySign(Number(match[2] ?? 0), sign),
 			months: Duration.applySign(Number(match[3] ?? 0), sign),
 			weeks: Duration.applySign(Number(match[4] ?? 0), sign),
 			days: Duration.applySign(Number(match[5] ?? 0), sign),
 			hours: Duration.applySign(Number(match[6] ?? 0), sign),
-			minutes: Duration.applySign(Number(match[7] ?? 0), sign),
-			seconds: Duration.applySign(Number(secondsIntegerPart ?? 0), sign)
+			minutes: Duration.applySign(Number(match[8] ?? 0), sign),
+			seconds: Duration.applySign(Number(match[10] ?? 0), sign)
 		};
 
-		if (milliseconds !== 0) {
-			duration.milliseconds = milliseconds * sign;
-		}
-		if (microseconds !== 0) {
-			duration.microseconds = microseconds * sign;
-		}
-		if (nanoseconds !== 0) {
-			duration.nanoseconds = nanoseconds * sign;
+		const fractions: [DurationUnit, string | undefined][] = [
+			[DurationUnit.Hours, match[7]],
+			[DurationUnit.Minutes, match[9]],
+			[DurationUnit.Seconds, match[11]]
+		];
+		const units = Object.values(DurationUnit);
+		for (const [unit, fraction] of fractions) {
+			if (Is.stringValue(fraction)) {
+				const fractionNanoseconds =
+					(BigInt(fraction.padEnd(9, "0")) * Duration._NANOSECONDS_PER_UNIT[unit]) /
+					Duration._NANOSECONDS_PER_UNIT[DurationUnit.Seconds];
+				const smallerUnits = units.slice(units.indexOf(unit) + 1);
+				const balanced = Duration.fromNanoseconds(
+					sign < 0 ? -fractionNanoseconds : fractionNanoseconds,
+					smallerUnits[0],
+					DurationUnit.Nanoseconds
+				);
+				for (const smallerUnit of smallerUnits) {
+					const smallerValue = balanced[smallerUnit] ?? 0;
+					if (smallerValue !== 0) {
+						duration[smallerUnit] = smallerValue;
+					}
+				}
+			}
 		}
 
 		return duration;
@@ -116,46 +193,39 @@ export class Duration {
 	 * @param duration The duration to convert.
 	 * @returns The ISO 8601 duration string (e.g. "P1Y2M3DT4H5M6S").
 	 */
-	public static toString(duration: IDuration): string {
-		Guards.object<IDuration>(Duration.CLASS_NAME, nameof(duration), duration);
-		const sign = Duration.resolveSign(duration);
+	public static toString(duration: string | IDuration): string {
+		const durationObject = Duration.resolve(nameof(duration), duration);
+		const sign = Duration.resolveSign(durationObject);
 		const dateParts: string[] = [];
-		const absYears = Duration.absolute(duration.years);
+		const absYears = Duration.absolute(durationObject.years);
 		if (absYears !== 0) {
 			dateParts.push(`${absYears}Y`);
 		}
-		const absMonths = Duration.absolute(duration.months);
+		const absMonths = Duration.absolute(durationObject.months);
 		if (absMonths !== 0) {
 			dateParts.push(`${absMonths}M`);
 		}
-		const absWeeks = Duration.absolute(duration.weeks);
+		const absWeeks = Duration.absolute(durationObject.weeks);
 		if (absWeeks !== 0) {
 			dateParts.push(`${absWeeks}W`);
 		}
-		const absDays = Duration.absolute(duration.days);
+		const absDays = Duration.absolute(durationObject.days);
 		if (absDays !== 0) {
 			dateParts.push(`${absDays}D`);
 		}
 
 		const timeParts: string[] = [];
-		const absHours = Duration.absolute(duration.hours);
+		const absHours = Duration.absolute(durationObject.hours);
 		if (absHours !== 0) {
 			timeParts.push(`${absHours}H`);
 		}
-		const absMinutes = Duration.absolute(duration.minutes);
+		const absMinutes = Duration.absolute(durationObject.minutes);
 		if (absMinutes !== 0) {
 			timeParts.push(`${absMinutes}M`);
 		}
-		const secondFraction = Duration.formatSecondFraction(
-			Duration.absolute(duration.milliseconds),
-			Duration.absolute(duration.microseconds),
-			Duration.absolute(duration.nanoseconds)
-		);
-		const absSeconds = Duration.absolute(duration.seconds);
-		if (absSeconds !== 0 || secondFraction !== undefined) {
-			timeParts.push(
-				secondFraction === undefined ? `${absSeconds}S` : `${absSeconds}.${secondFraction}S`
-			);
+		const { seconds, fraction } = Duration.splitSeconds(durationObject);
+		if (seconds !== 0n || fraction.length > 0) {
+			timeParts.push(fraction.length > 0 ? `${seconds}.${fraction}S` : `${seconds}S`);
 		}
 
 		if (dateParts.length === 0 && timeParts.length === 0) {
@@ -175,16 +245,15 @@ export class Duration {
 	 * @param style The format style, defaults to short.
 	 * @param locale The locale to format for, defaults to the current I18n locale.
 	 * @returns The formatted duration.
-	 * @throws GeneralError if any component is not an integer or the components have mixed signs.
 	 * @throws GeneralError if the duration exceeds the limits of Intl.DurationFormat, years, months
 	 * and weeks must be less than 2^32 and the remaining components less than 2^53 seconds.
 	 */
 	public static toLocaleString(
-		duration: IDuration,
+		duration: string | IDuration,
 		style?: DurationFormatStyle,
 		locale?: string
 	): string {
-		Guards.object<IDuration>(Duration.CLASS_NAME, nameof(duration), duration);
+		const durationObject = Duration.resolve(nameof(duration), duration);
 		const formatStyle = style ?? DurationFormatStyle.Short;
 		Guards.arrayOneOf<DurationFormatStyle>(
 			Duration.CLASS_NAME,
@@ -193,28 +262,21 @@ export class Duration {
 			Object.values(DurationFormatStyle)
 		);
 
-		const sign = Duration.resolveSign(duration);
-		for (const unit of Object.values(DurationUnit)) {
-			const value = duration[unit] ?? 0;
-			if (!Number.isInteger(value) || (value !== 0 && Math.sign(value) !== sign)) {
-				throw new GeneralError(Duration.CLASS_NAME, "invalidLocaleValue", { unit, value });
-			}
-		}
 		const timeNanoseconds = Duration.toNanoseconds({
-			...duration,
+			...durationObject,
 			years: 0,
 			months: 0,
 			weeks: 0
 		});
 		if (
-			Math.abs(duration.years) >= Duration._LOCALE_CALENDAR_LIMIT ||
-			Math.abs(duration.months) >= Duration._LOCALE_CALENDAR_LIMIT ||
-			Math.abs(duration.weeks) >= Duration._LOCALE_CALENDAR_LIMIT ||
+			Math.abs(durationObject.years) >= Duration._LOCALE_CALENDAR_LIMIT ||
+			Math.abs(durationObject.months) >= Duration._LOCALE_CALENDAR_LIMIT ||
+			Math.abs(durationObject.weeks) >= Duration._LOCALE_CALENDAR_LIMIT ||
 			timeNanoseconds >= Duration._LOCALE_TIME_LIMIT ||
 			timeNanoseconds <= -Duration._LOCALE_TIME_LIMIT
 		) {
 			throw new GeneralError(Duration.CLASS_NAME, "localeValueTooLarge", {
-				duration: Duration.toString(duration)
+				duration: Duration.toString(durationObject)
 			});
 		}
 
@@ -229,10 +291,10 @@ export class Duration {
 		};
 		if (Is.function(intl.DurationFormat)) {
 			const durationFormat = new intl.DurationFormat(formatLocale, { style: formatStyle });
-			return durationFormat.format(duration);
+			return durationFormat.format(durationObject);
 		}
 
-		return Duration.formatLocaleFallback(duration, formatStyle, formatLocale);
+		return Duration.formatLocaleFallback(durationObject, formatStyle, formatLocale);
 	}
 
 	/**
@@ -243,8 +305,8 @@ export class Duration {
 	 * @returns The total value in the requested units.
 	 * @throws GeneralError if the whole part of the value exceeds the maximum safe integer.
 	 */
-	public static toNumber(duration: IDuration, units: DurationUnit): number {
-		Guards.object<IDuration>(Duration.CLASS_NAME, nameof(duration), duration);
+	public static toNumber(duration: string | IDuration, units: DurationUnit): number {
+		const durationObject = Duration.resolve(nameof(duration), duration);
 		Guards.arrayOneOf<DurationUnit>(
 			Duration.CLASS_NAME,
 			nameof(units),
@@ -252,7 +314,7 @@ export class Duration {
 			Object.values(DurationUnit)
 		);
 
-		const totalNanoseconds = Duration.toNanoseconds(duration);
+		const totalNanoseconds = Duration.toNanoseconds(durationObject);
 		const factor = Duration._NANOSECONDS_PER_UNIT[units];
 		const whole = totalNanoseconds / factor;
 		if (whole > Duration._MAX_SAFE_INTEGER || whole < -Duration._MAX_SAFE_INTEGER) {
@@ -273,8 +335,8 @@ export class Duration {
 	 * @param units The units to convert the duration to.
 	 * @returns The total value in the requested units.
 	 */
-	public static toBigInt(duration: IDuration, units: DurationUnit): bigint {
-		Guards.object<IDuration>(Duration.CLASS_NAME, nameof(duration), duration);
+	public static toBigInt(duration: string | IDuration, units: DurationUnit): bigint {
+		const durationObject = Duration.resolve(nameof(duration), duration);
 		Guards.arrayOneOf<DurationUnit>(
 			Duration.CLASS_NAME,
 			nameof(units),
@@ -282,7 +344,7 @@ export class Duration {
 			Object.values(DurationUnit)
 		);
 
-		return Duration.toNanoseconds(duration) / Duration._NANOSECONDS_PER_UNIT[units];
+		return Duration.toNanoseconds(durationObject) / Duration._NANOSECONDS_PER_UNIT[units];
 	}
 
 	/**
@@ -319,16 +381,30 @@ export class Duration {
 	 * @param duration2 The second duration.
 	 * @returns -1 if the first duration is shorter, 1 if it is longer, 0 if they are equal.
 	 */
-	public static compare(duration1: IDuration, duration2: IDuration): -1 | 0 | 1 {
-		Guards.object<IDuration>(Duration.CLASS_NAME, nameof(duration1), duration1);
-		Guards.object<IDuration>(Duration.CLASS_NAME, nameof(duration2), duration2);
+	public static compare(duration1: string | IDuration, duration2: string | IDuration): -1 | 0 | 1 {
+		const durationObject1 = Duration.resolve(nameof(duration1), duration1);
+		const durationObject2 = Duration.resolve(nameof(duration2), duration2);
 
-		const totalNanoseconds1 = Duration.toNanoseconds(duration1);
-		const totalNanoseconds2 = Duration.toNanoseconds(duration2);
+		const totalNanoseconds1 = Duration.toNanoseconds(durationObject1);
+		const totalNanoseconds2 = Duration.toNanoseconds(durationObject2);
 		if (totalNanoseconds1 < totalNanoseconds2) {
 			return -1;
 		}
 		return totalNanoseconds1 > totalNanoseconds2 ? 1 : 0;
+	}
+
+	/**
+	 * Check if two durations have the same total length, e.g. 1 hour and 60 minutes are equal.
+	 * Year and month components use the average values 365.25 days and 30.4375 days.
+	 * @param duration1 The first duration.
+	 * @param duration2 The second duration.
+	 * @returns True if the durations have the same total number of nanoseconds.
+	 */
+	public static equals(duration1: string | IDuration, duration2: string | IDuration): boolean {
+		const durationObject1 = Duration.resolve(nameof(duration1), duration1);
+		const durationObject2 = Duration.resolve(nameof(duration2), duration2);
+
+		return Duration.toNanoseconds(durationObject1) === Duration.toNanoseconds(durationObject2);
 	}
 
 	/**
@@ -341,8 +417,8 @@ export class Duration {
 	 * @throws GeneralError if a component of the result exceeds the maximum safe integer.
 	 * @throws GeneralError if the largest unit is smaller than the smallest unit.
 	 */
-	public static round(duration: IDuration, options?: IDurationRoundOptions): IDuration {
-		Guards.object<IDuration>(Duration.CLASS_NAME, nameof(duration), duration);
+	public static round(duration: string | IDuration, options?: IDurationRoundOptions): IDuration {
+		const durationObject = Duration.resolve(nameof(duration), duration);
 		const units = Object.values(DurationUnit);
 		const smallestUnit = options?.smallestUnit ?? DurationUnit.Nanoseconds;
 		Guards.arrayOneOf<DurationUnit>(
@@ -361,7 +437,8 @@ export class Duration {
 
 		let largestUnit = options?.largestUnit;
 		if (Is.undefined(largestUnit)) {
-			const largestNonZeroUnit = units.find(unit => (duration[unit] ?? 0) !== 0) ?? smallestUnit;
+			const largestNonZeroUnit =
+				units.find(unit => (durationObject[unit] ?? 0) !== 0) ?? smallestUnit;
 			largestUnit =
 				units.indexOf(largestNonZeroUnit) < units.indexOf(smallestUnit)
 					? largestNonZeroUnit
@@ -381,7 +458,7 @@ export class Duration {
 		}
 
 		const roundedNanoseconds = Duration.roundNanoseconds(
-			Duration.toNanoseconds(duration),
+			Duration.toNanoseconds(durationObject),
 			Duration._NANOSECONDS_PER_UNIT[smallestUnit],
 			roundingMode
 		);
@@ -399,19 +476,17 @@ export class Duration {
 	 * @returns A new date with the duration added.
 	 * @throws GeneralError if the resulting date is outside the range supported by Date.
 	 */
-	public static addToDate(date: Date, duration: IDuration): Date {
+	public static addToDate(date: Date, duration: string | IDuration): Date {
 		Guards.date(Duration.CLASS_NAME, nameof(date), date);
-		Guards.object<IDuration>(Duration.CLASS_NAME, nameof(duration), duration);
-		Guards.integer(Duration.CLASS_NAME, nameof(duration.years), duration.years);
-		Guards.integer(Duration.CLASS_NAME, nameof(duration.months), duration.months);
+		const durationObject = Duration.resolve(nameof(duration), duration);
 
 		const result = new Date(date.getTime());
-		if (duration.years !== 0 || duration.months !== 0) {
+		if (durationObject.years !== 0 || durationObject.months !== 0) {
 			const day = result.getUTCDate();
 			result.setUTCDate(1);
 			result.setUTCFullYear(
-				result.getUTCFullYear() + duration.years,
-				result.getUTCMonth() + duration.months
+				result.getUTCFullYear() + durationObject.years,
+				result.getUTCMonth() + durationObject.months
 			);
 			const lastDayOfMonth = new Date(0);
 			lastDayOfMonth.setUTCFullYear(result.getUTCFullYear(), result.getUTCMonth() + 1, 0);
@@ -421,7 +496,7 @@ export class Duration {
 		const outOfRange = (): GeneralError =>
 			new GeneralError(Duration.CLASS_NAME, "dateOutOfRange", {
 				date: date.toISOString(),
-				duration: Duration.toString(duration)
+				duration: Duration.toString(durationObject)
 			});
 		if (Number.isNaN(result.getTime())) {
 			throw outOfRange();
@@ -429,7 +504,7 @@ export class Duration {
 
 		// Add the time in bigint milliseconds, offsets larger than the safe integer range can still
 		// produce a valid date, so a number addition could lose precision.
-		const timeNanoseconds = Duration.toNanoseconds({ ...duration, years: 0, months: 0 });
+		const timeNanoseconds = Duration.toNanoseconds({ ...durationObject, years: 0, months: 0 });
 		const timeMilliseconds = timeNanoseconds / 1_000_000n;
 		const time = BigInt(result.getTime()) + timeMilliseconds;
 		if (time > Duration._MAX_DATE_TIME || time < -Duration._MAX_DATE_TIME) {
@@ -475,18 +550,13 @@ export class Duration {
 		if (isDigital) {
 			const integerFormat = (minimumIntegerDigits: number): Intl.NumberFormat =>
 				new Intl.NumberFormat(locale, { minimumIntegerDigits, useGrouping: false });
-			const fraction =
-				Duration.formatSecondFraction(
-					Duration.absolute(duration.milliseconds),
-					Duration.absolute(duration.microseconds),
-					Duration.absolute(duration.nanoseconds)
-				) ?? "";
+			const { seconds: wholeSeconds, fraction } = Duration.splitSeconds(duration);
 			const seconds = new Intl.NumberFormat(locale, {
 				minimumIntegerDigits: 2,
 				minimumFractionDigits: fraction.length,
 				maximumFractionDigits: fraction.length,
 				useGrouping: false
-			}).format(Number(`${Duration.absolute(duration.seconds)}.${fraction}`));
+			}).format(Number(`${wholeSeconds}.${fraction}`));
 			const hours = integerFormat(1).format(Duration.absolute(duration.hours));
 			const minutes = integerFormat(2).format(Duration.absolute(duration.minutes));
 			const prefix = parts.length === 0 && sign < 0 ? "-" : "";
@@ -530,9 +600,7 @@ export class Duration {
 	private static toNanoseconds(duration: IDuration): bigint {
 		let totalNanoseconds = 0n;
 		for (const unit of Object.values(DurationUnit)) {
-			const value = duration[unit] ?? 0;
-			Guards.number(Duration.CLASS_NAME, `${nameof(duration)}.${unit}`, value);
-			totalNanoseconds += Duration.unitToNanoseconds(value, unit);
+			totalNanoseconds += Duration.unitToNanoseconds(duration[unit] ?? 0, unit);
 		}
 		return totalNanoseconds;
 	}
@@ -694,24 +762,65 @@ export class Duration {
 	}
 
 	/**
-	 * Format the sub-second components as a 9-digit fractional second string.
-	 * @param milliseconds The milliseconds component.
-	 * @param microseconds The microseconds component.
-	 * @param nanoseconds The nanoseconds component.
-	 * @returns The formatted fraction without a leading dot.
+	 * Match an ISO 8601 duration string, applying the rules the regular expression cannot express.
+	 * At least one component is required and only the smallest time unit can have a fraction.
+	 * @param value The string to match.
+	 * @returns The match, or undefined if the string is not a valid ISO 8601 duration.
 	 * @internal
 	 */
-	private static formatSecondFraction(
-		milliseconds: number,
-		microseconds: number,
-		nanoseconds: number
-	): string | undefined {
-		if (milliseconds === 0 && microseconds === 0 && nanoseconds === 0) {
+	private static match(value: string): RegExpExecArray | undefined {
+		const match = Duration._REG_EXP.exec(value);
+		if (
+			Is.null(match) ||
+			![2, 3, 4, 5, 6, 8, 10].some(group => !Is.undefined(match[group])) ||
+			(!Is.undefined(match[7]) && (!Is.undefined(match[8]) || !Is.undefined(match[10]))) ||
+			(!Is.undefined(match[9]) && !Is.undefined(match[10]))
+		) {
 			return undefined;
 		}
+		return match;
+	}
 
-		const fraction = `${(milliseconds % 1000).toString().padStart(3, "0")}${(microseconds % 1000).toString().padStart(3, "0")}${(nanoseconds % 1000).toString().padStart(3, "0")}`;
-		return fraction.replace(/0+$/u, "");
+	/**
+	 * Split the absolute seconds and sub-second components into whole seconds and a fraction.
+	 * Sub-second values of 1000 or more carry into the whole seconds.
+	 * @param duration The duration.
+	 * @returns The whole seconds and the fraction digits without trailing zeros.
+	 * @internal
+	 */
+	private static splitSeconds(duration: IDuration): { seconds: bigint; fraction: string } {
+		let totalNanoseconds = 0n;
+		for (const unit of [
+			DurationUnit.Seconds,
+			DurationUnit.Milliseconds,
+			DurationUnit.Microseconds,
+			DurationUnit.Nanoseconds
+		]) {
+			totalNanoseconds += Duration.unitToNanoseconds(Duration.absolute(duration[unit]), unit);
+		}
+		const factor = Duration._NANOSECONDS_PER_UNIT[DurationUnit.Seconds];
+		return {
+			seconds: totalNanoseconds / factor,
+			fraction: (totalNanoseconds % factor).toString().padStart(9, "0").replace(/0+$/u, "")
+		};
+	}
+
+	/**
+	 * Validate a duration argument and parse it if it is an ISO 8601 duration string.
+	 * @param property The name of the property.
+	 * @param value The value to resolve.
+	 * @returns The duration object.
+	 * @throws GuardError if the value is not a valid duration.
+	 * @internal
+	 */
+	private static resolve(property: string, value: string | IDuration): IDuration {
+		Duration.guard(Duration.CLASS_NAME, property, value);
+		if (Is.string(value)) {
+			const parsed = Duration.parse(value);
+			Guards.object<IDuration>(Duration.CLASS_NAME, property, parsed);
+			return parsed;
+		}
+		return value;
 	}
 
 	/**

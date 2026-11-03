@@ -1,4 +1,5 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import { Guards } from "../../src/utils/guards.js";
 
@@ -492,78 +493,5 @@ describe("Guards", () => {
 		expect(() => Guards.uuidV7("source", "propName", 10, "compact")).toThrow(
 			expect.objectContaining({ name: "GuardError", message: "guard.uuidV7Compact" })
 		);
-	});
-
-	test("duration can fail if value is undefined", () => {
-		expect(() => Guards.duration("source", "propName", undefined)).toThrow(
-			expect.objectContaining({ name: "GuardError", message: "guard.duration" })
-		);
-	});
-
-	test("duration can fail if value is a number", () => {
-		expect(() => Guards.duration("source", "propName", 3600)).toThrow(
-			expect.objectContaining({ name: "GuardError", message: "guard.duration" })
-		);
-	});
-
-	test("duration can fail if value is an invalid string", () => {
-		expect(() => Guards.duration("source", "propName", "foo")).toThrow(
-			expect.objectContaining({ name: "GuardError", message: "guard.duration" })
-		);
-	});
-
-	test("duration can succeed if value is a valid ISO 8601 duration string", () => {
-		expect(Guards.duration("source", "propName", "PT1H")).toBeUndefined();
-	});
-
-	test("duration can succeed if value is a full ISO 8601 duration string", () => {
-		expect(Guards.duration("source", "propName", "P1Y2M3DT4H5M6S")).toBeUndefined();
-	});
-
-	test("duration can succeed if value is a negative ISO 8601 duration string", () => {
-		expect(Guards.duration("source", "propName", "-P1DT2H3M4S")).toBeUndefined();
-	});
-
-	test("duration can succeed if value is an IDuration object", () => {
-		expect(
-			Guards.duration("source", "propName", {
-				years: 0,
-				months: 0,
-				weeks: 0,
-				days: 1,
-				hours: 2,
-				minutes: 30,
-				seconds: 0
-			})
-		).toBeUndefined();
-	});
-
-	test("duration can fail if value is an IDuration object with mixed signs", () => {
-		expect(() =>
-			Guards.duration("source", "propName", {
-				years: 1,
-				months: -2,
-				weeks: 0,
-				days: 0,
-				hours: 0,
-				minutes: 0,
-				seconds: 0
-			})
-		).toThrow(expect.objectContaining({ name: "GuardError", message: "guard.duration" }));
-	});
-
-	test("duration can fail if value is an IDuration object with out-of-range milliseconds", () => {
-		expect(() =>
-			Guards.duration("source", "propName", {
-				years: 0,
-				months: 0,
-				weeks: 0,
-				days: 0,
-				hours: 0,
-				minutes: 0,
-				seconds: 0,
-				milliseconds: 1000
-			})
-		).toThrow(expect.objectContaining({ name: "GuardError", message: "guard.duration" }));
 	});
 });

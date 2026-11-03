@@ -1,4 +1,5 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import { Coerce } from "../../src/utils/coerce.js";
 
@@ -371,6 +372,19 @@ describe("Coerce", () => {
 			hours: 0,
 			minutes: 0,
 			seconds: 3600
+		});
+	});
+
+	test("duration can coerce if value is a fractional number", () => {
+		expect(Coerce.duration(1.5)).toEqual({
+			years: 0,
+			months: 0,
+			weeks: 0,
+			days: 0,
+			hours: 0,
+			minutes: 0,
+			seconds: 1,
+			milliseconds: 500
 		});
 	});
 
