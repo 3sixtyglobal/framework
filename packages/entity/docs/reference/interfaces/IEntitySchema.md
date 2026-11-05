@@ -14,9 +14,9 @@ Definition for an entity schema.
 
 ## Properties
 
-### type {#type}
+### type? {#type}
 
-> **type**: `string` \| `undefined`
+> `optional` **type?**: `string`
 
 The type of the entity.
 

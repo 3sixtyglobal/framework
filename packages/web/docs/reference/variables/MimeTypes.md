@@ -42,11 +42,29 @@ Javascript - text/javascript
 
 Markdown - text/markdown
 
+### Csv {#csv}
+
+> `readonly` **Csv**: `"text/csv"` = `"text/csv"`
+
+CSV - text/csv
+
 ### Json {#json}
 
 > `readonly` **Json**: `"application/json"` = `"application/json"`
 
 JSON - application/json
+
+### Ndjson {#ndjson}
+
+> `readonly` **Ndjson**: `"application/x-ndjson"` = `"application/x-ndjson"`
+
+Newline Delimited JSON - application/x-ndjson
+
+### JsonApi {#jsonapi}
+
+> `readonly` **JsonApi**: `"application/vnd.api+json"` = `"application/vnd.api+json"`
+
+JSON:API - application/vnd.api+json
 
 ### ProblemJson {#problemjson}
 
@@ -59,6 +77,12 @@ Problem JSON - application/problem+json
 > `readonly` **JsonLd**: `"application/ld+json"` = `"application/ld+json"`
 
 JSON-LD - application/ld+json
+
+### NQuads {#nquads}
+
+> `readonly` **NQuads**: `"application/n-quads"` = `"application/n-quads"`
+
+N-Quads - application/n-quads
 
 ### ActivityStreams {#activitystreams}
 
@@ -197,6 +221,12 @@ Multipart Form Data - multipart/form-data
 > `readonly` **Xml**: `"application/xml"` = `"application/xml"`
 
 XML - application/xml
+
+### Xhtml {#xhtml}
+
+> `readonly` **Xhtml**: `"application/xhtml+xml"` = `"application/xhtml+xml"`
+
+XHTML - application/xhtml+xml
 
 ### Wasm {#wasm}
 
