@@ -4,7 +4,6 @@
 /**
  * Duration rounding modes.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const DurationRoundingMode = {
 	/**
 	 * Round towards positive infinity.

@@ -4,7 +4,6 @@
 /**
  * The types the extracted data can be coerced to.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const CoerceType = {
 	/**
 	 * String.

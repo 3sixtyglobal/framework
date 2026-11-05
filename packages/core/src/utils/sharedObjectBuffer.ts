@@ -72,7 +72,7 @@ export class SharedObjectBuffer {
 	 */
 	// false positive: this is a type not an actual import
 	// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-	private static _workerThreadsModule: typeof import("node:worker_threads") | null | undefined;
+	private static _workerThreadsModule?: typeof import("node:worker_threads") | null;
 
 	/**
 	 * Create the buffer for the given objectId if it does not already exist.

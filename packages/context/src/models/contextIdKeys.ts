@@ -5,7 +5,6 @@
 /**
  * Default definition of some context keys.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const ContextIdKeys = {
 	/**
 	 * Standard property type definition for node.

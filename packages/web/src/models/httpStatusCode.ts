@@ -5,7 +5,6 @@
  * Standard HTTP status codes.
  * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const HttpStatusCode = {
 	/**
 	 * Continue status code.

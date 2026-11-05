@@ -4,7 +4,6 @@
 /**
  * The operating systems that can be detected.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const RuntimeOs = {
 	/**
 	 * Windows.

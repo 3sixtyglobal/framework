@@ -5,7 +5,6 @@
  * Common mime types.
  * @see https://www.iana.org/assignments/media-types/media-types.xhtml
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const MimeTypes = {
 	/**
 	 * Plaint Text - text/plain
@@ -38,9 +37,24 @@ export const MimeTypes = {
 	Markdown: "text/markdown",
 
 	/**
+	 * CSV - text/csv
+	 */
+	Csv: "text/csv",
+
+	/**
 	 * JSON - application/json
 	 */
 	Json: "application/json",
+
+	/**
+	 * Newline Delimited JSON - application/x-ndjson
+	 */
+	Ndjson: "application/x-ndjson",
+
+	/**
+	 * JSON:API - application/vnd.api+json
+	 */
+	JsonApi: "application/vnd.api+json",
 
 	/**
 	 * Problem JSON - application/problem+json
@@ -51,6 +65,11 @@ export const MimeTypes = {
 	 * JSON-LD - application/ld+json
 	 */
 	JsonLd: "application/ld+json",
+
+	/**
+	 * N-Quads - application/n-quads
+	 */
+	NQuads: "application/n-quads",
 
 	/**
 	 * Activity Streams - application/activity+json
@@ -166,6 +185,11 @@ export const MimeTypes = {
 	 * XML - application/xml
 	 */
 	Xml: "application/xml",
+
+	/**
+	 * XHTML - application/xhtml+xml
+	 */
+	Xhtml: "application/xhtml+xml",
 
 	/**
 	 * WASM - application/wasm

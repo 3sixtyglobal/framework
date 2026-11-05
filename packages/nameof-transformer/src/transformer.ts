@@ -52,7 +52,9 @@ function visitNode(node: ts.Node): ts.Node {
 
 		try {
 			expressionText = node.expression.getText();
-		} catch {}
+		} catch {
+			// The expression has no source text, keep the default.
+		}
 
 		// Is this a call to nameof<Type>(), if so just replace with a string e.g. "Type"
 		if (

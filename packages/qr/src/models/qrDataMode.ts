@@ -4,7 +4,6 @@
  * The mode for the qr data.
  * Based on https://github.com/kazuhikoarase/qrcode-generator/ .
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const QRDataMode = {
 	/**
 	 * Number.

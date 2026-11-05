@@ -6,5 +6,4 @@ import type { IEntitySchema } from "../models/IEntitySchema.js";
 /**
  * Factory for creating entity schemas.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const EntitySchemaFactory = Factory.createFactory<IEntitySchema>("entity-schema");

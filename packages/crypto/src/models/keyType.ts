@@ -4,7 +4,6 @@
 /**
  * The names of the key types.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const KeyType = {
 	/**
 	 * Ed25519.

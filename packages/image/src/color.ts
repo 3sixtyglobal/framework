@@ -145,7 +145,9 @@ export class Color {
 		} else if (Is.stringValue(value) && value.startsWith("#")) {
 			try {
 				return Color.fromHex(value);
-			} catch {}
+			} catch {
+				// Not a valid hex colour.
+			}
 		}
 	}
 

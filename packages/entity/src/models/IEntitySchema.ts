@@ -10,7 +10,7 @@ export interface IEntitySchema<T = unknown> extends IEntitySchemaOptions {
 	/**
 	 * The type of the entity.
 	 */
-	type: string | undefined;
+	type?: string;
 
 	/**
 	 * The properties of the entity.

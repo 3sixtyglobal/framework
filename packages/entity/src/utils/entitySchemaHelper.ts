@@ -226,7 +226,11 @@ export class EntitySchemaHelper {
 			sortDirection: SortDirection;
 		}[]
 	): IEntitySort<T>[] | undefined {
-		Guards.object(EntitySchemaHelper.CLASS_NAME, nameof(entitySchema), entitySchema);
+		Guards.object<IEntitySchema<T>>(
+			EntitySchemaHelper.CLASS_NAME,
+			nameof(entitySchema),
+			entitySchema
+		);
 
 		let finalSortKeys: IEntitySort<T>[] | undefined;
 
@@ -346,7 +350,7 @@ export class EntitySchemaHelper {
 	 * @throws GeneralError if the version property type is not integer.
 	 */
 	public static findVersionProperty<T>(schema: IEntitySchema<T>): string | undefined {
-		Guards.object(EntitySchemaHelper.CLASS_NAME, nameof(schema), schema);
+		Guards.object<IEntitySchema<T>>(EntitySchemaHelper.CLASS_NAME, nameof(schema), schema);
 
 		const versionProperties = (schema.properties ?? []).filter(p => p.isVersion === true);
 		if (versionProperties.length > 1) {

@@ -119,7 +119,7 @@ export class Mutex {
 	 */
 	// false positive: this is a type not an actual import
 	// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-	private _workerThreadsModule: typeof import("node:worker_threads") | null | undefined;
+	private _workerThreadsModule?: typeof import("node:worker_threads") | null;
 
 	/**
 	 * Create a new instance of Mutex. Private so that all callers go through the shared

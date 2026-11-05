@@ -19,7 +19,7 @@ export class Base64Url {
 	 * The global Buffer constructor when one is available, undefined otherwise.
 	 * @internal
 	 */
-	private static readonly _bufferType: BufferConstructor | undefined =
+	private static readonly _bufferType?: BufferConstructor =
 		NativeModules.getType<BufferConstructor>("Buffer");
 
 	/**

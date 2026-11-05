@@ -4,7 +4,6 @@
 /**
  * The names of the HTTP Methods.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const HttpMethod = {
 	/**
 	 * Retrieve a representation of the resource.

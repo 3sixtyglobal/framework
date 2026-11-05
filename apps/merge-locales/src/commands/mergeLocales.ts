@@ -98,7 +98,9 @@ export async function mergeLocales(
 
 	try {
 		await rm(outputDirectory, { recursive: true });
-	} catch {}
+	} catch {
+		// The output directory may not exist yet.
+	}
 	await mkdir(outputDirectory, { recursive: true });
 
 	const packageLocations: { [packageName: string]: string } = {};

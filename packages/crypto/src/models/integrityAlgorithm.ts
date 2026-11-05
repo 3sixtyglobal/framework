@@ -4,7 +4,6 @@
 /**
  * The names of the integrity algorithms.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const IntegrityAlgorithm = {
 	/**
 	 * Sha256.

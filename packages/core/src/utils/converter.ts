@@ -16,20 +16,20 @@ export class Converter {
 	 * The global Buffer constructor when one is available, undefined otherwise.
 	 * @internal
 	 */
-	private static readonly _bufferType: BufferConstructor | undefined =
+	private static readonly _bufferType?: BufferConstructor =
 		NativeModules.getType<BufferConstructor>("Buffer");
 
 	/**
 	 * Lookup table for encoding.
 	 * @internal
 	 */
-	private static _ENCODE_LOOKUP: string[] | undefined;
+	private static _ENCODE_LOOKUP?: string[];
 
 	/**
 	 * Lookup table for decoding.
 	 * @internal
 	 */
-	private static _DECODE_LOOKUP: number[] | undefined;
+	private static _DECODE_LOOKUP?: number[];
 
 	/**
 	 * Encode a raw array to UTF8 string.

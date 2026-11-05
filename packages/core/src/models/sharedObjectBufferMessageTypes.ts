@@ -4,7 +4,6 @@
 /**
  * Message type constants for the SharedObjectBuffer worker-to-main-thread protocol.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const SharedObjectBufferMessageTypes = {
 	/**
 	 * Worker requests the SharedArrayBuffer for a named object from the main thread.

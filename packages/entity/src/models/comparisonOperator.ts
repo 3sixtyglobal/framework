@@ -4,7 +4,6 @@
 /**
  * The types of comparisons.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const ComparisonOperator = {
 	/**
 	 * Equals.

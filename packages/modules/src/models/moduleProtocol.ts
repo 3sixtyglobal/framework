@@ -4,7 +4,6 @@
 /**
  * The protocol types for modules.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const ModuleProtocol = {
 	/**
 	 * Local module (starts with . or / or file://).

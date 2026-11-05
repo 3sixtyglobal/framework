@@ -73,7 +73,9 @@ export class Bech32 {
 					Is.stringValue(result.prefix) && Is.uint8Array(result.bytes) && result.bytes.length > 0
 				);
 			}
-		} catch {}
+		} catch {
+			// Not a valid bech32 address.
+		}
 		return false;
 	}
 }

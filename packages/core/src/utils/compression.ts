@@ -20,7 +20,7 @@ export class Compression {
 	 * runs when the module is evaluated, before a host has awaited NativeModules.init().
 	 * @internal
 	 */
-	private static _nodeZlib: typeof NodeZlib | undefined;
+	private static _nodeZlib?: typeof NodeZlib;
 
 	/**
 	 * Compress bytes using the specified compression type.

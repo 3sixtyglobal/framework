@@ -275,7 +275,7 @@ export class HeaderHelper {
 
 	/**
 	 * Extract the first occurrence of properties from a Link header for a specific relation type.
-	 * @param linkHeader The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
+	 * @param linkHeader The Link header value in format `&lt;url&gt;; rel="..."; param1=""; param2=""`.
 	 * @param relation The relation type to extract.
 	 * @returns The extracted URL, rel and optional params or undefined if invalid/missing.
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
@@ -292,7 +292,7 @@ export class HeaderHelper {
 
 	/**
 	 * Extract multiple properties from a Link header for a specific relation type.
-	 * @param linkHeader The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
+	 * @param linkHeader The Link header value in format `&lt;url&gt;; rel="..."; param1=""; param2=""`.
 	 * @param relation The relation type to extract.
 	 * @returns The extracted URL, rel and optional params or undefined if invalid/missing.
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
@@ -309,7 +309,7 @@ export class HeaderHelper {
 
 	/**
 	 * Extract the link headers.
-	 * @param linkHeader The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
+	 * @param linkHeader The Link header value in format `&lt;url&gt;; rel="..."; param1=""; param2=""`.
 	 * @returns The extracted possible array of URL, rel and optional params or undefined if invalid/missing.
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
 	 */
@@ -352,7 +352,7 @@ export class HeaderHelper {
 
 	/**
 	 * Extract the properties from a Link header.
-	 * @param linkHeader The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
+	 * @param linkHeader The Link header value in format `&lt;url&gt;; rel="..."; param1=""; param2=""`.
 	 * @returns The extracted URL, rel and optional params or undefined if invalid/missing.
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Link
 	 */

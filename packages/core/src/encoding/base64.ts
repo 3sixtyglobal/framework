@@ -22,7 +22,7 @@ export class Base64 {
 	 * True when a global Buffer is available to back encode/decode natively.
 	 * @internal
 	 */
-	private static readonly _bufferType: BufferConstructor | undefined =
+	private static readonly _bufferType?: BufferConstructor =
 		NativeModules.getType<BufferConstructor>("Buffer");
 
 	/**

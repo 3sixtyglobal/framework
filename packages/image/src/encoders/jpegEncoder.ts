@@ -123,22 +123,22 @@ export class JpegEncoder {
 	/**
 	 * @internal
 	 */
-	private _ydcHashTable: number[][] | undefined;
+	private _ydcHashTable?: number[][];
 
 	/**
 	 * @internal
 	 */
-	private _uVdcHashTable: number[][] | undefined;
+	private _uVdcHashTable?: number[][];
 
 	/**
 	 * @internal
 	 */
-	private _yacHashTable: number[][] | undefined;
+	private _yacHashTable?: number[][];
 
 	/**
 	 * @internal
 	 */
-	private _uVacHashTable: number[][] | undefined;
+	private _uVacHashTable?: number[][];
 
 	/**
 	 * @internal
@@ -866,7 +866,9 @@ export class JpegEncoder {
 		}
 		// Encode ACs
 		let end0pos = 63; // was const... which is crazy
-		for (; end0pos > 0 && this._du[end0pos] === 0; end0pos--) {}
+		for (; end0pos > 0 && this._du[end0pos] === 0; end0pos--) {
+			// Find the position of the last non zero coefficient.
+		}
 		// end0pos = first element in reverse order !=0
 		if (end0pos === 0) {
 			this.writeBits(EOB);
@@ -876,7 +878,9 @@ export class JpegEncoder {
 		let lng;
 		while (i <= end0pos) {
 			const startPos = i;
-			for (; this._du[i] === 0 && i <= end0pos; ++i) {}
+			for (; this._du[i] === 0 && i <= end0pos; ++i) {
+				// Skip the run of zero coefficients.
+			}
 			let nrZeroes = i - startPos;
 			if (nrZeroes >= I16) {
 				lng = nrZeroes >> 4;

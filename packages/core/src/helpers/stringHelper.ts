@@ -15,7 +15,7 @@ export class StringHelper {
 	 * runs when the module is evaluated, before a host has awaited NativeModules.init().
 	 * @internal
 	 */
-	private static _nodeBuffer: typeof NodeBuffer | undefined;
+	private static _nodeBuffer?: typeof NodeBuffer;
 
 	/**
 	 * Implementation signature for trimTrailingSlashes.

@@ -5,7 +5,6 @@
  * Common HTML rel attribute values.
  * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const HttpLinkRelType = {
 	/**
 	 * Alternate representation of the current document.
