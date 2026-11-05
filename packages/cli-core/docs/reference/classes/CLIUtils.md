@@ -261,7 +261,7 @@ The working directory to execute the command in.
 
 `Promise`\<`void`\>
 
-Promise to wait for command execution to complete.
+A promise to wait for command execution to complete.
 
 ***
 
@@ -295,7 +295,7 @@ The working directory to execute the command in.
 
 `Promise`\<`void`\>
 
-Promise to wait for command execution to complete.
+A promise to wait for command execution to complete.
 
 ***
 

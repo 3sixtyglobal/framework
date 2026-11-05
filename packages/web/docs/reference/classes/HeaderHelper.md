@@ -316,7 +316,7 @@ Extract the first occurrence of properties from a Link header for a specific rel
 
 `string` \| `string`[] \| `undefined`
 
-The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
+The Link header value in format `&lt;url&gt;; rel="..."; param1=""; param2=""`.
 
 ##### relation
 
@@ -348,7 +348,7 @@ Extract multiple properties from a Link header for a specific relation type.
 
 `string` \| `string`[] \| `undefined`
 
-The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
+The Link header value in format `&lt;url&gt;; rel="..."; param1=""; param2=""`.
 
 ##### relation
 
@@ -380,7 +380,7 @@ Extract the link headers.
 
 `string` \| `string`[] \| `undefined`
 
-The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
+The Link header value in format `&lt;url&gt;; rel="..."; param1=""; param2=""`.
 
 #### Returns
 
@@ -432,7 +432,7 @@ Extract the properties from a Link header.
 
 `string`
 
-The Link header value in format `<url>; rel="..."; param1=""; param2=""`.
+The Link header value in format `&lt;url&gt;; rel="..."; param1=""; param2=""`.
 
 #### Returns
 
