@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.20.0-next.11](https://github.com/3sixtyglobal/framework/compare/nameof-transformer-v0.20.0-next.10...nameof-transformer-v0.20.0-next.11) (2026-11-05)
+
+
+### Features
+
+* add MIME type constants and lint rules for the agent conventions ([#64](https://github.com/3sixtyglobal/framework/issues/64)) ([8152b9e](https://github.com/3sixtyglobal/framework/commit/8152b9ebac72c8cf7f9932f0e7e24e388b4fd04a))
+
 ## [0.20.0-next.10](https://github.com/3sixtyglobal/framework/compare/nameof-transformer-v0.20.0-next.9...nameof-transformer-v0.20.0-next.10) (2026-11-03)
 
 
