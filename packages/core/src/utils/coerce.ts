@@ -261,7 +261,9 @@ export class Coerce {
 				if (Is.array<T>(parsed)) {
 					return parsed;
 				}
-			} catch {}
+			} catch {
+				// Not valid JSON, return undefined.
+			}
 		}
 	}
 
@@ -283,7 +285,9 @@ export class Coerce {
 				if (Is.object<T>(parsed)) {
 					return parsed;
 				}
-			} catch {}
+			} catch {
+				// Not valid JSON, return undefined.
+			}
 		}
 	}
 

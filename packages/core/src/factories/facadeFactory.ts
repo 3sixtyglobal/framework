@@ -6,5 +6,4 @@ import type { IFacade } from "../models/IFacade.js";
 /**
  * Factory for creating implementation of facade types.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const FacadeFactory = Factory.createFactory<IFacade>("facade");

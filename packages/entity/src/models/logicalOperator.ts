@@ -4,7 +4,6 @@
 /**
  * The logical operators for condition combining.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const LogicalOperator = {
 	/**
 	 * Logical operator AND.

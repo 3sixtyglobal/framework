@@ -54,7 +54,9 @@ export class Url {
 			// validate the format
 			const u = new URL(url);
 			return Url.fromParts(Url.fromURLToParts(u));
-		} catch {}
+		} catch {
+			// Not a valid URL, return undefined.
+		}
 	}
 
 	/**

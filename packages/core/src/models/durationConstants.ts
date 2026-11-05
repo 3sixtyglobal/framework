@@ -5,7 +5,6 @@
  * Common duration conversion constants.
  * Years and months use the average values 365.25 days and 30.4375 days.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const DurationConstants = {
 	/**
 	 * Nanoseconds per microsecond.

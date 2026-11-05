@@ -33,7 +33,7 @@ export class ChaCha20Poly1305 {
 	 * node:crypto when it supports chacha20-poly1305, otherwise undefined.
 	 * @internal
 	 */
-	private readonly _nodeCrypto: typeof NodeCrypto | undefined;
+	private readonly _nodeCrypto?: typeof NodeCrypto;
 
 	/**
 	 * The key, retained to build a native cipher/decipher per call.

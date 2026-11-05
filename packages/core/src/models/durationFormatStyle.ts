@@ -4,7 +4,6 @@
 /**
  * Duration locale format styles.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const DurationFormatStyle = {
 	/**
 	 * Long, e.g. 1 hour, 30 minutes.

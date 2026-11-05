@@ -13,7 +13,7 @@ export class CLIDisplay {
 	 * The interval ID for the spinner.
 	 * @internal
 	 */
-	private static _spinnerIntervalId: ReturnType<typeof setTimeout> | number | undefined;
+	private static _spinnerIntervalId?: ReturnType<typeof setTimeout> | number;
 
 	/**
 	 * The colour level detected from the environment, captured before any override

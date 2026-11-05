@@ -14,13 +14,13 @@ export class NativeModulesCrypto {
 	 * first probe as building a key to find out is not free.
 	 * @internal
 	 */
-	private static _ed25519Supported: boolean | undefined;
+	private static _ed25519Supported?: boolean;
 
 	/**
 	 * Probe results for hashes missing from getHashes(), keyed by hash name.
 	 * @internal
 	 */
-	private static _hashProbes: Map<string, boolean> | undefined;
+	private static _hashProbes?: Map<string, boolean>;
 
 	/**
 	 * Get node:crypto, but only when this build's OpenSSL actually lists the cipher

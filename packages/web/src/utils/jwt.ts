@@ -84,14 +84,18 @@ export class Jwt {
 			try {
 				const bytesHeader = Converter.base64UrlToBytes(segments[0]);
 				header = JSON.parse(Converter.bytesToUtf8(bytesHeader));
-			} catch {}
+			} catch {
+				// Not valid JSON, leave the header undefined.
+			}
 		}
 
 		if (segments.length > 1) {
 			try {
 				const bytesPayload = Converter.base64UrlToBytes(segments[1]);
 				payload = JSON.parse(Converter.bytesToUtf8(bytesPayload));
-			} catch {}
+			} catch {
+				// Not valid JSON, leave the payload undefined.
+			}
 		}
 
 		if (segments.length > 2) {

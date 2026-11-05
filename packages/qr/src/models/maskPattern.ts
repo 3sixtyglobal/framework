@@ -5,7 +5,6 @@
  * Mask patterns for QR codes.
  * Based on https://github.com/kazuhikoarase/qrcode-generator/ .
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const MaskPattern = {
 	/**
 	 * Mask pattern 000.

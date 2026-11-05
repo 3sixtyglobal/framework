@@ -4,7 +4,6 @@
 /**
  * The JavaScript runtime engines that can be detected.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const RuntimeEngine = {
 	/**
 	 * Node.js.

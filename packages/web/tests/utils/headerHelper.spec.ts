@@ -1,6 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
+import { MimeTypes } from "../../src/models/mimeTypes.js";
 import { HeaderHelper } from "../../src/utils/headerHelper.js";
 
 describe("HeaderHelper", () => {
@@ -896,10 +897,10 @@ describe("HeaderHelper", () => {
 		);
 
 		expect(result).toEqual([
-			{ mimeType: "text/html", quality: 1 },
+			{ mimeType: MimeTypes.Html, quality: 1 },
 			{ mimeType: "application/xhtml+xml", quality: 1 },
-			{ mimeType: "image/webp", quality: 1 },
-			{ mimeType: "application/xml", quality: 0.9 },
+			{ mimeType: MimeTypes.WebP, quality: 1 },
+			{ mimeType: MimeTypes.Xml, quality: 0.9 },
 			{ mimeType: "*/*", quality: 0.8 }
 		]);
 	});
@@ -910,17 +911,17 @@ describe("HeaderHelper", () => {
 		);
 
 		expect(result).toEqual([
-			{ mimeType: "text/html", quality: 1 },
-			{ mimeType: "image/webp", quality: 1 },
-			{ mimeType: "application/xml", quality: 0.9 },
+			{ mimeType: MimeTypes.Html, quality: 1 },
+			{ mimeType: MimeTypes.WebP, quality: 1 },
+			{ mimeType: MimeTypes.Xml, quality: 0.9 },
 			{ mimeType: "*/*", quality: 0.8 }
 		]);
 	});
 
 	test("can parse a single media type from an accept header", async () => {
-		const result = HeaderHelper.parseAccept("application/json");
+		const result = HeaderHelper.parseAccept(MimeTypes.Json);
 
-		expect(result).toEqual([{ mimeType: "application/json", quality: 1 }]);
+		expect(result).toEqual([{ mimeType: MimeTypes.Json, quality: 1 }]);
 	});
 
 	test("can parse a wildcard subtype from an accept header", async () => {
@@ -939,8 +940,8 @@ describe("HeaderHelper", () => {
 		const result = HeaderHelper.parseAccept("text/html;charset=UTF-8, application/json;q=0.9");
 
 		expect(result).toEqual([
-			{ mimeType: "text/html", quality: 1, params: { charset: "UTF-8" } },
-			{ mimeType: "application/json", quality: 0.9 }
+			{ mimeType: MimeTypes.Html, quality: 1, params: { charset: "UTF-8" } },
+			{ mimeType: MimeTypes.Json, quality: 0.9 }
 		]);
 	});
 
@@ -951,9 +952,9 @@ describe("HeaderHelper", () => {
 		]);
 
 		expect(result).toEqual([
-			{ mimeType: "text/html", quality: 1 },
-			{ mimeType: "image/webp", quality: 1 },
-			{ mimeType: "application/xml", quality: 0.9 },
+			{ mimeType: MimeTypes.Html, quality: 1 },
+			{ mimeType: MimeTypes.WebP, quality: 1 },
+			{ mimeType: MimeTypes.Xml, quality: 0.9 },
 			{ mimeType: "*/*", quality: 0.8 }
 		]);
 	});
@@ -982,8 +983,8 @@ describe("HeaderHelper", () => {
 		});
 
 		expect(result).toEqual([
-			{ mimeType: "text/html", quality: 1 },
-			{ mimeType: "application/json", quality: 0.9 }
+			{ mimeType: MimeTypes.Html, quality: 1 },
+			{ mimeType: MimeTypes.Json, quality: 0.9 }
 		]);
 	});
 
@@ -993,9 +994,9 @@ describe("HeaderHelper", () => {
 		});
 
 		expect(result).toEqual([
-			{ mimeType: "text/html", quality: 1 },
-			{ mimeType: "image/webp", quality: 1 },
-			{ mimeType: "application/json", quality: 0.9 }
+			{ mimeType: MimeTypes.Html, quality: 1 },
+			{ mimeType: MimeTypes.WebP, quality: 1 },
+			{ mimeType: MimeTypes.Json, quality: 0.9 }
 		]);
 	});
 

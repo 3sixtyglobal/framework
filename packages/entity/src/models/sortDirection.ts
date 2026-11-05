@@ -4,7 +4,6 @@
 /**
  * The sort directions.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const SortDirection = {
 	/**
 	 * Ascending.

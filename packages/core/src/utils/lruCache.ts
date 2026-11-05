@@ -54,7 +54,7 @@ export class LruCache<T = unknown> {
 	 * Optional timeout in milliseconds for mutex acquisition.
 	 * @internal
 	 */
-	private readonly _mutexTimeoutMs: number | undefined;
+	private readonly _mutexTimeoutMs?: number;
 
 	/**
 	 * Per-instance namespace prefix for mutex keys.
@@ -66,16 +66,13 @@ export class LruCache<T = unknown> {
 	 * Underlying storage; Map iteration order tracks LRU position (first = oldest).
 	 * @internal
 	 */
-	private readonly _cache: Map<
-		string,
-		{ value: T; lastAccessed: number; expires: number | undefined }
-	>;
+	private readonly _cache: Map<string, { value: T; lastAccessed: number; expires?: number }>;
 
 	/**
 	 * The earliest hard expiry timestamp among the live entries, used to pace the sweep timer.
 	 * @internal
 	 */
-	private _nextExpires: number | undefined;
+	private _nextExpires?: number;
 
 	/**
 	 * The timestamp the pending sweep is due to run at.
@@ -87,7 +84,7 @@ export class LruCache<T = unknown> {
 	 * Handle for the pending idle-sweep timeout, or undefined if no timer is scheduled.
 	 * @internal
 	 */
-	private _sweepTimer: ReturnType<typeof setTimeout> | undefined;
+	private _sweepTimer?: ReturnType<typeof setTimeout>;
 
 	/**
 	 * Create a new instance of LruCache.
@@ -297,7 +294,7 @@ export class LruCache<T = unknown> {
 	 */
 	private lookupLive(
 		key: string
-	): { value: T; lastAccessed: number; expires: number | undefined } | undefined {
+	): { value: T; lastAccessed: number; expires?: number } | undefined {
 		const entry = this._cache.get(key);
 		if (Is.empty(entry)) {
 			return undefined;
@@ -318,10 +315,7 @@ export class LruCache<T = unknown> {
 	 * @param entry.expires The hard expiry timestamp in milliseconds, or undefined for none.
 	 * @internal
 	 */
-	private touch(
-		key: string,
-		entry: { value: T; lastAccessed: number; expires: number | undefined }
-	): void {
+	private touch(key: string, entry: { value: T; lastAccessed: number; expires?: number }): void {
 		// Move to end of Map (most-recently-used) via delete + re-insert
 		this._cache.delete(key);
 		entry.lastAccessed = Date.now();
@@ -373,10 +367,7 @@ export class LruCache<T = unknown> {
 	 * @returns True if the entry should be removed.
 	 * @internal
 	 */
-	private isExpired(
-		entry: { lastAccessed: number; expires: number | undefined },
-		now: number
-	): boolean {
+	private isExpired(entry: { lastAccessed: number; expires?: number }, now: number): boolean {
 		return (
 			now - entry.lastAccessed >= this._ttiMs ||
 			(Is.notEmpty(entry.expires) && now >= entry.expires)

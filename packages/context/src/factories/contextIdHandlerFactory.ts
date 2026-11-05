@@ -6,5 +6,4 @@ import type { IContextIdHandler } from "../models/IContextIdHandler.js";
 /**
  * Factory for creating implementation of context ID handlers.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const ContextIdHandlerFactory = Factory.createFactory<IContextIdHandler>("contextIdHandler");
