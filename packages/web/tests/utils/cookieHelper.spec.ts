@@ -1,5 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
+import { CookieSameSite } from "../../src/models/cookieSameSite.js";
 import { CookieHelper } from "../../src/utils/cookieHelper.js";
 
 describe("CookieHelper", () => {
@@ -62,7 +64,7 @@ describe("CookieHelper", () => {
 			const cookie = CookieHelper.createCookie("foo", "bar", {
 				secure: false,
 				httpOnly: false,
-				sameSite: "Lax",
+				sameSite: CookieSameSite.Lax,
 				path: "/custom"
 			});
 			expect(cookie).toContain("foo=bar");
