@@ -1,5 +1,6 @@
 // Copyright 2026 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+import { nameof } from "@3sixty/nameof";
 
 declare class ModuleHelper {
 	public static execModuleMethod(
@@ -10,7 +11,7 @@ declare class ModuleHelper {
 }
 
 export class MyClass {
-	public static readonly CLASS_NAME = "MyClass";
+	public static readonly CLASS_NAME: string = nameof<MyClass>();
 
 	public async doSomething(): Promise<void> {
 		const result = await ModuleHelper.execModuleMethod(
