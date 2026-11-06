@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.20.0-next.13](https://github.com/3sixtyglobal/framework/compare/image-v0.20.0-next.12...image-v0.20.0-next.13) (2026-11-06)
+
+
+### Bug Fixes
+
+* apply the shared lint rules for interface names, model locations and deprecated apis ([fe003ea](https://github.com/3sixtyglobal/framework/commit/fe003ea6d0730032bf4b4c6d6e9bc2fcc547dded))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @3sixty/core bumped from 0.20.0-next.12 to 0.20.0-next.13
+    * @3sixty/nameof bumped from 0.20.0-next.12 to 0.20.0-next.13
+  * devDependencies
+    * @3sixty/nameof-transformer bumped from 0.20.0-next.12 to 0.20.0-next.13
+    * @3sixty/nameof-vitest-plugin bumped from 0.20.0-next.12 to 0.20.0-next.13
+    * @3sixty/validate-locales bumped from 0.20.0-next.12 to 0.20.0-next.13
+
 ## [0.20.0-next.12](https://github.com/3sixtyglobal/framework/compare/image-v0.20.0-next.11...image-v0.20.0-next.12) (2026-11-06)
 
 

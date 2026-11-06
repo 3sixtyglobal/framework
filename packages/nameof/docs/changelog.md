@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.20.0-next.13](https://github.com/3sixtyglobal/framework/compare/nameof-v0.20.0-next.12...nameof-v0.20.0-next.13) (2026-11-06)
+
+
+### Bug Fixes
+
+* apply the shared lint rules for interface names, model locations and deprecated apis ([fe003ea](https://github.com/3sixtyglobal/framework/commit/fe003ea6d0730032bf4b4c6d6e9bc2fcc547dded))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @3sixty/nameof-transformer bumped from 0.20.0-next.12 to 0.20.0-next.13
+
 ## [0.20.0-next.12](https://github.com/3sixtyglobal/framework/compare/nameof-v0.20.0-next.11...nameof-v0.20.0-next.12) (2026-11-06)
 
 

@@ -30,7 +30,7 @@ export class CLI extends CLIBase {
 			{
 				title: "3Sixty Crypto",
 				appName: "3sixty-crypto",
-				version: "0.20.0-next.12", // x-release-please-version
+				version: "0.20.0-next.13", // x-release-please-version
 				icon: "🔒",
 				supportsEnvFiles: true,
 				overrideOutputWidth: options?.overrideOutputWidth,
