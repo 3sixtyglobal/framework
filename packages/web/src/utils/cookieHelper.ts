@@ -1,7 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 import { Guards, Is } from "@3sixty/core";
 import { nameof } from "@3sixty/nameof";
+import { CookieSameSite } from "../models/cookieSameSite.js";
 
 /**
  * Class to help with cookie operations.
@@ -29,7 +31,7 @@ export class CookieHelper {
 		options?: {
 			secure?: boolean;
 			httpOnly?: boolean;
-			sameSite?: "Strict" | "Lax" | "None";
+			sameSite?: CookieSameSite;
 			path?: string;
 		}
 	): string {
@@ -41,7 +43,7 @@ export class CookieHelper {
 		const localOptions = options ?? {};
 		localOptions.secure ??= true;
 		localOptions.httpOnly ??= true;
-		localOptions.sameSite ??= "Strict";
+		localOptions.sameSite ??= CookieSameSite.Strict;
 		localOptions.path ??= "/";
 
 		if (localOptions.secure) {
@@ -75,7 +77,7 @@ export class CookieHelper {
 		options?: {
 			secure?: boolean;
 			httpOnly?: boolean;
-			sameSite?: "Strict" | "Lax" | "None";
+			sameSite?: CookieSameSite;
 			path?: string;
 		}
 	): string {
