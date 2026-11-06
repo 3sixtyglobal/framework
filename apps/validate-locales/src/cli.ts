@@ -28,7 +28,7 @@ export class CLI extends CLIBase {
 			{
 				title: "3Sixty Validate Locales",
 				appName: "validate-locales",
-				version: "0.20.0-next.11", // x-release-please-version
+				version: "0.20.0-next.12", // x-release-please-version
 				icon: "⚙️ ",
 				supportsEnvFiles: false,
 				overrideOutputWidth: options?.overrideOutputWidth

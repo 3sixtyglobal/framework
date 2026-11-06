@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.20.0-next.12](https://github.com/3sixtyglobal/framework/compare/modules-v0.20.0-next.11...modules-v0.20.0-next.12) (2026-11-06)
+
+
+### Miscellaneous Chores
+
+* **modules:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @3sixty/context bumped from 0.20.0-next.11 to 0.20.0-next.12
+    * @3sixty/core bumped from 0.20.0-next.11 to 0.20.0-next.12
+    * @3sixty/crypto bumped from 0.20.0-next.11 to 0.20.0-next.12
+    * @3sixty/nameof bumped from 0.20.0-next.11 to 0.20.0-next.12
+  * devDependencies
+    * @3sixty/nameof-transformer bumped from 0.20.0-next.11 to 0.20.0-next.12
+    * @3sixty/nameof-vitest-plugin bumped from 0.20.0-next.11 to 0.20.0-next.12
+    * @3sixty/validate-locales bumped from 0.20.0-next.11 to 0.20.0-next.12
+
 ## [0.20.0-next.11](https://github.com/3sixtyglobal/framework/compare/modules-v0.20.0-next.10...modules-v0.20.0-next.11) (2026-11-05)
 
 
