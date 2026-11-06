@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.20.0-next.12](https://github.com/3sixtyglobal/framework/compare/web-v0.20.0-next.11...web-v0.20.0-next.12) (2026-11-06)
+
+
+### Features
+
+* add CookieSameSite constants ([#68](https://github.com/3sixtyglobal/framework/issues/68)) ([8b8cc6e](https://github.com/3sixtyglobal/framework/commit/8b8cc6e294ee84dd1f8f48006dd23a92a46e1d10))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @3sixty/core bumped from 0.20.0-next.11 to 0.20.0-next.12
+    * @3sixty/crypto bumped from 0.20.0-next.11 to 0.20.0-next.12
+    * @3sixty/nameof bumped from 0.20.0-next.11 to 0.20.0-next.12
+  * devDependencies
+    * @3sixty/nameof-transformer bumped from 0.20.0-next.11 to 0.20.0-next.12
+    * @3sixty/nameof-vitest-plugin bumped from 0.20.0-next.11 to 0.20.0-next.12
+    * @3sixty/validate-locales bumped from 0.20.0-next.11 to 0.20.0-next.12
+
 ## [0.20.0-next.11](https://github.com/3sixtyglobal/framework/compare/web-v0.20.0-next.10...web-v0.20.0-next.11) (2026-11-05)
 
 
