@@ -60,7 +60,7 @@ Should this be an http only cookie.
 
 ###### sameSite?
 
-`"Strict"` \| `"Lax"` \| `"None"`
+[`CookieSameSite`](../type-aliases/CookieSameSite.md)
 
 The same site option for the cookie.
 
@@ -110,7 +110,7 @@ Should this be an http only cookie.
 
 ###### sameSite?
 
-`"Strict"` \| `"Lax"` \| `"None"`
+[`CookieSameSite`](../type-aliases/CookieSameSite.md)
 
 The same site option for the cookie.
 
