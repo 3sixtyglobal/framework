@@ -1,12 +1,13 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
-import type { Frame } from "./frame.js";
+import type { IPngFrame } from "./IPngFrame.js";
 
 /**
  * Image data for the PNG encoder.
  * @internal
  */
-export interface ImageData {
+export interface IPngImageData {
 	/**
 	 * @internal
 	 */
@@ -26,5 +27,5 @@ export interface ImageData {
 	/**
 	 * @internal
 	 */
-	frames: Frame[];
+	frames: IPngFrame[];
 }

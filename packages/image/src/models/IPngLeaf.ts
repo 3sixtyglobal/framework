@@ -1,11 +1,12 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 
 /**
  * Leaf for the PNG encoder.
  * @internal
  */
-export interface Leaf {
+export interface IPngLeaf {
 	/**
 	 * @internal
 	 */
@@ -42,10 +43,10 @@ export interface Leaf {
 	/**
 	 * @internal
 	 */
-	left: Leaf | null;
+	left: IPngLeaf | null;
 
 	/**
 	 * @internal
 	 */
-	right: Leaf | null;
+	right: IPngLeaf | null;
 }

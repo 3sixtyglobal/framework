@@ -1,12 +1,13 @@
 // Copyright 2024 IOTA Stiftung.
+// Copyright 2026 3Sixty Trade Ltd.
 // SPDX-License-Identifier: Apache-2.0.
 /* eslint-disable no-bitwise */
 /* eslint-disable no-mixed-operators */
 /* eslint-disable no-continue */
 import { Compression } from "@3sixty/core";
-import type { Frame } from "./png/frame.js";
-import type { ImageData } from "./png/imageData.js";
-import type { Leaf } from "./png/leaf.js";
+import type { IPngFrame } from "../models/IPngFrame.js";
+import type { IPngImageData } from "../models/IPngImageData.js";
+import type { IPngLeaf } from "../models/IPngLeaf.js";
 
 /**
  * PNG Encoder.
@@ -191,7 +192,7 @@ export class PngEncoder {
 		h: number,
 		ps: number,
 		forbidPlte: boolean
-	): Promise<ImageData> {
+	): Promise<IPngImageData> {
 		const out = this.compress(buffers, w, h, ps, 0, forbidPlte);
 		for (let i = 0; i < buffers.length; i++) {
 			const frm = out.frames[i];
@@ -223,7 +224,7 @@ export class PngEncoder {
 		inPs: number,
 		forGIF: number,
 		forbidPlte: boolean
-	): ImageData {
+	): IPngImageData {
 		let cType = 6;
 		let depth = 8;
 		let bpp = 4;
@@ -298,7 +299,7 @@ export class PngEncoder {
 			gotAlpha = true;
 		}
 
-		const frames: Frame[] = [];
+		const frames: IPngFrame[] = [];
 		for (let j = 0; j < buffers.length; j++) {
 			let cImg = new Uint8Array(buffers[j]);
 			let cImg32 = new Uint32Array(cImg.buffer);
@@ -786,7 +787,7 @@ export class PngEncoder {
 		buffers: ArrayBufferLike[],
 		ps: number,
 		roundAlpha: number
-	): { buffers: ArrayBufferLike[]; plte: Leaf[] } {
+	): { buffers: ArrayBufferLike[]; plte: IPngLeaf[] } {
 		const imgs: Uint8Array[] = [];
 		let total = 0;
 		for (let i = 0; i < buffers.length; i++) {
@@ -806,7 +807,7 @@ export class PngEncoder {
 			nOff += il;
 		}
 
-		const root: Leaf = {
+		const root: IPngLeaf = {
 			i0: 0,
 			i1: nImg.length,
 			bst: null,
@@ -817,7 +818,7 @@ export class PngEncoder {
 		};
 		root.bst = this.quantizeStats(nImg, root.i0, root.i1);
 		root.est = this.quantizeEStats(root.bst);
-		const leafs: Leaf[] = [root];
+		const leafs: IPngLeaf[] = [root];
 
 		while (leafs.length < ps) {
 			let maxL = 0;
@@ -843,7 +844,7 @@ export class PngEncoder {
 				node.est?.eMq255 ?? 0
 			);
 
-			const ln: Leaf = {
+			const ln: IPngLeaf = {
 				i0: node.i0,
 				i1: s0,
 				bst: null,
@@ -854,7 +855,7 @@ export class PngEncoder {
 			};
 			ln.bst = this.quantizeStats(nImg, ln.i0, ln.i1);
 			ln.est = this.quantizeEStats(ln.bst);
-			const rn: Leaf = {
+			const rn: IPngLeaf = {
 				i0: s0,
 				i1: node.i1,
 				bst: null,
@@ -895,7 +896,7 @@ export class PngEncoder {
 				const b = sb[i + 2] * (1 / 255);
 				const a = sb[i + 3] * (1 / 255);
 
-				let nd: Leaf | null = root;
+				let nd: IPngLeaf | null = root;
 				while (nd?.left) {
 					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 					nd = this.quantizePlaneDst(nd.est!, r, g, b, a) <= 0 ? nd.left : nd.right;
