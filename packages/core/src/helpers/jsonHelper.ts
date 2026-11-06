@@ -33,7 +33,7 @@ export class JsonHelper {
 		) {
 			// Primitive data type
 			buffer.push(JSON.stringify(object));
-		} else if (Array.isArray(object)) {
+		} else if (Is.array(object)) {
 			// Array maintain element order
 			const parts: string[] = [];
 			for (const element of object) {
