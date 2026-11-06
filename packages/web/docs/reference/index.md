@@ -22,6 +22,7 @@
 - [IJwk](type-aliases/IJwk.md)
 - [IJwtHeader](type-aliases/IJwtHeader.md)
 - [IJwtPayload](type-aliases/IJwtPayload.md)
+- [CookieSameSite](type-aliases/CookieSameSite.md)
 - [HeaderTypes](type-aliases/HeaderTypes.md)
 - [HttpLinkRelType](type-aliases/HttpLinkRelType.md)
 - [HttpMethod](type-aliases/HttpMethod.md)
@@ -31,6 +32,7 @@
 
 ## Variables
 
+- [CookieSameSite](variables/CookieSameSite.md)
 - [HeaderTypes](variables/HeaderTypes.md)
 - [HttpLinkRelType](variables/HttpLinkRelType.md)
 - [HttpMethod](variables/HttpMethod.md)
